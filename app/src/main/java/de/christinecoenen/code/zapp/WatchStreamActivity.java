@@ -96,7 +96,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 		videoView.start();
 
 		Drawable playIcon = ContextCompat.
-				getDrawable(getApplicationContext(), android.R.drawable.ic_media_play);
+				getDrawable(getApplicationContext(), android.R.drawable.ic_media_pause);
 		playPauseButton.setImageDrawable(playIcon);
 	}
 
@@ -105,7 +105,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 		videoView.pause();
 
 		Drawable pauseIcon = ContextCompat.
-				getDrawable(getApplicationContext(), android.R.drawable.ic_media_pause);
+				getDrawable(getApplicationContext(), android.R.drawable.ic_media_play);
 		playPauseButton.setImageDrawable(pauseIcon);
 	}
 }
