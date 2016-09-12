@@ -15,10 +15,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.model.IChannelList;
+import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
 
 public class WatchStreamActivity extends FullscreenActivity {
 
-	private static final String STREAM_URL = "http://kika_geo-lh.akamaihd.net/i/livetvkika_de@75114/master.m3u8";
+	public static final String EXTRA_CHANNEL_ID = "extra_channel_id";
 
 	@BindView(R.id.video) VideoView videoView;
 	@BindView(R.id.play_pause_button) FloatingActionButton playPauseButton;
@@ -26,19 +29,28 @@ public class WatchStreamActivity extends FullscreenActivity {
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	@BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
 
+	protected ChannelModel currentChannel;
+	protected IChannelList channelList;
 	protected boolean isPlaying = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ButterKnife.bind(this);
+
+		channelList = new XmlResourcesChannelList(this);
+
+		Bundle extras = getIntent().getExtras();
+		int channelId = extras.getInt(EXTRA_CHANNEL_ID);
+		currentChannel = channelList.get(channelId);
+		setTitle(currentChannel.getName());
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		videoView.setVideoPath(STREAM_URL);
+		videoView.setVideoPath(currentChannel.getStreamUrl());
 		play();
 	}
 
@@ -69,7 +81,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 		switch (item.getItemId()) {
 			case R.id.action_settings:
 				Intent videoIntent = new Intent(Intent.ACTION_VIEW);
-				videoIntent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
+				videoIntent.setDataAndType(Uri.parse(currentChannel.getStreamUrl()), "video/*");
 				startActivity(videoIntent);
 				return true;
 			default:

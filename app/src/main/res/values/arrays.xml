@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string-array name="channel_names">
+		<item>Das Erste</item>
+		<item>KiKA</item>
+	</string-array>
+
+	<string-array name="channel_urls">
+		<item>http://live-lh.daserste.de/i/daserste_de@91204/master.m3u8</item>
+		<item>http://kika_geo-lh.akamaihd.net/i/livetvkika_de@75114/master.m3u8</item>
+	</string-array>
+
+	<integer-array name="channel_logos">
+		<item>@drawable/channel_logo_das_erste</item>
+		<item>@drawable/channel_logo_kika</item>
+	</integer-array>
+</resources>
