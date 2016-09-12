@@ -1,13 +1,20 @@
 package de.christinecoenen.code.zapp;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.VideoView;
 
 public class WatchStreamActivity extends FullscreenActivity {
+
+	private static final String STREAM_URL = "http://kika_geo-lh.akamaihd.net/i/livetvkika_de@75114/master.m3u8";
 
 	protected VideoView videoView;
 	protected FloatingActionButton playPauseButton;
@@ -40,7 +47,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 	protected void onStart() {
 		super.onStart();
 
-		videoView.setVideoPath("http://kika_geo-lh.akamaihd.net/i/livetvkika_de@75114/master.m3u8");
+		videoView.setVideoPath(STREAM_URL);
 		play();
 	}
 
@@ -56,6 +63,26 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 		if (isPlaying) {
 			play();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_settings:
+				Intent videoIntent =new Intent(Intent.ACTION_VIEW);
+				videoIntent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
+				startActivity(videoIntent);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
