@@ -8,6 +8,11 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTouch;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -30,8 +35,11 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	 * and a change of the status and navigation bar.
 	 */
 	private static final int UI_ANIMATION_DELAY = 300;
+
+	@BindView(R.id.fullscreen_content) View mContentView;
+	@BindView(R.id.fullscreen_content_controls) View mControlsView;
+
 	private final Handler mHideHandler = new Handler();
-	private View mContentView;
 	private final Runnable mHidePart2Runnable = new Runnable() {
 		@SuppressLint("InlinedApi")
 		@Override
@@ -49,7 +57,6 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		}
 	};
-	private View mControlsView;
 	private final Runnable mShowPart2Runnable = new Runnable() {
 		@Override
 		public void run() {
@@ -68,20 +75,6 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 			hide();
 		}
 	};
-	/**
-	 * Touch listener to use for in-layout UI controls to delay hiding the
-	 * system UI. This is to prevent the jarring behavior of controls going away
-	 * while interacting with activity UI.
-	 */
-	protected final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-		@Override
-		public boolean onTouch(View view, MotionEvent motionEvent) {
-			if (AUTO_HIDE) {
-				delayedHide(AUTO_HIDE_DELAY_MILLIS);
-			}
-			return false;
-		}
-	};
 
 	protected abstract int getViewId();
 
@@ -92,17 +85,14 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		setContentView(getViewId());
 
 		mVisible = true;
-		mControlsView = findViewById(R.id.fullscreen_content_controls);
-		mContentView = findViewById(R.id.fullscreen_content);
+		ButterKnife.bind(this);
+	}
 
-
+	@SuppressWarnings("unused")
+	@OnClick(R.id.fullscreen_content)
+	public void onFullscreenContentClick () {
 		// Set up the user interaction to manually show or hide the system UI.
-		mContentView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				toggle();
-			}
-		});
+		toggle();
 	}
 
 	@Override
@@ -113,6 +103,12 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		// created, to briefly hint to the user that UI controls
 		// are available.
 		delayedHide(100);
+	}
+
+	protected void delayHide() {
+		if (AUTO_HIDE) {
+			delayedHide(AUTO_HIDE_DELAY_MILLIS);
+		}
 	}
 
 	private void toggle() {
