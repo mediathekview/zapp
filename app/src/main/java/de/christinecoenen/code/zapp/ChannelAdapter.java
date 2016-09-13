@@ -1,12 +1,15 @@
 package de.christinecoenen.code.zapp;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 
@@ -14,10 +17,13 @@ public class ChannelAdapter extends BaseAdapter {
 
 	private Context context;
 	private IChannelList channelList;
+	private LayoutInflater inflater;
 
 	public ChannelAdapter(Context context, IChannelList channelList) {
 		this.context = context;
 		this.channelList = channelList;
+
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public int getCount() {
@@ -34,19 +40,31 @@ public class ChannelAdapter extends BaseAdapter {
 
 	// create a new ImageView for each item referenced by the Adapter
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ImageView imageView;
+
+		ViewHolder holder;
 		if (convertView == null) {
-			// if it's not recycled, initialize some attributes
-			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(400, 400));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			imageView.setPadding(8, 8, 8, 8);
+			// if it's not recycled, initialize
+			convertView = inflater.inflate(R.layout.channel_grid_item, null);
+			holder = new ViewHolder(convertView);
+			convertView.setTag(holder);
 		} else {
-			imageView = (ImageView) convertView;
+			holder = (ViewHolder) convertView.getTag();
 		}
 
+		// set data
 		ChannelModel channel = channelList.get(position);
-		imageView.setImageResource(channel.getDrawableId());
-		return imageView;
+		holder.logo.setImageResource(channel.getDrawableId());
+		holder.name.setText(channel.getName());
+
+		return convertView;
+	}
+
+	static class ViewHolder {
+		@BindView(R.id.channel_name) TextView name;
+		@BindView(R.id.channel_logo) ImageView logo;
+
+		public ViewHolder(View view) {
+			ButterKnife.bind(this, view);
+		}
 	}
 }

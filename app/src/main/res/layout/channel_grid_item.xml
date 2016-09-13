@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:elevation="5dp"
+	android:background="@android:color/white">
+
+	<ImageView
+		android:id="@+id/channel_logo"
+		android:layout_width="145dp"
+		android:layout_height="100dp"
+		android:layout_gravity="center"
+		android:scaleType="centerInside"
+		android:padding="10dp"
+		tools:src="@drawable/channel_logo_das_erste"/>
+
+	<TextView
+		android:id="@+id/channel_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:background="@color/colorPrimary"
+		android:padding="5dp"
+		tools:text="Test"
+		style="@style/TextAppearance.AppCompat.Large.Inverse"/>
+
+</LinearLayout>
