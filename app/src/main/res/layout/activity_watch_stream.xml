@@ -22,6 +22,13 @@
 			android:layout_gravity="center"
 			android:keepScreenOn="true"/>
 
+		<ProgressBar
+			android:id="@+id/progress"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:indeterminate="true"
+			style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
 	</FrameLayout>
 
 	<!-- This FrameLayout insets its children based on system windows using

@@ -2,12 +2,16 @@ package de.christinecoenen.code.zapp;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import butterknife.BindDrawable;
@@ -23,7 +27,10 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	public static final String EXTRA_CHANNEL_ID = "extra_channel_id";
 
+	private static final String TAG = WatchStreamActivity.class.getSimpleName();
+
 	@BindView(R.id.video) VideoView videoView;
+	@BindView(R.id.progress) ProgressBar progressView;
 	@BindView(R.id.play_pause_button) FloatingActionButton playPauseButton;
 
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
@@ -33,6 +40,36 @@ public class WatchStreamActivity extends FullscreenActivity {
 	protected IChannelList channelList;
 	protected boolean isPlaying = false;
 
+	protected MediaPlayer.OnErrorListener videoErrorListener = new MediaPlayer.OnErrorListener() {
+		@Override
+		public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+			Log.d(TAG, "media player error: " + what + " - " + extra);
+			return false;
+		}
+	};
+
+	protected MediaPlayer.OnInfoListener videoInfoListener = new MediaPlayer.OnInfoListener() {
+		@Override
+		public boolean onInfo(MediaPlayer mediaPlayer, int what, int extra) {
+			switch (what) {
+				case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+					Log.d(TAG, "media player buffering start");
+					progressView.setVisibility(View.VISIBLE);
+					return true;
+				case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+					Log.d(TAG, "media player buffering end");
+					progressView.setVisibility(View.INVISIBLE);
+					return true;
+				case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+					Log.d(TAG, "media player rendering start");
+					progressView.setVisibility(View.INVISIBLE);
+					return true;
+				default:
+					return false;
+			}
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,10 +77,15 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 		channelList = new XmlResourcesChannelList(this);
 
+		// set to channel
 		Bundle extras = getIntent().getExtras();
 		int channelId = extras.getInt(EXTRA_CHANNEL_ID);
 		currentChannel = channelList.get(channelId);
 		setTitle(currentChannel.getName());
+
+		// listener
+		videoView.setOnErrorListener(videoErrorListener);
+		videoView.setOnInfoListener(videoInfoListener);
 	}
 
 	@Override
