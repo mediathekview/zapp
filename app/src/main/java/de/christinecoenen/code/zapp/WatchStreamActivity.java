@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
@@ -31,6 +34,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	@BindView(R.id.video) VideoView videoView;
 	@BindView(R.id.progress) ProgressBar progressView;
+	@BindView(R.id.channel_logo) ImageView logoView;
 	@BindView(R.id.play_pause_button) FloatingActionButton playPauseButton;
 
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
@@ -58,11 +62,12 @@ public class WatchStreamActivity extends FullscreenActivity {
 					return true;
 				case MediaPlayer.MEDIA_INFO_BUFFERING_END:
 					Log.d(TAG, "media player buffering end");
-					progressView.setVisibility(View.INVISIBLE);
+					progressView.setVisibility(View.GONE);
 					return true;
 				case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
 					Log.d(TAG, "media player rendering start");
-					progressView.setVisibility(View.INVISIBLE);
+					progressView.setVisibility(View.GONE);
+					fadeOutLogo();
 					return true;
 				default:
 					return false;
@@ -82,6 +87,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 		int channelId = extras.getInt(EXTRA_CHANNEL_ID);
 		currentChannel = channelList.get(channelId);
 		setTitle(currentChannel.getName());
+		logoView.setImageResource(currentChannel.getDrawableId());
 
 		// listener
 		videoView.setOnErrorListener(videoErrorListener);
@@ -163,5 +169,25 @@ public class WatchStreamActivity extends FullscreenActivity {
 		isPlaying = false;
 		videoView.pause();
 		playPauseButton.setImageDrawable(playIcon);
+	}
+
+	protected void fadeOutLogo() {
+		if (logoView.getVisibility() == View.VISIBLE) {
+			Animation fadeOutAnimation = AnimationUtils.
+					loadAnimation(WatchStreamActivity.this, android.R.anim.fade_out);
+			fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					logoView.setVisibility(View.GONE);
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+			});
+			logoView.startAnimation(fadeOutAnimation);
+		}
 	}
 }
