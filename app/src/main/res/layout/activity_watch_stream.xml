@@ -22,20 +22,17 @@
 			android:layout_gravity="center"
 			android:keepScreenOn="true"/>
 
-		<ImageView
-			android:id="@+id/channel_logo"
+		<de.christinecoenen.code.zapp.ClickableViewPager
+			android:id="@+id/pager"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scaleType="fitCenter"
-			android:padding="80dip"
-			android:background="@android:color/white"
-			android:src="@drawable/channel_logo_das_erste"/>
+			android:layout_height="match_parent" />
 
 		<ProgressBar
 			android:id="@+id/progress"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:indeterminate="true"
+			android:layout_gravity="bottom"
 			style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
 	</FrameLayout>

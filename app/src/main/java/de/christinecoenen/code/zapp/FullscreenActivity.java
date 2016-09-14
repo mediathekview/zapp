@@ -1,17 +1,15 @@
 package de.christinecoenen.code.zapp;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTouch;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -143,6 +141,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		// Schedule a runnable to display UI elements after a delay
 		mHideHandler.removeCallbacks(mHidePart2Runnable);
 		mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+		delayHide();
 	}
 
 	/**

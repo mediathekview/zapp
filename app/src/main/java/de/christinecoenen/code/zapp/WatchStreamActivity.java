@@ -11,9 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
@@ -32,14 +29,15 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	private static final String TAG = WatchStreamActivity.class.getSimpleName();
 
+	@BindView(R.id.pager) ClickableViewPager viewPager;
 	@BindView(R.id.video) VideoView videoView;
 	@BindView(R.id.progress) ProgressBar progressView;
-	@BindView(R.id.channel_logo) ImageView logoView;
 	@BindView(R.id.play_pause_button) FloatingActionButton playPauseButton;
 
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	@BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
 
+	protected StreamPagePagerAdapter streamPagePagerAdapter;
 	protected ChannelModel currentChannel;
 	protected IChannelList channelList;
 	protected boolean isPlaying = false;
@@ -67,11 +65,21 @@ public class WatchStreamActivity extends FullscreenActivity {
 				case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
 					Log.d(TAG, "media player rendering start");
 					progressView.setVisibility(View.GONE);
-					fadeOutLogo();
+					streamPagePagerAdapter.getCurrentFragment().onVideoStart();
 					return true;
 				default:
 					return false;
 			}
+		}
+	};
+
+	protected StreamPagePagerAdapter.OnItemChangedListener onItemChangedListener =
+			new StreamPagePagerAdapter.OnItemChangedListener() {
+		@Override
+		public void OnItemSelected(ChannelModel channel) {
+			currentChannel = channel;
+			setTitle(channel.getName());
+			play();
 		}
 	};
 
@@ -85,27 +93,28 @@ public class WatchStreamActivity extends FullscreenActivity {
 		// set to channel
 		Bundle extras = getIntent().getExtras();
 		int channelId = extras.getInt(EXTRA_CHANNEL_ID);
-		currentChannel = channelList.get(channelId);
-		setTitle(currentChannel.getName());
-		logoView.setImageResource(currentChannel.getDrawableId());
 
 		// listener
 		videoView.setOnErrorListener(videoErrorListener);
 		videoView.setOnInfoListener(videoInfoListener);
-	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		videoView.setVideoPath(currentChannel.getStreamUrl());
-		play();
+		// pager
+		streamPagePagerAdapter = new StreamPagePagerAdapter(
+				getSupportFragmentManager(), channelList, onItemChangedListener);
+		viewPager.setAdapter(streamPagePagerAdapter);
+		viewPager.setCurrentItem(channelId);
+		viewPager.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mContentView.performClick();
+			}
+		});
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		videoView.pause();
+		videoView.stopPlayback();
 	}
 
 	@Override
@@ -144,7 +153,7 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	@SuppressWarnings("unused")
 	@OnClick(R.id.play_pause_button)
-	public void OnPlayPauseClick() {
+	public void onPlayPauseClick() {
 		if (isPlaying) {
 			pause();
 		} else {
@@ -159,8 +168,19 @@ public class WatchStreamActivity extends FullscreenActivity {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
+	@OnTouch(R.id.pager)
+	public boolean onPagerTouch() {
+		delayHide();
+		return false;
+	}
+
 	protected void play() {
+		Log.d(TAG, "play: " + currentChannel.getName());
+
 		isPlaying = true;
+		progressView.setVisibility(View.VISIBLE);
+		videoView.setVideoPath(currentChannel.getStreamUrl());
 		videoView.start();
 		playPauseButton.setImageDrawable(pauseIcon);
 	}
@@ -169,25 +189,5 @@ public class WatchStreamActivity extends FullscreenActivity {
 		isPlaying = false;
 		videoView.pause();
 		playPauseButton.setImageDrawable(playIcon);
-	}
-
-	protected void fadeOutLogo() {
-		if (logoView.getVisibility() == View.VISIBLE) {
-			Animation fadeOutAnimation = AnimationUtils.
-					loadAnimation(WatchStreamActivity.this, android.R.anim.fade_out);
-			fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {}
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					logoView.setVisibility(View.GONE);
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {}
-			});
-			logoView.startAnimation(fadeOutAnimation);
-		}
 	}
 }

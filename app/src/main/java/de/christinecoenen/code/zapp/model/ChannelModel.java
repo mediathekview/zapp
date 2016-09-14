@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.model;
 
-public class ChannelModel {
+import java.io.Serializable;
+
+public class ChannelModel implements Serializable {
 
 	private String name;
 	private String streamUrl;
