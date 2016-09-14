@@ -53,15 +53,7 @@
 			android:orientation="horizontal"
 			tools:ignore="UselessParent">
 
-			<android.support.design.widget.FloatingActionButton
-				android:id="@+id/play_pause_button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom|start"
-				android:layout_margin="@dimen/fab_margin"
-				app:backgroundTint="@color/colorPrimary"
-				android:src="@android:drawable/ic_media_play"
-				app:fabSize="normal" />
+			<!-- add content here that should show up on click -->
 
 		</LinearLayout>
 	</FrameLayout>

@@ -32,7 +32,6 @@ public class WatchStreamActivity extends FullscreenActivity {
 	@BindView(R.id.pager) ClickableViewPager viewPager;
 	@BindView(R.id.video) VideoView videoView;
 	@BindView(R.id.progress) ProgressBar progressView;
-	@BindView(R.id.play_pause_button) FloatingActionButton playPauseButton;
 
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	@BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
@@ -152,23 +151,6 @@ public class WatchStreamActivity extends FullscreenActivity {
 	}
 
 	@SuppressWarnings("unused")
-	@OnClick(R.id.play_pause_button)
-	public void onPlayPauseClick() {
-		if (isPlaying) {
-			pause();
-		} else {
-			play();
-		}
-	}
-
-	@SuppressWarnings("unused")
-	@OnTouch(R.id.play_pause_button)
-	public boolean OnPlayPauseTouch() {
-		delayHide();
-		return false;
-	}
-
-	@SuppressWarnings("unused")
 	@OnTouch(R.id.pager)
 	public boolean onPagerTouch() {
 		delayHide();
@@ -177,17 +159,9 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	protected void play() {
 		Log.d(TAG, "play: " + currentChannel.getName());
-
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);
 		videoView.setVideoPath(currentChannel.getStreamUrl());
 		videoView.start();
-		playPauseButton.setImageDrawable(pauseIcon);
-	}
-
-	protected void pause() {
-		isPlaying = false;
-		videoView.pause();
-		playPauseButton.setImageDrawable(playIcon);
 	}
 }
