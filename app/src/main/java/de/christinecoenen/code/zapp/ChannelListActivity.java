@@ -11,7 +11,7 @@ import android.widget.GridView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
-import de.christinecoenen.code.zapp.adapters.ChannelAdapter;
+import de.christinecoenen.code.zapp.adapters.ChannelListAdapter;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
 
@@ -31,7 +31,7 @@ public class ChannelListActivity extends AppCompatActivity {
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true);
 
 		IChannelList channelList = new XmlResourcesChannelList(this);
-		BaseAdapter gridAdapter = new ChannelAdapter(this, channelList);
+		BaseAdapter gridAdapter = new ChannelListAdapter(this, channelList);
 		channelGridView.setAdapter(gridAdapter);
 	}
 

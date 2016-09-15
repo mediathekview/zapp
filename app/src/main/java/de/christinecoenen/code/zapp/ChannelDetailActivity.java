@@ -18,7 +18,7 @@ import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
-import de.christinecoenen.code.zapp.adapters.StreamPagePagerAdapter;
+import de.christinecoenen.code.zapp.adapters.ChannelDetailAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
@@ -30,15 +30,14 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
-	@BindView(R.id.viewpager_channels)
-	ClickableViewPager viewPager;
+	@BindView(R.id.viewpager_channels) ClickableViewPager viewPager;
 	@BindView(R.id.video) VideoView videoView;
 	@BindView(R.id.progressbar_video) ProgressBar progressView;
 
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	@BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
 
-	protected StreamPagePagerAdapter streamPagePagerAdapter;
+	protected ChannelDetailAdapter channelDetailAdapter;
 	protected ChannelModel currentChannel;
 	protected IChannelList channelList;
 	protected boolean isPlaying = false;
@@ -66,7 +65,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 				case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
 					Log.d(TAG, "media player rendering start");
 					progressView.setVisibility(View.GONE);
-					streamPagePagerAdapter.getCurrentFragment().onVideoStart();
+					channelDetailAdapter.getCurrentFragment().onVideoStart();
 					return true;
 				default:
 					return false;
@@ -74,8 +73,8 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		}
 	};
 
-	protected StreamPagePagerAdapter.OnItemChangedListener onItemChangedListener =
-			new StreamPagePagerAdapter.OnItemChangedListener() {
+	protected ChannelDetailAdapter.OnItemChangedListener onItemChangedListener =
+			new ChannelDetailAdapter.OnItemChangedListener() {
 		@Override
 		public void OnItemSelected(ChannelModel channel) {
 			currentChannel = channel;
@@ -106,9 +105,9 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		videoView.setOnInfoListener(videoInfoListener);
 
 		// pager
-		streamPagePagerAdapter = new StreamPagePagerAdapter(
+		channelDetailAdapter = new ChannelDetailAdapter(
 				getSupportFragmentManager(), channelList, onItemChangedListener);
-		viewPager.setAdapter(streamPagePagerAdapter);
+		viewPager.setAdapter(channelDetailAdapter);
 		viewPager.setCurrentItem(channelId);
 		viewPager.setOnClickListener(new View.OnClickListener() {
 			@Override

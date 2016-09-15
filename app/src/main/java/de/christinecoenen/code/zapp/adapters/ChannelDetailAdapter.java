@@ -10,14 +10,14 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 
 
-public class StreamPagePagerAdapter extends FragmentStatePagerAdapter {
+public class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 
 	private IChannelList channelList;
 	private StreamPageFragment currentFragment;
 	private OnItemChangedListener listener;
 
-	public StreamPagePagerAdapter(FragmentManager fragmentManager, IChannelList channelList,
-								  OnItemChangedListener listener) {
+	public ChannelDetailAdapter(FragmentManager fragmentManager, IChannelList channelList,
+								OnItemChangedListener listener) {
 		super(fragmentManager);
 		this.channelList = channelList;
 		this.listener = listener;

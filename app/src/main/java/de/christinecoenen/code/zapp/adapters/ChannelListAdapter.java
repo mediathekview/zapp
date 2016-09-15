@@ -14,13 +14,13 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 
-public class ChannelAdapter extends BaseAdapter {
+public class ChannelListAdapter extends BaseAdapter {
 
 	private Context context;
 	private IChannelList channelList;
 	private LayoutInflater inflater;
 
-	public ChannelAdapter(Context context, IChannelList channelList) {
+	public ChannelListAdapter(Context context, IChannelList channelList) {
 		this.context = context;
 		this.channelList = channelList;
 
