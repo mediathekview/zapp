@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp;
+package de.christinecoenen.code.zapp.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,24 +6,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
+import de.christinecoenen.code.zapp.fragments.StreamPageFragment;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 
 
-class StreamPagePagerAdapter extends FragmentStatePagerAdapter {
+public class StreamPagePagerAdapter extends FragmentStatePagerAdapter {
 
 	private IChannelList channelList;
 	private StreamPageFragment currentFragment;
 	private OnItemChangedListener listener;
 
-	StreamPagePagerAdapter(FragmentManager fragmentManager, IChannelList channelList,
+	public StreamPagePagerAdapter(FragmentManager fragmentManager, IChannelList channelList,
 								  OnItemChangedListener listener) {
 		super(fragmentManager);
 		this.channelList = channelList;
 		this.listener = listener;
 	}
 
-	StreamPageFragment getCurrentFragment() {
+	public StreamPageFragment getCurrentFragment() {
 		return currentFragment;
 	}
 
@@ -61,7 +62,7 @@ class StreamPagePagerAdapter extends FragmentStatePagerAdapter {
 		super.setPrimaryItem(container, position, object);
 	}
 
-	interface OnItemChangedListener {
+	public interface OnItemChangedListener {
 		void OnItemSelected(ChannelModel model);
 	}
 }

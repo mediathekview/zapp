@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp;
+package de.christinecoenen.code.zapp.utils.view;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

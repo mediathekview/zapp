@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp;
+package de.christinecoenen.code.zapp.utils.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.christinecoenen.code.zapp.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -34,8 +35,8 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	 */
 	private static final int UI_ANIMATION_DELAY = 300;
 
-	@BindView(R.id.fullscreen_content) View mContentView;
-	@BindView(R.id.fullscreen_content_controls) View mControlsView;
+	protected @BindView(R.id.fullscreen_content) View mContentView;
+	protected @BindView(R.id.fullscreen_content_controls) View mControlsView;
 
 	private final Handler mHideHandler = new Handler();
 	private final Runnable mHidePart2Runnable = new Runnable() {

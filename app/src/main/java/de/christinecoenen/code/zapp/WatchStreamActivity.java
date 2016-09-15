@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,11 +16,13 @@ import android.widget.VideoView;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnTouch;
+import de.christinecoenen.code.zapp.adapters.StreamPagePagerAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
+import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
+import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 
 public class WatchStreamActivity extends FullscreenActivity {
 
@@ -29,7 +30,8 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	private static final String TAG = WatchStreamActivity.class.getSimpleName();
 
-	@BindView(R.id.pager) ClickableViewPager viewPager;
+	@BindView(R.id.pager)
+	ClickableViewPager viewPager;
 	@BindView(R.id.video) VideoView videoView;
 	@BindView(R.id.progress) ProgressBar progressView;
 

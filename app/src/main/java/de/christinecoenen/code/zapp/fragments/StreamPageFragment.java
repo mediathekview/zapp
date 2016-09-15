@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp;
+package de.christinecoenen.code.zapp.fragments;
 
 
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class StreamPageFragment extends Fragment {

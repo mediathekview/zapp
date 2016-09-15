@@ -11,6 +11,7 @@ import android.widget.GridView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import de.christinecoenen.code.zapp.adapters.ChannelAdapter;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
 
