@@ -17,23 +17,23 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class StreamPageFragment extends Fragment {
 
-	public static final String ARG_CHANNEL_MODEL = "channel_model";
+	public static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
 	@SuppressWarnings("unused")
 	private static final String TAG = StreamPageFragment.class.getSimpleName();
 
 
-	@BindView(R.id.channel_logo) ImageView logoView;
+	@BindView(R.id.image_channel_logo) ImageView logoView;
 
 	protected ChannelModel channel;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_stream_page, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_channel_detail, container, false);
 		ButterKnife.bind(this, rootView);
 
 		Bundle args = getArguments();
-		channel = (ChannelModel) args.getSerializable(ARG_CHANNEL_MODEL);
+		channel = (ChannelModel) args.getSerializable(ARGUMENT_CHANNEL_MODEL);
 		logoView.setImageResource(channel.getDrawableId());
 
 		return rootView;

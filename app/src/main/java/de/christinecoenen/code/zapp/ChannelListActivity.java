@@ -15,16 +15,16 @@ import de.christinecoenen.code.zapp.adapters.ChannelAdapter;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
 
-public class ChannelActivity extends AppCompatActivity {
+public class ChannelListActivity extends AppCompatActivity {
 
 	@BindView(R.id.toolbar) Toolbar toolbar;
-	@BindView(R.id.gridview) GridView channelGridView;
+	@BindView(R.id.gridview_channels) GridView channelGridView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_channel);
+		setContentView(R.layout.activity_channel_list);
 		ButterKnife.bind(this);
 
 		setSupportActionBar(toolbar);
@@ -35,10 +35,10 @@ public class ChannelActivity extends AppCompatActivity {
 		channelGridView.setAdapter(gridAdapter);
 	}
 
-	@OnItemClick(R.id.gridview)
+	@OnItemClick(R.id.gridview_channels)
 	void onGridItemClick(int position) {
-		Intent intent = new Intent(this, WatchStreamActivity.class);
-		intent.putExtra(WatchStreamActivity.EXTRA_CHANNEL_ID, position);
+		Intent intent = new Intent(this, ChannelDetailActivity.class);
+		intent.putExtra(ChannelDetailActivity.EXTRA_CHANNEL_ID, position);
 		startActivity(intent);
 	}
 }

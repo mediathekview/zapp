@@ -45,7 +45,7 @@ public class ChannelAdapter extends BaseAdapter {
 		ViewHolder holder;
 		if (convertView == null) {
 			// if it's not recycled, initialize
-			convertView = inflater.inflate(R.layout.channel_grid_item, null);
+			convertView = inflater.inflate(R.layout.item_channel_list, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
 		} else {
@@ -61,8 +61,8 @@ public class ChannelAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
-		@BindView(R.id.channel_name) TextView name;
-		@BindView(R.id.channel_logo) ImageView logo;
+		@BindView(R.id.text_channel_name) TextView name;
+		@BindView(R.id.image_channel_logo) ImageView logo;
 
 		public ViewHolder(View view) {
 			ButterKnife.bind(this, view);

@@ -24,16 +24,16 @@ import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 
-public class WatchStreamActivity extends FullscreenActivity {
+public class ChannelDetailActivity extends FullscreenActivity {
 
-	public static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+	public static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
-	private static final String TAG = WatchStreamActivity.class.getSimpleName();
+	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 
-	@BindView(R.id.pager)
+	@BindView(R.id.viewpager_channels)
 	ClickableViewPager viewPager;
 	@BindView(R.id.video) VideoView videoView;
-	@BindView(R.id.progress) ProgressBar progressView;
+	@BindView(R.id.progressbar_video) ProgressBar progressView;
 
 	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	@BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
@@ -130,14 +130,14 @@ public class WatchStreamActivity extends FullscreenActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
+		inflater.inflate(R.menu.activity_channel_detail, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_settings:
+			case R.id.menu_settings:
 				Intent videoIntent = new Intent(Intent.ACTION_VIEW);
 				videoIntent.setDataAndType(Uri.parse(currentChannel.getStreamUrl()), "video/*");
 				startActivity(videoIntent);
@@ -149,11 +149,11 @@ public class WatchStreamActivity extends FullscreenActivity {
 
 	@Override
 	protected int getViewId() {
-		return R.layout.activity_watch_stream;
+		return R.layout.activity_channel_detail;
 	}
 
 	@SuppressWarnings("unused")
-	@OnTouch(R.id.pager)
+	@OnTouch(R.id.viewpager_channels)
 	public boolean onPagerTouch() {
 		delayHide();
 		return false;

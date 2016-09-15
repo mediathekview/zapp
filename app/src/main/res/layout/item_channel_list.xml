@@ -9,7 +9,7 @@
 	android:clipToPadding="false">
 
 	<ImageView
-		android:id="@+id/channel_logo"
+		android:id="@+id/image_channel_logo"
 		android:layout_width="125dp"
 		android:layout_height="100dp"
 		android:layout_gravity="center"
@@ -20,7 +20,7 @@
 		tools:src="@drawable/channel_logo_das_erste"/>
 
 	<TextView
-		android:id="@+id/channel_name"
+		android:id="@+id/text_channel_name"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:gravity="center|start"

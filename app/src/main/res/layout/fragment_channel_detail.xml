@@ -6,7 +6,7 @@
 	android:layout_gravity="center">
 
 	<ImageView
-		android:id="@+id/channel_logo"
+		android:id="@+id/image_channel_logo"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:scaleType="fitCenter"

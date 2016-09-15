@@ -32,7 +32,7 @@ public class StreamPagePagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int position) {
 		Fragment fragment = new StreamPageFragment();
 		Bundle args = new Bundle();
-		args.putSerializable(StreamPageFragment.ARG_CHANNEL_MODEL, channelList.get(position));
+		args.putSerializable(StreamPageFragment.ARGUMENT_CHANNEL_MODEL, channelList.get(position));
 		fragment.setArguments(args);
 		return fragment;
 	}
