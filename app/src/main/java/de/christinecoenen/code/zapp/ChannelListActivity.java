@@ -37,8 +37,7 @@ public class ChannelListActivity extends AppCompatActivity {
 
 	@OnItemClick(R.id.gridview_channels)
 	void onGridItemClick(int position) {
-		Intent intent = new Intent(this, ChannelDetailActivity.class);
-		intent.putExtra(ChannelDetailActivity.EXTRA_CHANNEL_ID, position);
+		Intent intent = ChannelDetailActivity.getStartIntent(this, position);
 		startActivity(intent);
 	}
 }

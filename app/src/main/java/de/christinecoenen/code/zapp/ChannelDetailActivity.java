@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -26,9 +27,8 @@ import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 
 public class ChannelDetailActivity extends FullscreenActivity {
 
-	public static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
-
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
+	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
 	@BindView(R.id.viewpager_channels)
 	ClickableViewPager viewPager;
@@ -83,6 +83,12 @@ public class ChannelDetailActivity extends FullscreenActivity {
 			play();
 		}
 	};
+
+	public static Intent getStartIntent(Context context, int position) {
+		Intent intent = new Intent(context, ChannelDetailActivity.class);
+		intent.putExtra(EXTRA_CHANNEL_ID, position);
+		return intent;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

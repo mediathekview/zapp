@@ -17,15 +17,21 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class StreamPageFragment extends Fragment {
 
-	public static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
-
 	@SuppressWarnings("unused")
 	private static final String TAG = StreamPageFragment.class.getSimpleName();
-
+	private static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
 	@BindView(R.id.image_channel_logo) ImageView logoView;
 
 	protected ChannelModel channel;
+
+	public static StreamPageFragment newInstance(ChannelModel channelModel) {
+		StreamPageFragment fragment = new StreamPageFragment();
+		Bundle args = new Bundle();
+		args.putSerializable(ARGUMENT_CHANNEL_MODEL, channelModel);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.adapters;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -30,11 +29,8 @@ public class StreamPagePagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		Fragment fragment = new StreamPageFragment();
-		Bundle args = new Bundle();
-		args.putSerializable(StreamPageFragment.ARGUMENT_CHANNEL_MODEL, channelList.get(position));
-		fragment.setArguments(args);
-		return fragment;
+		ChannelModel channelModel = channelList.get(position);
+		return StreamPageFragment.newInstance(channelModel);
 	}
 
 	@Override
