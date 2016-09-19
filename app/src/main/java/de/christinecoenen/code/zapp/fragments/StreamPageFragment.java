@@ -49,6 +49,12 @@ public class StreamPageFragment extends Fragment {
 		return rootView;
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		logoView.setVisibility(View.VISIBLE);
+	}
+
 	public void onHide() {
 		logoView.setVisibility(View.VISIBLE);
 	}
