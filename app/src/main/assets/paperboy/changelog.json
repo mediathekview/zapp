@@ -1,0 +1,31 @@
+[
+  {
+	"name": "0.2.0",
+	"items": [
+	  {
+		"type": "F",
+		"title": "Changelog eingefügt"
+	  },
+	  {
+		"type": "I",
+		"title": "Rahmen um das Phoenix-Logo entfernt"
+	  },
+	  {
+		"type": "B",
+		"title": "Sender-Logo wird nach dem Pausieren der App angezeigt, bis der Stream wieder geladen ist"
+	  },
+	  {
+		"type": "I",
+		"title": "Sender-Sortierung verbessert: deutschlandweite Sender stehen jetzt weiter oben in der Liste"
+	  },
+	  {
+		"type": "I",
+		"title": "Streams fangen nicht sofort an zu laden, wenn man schnell durch die Sender schaltet"
+	  },
+	  {
+		"type": "I",
+		"title": "Sender-Informationen in JSON-Datei gespeichert"
+	  }
+	]
+  }
+]

@@ -1,6 +1,10 @@
 <resources>
 	<string name="app_name">Zapp</string>
 
+	<string name="activity_changelog_title">Changelog</string>
+
 	<!-- menus -->
-	<string name="action_share">Share</string>
+	<string name="action_share">Teilen</string>
+
+	<string name="menu_changelog">Changelog</string>
 </resources>
