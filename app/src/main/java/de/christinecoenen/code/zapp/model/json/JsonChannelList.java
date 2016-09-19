@@ -7,7 +7,6 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
@@ -22,8 +21,8 @@ import de.christinecoenen.code.zapp.model.IChannelList;
  */
 public class JsonChannelList implements IChannelList {
 
-	private Context context;
-	private List<ChannelModel> channels;
+	private final Context context;
+	private final List<ChannelModel> channels;
 
 	public JsonChannelList(Context context) {
 		this.context = context;
@@ -34,11 +33,6 @@ public class JsonChannelList implements IChannelList {
 	@Override
 	public ChannelModel get(int index) {
 		return channels.get(index);
-	}
-
-	@Override
-	public Iterator<ChannelModel> iterator() {
-		return channels.iterator();
 	}
 
 	@Override

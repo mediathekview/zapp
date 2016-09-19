@@ -75,6 +75,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		}
 	};
 
+	@SuppressWarnings("SameReturnValue")
 	protected abstract int getViewId();
 
 	@Override
@@ -87,7 +88,6 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 	}
 
-	@SuppressWarnings("unused")
 	@OnClick(R.id.fullscreen_content)
 	public void onFullscreenContentClick () {
 		// Set up the user interaction to manually show or hide the system UI.

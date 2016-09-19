@@ -16,7 +16,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
  */
 class JsonChannelsParser {
 
-	private Context context;
+	private final Context context;
 
 	JsonChannelsParser(Context context) {
 		this.context = context;
@@ -27,7 +27,7 @@ class JsonChannelsParser {
 	 * @param json  a json file with model data
 	 * @return      a list of fully parsed ChannelModels
 	 *              or null if the provided string is null
-	 * @see			R.raw.channels for channel format
+	 * @see			"R.raw.channels" for channel format
      */
 	List<ChannelModel> parse(String json) {
 		return getChannelList(json);

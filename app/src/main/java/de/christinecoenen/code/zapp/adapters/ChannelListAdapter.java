@@ -16,12 +16,10 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 
 public class ChannelListAdapter extends BaseAdapter {
 
-	private Context context;
-	private IChannelList channelList;
-	private LayoutInflater inflater;
+	private final IChannelList channelList;
+	private final LayoutInflater inflater;
 
 	public ChannelListAdapter(Context context, IChannelList channelList) {
-		this.context = context;
 		this.channelList = channelList;
 
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,7 +43,7 @@ public class ChannelListAdapter extends BaseAdapter {
 		ViewHolder holder;
 		if (convertView == null) {
 			// if it's not recycled, initialize
-			convertView = inflater.inflate(R.layout.item_channel_list, null);
+			convertView = inflater.inflate(R.layout.item_channel_list, parent, false);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
 		} else {
@@ -55,6 +53,7 @@ public class ChannelListAdapter extends BaseAdapter {
 		// set data
 		ChannelModel channel = channelList.get(position);
 		holder.logo.setImageResource(channel.getDrawableId());
+		holder.logo.setContentDescription(channel.getName());
 		holder.name.setText(channel.getName());
 
 		return convertView;
@@ -64,7 +63,7 @@ public class ChannelListAdapter extends BaseAdapter {
 		@BindView(R.id.text_channel_name) TextView name;
 		@BindView(R.id.image_channel_logo) ImageView logo;
 
-		public ViewHolder(View view) {
+		ViewHolder(View view) {
 			ButterKnife.bind(this, view);
 		}
 	}

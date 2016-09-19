@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,10 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class StreamPageFragment extends Fragment {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = StreamPageFragment.class.getSimpleName();
 	private static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
-	@BindView(R.id.image_channel_logo) ImageView logoView;
-
-	protected ChannelModel channel;
+	protected @BindView(R.id.image_channel_logo) ImageView logoView;
 
 	public static StreamPageFragment newInstance(ChannelModel channelModel) {
 		StreamPageFragment fragment = new StreamPageFragment();
@@ -39,8 +37,14 @@ public class StreamPageFragment extends Fragment {
 		ButterKnife.bind(this, rootView);
 
 		Bundle args = getArguments();
-		channel = (ChannelModel) args.getSerializable(ARGUMENT_CHANNEL_MODEL);
-		logoView.setImageResource(channel.getDrawableId());
+		ChannelModel channel = (ChannelModel) args.getSerializable(ARGUMENT_CHANNEL_MODEL);
+
+		if (channel != null) {
+			logoView.setImageResource(channel.getDrawableId());
+			logoView.setContentDescription(channel.getName());
+		} else {
+			Log.w(TAG, "channel argument is null");
+		}
 
 		return rootView;
 	}

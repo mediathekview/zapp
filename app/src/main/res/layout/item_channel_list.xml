@@ -17,7 +17,8 @@
 		android:padding="10dp"
 		android:elevation="5dp"
 		android:background="@android:color/white"
-		tools:src="@drawable/channel_logo_das_erste"/>
+		tools:src="@drawable/channel_logo_das_erste"
+		tools:ignore="ContentDescription"/>
 
 	<TextView
 		android:id="@+id/text_channel_name"

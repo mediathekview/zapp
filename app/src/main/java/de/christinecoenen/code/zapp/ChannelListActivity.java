@@ -17,8 +17,8 @@ import de.christinecoenen.code.zapp.model.json.JsonChannelList;
 
 public class ChannelListActivity extends AppCompatActivity {
 
-	@BindView(R.id.toolbar) Toolbar toolbar;
-	@BindView(R.id.gridview_channels) GridView channelGridView;
+	protected @BindView(R.id.toolbar) Toolbar toolbar;
+	protected @BindView(R.id.gridview_channels) GridView channelGridView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

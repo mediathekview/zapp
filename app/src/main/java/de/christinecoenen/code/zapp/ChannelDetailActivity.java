@@ -30,19 +30,18 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
-	@BindView(R.id.viewpager_channels) ClickableViewPager viewPager;
-	@BindView(R.id.video) VideoView videoView;
-	@BindView(R.id.progressbar_video) ProgressBar progressView;
+	protected @BindView(R.id.viewpager_channels) ClickableViewPager viewPager;
+	protected @BindView(R.id.video) VideoView videoView;
+	protected @BindView(R.id.progressbar_video) ProgressBar progressView;
 
-	@BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
-	@BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
+	protected @BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
+	protected @BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
 
-	protected ChannelDetailAdapter channelDetailAdapter;
-	protected ChannelModel currentChannel;
-	protected IChannelList channelList;
-	protected boolean isPlaying = false;
+	private ChannelDetailAdapter channelDetailAdapter;
+	private ChannelModel currentChannel;
+	private boolean isPlaying = false;
 
-	protected MediaPlayer.OnErrorListener videoErrorListener = new MediaPlayer.OnErrorListener() {
+	private final MediaPlayer.OnErrorListener videoErrorListener = new MediaPlayer.OnErrorListener() {
 		@Override
 		public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
 			Log.d(TAG, "media player error: " + what + " - " + extra);
@@ -50,7 +49,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		}
 	};
 
-	protected MediaPlayer.OnInfoListener videoInfoListener = new MediaPlayer.OnInfoListener() {
+	private final MediaPlayer.OnInfoListener videoInfoListener = new MediaPlayer.OnInfoListener() {
 		@Override
 		public boolean onInfo(MediaPlayer mediaPlayer, int what, int extra) {
 			switch (what) {
@@ -73,7 +72,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		}
 	};
 
-	protected ChannelDetailAdapter.OnItemChangedListener onItemChangedListener =
+	private final ChannelDetailAdapter.OnItemChangedListener onItemChangedListener =
 			new ChannelDetailAdapter.OnItemChangedListener() {
 		@Override
 		public void OnItemSelected(ChannelModel channel) {
@@ -94,7 +93,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		super.onCreate(savedInstanceState);
 		ButterKnife.bind(this);
 
-		channelList = new JsonChannelList(this);
+		IChannelList channelList = new JsonChannelList(this);
 
 		// set to channel
 		Bundle extras = getIntent().getExtras();
@@ -157,14 +156,14 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		return R.layout.activity_channel_detail;
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings("SameReturnValue")
 	@OnTouch(R.id.viewpager_channels)
 	public boolean onPagerTouch() {
 		delayHide();
 		return false;
 	}
 
-	protected void play() {
+	private void play() {
 		Log.d(TAG, "play: " + currentChannel.getName());
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);

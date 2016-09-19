@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_gravity="center">
@@ -12,6 +13,7 @@
 		android:scaleType="fitCenter"
 		android:padding="80dip"
 		android:background="@android:color/white"
-		android:src="@drawable/channel_logo_das_erste"/>
+		android:src="@drawable/channel_logo_das_erste"
+		tools:ignore="ContentDescription"/>
 
 </FrameLayout>

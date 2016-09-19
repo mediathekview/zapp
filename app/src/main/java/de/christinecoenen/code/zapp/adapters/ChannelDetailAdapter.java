@@ -12,9 +12,9 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 
 public class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 
-	private IChannelList channelList;
+	private final IChannelList channelList;
+	private final OnItemChangedListener listener;
 	private StreamPageFragment currentFragment;
-	private OnItemChangedListener listener;
 
 	public ChannelDetailAdapter(FragmentManager fragmentManager, IChannelList channelList,
 								OnItemChangedListener listener) {
