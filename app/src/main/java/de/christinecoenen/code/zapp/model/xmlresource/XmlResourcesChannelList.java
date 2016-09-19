@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.model;
+package de.christinecoenen.code.zapp.model.xmlresource;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.model.IChannelList;
 
 public class XmlResourcesChannelList implements IChannelList {
 

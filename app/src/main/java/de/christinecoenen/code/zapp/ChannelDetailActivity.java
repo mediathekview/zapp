@@ -21,7 +21,7 @@ import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.adapters.ChannelDetailAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
+import de.christinecoenen.code.zapp.model.json.JsonChannelList;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 
@@ -94,7 +94,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		super.onCreate(savedInstanceState);
 		ButterKnife.bind(this);
 
-		channelList = new XmlResourcesChannelList(this);
+		channelList = new JsonChannelList(this);
 
 		// set to channel
 		Bundle extras = getIntent().getExtras();

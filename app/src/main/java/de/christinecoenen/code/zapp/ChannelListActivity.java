@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import de.christinecoenen.code.zapp.adapters.ChannelListAdapter;
 import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.model.XmlResourcesChannelList;
+import de.christinecoenen.code.zapp.model.json.JsonChannelList;
 
 public class ChannelListActivity extends AppCompatActivity {
 
@@ -30,7 +30,7 @@ public class ChannelListActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true);
 
-		IChannelList channelList = new XmlResourcesChannelList(this);
+		IChannelList channelList = new JsonChannelList(this);
 		BaseAdapter gridAdapter = new ChannelListAdapter(this, channelList);
 		channelGridView.setAdapter(gridAdapter);
 	}
