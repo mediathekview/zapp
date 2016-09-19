@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import butterknife.BindDrawable;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
@@ -37,9 +39,20 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	protected @BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	protected @BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
 
+	protected @BindInt(R.integer.play_stream_delay_millis) int playStreamDelayMillis;
+
+	private final Handler playHandler = new Handler();
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
+
+
+	private final Runnable playRunnable = new Runnable() {
+		@Override
+		public void run() {
+			play();
+		}
+	};
 
 	private final MediaPlayer.OnErrorListener videoErrorListener = new MediaPlayer.OnErrorListener() {
 		@Override
@@ -78,7 +91,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		public void OnItemSelected(ChannelModel channel) {
 			currentChannel = channel;
 			setTitle(channel.getName());
-			play();
+			playDelayed();
 		}
 	};
 
@@ -161,6 +174,13 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	public boolean onPagerTouch() {
 		delayHide();
 		return false;
+	}
+
+	private void playDelayed() {
+		videoView.pause();
+		progressView.setVisibility(View.VISIBLE);
+		playHandler.removeCallbacks(playRunnable);
+		playHandler.postDelayed(playRunnable, playStreamDelayMillis);
 	}
 
 	private void play() {
