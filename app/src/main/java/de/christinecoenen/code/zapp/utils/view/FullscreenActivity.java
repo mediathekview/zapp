@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import butterknife.BindBool;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -17,26 +19,27 @@ import de.christinecoenen.code.zapp.R;
  * status bar and navigation/system bar) with user interaction.
  */
 public abstract class FullscreenActivity extends AppCompatActivity {
-	/**
-	 * Whether or not the system UI should be auto-hidden after
-	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-	 */
-	private static final boolean AUTO_HIDE = true;
+
+	protected @BindView(R.id.fullscreen_content) View mContentView;
+	protected @BindView(R.id.fullscreen_content_controls) View mControlsView;
 
 	/**
-	 * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
+	 * Whether or not the system UI should be auto-hidden after
+	 * {@link #autoHideUiMillis} milliseconds.
+	 */
+	protected @BindBool(R.bool.activity_fullscreen_auto_hide_ui) boolean autoHideUi;
+
+	/**
+	 * If {@link #autoHideUi} is set, the number of milliseconds to wait after
 	 * user interaction before hiding the system UI.
 	 */
-	private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+	protected @BindInt(R.integer.activity_fullscreen_auto_hide_ui_millis) int autoHideUiMillis;
 
 	/**
 	 * Some older devices needs a small delay between UI widget updates
 	 * and a change of the status and navigation bar.
 	 */
-	private static final int UI_ANIMATION_DELAY = 300;
-
-	protected @BindView(R.id.fullscreen_content) View mContentView;
-	protected @BindView(R.id.fullscreen_content_controls) View mControlsView;
+	protected @BindInt(R.integer.activity_fullscreen_ui_animation_delay) int uiAnimationDelay;
 
 	private final Handler mHideHandler = new Handler();
 	private final Runnable mHidePart2Runnable = new Runnable() {
@@ -105,8 +108,8 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	}
 
 	protected void delayHide() {
-		if (AUTO_HIDE) {
-			delayedHide(AUTO_HIDE_DELAY_MILLIS);
+		if (autoHideUi) {
+			delayedHide(autoHideUiMillis);
 		}
 	}
 
@@ -129,7 +132,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 
 		// Schedule a runnable to remove the status and navigation bar after a delay
 		mHideHandler.removeCallbacks(mShowPart2Runnable);
-		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
+		mHideHandler.postDelayed(mHidePart2Runnable, uiAnimationDelay);
 	}
 
 	@SuppressLint("InlinedApi")
@@ -141,7 +144,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 
 		// Schedule a runnable to display UI elements after a delay
 		mHideHandler.removeCallbacks(mHidePart2Runnable);
-		mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+		mHideHandler.postDelayed(mShowPart2Runnable, uiAnimationDelay);
 		delayHide();
 	}
 

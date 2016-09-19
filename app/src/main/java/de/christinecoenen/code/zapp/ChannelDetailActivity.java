@@ -39,7 +39,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	protected @BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	protected @BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
 
-	protected @BindInt(R.integer.play_stream_delay_millis) int playStreamDelayMillis;
+	protected @BindInt(R.integer.activity_channel_detail_play_stream_delay_millis) int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
 	private ChannelDetailAdapter channelDetailAdapter;

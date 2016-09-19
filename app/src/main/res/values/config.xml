@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<bool name="activity_fullscreen_auto_hide_ui">true</bool>
+	<integer name="activity_fullscreen_auto_hide_ui_millis">3000</integer>
+	<integer name="activity_fullscreen_ui_animation_delay">300</integer>
+
+	<integer name="activity_channel_detail_play_stream_delay_millis">750</integer>
+</resources>
