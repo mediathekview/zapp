@@ -1,5 +1,14 @@
 [
   {
+	"name": "",
+	"items": [
+	  {
+		"type": "I",
+		"title": "Changelog-Überschriften auf deutsch übersetzt"
+	  }
+	]
+  },
+  {
 	"name": "0.2.0",
 	"items": [
 	  {
