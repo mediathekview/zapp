@@ -22,9 +22,9 @@ import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
-public class ProgrammInfoView extends LinearLayout {
+public class ProgramInfoView extends LinearLayout {
 
-	private static final String TAG = ProgrammInfoView.class.getSimpleName();
+	private static final String TAG = ProgramInfoView.class.getSimpleName();
 
 	protected @BindView(R.id.text_show_title) TextView showTitleView;
 	protected @BindView(R.id.text_show_subtitle) TextView showSubtitleView;
@@ -63,11 +63,11 @@ public class ProgrammInfoView extends LinearLayout {
 			Log.w(TAG, "show info loaded: " + currentShow);
 			showTitleView.setText(currentShow.getTitle());
 			showSubtitleView.setText(currentShow.getSubtitle());
-			ProgrammInfoView.this.currentShow = currentShow;
+			ProgramInfoView.this.currentShow = currentShow;
 		}
 	};
 
-	public ProgrammInfoView(Context context, AttributeSet attrs) {
+	public ProgramInfoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		setOrientation(LinearLayout.VERTICAL);
@@ -75,12 +75,12 @@ public class ProgrammInfoView extends LinearLayout {
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.view_programm_info, this, true);
+		inflater.inflate(R.layout.view_program_info, this, true);
 
 		ButterKnife.bind(this, this);
 	}
 
-	public ProgrammInfoView(Context context) {
+	public ProgramInfoView(Context context) {
 		this(context, null);
 	}
 

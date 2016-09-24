@@ -57,8 +57,8 @@
 			android:background="@color/black_overlay"
 			tools:ignore="UselessParent">
 
-			<de.christinecoenen.code.zapp.views.ProgrammInfoView
-				android:id="@+id/programm_info"
+			<de.christinecoenen.code.zapp.views.ProgramInfoView
+				android:id="@+id/program_info"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
 

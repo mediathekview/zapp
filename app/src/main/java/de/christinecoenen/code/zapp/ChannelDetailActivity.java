@@ -26,7 +26,7 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.JsonChannelList;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
-import de.christinecoenen.code.zapp.views.ProgrammInfoView;
+import de.christinecoenen.code.zapp.views.ProgramInfoView;
 
 public class ChannelDetailActivity extends FullscreenActivity {
 
@@ -36,7 +36,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	protected @BindView(R.id.viewpager_channels) ClickableViewPager viewPager;
 	protected @BindView(R.id.video) VideoView videoView;
 	protected @BindView(R.id.progressbar_video) ProgressBar progressView;
-	protected @BindView(R.id.programm_info) ProgrammInfoView programmInfoView;
+	protected @BindView(R.id.program_info) ProgramInfoView programInfoView;
 
 	protected @BindDrawable(android.R.drawable.ic_media_pause) Drawable pauseIcon;
 	protected @BindDrawable(android.R.drawable.ic_media_play) Drawable playIcon;
@@ -93,7 +93,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 			currentChannel = channel;
 			setTitle(channel.getName());
 			playDelayed();
-			programmInfoView.setChannel(channel);
+			programInfoView.setChannel(channel);
 		}
 	};
 
@@ -134,14 +134,14 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		programmInfoView.pause();
+		programInfoView.pause();
 		videoView.stopPlayback();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		programmInfoView.resume();
+		programInfoView.resume();
 
 		if (isPlaying) {
 			play();
