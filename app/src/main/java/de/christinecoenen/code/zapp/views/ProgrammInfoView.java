@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.views;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -9,6 +10,11 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.programguide.ProgramGuideRequest;
@@ -23,8 +29,26 @@ public class ProgrammInfoView extends LinearLayout {
 	protected @BindView(R.id.text_show_title) TextView showTitleView;
 	protected @BindView(R.id.text_show_subtitle) TextView showSubtitleView;
 
-	private ProgramGuideRequest currentShowInfoRequest;
+	protected @BindInt(R.integer.view_program_info_update_show_info_interval_seconds) int updateShowInfoIntervalSeconds;
 
+	private ProgramGuideRequest currentShowInfoRequest;
+	private Show currentShow = null;
+	private ChannelModel currentChannel;
+
+	private final Handler handler = new Handler();
+	private Timer updateShowInfoTimer;
+
+	private final TimerTask updateShowInfoTimerTask = new TimerTask() {
+		@Override
+		public void run() {
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					updateShowInfo();
+				}
+			});
+		}
+	};
 
 	private final ProgramGuideRequest.Listener programGuideListener = new ProgramGuideRequest.Listener() {
 		@Override
@@ -39,6 +63,7 @@ public class ProgrammInfoView extends LinearLayout {
 			Log.w(TAG, "show info loaded: " + currentShow);
 			showTitleView.setText(currentShow.getTitle());
 			showSubtitleView.setText(currentShow.getSubtitle());
+			ProgrammInfoView.this.currentShow = currentShow;
 		}
 	};
 
@@ -60,21 +85,48 @@ public class ProgrammInfoView extends LinearLayout {
 	}
 
 	public void setChannel(ChannelModel channel) {
+		currentShow = null;
+		currentChannel = channel;
+
+		showTitleView.setText("");
+		showSubtitleView.setText("");
+
 		chancelProgramGuideLoading();
-		loadProgramGuide(channel.getId());
+		loadProgramGuide();
 	}
 
+	public void pause() {
+		updateShowInfoTimer.cancel();
+	}
 
-	private void loadProgramGuide(String channelId) {
+	public void resume() {
+		updateShowInfoTimer = new Timer();
+		updateShowInfoTimer.scheduleAtFixedRate(updateShowInfoTimerTask, 0,
+				TimeUnit.SECONDS.toMillis(updateShowInfoIntervalSeconds));
+	}
+
+	public void updateShowInfo() {
+		if (currentShow != null) {
+			if (currentShow.getEndTime() == null || currentShow.getEndTime().isBeforeNow()) {
+				reloadProgramGuide();
+			}
+		}
+	}
+
+	private void reloadProgramGuide() {
+		Log.d(TAG, "reloadProgramGuide");
+		chancelProgramGuideLoading();
+		loadProgramGuide();
+	}
+
+	private void loadProgramGuide() {
 		currentShowInfoRequest = new ProgramGuideRequest(getContext())
-				.setChannelId(channelId)
+				.setChannelId(currentChannel.getId())
 				.setListener(programGuideListener)
 				.execute();
 	}
 
 	private void chancelProgramGuideLoading() {
-		showTitleView.setText("");
-		showSubtitleView.setText("");
 		if (currentShowInfoRequest != null) {
 			currentShowInfoRequest.cancel();
 		}

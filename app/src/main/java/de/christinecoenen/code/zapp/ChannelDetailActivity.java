@@ -48,7 +48,6 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
 
-
 	private final Runnable playRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -135,12 +134,14 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		programmInfoView.pause();
 		videoView.stopPlayback();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		programmInfoView.resume();
 
 		if (isPlaying) {
 			play();
