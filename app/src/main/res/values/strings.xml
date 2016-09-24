@@ -3,6 +3,8 @@
 
 	<string name="activity_changelog_title">Changelog</string>
 
+	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
+
 	<!-- menus -->
 	<string name="action_share">Teilen</string>
 

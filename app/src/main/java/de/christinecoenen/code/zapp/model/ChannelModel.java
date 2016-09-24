@@ -4,9 +4,18 @@ import java.io.Serializable;
 
 public class ChannelModel implements Serializable {
 
+	private String id;
 	private String name;
 	private String streamUrl;
 	private int drawableId;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -35,7 +44,8 @@ public class ChannelModel implements Serializable {
 	@Override
 	public String toString() {
 		return "ChannelModel{" +
-				"name='" + name + '\'' +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
 				", streamUrl='" + streamUrl + '\'' +
 				", drawableId=" + drawableId +
 				'}';
