@@ -55,14 +55,22 @@ public class ProgramInfoView extends LinearLayout {
 		public void onRequestError() {
 			Log.w(TAG, "could not load show info");
 			showTitleView.setText(R.string.activity_channel_detail_info_error);
-			showSubtitleView.setText("");
+			showSubtitleView.setVisibility(GONE);
 		}
 
 		@Override
 		public void onRequestSuccess(Show currentShow) {
 			Log.w(TAG, "show info loaded: " + currentShow);
+
 			showTitleView.setText(currentShow.getTitle());
-			showSubtitleView.setText(currentShow.getSubtitle());
+
+			if (currentShow.getSubtitle() == null) {
+				showSubtitleView.setVisibility(GONE);
+			} else {
+				showSubtitleView.setText(currentShow.getSubtitle());
+				showSubtitleView.setVisibility(VISIBLE);
+			}
+
 			ProgramInfoView.this.currentShow = currentShow;
 		}
 	};
