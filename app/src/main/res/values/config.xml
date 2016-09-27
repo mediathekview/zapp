@@ -6,4 +6,5 @@
 
 	<integer name="activity_channel_detail_play_stream_delay_millis">750</integer>
 	<integer name="view_program_info_update_show_info_interval_seconds">60</integer>
+	<integer name="view_program_info_update_show_time_interval_seconds">1</integer>
 </resources>

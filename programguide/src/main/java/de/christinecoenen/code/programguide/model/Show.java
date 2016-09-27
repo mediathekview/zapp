@@ -1,6 +1,7 @@
 package de.christinecoenen.code.programguide.model;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 public class Show {
 
@@ -44,6 +45,16 @@ public class Show {
 
 	public void setEndTime(DateTime endTime) {
 		this.endTime = endTime;
+	}
+
+	public boolean hasDuration() {
+		return startTime != null && endTime != null;
+	}
+
+	public float getProgressPercent() {
+		Duration showDuration = new Duration(startTime, endTime);
+		Duration runningDuration = new Duration(startTime, DateTime.now());
+		return (float) runningDuration.getStandardSeconds() / showDuration.getStandardSeconds();
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.views;
 
 
+import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -8,7 +10,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,30 +31,23 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 public class ProgramInfoView extends LinearLayout {
 
 	private static final String TAG = ProgramInfoView.class.getSimpleName();
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.shortTime();
 
 	protected @BindView(R.id.text_show_title) TextView showTitleView;
 	protected @BindView(R.id.text_show_subtitle) TextView showSubtitleView;
+	protected @BindView(R.id.text_show_time) TextView showTimeView;
+	protected @BindView(R.id.progressbar_show_progress) ProgressBar progressBarView;
 
 	protected @BindInt(R.integer.view_program_info_update_show_info_interval_seconds) int updateShowInfoIntervalSeconds;
+	protected @BindInt(R.integer.view_program_info_update_show_time_interval_seconds) int updateShowTimeIntervalSeconds;
 
 	private ProgramGuideRequest currentShowInfoRequest;
 	private Show currentShow = null;
 	private ChannelModel currentChannel;
 
 	private final Handler handler = new Handler();
-	private Timer updateShowInfoTimer;
-
-	private final TimerTask updateShowInfoTimerTask = new TimerTask() {
-		@Override
-		public void run() {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					updateShowInfo();
-				}
-			});
-		}
-	};
+	private Timer timer = new Timer();
+	private final ObjectAnimator showProgressAnimator;
 
 	private final ProgramGuideRequest.Listener programGuideListener = new ProgramGuideRequest.Listener() {
 		@Override
@@ -56,22 +55,17 @@ public class ProgramInfoView extends LinearLayout {
 			Log.w(TAG, "could not load show info");
 			showTitleView.setText(R.string.activity_channel_detail_info_error);
 			showSubtitleView.setVisibility(GONE);
+			showTimeView.setVisibility(GONE);
+			progressBarView.setVisibility(GONE);
 		}
 
 		@Override
 		public void onRequestSuccess(Show currentShow) {
 			Log.w(TAG, "show info loaded: " + currentShow);
 
-			showTitleView.setText(currentShow.getTitle());
-
-			if (currentShow.getSubtitle() == null) {
-				showSubtitleView.setVisibility(GONE);
-			} else {
-				showSubtitleView.setText(currentShow.getSubtitle());
-				showSubtitleView.setVisibility(VISIBLE);
-			}
-
 			ProgramInfoView.this.currentShow = currentShow;
+			displayTitles();
+			displayTime();
 		}
 	};
 
@@ -86,6 +80,10 @@ public class ProgramInfoView extends LinearLayout {
 		inflater.inflate(R.layout.view_program_info, this, true);
 
 		ButterKnife.bind(this, this);
+
+		showProgressAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(context,
+				R.animator.view_program_info_show_progress);
+		showProgressAnimator.setTarget(progressBarView);
 	}
 
 	public ProgramInfoView(Context context) {
@@ -98,26 +96,69 @@ public class ProgramInfoView extends LinearLayout {
 
 		showTitleView.setText("");
 		showSubtitleView.setText("");
+		showTimeView.setText("");
+		progressBarView.setProgress(0);
 
 		chancelProgramGuideLoading();
 		loadProgramGuide();
 	}
 
 	public void pause() {
-		updateShowInfoTimer.cancel();
+		timer.cancel();
 	}
 
 	public void resume() {
-		updateShowInfoTimer = new Timer();
-		updateShowInfoTimer.scheduleAtFixedRate(updateShowInfoTimerTask, 0,
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new UpdateShowInfoTask(), 0,
 				TimeUnit.SECONDS.toMillis(updateShowInfoIntervalSeconds));
+		timer.scheduleAtFixedRate(new UpdateShowTimeTask(), 0,
+				TimeUnit.SECONDS.toMillis(updateShowTimeIntervalSeconds));
 	}
 
 	public void updateShowInfo() {
-		if (currentShow != null) {
-			if (currentShow.getEndTime() == null || currentShow.getEndTime().isBeforeNow()) {
-				reloadProgramGuide();
-			}
+		if (currentShow == null) {
+			return;
+		}
+
+		if (currentShow.getEndTime() == null || currentShow.getEndTime().isBeforeNow()) {
+			reloadProgramGuide();
+		}
+	}
+
+	private void displayTime() {
+		if (currentShow == null) {
+			return;
+		}
+
+		if (currentShow.hasDuration()) {
+			int progressPercent = Math.round(currentShow.getProgressPercent() * progressBarView.getMax());
+			String startTime = TIME_FORMATTER.print(currentShow.getStartTime());
+			String endTime = TIME_FORMATTER.print(currentShow.getEndTime());
+			String fullTime = getContext().getString(R.string.view_program_info_show_time, startTime, endTime);
+			showTimeView.setText(fullTime);
+			showTimeView.setVisibility(VISIBLE);
+			progressBarView.setIndeterminate(false);
+			setShowProgressBar(progressPercent);
+			progressBarView.setVisibility(VISIBLE);
+		} else {
+			setShowProgressBar(0);
+			showTimeView.setVisibility(GONE);
+			progressBarView.setVisibility(GONE);
+		}
+	}
+
+	private void displayTitles() {
+		if (currentShow == null) {
+			return;
+		}
+
+		showTitleView.setText(currentShow.getTitle());
+
+		if (currentShow.getSubtitle() == null) {
+			showSubtitleView.setVisibility(GONE);
+		} else {
+			showSubtitleView.setText(currentShow.getSubtitle());
+			showSubtitleView.setVisibility(VISIBLE);
 		}
 	}
 
@@ -128,6 +169,7 @@ public class ProgramInfoView extends LinearLayout {
 	}
 
 	private void loadProgramGuide() {
+		progressBarView.setIndeterminate(true);
 		currentShowInfoRequest = new ProgramGuideRequest(getContext())
 				.setChannelId(currentChannel.getId())
 				.setListener(programGuideListener)
@@ -135,8 +177,38 @@ public class ProgramInfoView extends LinearLayout {
 	}
 
 	private void chancelProgramGuideLoading() {
+		progressBarView.setIndeterminate(false);
 		if (currentShowInfoRequest != null) {
 			currentShowInfoRequest.cancel();
+		}
+	}
+
+	private void setShowProgressBar(int value) {
+		showProgressAnimator.setIntValues(value);
+		showProgressAnimator.start();
+	}
+
+	private class UpdateShowTimeTask extends TimerTask {
+		@Override
+		public void run() {
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					displayTime();
+				}
+			});
+		}
+	}
+
+	private class UpdateShowInfoTask extends TimerTask {
+		@Override
+		public void run() {
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					updateShowInfo();
+				}
+			});
 		}
 	}
 }
