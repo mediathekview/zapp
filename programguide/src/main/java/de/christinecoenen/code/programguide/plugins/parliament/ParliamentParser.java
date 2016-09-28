@@ -1,8 +1,6 @@
 package de.christinecoenen.code.programguide.plugins.parliament;
 
 
-import android.util.Log;
-
 import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,6 +12,7 @@ import de.christinecoenen.code.programguide.model.Show;
 
 class ParliamentParser {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = ParliamentParser.class.getSimpleName();
 
 	static Show parse(String xml) {
@@ -26,7 +25,6 @@ class ParliamentParser {
 			String endUnix = show.select("endeUnix").text();
 			DateTime start = new DateTime(Long.parseLong(startUnix) * 1000);
 			DateTime end = new DateTime(Long.parseLong(endUnix) * 1000);
-			Log.d(TAG, start + " - " + end);
 
 			if (start.isBeforeNow() && end.isAfterNow()) {
 				return parseShow(show, start, end);
@@ -39,9 +37,18 @@ class ParliamentParser {
 
 	private static Show parseShow(Element showElement, DateTime start, DateTime end) {
 		String title = showElement.select("langtitel").text();
+		String subtitle;
+
+		Element liveElement = showElement.select("live").first();
+		if (liveElement.hasText()) {
+			subtitle = liveElement.text();
+		} else {
+			subtitle = "Aufzeichnung vom " + showElement.select("aufzeichnungsdatum").text();
+		}
 
 		Show show = new Show();
 		show.setTitle(title);
+		show.setSubtitle(subtitle);
 		show.setStartTime(start);
 		show.setEndTime(end);
 
