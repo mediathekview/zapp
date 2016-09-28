@@ -6,8 +6,8 @@ import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 
+import de.christinecoenen.code.programguide.helper.StringRequest;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.programguide.plugins.BaseProgramGuideDownloader;
@@ -31,7 +31,7 @@ public class ParliamentDownloader extends BaseProgramGuideDownloader {
 	public void download() {
 		String url = (channel == Channel.PARLAMENTSFERNSEHEN_1) ? XTML_URL_1 : XTML_URL_2;
 
-		request = new StringRequest(url, new Response.Listener<String>() {
+		request = new StringRequest(url, "UTF-8", new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
 						Log.d(TAG, "xml loaded: " + response);
