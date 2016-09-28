@@ -31,7 +31,10 @@ public enum Channel {
 	PHOENIX("phoenix"),
 	ZDF_KULTUR("zdf_kultur"),
 	ZDF_INFO("zdf_info"),
-	ZDF_NEO("zdf_neo");
+	ZDF_NEO("zdf_neo"),
+
+	PARLAMENTSFERNSEHEN_1("parlamentsfernsehen_1"),
+	PARLAMENTSFERNSEHEN_2("parlamentsfernsehen_2");
 
 	public static Channel getById(String id) {
 		for (Channel channel : Channel.values()) {

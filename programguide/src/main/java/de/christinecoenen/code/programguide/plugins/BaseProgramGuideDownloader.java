@@ -34,8 +34,8 @@ public abstract class BaseProgramGuideDownloader implements IProgramGuideDownloa
 
 	protected final RequestQueue queue;
 	protected Request<?> request;
+	protected final Channel channel;
 
-	private final Channel channel;
 	private ProgramGuideRequest.Listener listener;
 
 

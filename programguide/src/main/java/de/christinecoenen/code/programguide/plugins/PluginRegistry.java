@@ -12,6 +12,7 @@ import java.util.Map;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.plugins.ard.ArdDownloader;
 import de.christinecoenen.code.programguide.plugins.arte.ArteDownloader;
+import de.christinecoenen.code.programguide.plugins.parliament.ParliamentDownloader;
 import de.christinecoenen.code.programguide.plugins.zdf.ZdfDownloader;
 
 public class PluginRegistry {
@@ -41,6 +42,9 @@ public class PluginRegistry {
 		}
 		for (Channel arteChannel : ArteDownloader.CHANNELS) {
 			downloaders.put(arteChannel, new ArteDownloader(queue, arteChannel));
+		}
+		for (Channel parliamentChannel : ParliamentDownloader.CHANNELS) {
+			downloaders.put(parliamentChannel, new ParliamentDownloader(queue, parliamentChannel));
 		}
 	}
 
