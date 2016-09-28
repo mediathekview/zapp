@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,9 +13,6 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,7 +29,6 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 public abstract class ProgramInfoViewBase extends LinearLayout {
 
 	private static final String TAG = ProgramInfoViewBase.class.getSimpleName();
-	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.shortTime();
 
 	protected @BindView(R.id.text_show_title) TextView showTitleView;
 	protected @BindView(R.id.text_show_subtitle) TextView showSubtitleView;
@@ -134,8 +131,10 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		if (currentShow.hasDuration()) {
 			int progressPercent = Math.round(currentShow.getProgressPercent() * progressBarView.getMax());
-			String startTime = TIME_FORMATTER.print(currentShow.getStartTime());
-			String endTime = TIME_FORMATTER.print(currentShow.getEndTime());
+			String startTime = DateUtils.formatDateTime(getContext(),
+					currentShow.getStartTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
+			String endTime = DateUtils.formatDateTime(getContext(),
+					currentShow.getEndTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
 			String fullTime = getContext().getString(R.string.view_program_info_show_time, startTime, endTime);
 			showTimeView.setText(fullTime);
 			showTimeView.setVisibility(VISIBLE);

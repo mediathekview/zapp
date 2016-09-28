@@ -5,7 +5,7 @@
 
 	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
 
-	<string name="view_program_info_show_time">%1$s – %2$s</string>
+	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
 
 
 	<!-- menus -->
