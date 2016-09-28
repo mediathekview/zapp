@@ -22,4 +22,8 @@ class JsonChannelModel {
 	@SuppressWarnings("unused")
 	@SerializedName("logo_name")
 	public String logoName;
+
+	@SuppressWarnings("unused")
+	@SerializedName("subtitle")
+	public String subtitle;
 }

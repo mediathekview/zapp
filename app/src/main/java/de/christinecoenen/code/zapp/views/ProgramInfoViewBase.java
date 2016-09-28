@@ -28,9 +28,9 @@ import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
-public class ProgramInfoView extends LinearLayout {
+public abstract class ProgramInfoViewBase extends LinearLayout {
 
-	private static final String TAG = ProgramInfoView.class.getSimpleName();
+	private static final String TAG = ProgramInfoViewBase.class.getSimpleName();
 	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.shortTime();
 
 	protected @BindView(R.id.text_show_title) TextView showTitleView;
@@ -63,13 +63,13 @@ public class ProgramInfoView extends LinearLayout {
 		public void onRequestSuccess(Show currentShow) {
 			Log.w(TAG, "show info loaded: " + currentShow);
 
-			ProgramInfoView.this.currentShow = currentShow;
+			ProgramInfoViewBase.this.currentShow = currentShow;
 			displayTitles();
 			displayTime();
 		}
 	};
 
-	public ProgramInfoView(Context context, AttributeSet attrs) {
+	public ProgramInfoViewBase(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		setOrientation(LinearLayout.VERTICAL);
@@ -77,7 +77,7 @@ public class ProgramInfoView extends LinearLayout {
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.view_program_info, this, true);
+		inflater.inflate(getViewId(), this, true);
 
 		ButterKnife.bind(this, this);
 
@@ -86,7 +86,7 @@ public class ProgramInfoView extends LinearLayout {
 		showProgressAnimator.setTarget(progressBarView);
 	}
 
-	public ProgramInfoView(Context context) {
+	public ProgramInfoViewBase(Context context) {
 		this(context, null);
 	}
 
@@ -125,6 +125,8 @@ public class ProgramInfoView extends LinearLayout {
 		}
 	}
 
+	protected abstract int getViewId();
+
 	private void displayTime() {
 		if (currentShow == null) {
 			return;
@@ -138,13 +140,16 @@ public class ProgramInfoView extends LinearLayout {
 			showTimeView.setText(fullTime);
 			showTimeView.setVisibility(VISIBLE);
 			progressBarView.setIndeterminate(false);
+			progressBarView.setEnabled(true);
 			setShowProgressBar(progressPercent);
-			progressBarView.setVisibility(VISIBLE);
 		} else {
 			setShowProgressBar(0);
 			showTimeView.setVisibility(GONE);
-			progressBarView.setVisibility(GONE);
+			progressBarView.setIndeterminate(false);
+			progressBarView.setEnabled(false);
 		}
+
+		progressBarView.setVisibility(VISIBLE);
 	}
 
 	private void displayTitles() {
@@ -169,6 +174,7 @@ public class ProgramInfoView extends LinearLayout {
 	}
 
 	private void loadProgramGuide() {
+		progressBarView.setEnabled(true);
 		progressBarView.setIndeterminate(true);
 		currentShowInfoRequest = new ProgramGuideRequest(getContext())
 				.setChannelId(currentChannel.getId())

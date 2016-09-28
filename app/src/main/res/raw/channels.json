@@ -81,13 +81,15 @@
 	"id": "br_nord",
 	"name": "BR Nord",
 	"stream_url": "http://livestreams.br.de/i/bfsnord_germany@119898/master.m3u8",
-	"logo_name": "channel_logo_br"
+	"logo_name": "channel_logo_br",
+	"subtitle": "Nord"
   },
   {
 	"id": "br_sued",
 	"name": "BR Süd",
 	"stream_url": "http://livestreams.br.de/i/bfssued_germany@119890/master.m3u8",
-	"logo_name": "channel_logo_br"
+	"logo_name": "channel_logo_br",
+	"subtitle": "Süd"
   },
   {
 	"id": "hr",
@@ -99,55 +101,64 @@
 	"id": "mdr_sachsen",
 	"name": "MDR Sachsen",
 	"stream_url": "http://livetvsachsen.mdr.de/i/livetvmdrsachsen_de@106902/master.m3u8",
-	"logo_name": "channel_logo_mdr"
+	"logo_name": "channel_logo_mdr",
+	"subtitle": "Sachsen"
   },
   {
 	"id": "mdr_sachsen_anhalt",
 	"name": "MDR Sachsen-Anhalt",
 	"stream_url": "http://livetvsachsenanhalt.mdr.de/i/livetvmdrsachsenanhalt_de@106901/master.m3u8",
-	"logo_name": "channel_logo_mdr"
+	"logo_name": "channel_logo_mdr",
+	"subtitle": "Sachsen-Anhalt"
   },
   {
 	"id": "mdr_thueringen",
 	"name": "MDR Thüringen",
 	"stream_url": "http://livetvthueringen.mdr.de/i/livetvmdrthueringen_de@106903/master.m3u8",
-	"logo_name": "channel_logo_mdr"
+	"logo_name": "channel_logo_mdr",
+	"subtitle": "Thüringen"
   },
   {
 	"id": "ndr_hh",
 	"name": "NDR Hamburg",
 	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_hh@119223/master.m3u8",
-	"logo_name": "channel_logo_ndr"
+	"logo_name": "channel_logo_ndr",
+	"subtitle": "Hamburg"
   },
   {
 	"id": "ndr_mv",
 	"name": "NDR Mecklenburg-Vorpommern",
 	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_mv@119226/master.m3u8",
-	"logo_name": "channel_logo_ndr"
+	"logo_name": "channel_logo_ndr",
+	"subtitle": "Mecklenburg-Vorpommern"
   },
   {
 	"id": "ndr_nds",
 	"name": "NRD Niedersachsen",
 	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_nds@119224/master.m3u8",
-	"logo_name": "channel_logo_ndr"
+	"logo_name": "channel_logo_ndr",
+	"subtitle": "Nieder\u00adsachsen"
   },
   {
 	"id": "ndr_sh",
 	"name": "NDR Schleswig-Holstein",
 	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_sh@119225/master.m3u8",
-	"logo_name": "channel_logo_ndr"
+	"logo_name": "channel_logo_ndr",
+	"subtitle": "Schleswig-Holstein"
   },
   {
 	"id": "rbb_berlin",
 	"name": "rbb Fernsehen Berlin",
 	"stream_url": "http://tv-live.rbb-online.de/i/rbb_berlin@108248/master.m3u8",
-	"logo_name": "channel_logo_rbb"
+	"logo_name": "channel_logo_rbb",
+	"subtitle": "Berlin"
   },
   {
 	"id": "rbb_brandenburg",
 	"name": "rbb Fernsehen Brandenburg",
 	"stream_url": "http://tv-live.rbb-online.de/i/rbb_brandenburg@107638/master.m3u8",
-	"logo_name": "channel_logo_rbb"
+	"logo_name": "channel_logo_rbb",
+	"subtitle": "Brandenburg"
   },
   {
 	"id": "sr",
@@ -159,13 +170,15 @@
 	"id": "swr_bw",
 	"name": "SWR Baden-Württemberg",
 	"stream_url": "http://swrbw-lh.akamaihd.net/i/swrbw_live@196738/master.m3u8",
-	"logo_name": "channel_logo_swr"
+	"logo_name": "channel_logo_swr",
+	"subtitle": "Baden-Württemberg"
   },
   {
 	"id": "swr_rp",
 	"name": "SWR Rheinland-Pfalz",
 	"stream_url": "http://swrrp-lh.akamaihd.net/i/swrrp_live@196739/master.m3u8",
-	"logo_name": "channel_logo_swr"
+	"logo_name": "channel_logo_swr",
+	"subtitle": "Rheinland-Pfalz"
   },
   {
 	"id": "wdr",
@@ -177,12 +190,14 @@
 	"id": "parlamentsfernsehen_1",
 	"name": "Parlaments\u00adfern\u00adsehen Kanal 1",
 	"stream_url": "https://c13014-l-hls.u.core.cdn.streamfarm.net/1000153copo/hk1.m3u8",
-	"logo_name": "channel_logo_parlamentsfernsehen"
+	"logo_name": "channel_logo_parlamentsfernsehen",
+	"subtitle": "Kanal 1"
   },
   {
 	"id": "parlamentsfernsehen_2",
 	"name": "Parlaments\u00adfern\u00adsehen Kanal 2",
 	"stream_url": "https://c13014-l-hls.u.core.cdn.streamfarm.net/1000153copo/hk2.m3u8",
-	"logo_name": "channel_logo_parlamentsfernsehen"
+	"logo_name": "channel_logo_parlamentsfernsehen",
+	"subtitle": "Kanal 2"
   }
 ]

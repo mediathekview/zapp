@@ -6,6 +6,7 @@ public class ChannelModel implements Serializable {
 
 	private String id;
 	private String name;
+	private String subtitle;
 	private String streamUrl;
 	private int drawableId;
 
@@ -23,6 +24,14 @@ public class ChannelModel implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSubtitle() {
+		return subtitle;
+	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
 	}
 
 	public String getStreamUrl() {
@@ -46,6 +55,7 @@ public class ChannelModel implements Serializable {
 		return "ChannelModel{" +
 				"id='" + id + '\'' +
 				", name='" + name + '\'' +
+				", subtitle='" + subtitle + '\'' +
 				", streamUrl='" + streamUrl + '\'' +
 				", drawableId=" + drawableId +
 				'}';

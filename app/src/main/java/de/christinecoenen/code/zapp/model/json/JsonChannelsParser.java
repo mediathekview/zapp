@@ -62,6 +62,7 @@ class JsonChannelsParser {
 		ChannelModel model = new ChannelModel();
 		model.setId(jsonModel.id);
 		model.setName(jsonModel.name);
+		model.setSubtitle(jsonModel.subtitle);
 		model.setStreamUrl(jsonModel.streamUrl);
 		model.setDrawableId(logoResourceId);
 
