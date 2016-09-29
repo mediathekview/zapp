@@ -112,7 +112,9 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 				TimeUnit.SECONDS.toMillis(updateShowTimeIntervalSeconds));
 	}
 
-	public void updateShowInfo() {
+	protected abstract int getViewId();
+
+	private void updateShowInfo() {
 		if (currentShow == null) {
 			return;
 		}
@@ -121,8 +123,6 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 			reloadProgramGuide();
 		}
 	}
-
-	protected abstract int getViewId();
 
 	private void displayTime() {
 		if (currentShow == null) {
