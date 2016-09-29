@@ -12,6 +12,7 @@ import java.util.Map;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.plugins.ard.ArdDownloader;
 import de.christinecoenen.code.programguide.plugins.arte.ArteDownloader;
+import de.christinecoenen.code.programguide.plugins.deutschewelle.DeutscheWelleDownloader;
 import de.christinecoenen.code.programguide.plugins.parliament.ParliamentDownloader;
 import de.christinecoenen.code.programguide.plugins.zdf.ZdfDownloader;
 
@@ -45,6 +46,9 @@ public class PluginRegistry {
 		}
 		for (Channel parliamentChannel : ParliamentDownloader.CHANNELS) {
 			downloaders.put(parliamentChannel, new ParliamentDownloader(queue, parliamentChannel));
+		}
+		for (Channel dwChannel : DeutscheWelleDownloader.CHANNELS) {
+			downloaders.put(dwChannel, new DeutscheWelleDownloader(queue, dwChannel));
 		}
 	}
 
