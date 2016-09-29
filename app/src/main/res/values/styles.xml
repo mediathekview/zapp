@@ -32,4 +32,8 @@
 
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+	<style name="ShowProgress" parent="Theme.AppCompat.Light">
+		<item name="colorAccent">@android:color/darker_gray</item>
+	</style>
+
 </resources>
