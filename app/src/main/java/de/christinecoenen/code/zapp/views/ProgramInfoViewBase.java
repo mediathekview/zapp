@@ -130,7 +130,15 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 		}
 
 		if (currentShow.hasDuration()) {
-			int progressPercent = Math.round(currentShow.getProgressPercent() * progressBarView.getMax());
+			float progressPercent = currentShow.getProgressPercent();
+
+			if (progressPercent >= 1) {
+				// show is out of date
+				updateShowInfo();
+				progressPercent = 1;
+			}
+
+			int progress = Math.round(progressPercent * progressBarView.getMax());
 			String startTime = DateUtils.formatDateTime(getContext(),
 					currentShow.getStartTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
 			String endTime = DateUtils.formatDateTime(getContext(),
@@ -140,7 +148,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 			showTimeView.setVisibility(VISIBLE);
 			progressBarView.setIndeterminate(false);
 			progressBarView.setEnabled(true);
-			setShowProgressBar(progressPercent);
+			setShowProgressBar(progress);
 		} else {
 			setShowProgressBar(0);
 			showTimeView.setVisibility(GONE);
