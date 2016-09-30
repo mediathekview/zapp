@@ -1,7 +1,15 @@
 [
   {
-	"name": "",
+	"name": "1.0.0",
 	"items": [
+	  {
+		"type": "I",
+		"title": "ZDF.kultur entfernt, weil der Sender eingestellt wird"
+	  },
+	  {
+		"type": "F",
+		"title": "Programminformationen für laufende Sendungen werden angezeigt"
+	  },
 	  {
 		"type": "I",
 		"title": "Changelog-Überschriften auf deutsch übersetzt"
