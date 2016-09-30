@@ -29,7 +29,6 @@ public enum Channel {
 	DREISAT("dreisat"),
 	KIKA("kika"),
 	PHOENIX("phoenix"),
-	ZDF_KULTUR("zdf_kultur"),
 	ZDF_INFO("zdf_info"),
 	ZDF_NEO("zdf_neo"),
 

@@ -25,7 +25,6 @@ public class ZdfDownloader extends BaseProgramGuideDownloader {
 			Channel.KIKA,
 			Channel.PHOENIX,
 			Channel.ZDF_INFO,
-			Channel.ZDF_KULTUR,
 			Channel.ZDF_NEO,
 			Channel.DREISAT
 	};

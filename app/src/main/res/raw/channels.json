@@ -48,12 +48,6 @@
 	"logo_name": "channel_logo_ard_alpha"
   },
   {
-	"id": "zdf_kultur",
-	"name": "ZDFkultur",
-	"stream_url": "http://zdf1112-lh.akamaihd.net/i/de11_v1@392881/master.m3u8",
-	"logo_name": "channel_logo_zdf_kultur"
-  },
-  {
 	"id": "zdf_info",
 	"name": "ZDFinfo",
 	"stream_url": "http://zdf1112-lh.akamaihd.net/i/de12_v1@392882/master.m3u8",

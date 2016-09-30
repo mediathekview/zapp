@@ -37,7 +37,6 @@ class ZdfParser {
 		shows.put(Channel.ZDF, getChannelShow("ZDF", channelsJson));
 		shows.put(Channel.KIKA, getChannelShow("KI.KA", channelsJson));
 		shows.put(Channel.ZDF_INFO, getChannelShow("ZDFinfo", channelsJson));
-		shows.put(Channel.ZDF_KULTUR, getChannelShow("ZDF.kultur", channelsJson));
 		shows.put(Channel.ZDF_NEO, getChannelShow("ZDFneo", channelsJson));
 		shows.put(Channel.PHOENIX, getChannelShow("phoenix", channelsJson));
 		shows.put(Channel.DREISAT, getChannelShow("dreisat", channelsJson));
