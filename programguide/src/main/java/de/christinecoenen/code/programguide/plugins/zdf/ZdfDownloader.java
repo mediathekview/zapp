@@ -14,30 +14,22 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.programguide.plugins.BaseProgramGuideDownloader;
 
 public class ZdfDownloader extends BaseProgramGuideDownloader {
 
-	public static final Channel[] CHANNELS = new Channel[] {
-			Channel.ZDF,
-			Channel.KIKA,
-			Channel.PHOENIX,
-			Channel.ZDF_INFO,
-			Channel.ZDF_NEO,
-			Channel.DREISAT
-	};
-
 	private static final String TAG = ZdfDownloader.class.getSimpleName();
 	private static final String URL_ZDF_ALL = "http://sofa01.zdf.de/epgservice/v2/all/now/json";
 
-	public ZdfDownloader(RequestQueue queue, Channel channel) {
-		super(queue, channel);
+	public ZdfDownloader(RequestQueue queue, Channel channel, ProgramGuideRequest.Listener listener) {
+		super(queue, channel, listener);
 	}
 
 	@Override
-	public void download() {
+	public void downloadWithoutCache() {
 
 		request = new JsonObjectRequest(Request.Method.GET, URL_ZDF_ALL, null,
 				new Response.Listener<JSONObject>() {

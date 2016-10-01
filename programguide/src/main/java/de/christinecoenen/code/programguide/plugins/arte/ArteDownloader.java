@@ -12,25 +12,22 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.programguide.plugins.BaseProgramGuideDownloader;
 
 public class ArteDownloader extends BaseProgramGuideDownloader {
 
-	public static final Channel[] CHANNELS = new Channel[] {
-			Channel.ARTE
-	};
-
 	private static final String TAG = ArteDownloader.class.getSimpleName();
 	private static final String JSON_URL = "https://api.arte.tv/api/player/v1/livestream/de";
 
-	public ArteDownloader(RequestQueue queue, Channel channel) {
-		super(queue, channel);
+	public ArteDownloader(RequestQueue queue, Channel channel, ProgramGuideRequest.Listener listener) {
+		super(queue, channel, listener);
 	}
 
 	@Override
-	public void download() {
+	public void downloadWithoutCache() {
 		request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
 			new Response.Listener<JSONObject>() {
 				@Override

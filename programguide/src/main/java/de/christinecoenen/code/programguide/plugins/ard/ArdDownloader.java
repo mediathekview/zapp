@@ -10,44 +10,22 @@ import com.android.volley.toolbox.StringRequest;
 
 import java.util.Map;
 
+import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.programguide.plugins.BaseProgramGuideDownloader;
 
 public class ArdDownloader extends BaseProgramGuideDownloader {
 
-	public static final Channel[] CHANNELS = new Channel[] {
-			Channel.DAS_ERSTE,
-			Channel.BR_NORD,
-			Channel.BR_SUED,
-			Channel.HR,
-			Channel.MDR_SACHSEN,
-			Channel.MDR_SACHSEN_ANHALT,
-			Channel.MDR_THUERINGEN,
-			Channel.NDR_HAMBURG,
-			Channel.NDR_MECKLENBURG_VORPOMMERN,
-			Channel.NDR_NIEDERSACHSEN,
-			Channel.NDR_SCHLESWIG_HOLSTEIN,
-			Channel.RBB_BERLIN,
-			Channel.RBB_BRANDENBURG,
-			Channel.SR,
-			Channel.SWR_BADEN_WUERTTEMBERG,
-			Channel.SWR_RHEINLAND_PFALZ,
-			Channel.WDR,
-			Channel.ARD_ALPHA,
-			Channel.TAGESSCHAU24,
-			Channel.ONE
-	};
-
 	private static final String TAG = ArdDownloader.class.getSimpleName();
 	private static final String HTML_URL = "http://programm.ard.de/TV/Programm/Load/NavJetztImTV35";
 
-	public ArdDownloader(RequestQueue queue, Channel channel) {
-		super(queue, channel);
+	public ArdDownloader(RequestQueue queue, Channel channel, ProgramGuideRequest.Listener listener) {
+		super(queue, channel, listener);
 	}
 
 	@Override
-	public void download() {
+	public void downloadWithoutCache() {
 		request = new StringRequest(HTML_URL,
 				new Response.Listener<String>() {
 					@Override

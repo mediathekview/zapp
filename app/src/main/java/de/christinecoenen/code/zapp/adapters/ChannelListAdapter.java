@@ -31,11 +31,11 @@ public class ChannelListAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return null;
+		return channelList.get(position);
 	}
 
 	public long getItemId(int position) {
-		return 0;
+		return position;
 	}
 
 	// create a new ImageView for each item referenced by the Adapter

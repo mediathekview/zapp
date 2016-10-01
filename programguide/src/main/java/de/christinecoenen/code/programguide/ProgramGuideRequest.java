@@ -55,12 +55,12 @@ public class ProgramGuideRequest {
 			return this;
 		}
 
-		downloader = PluginRegistry.getInstance(context).getDownloader(channelId);
+		downloader = PluginRegistry.getInstance(context).getDownloader(channelId, listener);
 
 		if (downloader == null) {
 			listener.onRequestError();
 		} else {
-			downloader.download(listener);
+			downloader.download();
 		}
 
 		return this;

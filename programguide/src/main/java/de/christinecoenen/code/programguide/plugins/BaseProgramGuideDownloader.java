@@ -41,21 +41,21 @@ public abstract class BaseProgramGuideDownloader implements IProgramGuideDownloa
 	protected Request<?> request;
 	protected final Channel channel;
 
-	private ProgramGuideRequest.Listener listener;
+	private final ProgramGuideRequest.Listener listener;
 
 
-	protected BaseProgramGuideDownloader(RequestQueue queue, Channel channel) {
+	protected BaseProgramGuideDownloader(RequestQueue queue, Channel channel, ProgramGuideRequest.Listener listener) {
 		this.queue = queue;
 		this.channel = channel;
+		this.listener = listener;
 	}
 
 	@Override
-	public void download(ProgramGuideRequest.Listener listener) {
-		this.listener = listener;
+	public void download() {
 		Show show = Cache.getInstance().getShow(this.channel);
 
 		if (show == null) {
-			download();
+			downloadWithoutCache();
 		} else {
 			listener.onRequestSuccess(show);
 		}
@@ -68,7 +68,7 @@ public abstract class BaseProgramGuideDownloader implements IProgramGuideDownloa
 		}
 	}
 
-	protected abstract void download();
+	protected abstract void downloadWithoutCache();
 
 	@SuppressWarnings("unused")
 	protected interface DownloaderListener {

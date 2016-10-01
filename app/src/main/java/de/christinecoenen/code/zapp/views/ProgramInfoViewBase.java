@@ -89,6 +89,10 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	}
 
 	public void setChannel(ChannelModel channel) {
+		if (channel == currentChannel) {
+			return;
+		}
+
 		currentShow = null;
 		currentChannel = channel;
 
