@@ -21,12 +21,17 @@ public abstract class BaseProgramGuideDownloader implements IProgramGuideDownloa
 
 		@Override
 		public void onRequestSuccess(Map<Channel, Show> shows) {
-			onRequestSuccess(shows.get(channel));
 			Cache.getInstance().save(shows);
+			onRequestSuccess(shows.get(channel));
 		}
 
 		@Override
 		public void onRequestSuccess(Show show) {
+			if (show == null) {
+				onRequestError();
+				return;
+			}
+
 			listener.onRequestSuccess(show);
 			Cache.getInstance().save(channel, show);
 		}

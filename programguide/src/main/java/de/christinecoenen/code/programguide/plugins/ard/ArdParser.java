@@ -50,13 +50,17 @@ class ArdParser {
 		String title = item.select("b").text();
 		String rawMetadata = item.select("span.small").text();
 
-		Show show = parseShow(title, rawMetadata);
-		List<Channel> channels = getChannels(rawMetadata);
-
 		Map<Channel, Show> shows = new ArrayMap<>();
-		for (Channel channel : channels) {
-			shows.put(channel, show);
+		Show show = parseShow(title, rawMetadata);
+
+		if (show.getProgressPercent() <= 1) {
+			// show is still up to date - fill map
+			List<Channel> channels = getChannels(rawMetadata);
+			for (Channel channel : channels) {
+				shows.put(channel, show);
+			}
 		}
+
 		return shows;
 	}
 

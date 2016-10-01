@@ -1,5 +1,14 @@
 [
   {
+	"name": "1.0.1",
+	"items": [
+	  {
+		"type": "B",
+		"title": "Mögliche Endlosschleife im ARD Programminfo-Downloader entfernt."
+	  }
+	]
+  },
+  {
 	"name": "1.0.0",
 	"items": [
 	  {

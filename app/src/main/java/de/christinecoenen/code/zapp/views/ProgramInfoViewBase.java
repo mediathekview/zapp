@@ -49,7 +49,8 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private final ProgramGuideRequest.Listener programGuideListener = new ProgramGuideRequest.Listener() {
 		@Override
 		public void onRequestError() {
-			Log.w(TAG, "could not load show info");
+			Log.w(TAG, currentChannel + " - could not load show info");
+			ProgramInfoViewBase.this.currentShow = null;
 			showTitleView.setText(R.string.activity_channel_detail_info_error);
 			showSubtitleView.setVisibility(GONE);
 			showTimeView.setVisibility(GONE);
@@ -58,7 +59,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		@Override
 		public void onRequestSuccess(Show currentShow) {
-			Log.w(TAG, "show info loaded: " + currentShow);
+			Log.w(TAG, currentChannel + " - show info loaded: " + currentShow);
 
 			ProgramInfoViewBase.this.currentShow = currentShow;
 			displayTitles();
@@ -115,11 +116,9 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	protected abstract int getViewId();
 
 	private void updateShowInfo() {
-		if (currentShow == null) {
-			return;
-		}
-
-		if (currentShow.getEndTime() == null || currentShow.getEndTime().isBeforeNow()) {
+		if (currentShow == null ||
+				currentShow.getEndTime() == null ||
+				currentShow.getEndTime().isBeforeNow()) {
 			reloadProgramGuide();
 		}
 	}
@@ -131,13 +130,6 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		if (currentShow.hasDuration()) {
 			float progressPercent = currentShow.getProgressPercent();
-
-			if (progressPercent >= 1) {
-				// show is out of date
-				updateShowInfo();
-				progressPercent = 1;
-			}
-
 			int progress = Math.round(progressPercent * progressBarView.getMax());
 			String startTime = DateUtils.formatDateTime(getContext(),
 					currentShow.getStartTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
@@ -175,7 +167,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	}
 
 	private void reloadProgramGuide() {
-		Log.d(TAG, "reloadProgramGuide");
+		Log.d(TAG, currentChannel.getName() + " - reloadProgramGuide");
 		chancelProgramGuideLoading();
 		loadProgramGuide();
 	}
@@ -219,6 +211,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
+					Log.d(TAG, currentChannel.getName() + " - UpdateShowInfoTask");
 					updateShowInfo();
 				}
 			});
