@@ -23,6 +23,8 @@ public class StreamPageFragment extends Fragment {
 
 	protected @BindView(R.id.image_channel_logo) ImageView logoView;
 
+	private View rootView;
+
 	public static StreamPageFragment newInstance(ChannelModel channelModel) {
 		StreamPageFragment fragment = new StreamPageFragment();
 		Bundle args = new Bundle();
@@ -33,7 +35,7 @@ public class StreamPageFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_stream_page, container, false);
+		rootView = inflater.inflate(R.layout.fragment_stream_page, container, false);
 		ButterKnife.bind(this, rootView);
 
 		Bundle args = getArguments();
@@ -52,11 +54,11 @@ public class StreamPageFragment extends Fragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		logoView.setVisibility(View.VISIBLE);
+		rootView.setVisibility(View.VISIBLE);
 	}
 
 	public void onHide() {
-		logoView.setVisibility(View.VISIBLE);
+		rootView.setVisibility(View.VISIBLE);
 	}
 
 	public void onVideoStart() {
@@ -64,7 +66,7 @@ public class StreamPageFragment extends Fragment {
 	}
 
 	private void fadeOutLogo() {
-		if (logoView.getVisibility() == View.VISIBLE) {
+		if (rootView.getVisibility() == View.VISIBLE) {
 			Animation fadeOutAnimation = AnimationUtils.
 					loadAnimation(getContext(), android.R.anim.fade_out);
 			fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -73,14 +75,14 @@ public class StreamPageFragment extends Fragment {
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
-					logoView.setVisibility(View.GONE);
+					rootView.setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onAnimationRepeat(Animation animation) {}
 			});
 
-			logoView.startAnimation(fadeOutAnimation);
+			rootView.startAnimation(fadeOutAnimation);
 		}
 	}
 }

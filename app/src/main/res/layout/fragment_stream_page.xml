@@ -4,16 +4,21 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:layout_gravity="center">
+	android:layout_gravity="center"
+	android:background="@android:color/white"
+	android:orientation="horizontal"
+	tools:ignore="Overdraw">
 
 	<ImageView
 		android:id="@+id/image_channel_logo"
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:maxWidth="500dip"
 		android:scaleType="fitCenter"
 		android:padding="80dip"
-		android:background="@android:color/white"
+		android:adjustViewBounds="true"
 		android:src="@drawable/channel_logo_das_erste"
 		tools:ignore="ContentDescription"/>
 
-</FrameLayout>
+</FrameLayout >
