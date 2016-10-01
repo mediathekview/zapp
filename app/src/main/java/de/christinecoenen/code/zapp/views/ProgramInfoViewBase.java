@@ -215,7 +215,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					Log.d(TAG, currentChannel.getName() + " - UpdateShowInfoTask");
+					Log.d(TAG, currentChannel + " - UpdateShowInfoTask");
 					updateShowInfo();
 				}
 			});

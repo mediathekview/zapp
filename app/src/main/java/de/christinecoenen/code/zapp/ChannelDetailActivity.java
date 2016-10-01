@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -169,6 +170,22 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	}
 
 	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		boolean handled = false;
+
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				handled = prevChannel();
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				handled = nextChannel();
+				break;
+		}
+
+		return handled || super.onKeyUp(keyCode, event);
+	}
+
+	@Override
 	protected int getViewId() {
 		return R.layout.activity_channel_detail;
 	}
@@ -193,5 +210,29 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		progressView.setVisibility(View.VISIBLE);
 		videoView.setVideoPath(currentChannel.getStreamUrl());
 		videoView.start();
+	}
+
+	private boolean prevChannel() {
+		int nextItemIndex = viewPager.getCurrentItem() - 1;
+
+		if (nextItemIndex < 0) {
+			return false;
+		} else {
+			delayHide();
+			viewPager.setCurrentItem(nextItemIndex, true);
+			return true;
+		}
+	}
+
+	private boolean nextChannel() {
+		int nextItemIndex = viewPager.getCurrentItem() + 1;
+
+		if (nextItemIndex == channelDetailAdapter.getCount()) {
+			return false;
+		} else {
+			delayHide();
+			viewPager.setCurrentItem(nextItemIndex, true);
+			return true;
+		}
 	}
 }
