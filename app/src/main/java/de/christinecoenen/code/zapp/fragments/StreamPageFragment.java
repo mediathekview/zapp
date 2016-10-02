@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +23,7 @@ public class StreamPageFragment extends Fragment {
 	private static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
 	protected @BindView(R.id.image_channel_logo) ImageView logoView;
+	protected @BindView(R.id.text_channel_subtitle) TextView subtitleText;
 
 	private View rootView;
 
@@ -44,6 +46,10 @@ public class StreamPageFragment extends Fragment {
 		if (channel != null) {
 			logoView.setImageResource(channel.getDrawableId());
 			logoView.setContentDescription(channel.getName());
+
+			if (channel.getSubtitle() != null) {
+				subtitleText.setText(channel.getSubtitle());
+			}
 		} else {
 			Log.w(TAG, "channel argument is null");
 		}

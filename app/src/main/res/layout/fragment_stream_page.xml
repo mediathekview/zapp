@@ -6,19 +6,36 @@
 	android:layout_height="match_parent"
 	android:layout_gravity="center"
 	android:background="@android:color/white"
-	android:orientation="horizontal"
 	tools:ignore="Overdraw">
 
-	<ImageView
-		android:id="@+id/image_channel_logo"
+	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
-		android:layout_gravity="center"
 		android:maxWidth="500dip"
-		android:scaleType="fitCenter"
+		android:orientation="vertical"
 		android:padding="80dip"
-		android:adjustViewBounds="true"
-		android:src="@drawable/channel_logo_das_erste"
-		tools:ignore="ContentDescription"/>
+		android:layout_gravity="center">
+
+		<ImageView
+			android:id="@+id/image_channel_logo"
+			android:layout_width="match_parent"
+			android:layout_height="0dip"
+			android:scaleType="fitCenter"
+			android:adjustViewBounds="true"
+			android:layout_weight="5"
+			android:src="@drawable/channel_logo_rbb"
+			tools:ignore="ContentDescription"/>
+
+		<TextView
+			android:id="@+id/text_channel_subtitle"
+			android:layout_width="match_parent"
+			android:layout_height="0dip"
+			android:gravity="center|top"
+			android:layout_weight="1"
+			android:layout_marginTop="@dimen/activity_vertical_margin"
+			style="@style/Base.TextAppearance.AppCompat.Medium"
+			tools:text="Some Channel Subtitle"/>
+
+	</LinearLayout>
 
 </FrameLayout >
