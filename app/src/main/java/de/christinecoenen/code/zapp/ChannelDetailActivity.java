@@ -25,11 +25,13 @@ import de.christinecoenen.code.zapp.adapters.ChannelDetailAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.JsonChannelList;
+import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
 
-public class ChannelDetailActivity extends FullscreenActivity {
+public class ChannelDetailActivity extends FullscreenActivity implements
+		VideoErrorHandler.IVideoErrorListener {
 
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
@@ -53,14 +55,6 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		@Override
 		public void run() {
 			play();
-		}
-	};
-
-	private final MediaPlayer.OnErrorListener videoErrorListener = new MediaPlayer.OnErrorListener() {
-		@Override
-		public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-			Log.d(TAG, "media player error: " + what + " - " + extra);
-			return false;
 		}
 	};
 
@@ -116,7 +110,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		int channelId = extras.getInt(EXTRA_CHANNEL_ID);
 
 		// listener
-		videoView.setOnErrorListener(videoErrorListener);
+		videoView.setOnErrorListener(new VideoErrorHandler(this));
 		videoView.setOnInfoListener(videoInfoListener);
 
 		// pager
@@ -183,6 +177,16 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		}
 
 		return handled || super.onKeyUp(keyCode, event);
+	}
+
+	@Override
+	public boolean onVideoError(int messageResourceId) {
+		progressView.setVisibility(View.GONE);
+
+		String message = getString(messageResourceId);
+		channelDetailAdapter.getCurrentFragment().onVideoError(message);
+
+		return true;
 	}
 
 	@Override

@@ -24,6 +24,7 @@ public class StreamPageFragment extends Fragment {
 
 	protected @BindView(R.id.image_channel_logo) ImageView logoView;
 	protected @BindView(R.id.text_channel_subtitle) TextView subtitleText;
+	protected @BindView(R.id.text_error) TextView errorText;
 
 	private View rootView;
 
@@ -61,14 +62,22 @@ public class StreamPageFragment extends Fragment {
 	public void onPause() {
 		super.onPause();
 		rootView.setVisibility(View.VISIBLE);
+		errorText.setVisibility(View.GONE);
 	}
 
 	public void onHide() {
 		rootView.setVisibility(View.VISIBLE);
+		errorText.setVisibility(View.GONE);
 	}
 
 	public void onVideoStart() {
 		fadeOutLogo();
+	}
+
+	public void onVideoError(String message) {
+		rootView.setVisibility(View.VISIBLE);
+		errorText.setVisibility(View.VISIBLE);
+		errorText.setText(message);
 	}
 
 	private void fadeOutLogo() {
