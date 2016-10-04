@@ -1,10 +1,43 @@
 [
   {
+	"name": "1.1.0",
+	"items": [
+	  {
+		"type": "F",
+		"title": "Die Farbe des UIs ändert sich mit dem ausgewählten Sender"
+	  },
+	  {
+		"type": "I",
+		"title": "Bessere Fehlermeldungen für den Video-Player"
+	  },
+	  {
+		"type": "B",
+		"title": "Anfragen für Programminformationen werden nicht mehr doppelt abgeschickt"
+	  },
+	  {
+		"type": "I",
+		"title": "Unter regionalen Sender-Logos wird die Region angezeigt"
+	  },
+	  {
+		"type": "I",
+		"title": "Sender-Logos werden zentriert und Logos mit Verläufen richtig angezeigt"
+	  },
+	  {
+		"type": "F",
+		"title": "Unterstützung von Tastaturen und Amazon-Fire-TV-Fernbedienung"
+	  },
+	  {
+		"type": "B",
+		"title": "ARD-Programminfo wurde beim Start nicht geladen"
+	  }
+	]
+  },
+  {
 	"name": "1.0.1",
 	"items": [
 	  {
 		"type": "B",
-		"title": "Mögliche Endlosschleife im ARD Programminfo-Downloader entfernt."
+		"title": "Mögliche Endlosschleife im ARD Programminfo-Downloader entfernt"
 	  }
 	]
   },
