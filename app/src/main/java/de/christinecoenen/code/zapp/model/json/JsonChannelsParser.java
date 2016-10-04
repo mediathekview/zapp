@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.model.json;
 
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.google.gson.Gson;
 
@@ -65,6 +66,10 @@ class JsonChannelsParser {
 		model.setSubtitle(jsonModel.subtitle);
 		model.setStreamUrl(jsonModel.streamUrl);
 		model.setDrawableId(logoResourceId);
+
+		if (jsonModel.color != null) {
+			model.setColor(Color.parseColor(jsonModel.color));
+		}
 
 		return model;
 	}

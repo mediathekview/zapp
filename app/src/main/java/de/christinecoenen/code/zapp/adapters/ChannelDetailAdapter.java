@@ -27,6 +27,10 @@ public class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 		return currentFragment;
 	}
 
+	public ChannelModel getChannel(int index) {
+		return channelList.get(index);
+	}
+
 	@Override
 	public Fragment getItem(int position) {
 		ChannelModel channelModel = channelList.get(position);

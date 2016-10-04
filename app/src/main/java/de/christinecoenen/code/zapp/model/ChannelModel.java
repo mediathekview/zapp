@@ -9,6 +9,7 @@ public class ChannelModel implements Serializable {
 	private String subtitle;
 	private String streamUrl;
 	private int drawableId;
+	private int color = 0;
 
 	public String getId() {
 		return id;
@@ -50,6 +51,14 @@ public class ChannelModel implements Serializable {
 		this.drawableId = drawableId;
 	}
 
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
+	}
+
 	@Override
 	public String toString() {
 		return "ChannelModel{" +
@@ -58,6 +67,7 @@ public class ChannelModel implements Serializable {
 				", subtitle='" + subtitle + '\'' +
 				", streamUrl='" + streamUrl + '\'' +
 				", drawableId=" + drawableId +
+				", color=" + color +
 				'}';
 	}
 }

@@ -9,16 +9,19 @@
 	</style>
 
 	<style name="FullscreenTheme" parent="AppTheme">
-		<item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
 		<item name="android:windowActionBarOverlay">true</item>
 		<item name="android:windowBackground">@null</item>
 		<item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
 		<item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
 		<item name="windowActionBarOverlay">true</item>
+
+		<!-- to use toolbar instead of default action bar -->
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
 	</style>
 
-	<style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-		<item name="android:background">@color/black_overlay</item>
+	<style name="FullscreenActionBarStyle" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+		<item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 	</style>
 
 	<style name="AppTheme.NoActionBar">

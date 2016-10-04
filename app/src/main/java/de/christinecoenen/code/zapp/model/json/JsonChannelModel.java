@@ -9,21 +9,25 @@ import com.google.gson.annotations.SerializedName;
 class JsonChannelModel {
 	@SuppressWarnings("unused")
 	@SerializedName("id")
-	public String id;
+	String id;
 
 	@SuppressWarnings("unused")
 	@SerializedName("name")
-	public String name;
+	String name;
 
 	@SuppressWarnings("unused")
 	@SerializedName("stream_url")
-	public String streamUrl;
+	String streamUrl;
 
 	@SuppressWarnings("unused")
 	@SerializedName("logo_name")
-	public String logoName;
+	String logoName;
 
 	@SuppressWarnings("unused")
 	@SerializedName("subtitle")
-	public String subtitle;
+	String subtitle;
+
+	@SuppressWarnings("unused")
+	@SerializedName("color")
+	String color;
 }

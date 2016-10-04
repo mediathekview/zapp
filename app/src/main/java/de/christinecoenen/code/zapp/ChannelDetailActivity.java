@@ -2,29 +2,34 @@ package de.christinecoenen.code.zapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.adapters.ChannelDetailAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.JsonChannelList;
+import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
@@ -36,6 +41,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
+	protected @BindView(R.id.toolbar) Toolbar toolbar;
 	protected @BindView(R.id.viewpager_channels) ClickableViewPager viewPager;
 	protected @BindView(R.id.video) VideoView videoView;
 	protected @BindView(R.id.progressbar_video) ProgressBar progressView;
@@ -50,6 +56,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
+	private Window window;
 
 	private final Runnable playRunnable = new Runnable() {
 		@Override
@@ -87,9 +94,27 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		public void OnItemSelected(ChannelModel channel) {
 			currentChannel = channel;
 			setTitle(channel.getName());
+			setColor(channel.getColor());
+
 			playDelayed();
 			programInfoView.setChannel(channel);
 		}
+	};
+
+	private final ViewPager.OnPageChangeListener onPageChangeListener =
+			new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				int color1 = channelDetailAdapter.getChannel(position).getColor();
+
+				if (positionOffset == 0) {
+					setColor(color1);
+				} else {
+					int color2 = channelDetailAdapter.getChannel(position + 1).getColor();
+					int color = ColorHelper.interpolate(positionOffset, color1, color2);
+					setColor(color);
+				}
+			}
 	};
 
 	public static Intent getStartIntent(Context context, int position) {
@@ -101,9 +126,15 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ButterKnife.bind(this);
 
-		IChannelList channelList = new JsonChannelList(this);
+		setSupportActionBar(toolbar);
+		window = getWindow();
+
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
+		final IChannelList channelList = new JsonChannelList(this);
 
 		// set to channel
 		Bundle extras = getIntent().getExtras();
@@ -118,6 +149,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 				getSupportFragmentManager(), channelList, onItemChangedListener);
 		viewPager.setAdapter(channelDetailAdapter);
 		viewPager.setCurrentItem(channelId);
+		viewPager.addOnPageChangeListener(onPageChangeListener);
 		viewPager.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -238,5 +270,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			viewPager.setCurrentItem(nextItemIndex, true);
 			return true;
 		}
+	}
+
+	private void setColor(int color) {
+		progressView.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+		toolbar.setBackgroundColor(color);
+
+		int colorDarker = ColorHelper.darker(color, 0.075f);
+		window.setStatusBarColor(colorDarker);
 	}
 }
