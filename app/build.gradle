@@ -5,12 +5,12 @@ apply plugin: 'android-apt'
 
 android {
 	compileSdkVersion 24
-	buildToolsVersion "24.0.2"
+	buildToolsVersion "24.0.3"
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 21
-		targetSdkVersion 23
+		targetSdkVersion 24
 		versionCode 5
 		versionName "1.1.0"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
