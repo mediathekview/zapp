@@ -10,6 +10,7 @@ public class ColorHelper {
 		return (int) new ArgbEvaluator().evaluate(percent, color1, color2);
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	public static int darker(int color, float amount) {
 		float diff = 255 * amount;
 		int r = (int) Math.max(0, (Color.red(color) - diff));
