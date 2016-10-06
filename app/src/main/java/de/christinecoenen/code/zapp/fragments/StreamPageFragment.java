@@ -47,6 +47,7 @@ public class StreamPageFragment extends Fragment {
 		if (channel != null) {
 			logoView.setImageResource(channel.getDrawableId());
 			logoView.setContentDescription(channel.getName());
+			errorText.setBackgroundColor(channel.getColor());
 
 			if (channel.getSubtitle() != null) {
 				subtitleText.setText(channel.getSubtitle());

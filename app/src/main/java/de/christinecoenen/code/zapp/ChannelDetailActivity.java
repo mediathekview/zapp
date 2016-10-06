@@ -277,5 +277,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		int colorDarker = ColorHelper.darker(color, 0.075f);
 		window.setStatusBarColor(colorDarker);
+
+		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
+		mControlsView.setBackgroundColor(colorAlpha);
 	}
 }

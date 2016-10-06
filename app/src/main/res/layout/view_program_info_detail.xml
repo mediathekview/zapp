@@ -32,7 +32,7 @@
 		android:indeterminate="false"
 		android:max="1000"
 		tools:progress="300"
-		android:theme="@style/ShowProgress"
+		android:theme="@style/ShowProgressDetail"
 		style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
 </merge>
