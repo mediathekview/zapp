@@ -5,6 +5,7 @@ import android.util.ArrayMap;
 import android.util.Log;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -30,6 +31,8 @@ class ArdParser {
 	// 20:15
 	private static final DateTimeFormatter TIME_FORMATTER =
 			DateTimeFormat.forPattern("HH:mm");
+
+	private static final DateTimeZone TIME_ZONE_GERMANY = DateTimeZone.forID("Europe/Berlin");
 
 	private static final Pattern TIME_PATTERN = Pattern.compile("\\d+:\\d+");
 
@@ -81,7 +84,7 @@ class ArdParser {
 
 		if (matcher.find()) {
 			DateTime startTime = TIME_FORMATTER.parseDateTime(matcher.group());
-			MutableDateTime startTimeDate = MutableDateTime.now();
+			MutableDateTime startTimeDate = MutableDateTime.now(TIME_ZONE_GERMANY);
 			startTimeDate.setMillisOfDay(0);
 			startTimeDate.setMinuteOfDay(startTime.getMinuteOfDay());
 			show.setStartTime(startTimeDate.toDateTime());
@@ -89,15 +92,15 @@ class ArdParser {
 
 		if (matcher.find()) {
 			DateTime endTime = TIME_FORMATTER.parseDateTime(matcher.group());
-			MutableDateTime endTimeDate = MutableDateTime.now();
+			MutableDateTime endTimeDate = MutableDateTime.now(TIME_ZONE_GERMANY);
 			endTimeDate.setMillisOfDay(0);
 			endTimeDate.setMinuteOfDay(endTime.getMinuteOfDay());
 			show.setEndTime(endTimeDate.toDateTime());
 
 			if (show.getEndTime().isBefore(show.getStartTime())) {
 				// show plays around midnight
-				if (DateTime.now().getHourOfDay() < 12) {
-					// noew is morning - startTime was yesterday
+				if (DateTime.now(TIME_ZONE_GERMANY).getHourOfDay() < 12) {
+					// now is morning - startTime was yesterday
 					DateTime newStartTime = show.getStartTime().minusDays(1);
 					show.setStartTime(newStartTime);
 				} else {
