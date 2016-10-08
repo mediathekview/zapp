@@ -9,8 +9,8 @@
 
 	<!-- error messages -->
 	<string name="error_stream_unknown">Der Stream kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
-	<string name="error_stream_server_died">Es gab einen Fehler beim Abspielen. Vielleicht besteht keine Internet-Verbindung.</string>
-	<string name="error_stream_io">Der Stream konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung.</string>
+	<string name="error_stream_server_died">Es gab einen Fehler beim Abspielen. Vielleicht besteht keine Internet-Verbindung oder der Stream ist in deinem Land nicht verfügbar.</string>
+	<string name="error_stream_io">Der Stream konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder der Stream ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_malformed">Der Stream wird beschädigt ausgeliefert.</string>
 	<string name="error_stream_progressive_playback">Der Stream kann nicht progressiv abgespielt werden.</string>
 	<string name="error_stream_timed_out">Der Server antwortet nicht.</string>

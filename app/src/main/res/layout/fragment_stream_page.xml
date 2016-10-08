@@ -54,6 +54,6 @@
 		android:background="@color/colorPrimary"
 		android:visibility="gone"
 		tools:visibility="visible"
-		tools:text="Der Stream konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung."/>
+		tools:text="@string/error_stream_io"/>
 
 </FrameLayout >
