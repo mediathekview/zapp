@@ -15,13 +15,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import de.christinecoenen.code.zapp.adapters.ChannelListAdapter;
-import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.model.json.JsonChannelList;
+import de.christinecoenen.code.zapp.model.ISortableChannelList;
+import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 
 public class ChannelListActivity extends AppCompatActivity {
 
 	protected @BindView(R.id.toolbar) Toolbar toolbar;
 	protected @BindView(R.id.gridview_channels) GridView channelGridView;
+
+	private ISortableChannelList channelList;
+	private BaseAdapter gridAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +36,16 @@ public class ChannelListActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true);
 
-		IChannelList channelList = new JsonChannelList(this);
-		BaseAdapter gridAdapter = new ChannelListAdapter(this, channelList);
+		channelList = new SortableJsonChannelList(this);
+		gridAdapter = new ChannelListAdapter(this, channelList);
 		channelGridView.setAdapter(gridAdapter);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		channelList.reloadChannelOrder();
+		gridAdapter.notifyDataSetChanged();
 	}
 
 	@OnItemClick(R.id.gridview_channels)
@@ -53,9 +63,15 @@ public class ChannelListActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+
 		switch (item.getItemId()) {
+			case R.id.menu_channel_selection:
+				intent = ChannelSelectionActivity.getStartIntent(this);
+				startActivity(intent);
+				return true;
 			case R.id.menu_changelog:
-				Intent intent = ChangelogActivity.getStartIntent(this);
+				intent = ChangelogActivity.getStartIntent(this);
 				startActivity(intent);
 				return true;
 			default:

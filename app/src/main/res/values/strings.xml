@@ -5,6 +5,9 @@
 
 	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
 
+	<string name="activity_channel_selection_title">Sender anordnen</string>
+	<string name="activity_channel_selection_subtitle">Ziehe an den grauen Balken</string>
+
 	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
 
 	<!-- error messages -->
@@ -19,6 +22,7 @@
 	<!-- menus -->
 	<string name="action_share">Teilen</string>
 
+	<string name="menu_channel_selection">Sender anordnen</string>
 	<string name="menu_changelog">Changelog</string>
 
 	<!-- paperboy changelog -->

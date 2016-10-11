@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
@@ -38,6 +39,16 @@ public class JsonChannelList implements IChannelList {
 	@Override
 	public int size() {
 		return channels.size();
+	}
+
+	@Override
+	public List<ChannelModel> getList() {
+		return channels;
+	}
+
+	@Override
+	public Iterator<ChannelModel> iterator() {
+		return channels.iterator();
 	}
 
 	/**

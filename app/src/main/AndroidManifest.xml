@@ -35,6 +35,11 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+		<activity
+			android:name=".ChannelSelectionActivity"
+			android:label="@string/activity_channel_selection_title"
+			android:parentActivityName=".ChannelListActivity">
+		</activity>
 	</application>
 
 </manifest>

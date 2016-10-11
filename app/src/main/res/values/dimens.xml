@@ -5,4 +5,9 @@
 	<dimen name="activity_vertical_margin">16dp</dimen>
 
 	<dimen name="view_program_info_subtitle_margin_bottom">4dp</dimen>
+
+	<dimen name="activity_channel_selection_item_width">120dip</dimen>
+	<dimen name="activity_channel_selection_item_height">75dip</dimen>
+	<dimen name="activity_channel_selection_item_margin">5dip</dimen>
+	<dimen name="activity_channel_selection_handleWidth">25dip</dimen>
 </resources>

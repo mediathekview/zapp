@@ -27,7 +27,7 @@ import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.adapters.ChannelDetailAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.model.json.JsonChannelList;
+import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
@@ -133,7 +133,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 
-		final IChannelList channelList = new JsonChannelList(this);
+		final IChannelList channelList = new SortableJsonChannelList(this);
 
 		// set to channel
 		Bundle extras = getIntent().getExtras();

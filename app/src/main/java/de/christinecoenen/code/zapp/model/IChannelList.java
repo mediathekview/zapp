@@ -1,7 +1,10 @@
 package de.christinecoenen.code.zapp.model;
 
-public interface IChannelList {
+import java.util.List;
+
+public interface IChannelList extends Iterable<ChannelModel> {
 
 	ChannelModel get(int index);
 	int size();
+	List<ChannelModel> getList();
 }
