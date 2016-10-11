@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  * A canned request for retrieving the response body at a given URL as a String.
  * @see "http://stackoverflow.com/a/22694622/3012757"
  */
-@SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue", "JavaDoc"})
+@SuppressWarnings({"unused", "WeakerAccess", "JavaDoc"})
 public class StringRequest extends Request<String> {
 	private final Response.Listener<String> mListener;
 

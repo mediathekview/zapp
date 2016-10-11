@@ -10,7 +10,6 @@ public class ColorHelper {
 		return (int) new ArgbEvaluator().evaluate(percent, color1, color2);
 	}
 
-	@SuppressWarnings("SameParameterValue")
 	public static int darker(int color, float amount) {
 		float diff = 255 * amount;
 		int r = (int) Math.max(0, (Color.red(color) - diff));
@@ -19,7 +18,6 @@ public class ColorHelper {
 		return Color.argb(Color.alpha(color), r, g, b);
 	}
 
-	@SuppressWarnings("SameParameterValue")
 	public static int withAlpha(int color, int alpha) {
 		int r = Color.red(color);
 		int b = Color.blue(color);
