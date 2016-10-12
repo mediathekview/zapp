@@ -74,7 +74,7 @@ public class JsonChannelListTest {
 	 * given timeout, otherwise <code>false</code>.
 	 * @see "http://stackoverflow.com/a/3584332/3012757"
 	 */
-	public static boolean pingURL(String url, int timeout) {
+	private static boolean pingURL(String url, int timeout) {
 		try {
 			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 			connection.setConnectTimeout(timeout);
