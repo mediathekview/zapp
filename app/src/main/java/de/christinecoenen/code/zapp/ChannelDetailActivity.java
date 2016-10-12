@@ -1,11 +1,13 @@
 package de.christinecoenen.code.zapp;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -158,19 +160,34 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-		programInfoView.pause();
-		videoView.stopPlayback();
+	protected void onStart() {
+		super.onStart();
+		if (isInsideMultiWindow()) {
+			resumeActivity();
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		programInfoView.resume();
+		if (!isInsideMultiWindow()) {
+			resumeActivity();
+		}
+	}
 
-		if (isPlaying) {
-			play();
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (!isInsideMultiWindow()) {
+			pauseActivity();
+		}
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (isInsideMultiWindow()) {
+			pauseActivity();
 		}
 	}
 
@@ -232,6 +249,18 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		return false;
 	}
 
+	private void pauseActivity() {
+		programInfoView.pause();
+		videoView.stopPlayback();
+	}
+
+	private void resumeActivity() {
+		programInfoView.resume();
+		if (isPlaying) {
+			play();
+		}
+	}
+
 	private void playDelayed() {
 		videoView.pause();
 		progressView.setVisibility(View.VISIBLE);
@@ -280,5 +309,10 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
 		mControlsView.setBackgroundColor(colorAlpha);
+	}
+
+	@TargetApi(24)
+	private boolean isInsideMultiWindow() {
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInMultiWindowMode();
 	}
 }

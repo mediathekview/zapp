@@ -60,8 +60,9 @@ public class StreamPageFragment extends Fragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
+	public void onStop() {
+		super.onStop();
+		// don't use onPause to support multiwindow feature
 		rootView.setVisibility(View.VISIBLE);
 		errorText.setVisibility(View.GONE);
 	}
