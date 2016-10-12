@@ -1,5 +1,34 @@
 [
 	{
+		"name": "1.2.0",
+		"items": [
+			{
+				"type": "F",
+				"title": "Senderreihenfolge kann beliebig geändert werden"
+			},
+			{
+				"type": "I",
+				"title": "Portrait-Modus ist jetzt auch für die Streams erlaubt"
+			},
+			{
+				"type": "B",
+				"title": "Eingestellte Zeitzonen werden nicht mehr in den Programminformationen ignoriert"
+			},
+			{
+				"type": "F",
+				"title": "Unterstützung für Multiwindow-Modus"
+			},
+			{
+				"type": "F",
+				"title": "Unterstützung für Android Nougat"
+			},
+			{
+				"type": "I",
+				"title": "In Fehlermeldungen auf mögliches Geoblocking hingewiesen"
+			}
+		]
+	},
+	{
 		"name": "1.1.0",
 		"items": [
 			{
