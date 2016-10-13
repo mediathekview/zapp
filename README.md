@@ -1,10 +1,14 @@
 # ZAPP
 
+1. [About](#about)
+2. [FAQ](#faq)
+3. [Libraries Example](#libraries)
+
+## About
+
 Zapp gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live. Zapp makes it easy to quickly switch between channels.
 
 ![ZAPP logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
-
-**Please note:** If you use Zapp outside Germany some channels – like ZDF – may be geoblocked.
 
 ---------------------
 
@@ -47,3 +51,15 @@ progress so Zapp can't display it.
 Zapp does only stream public broadcasting channels. Channels like RTL and Pro7
 are owned by private companies and are not allowed to be streamed without paying
 for them.
+
+---------------------
+
+## Libraries
+
+Zapp uses a lot of awesome open source libraries:
+- [JUnit](http://junit.org/junit4/) to test things out
+- [Gson](https://github.com/google/gson) to parse the list of channels
+- [Commons IO](https://commons.apache.org/proper/commons-io/) for a sane way to handle files on Android
+- [Paperboy](https://github.com/porokoro/paperboy) to easily display a nice looking changelog
+- [DragListView](https://github.com/woxblom/DragListView) to let you reorder the channel list intuitively
+- [Butterknive](https://jakewharton.github.io/butterknife/) to avoid writing a lot of boilerplate code
