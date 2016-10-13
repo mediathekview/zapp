@@ -29,14 +29,14 @@ Video Player is not able to play back the stream your device most likely cannot
 handle the video format.
 
 
-## Why don't I see any show info for a specific channel?
+### Why don't I see any show info for a specific channel?
 
 Most channels don't have any public API to get EPG data from. So Zapp tries to
 parse channel websites for the shows currently running. This approach is not
 very reliable and may break whenever the websites change or update.
 
 
-## Why don't I see the shows progress on ARTE?
+### Why don't I see the shows progress on ARTE?
 
 ARTEs otherwise excellent API does not return the shows start and end time or
 progress so Zapp can't display it.
