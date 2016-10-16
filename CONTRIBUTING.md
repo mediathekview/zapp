@@ -1,5 +1,11 @@
 # How to contribute
 
+## How to open an issue
+
+If you found a bug, please specify the version of the app, you phone or tablet 
+model and your Android version. This will help to track down the problem much 
+fater.
+
 ## How to add / change / fix code
 
 1. If you plan to make a significant change to the codebase, please create an 
