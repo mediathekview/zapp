@@ -49,7 +49,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private final ProgramGuideRequest.Listener programGuideListener = new ProgramGuideRequest.Listener() {
 		@Override
 		public void onRequestError() {
-			Log.w(TAG, currentChannel + " - could not load show info");
+			logMessage("could not load show info");
 			ProgramInfoViewBase.this.currentShow = null;
 			showTitleView.setText(R.string.activity_channel_detail_info_error);
 			showSubtitleView.setVisibility(GONE);
@@ -59,7 +59,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		@Override
 		public void onRequestSuccess(Show currentShow) {
-			Log.w(TAG, currentChannel + " - show info loaded: " + currentShow);
+			logMessage("show info loaded: " + currentShow);
 
 			ProgramInfoViewBase.this.currentShow = currentShow;
 			displayTitles();
@@ -171,7 +171,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	}
 
 	private void reloadProgramGuide() {
-		Log.d(TAG, currentChannel.getName() + " - reloadProgramGuide");
+		logMessage("reloadProgramGuide");
 		chancelProgramGuideLoading();
 		loadProgramGuide();
 	}
@@ -197,6 +197,14 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 		showProgressAnimator.start();
 	}
 
+	private void logMessage(String message) {
+		String channelId = null;
+		if (currentChannel != null) {
+			channelId = currentChannel.getId();
+		}
+		Log.d(TAG, channelId + " - " + message);
+	}
+
 	private class UpdateShowTimeTask extends TimerTask {
 		@Override
 		public void run() {
@@ -215,7 +223,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					Log.d(TAG, currentChannel + " - UpdateShowInfoTask");
+					logMessage("UpdateShowInfoTask");
 					updateShowInfo();
 				}
 			});

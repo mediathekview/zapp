@@ -42,7 +42,7 @@ public class ArdDownloader extends BaseProgramGuideDownloader {
 						new Response.Listener<String>() {
 							@Override
 							public void onResponse(String response) {
-								Log.d(TAG, "html loaded: " + response);
+								Log.d(TAG, "html loaded");
 								parse(response);
 							}
 						}, new Response.ErrorListener() {

@@ -30,7 +30,7 @@ public class ParliamentDownloader extends BaseProgramGuideDownloader {
 		request = new StringRequest(url, "UTF-8", new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						Log.d(TAG, "xml loaded: " + response);
+						Log.d(TAG, "xml loaded");
 						parse(response);
 					}
 				}, new Response.ErrorListener() {

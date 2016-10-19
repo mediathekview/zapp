@@ -35,7 +35,7 @@ public class ZdfDownloader extends BaseProgramGuideDownloader {
 				new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						Log.d(TAG, "json loaded: " + response.toString());
+						Log.d(TAG, "json loaded");
 						parse(response);
 					}
 				}, new Response.ErrorListener() {

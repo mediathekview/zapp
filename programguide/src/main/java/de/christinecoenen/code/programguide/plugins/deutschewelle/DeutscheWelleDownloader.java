@@ -32,7 +32,7 @@ public class DeutscheWelleDownloader extends BaseProgramGuideDownloader {
 				new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						Log.d(TAG, "xml loaded: " + response);
+						Log.d(TAG, "xml loaded");
 						parse(response);
 					}
 				}, new Response.ErrorListener() {
