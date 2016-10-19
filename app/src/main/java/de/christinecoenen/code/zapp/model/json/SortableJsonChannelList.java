@@ -44,6 +44,11 @@ public class SortableJsonChannelList implements ISortableChannelList {
 	}
 
 	@Override
+	public int indexOf(String channelId) {
+		return channelList.indexOf(channelId);
+	}
+
+	@Override
 	public void reloadChannelOrder() {
 		loadSortingFromDisk();
 	}

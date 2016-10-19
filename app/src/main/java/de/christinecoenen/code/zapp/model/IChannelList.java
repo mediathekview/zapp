@@ -7,4 +7,5 @@ public interface IChannelList extends Iterable<ChannelModel> {
 	ChannelModel get(int index);
 	int size();
 	List<ChannelModel> getList();
+	int indexOf(String channelId);
 }

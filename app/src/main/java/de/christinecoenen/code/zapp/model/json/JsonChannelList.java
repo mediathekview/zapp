@@ -51,6 +51,16 @@ public class JsonChannelList implements IChannelList {
 		return channels.iterator();
 	}
 
+	@Override
+	public int indexOf(String channelId) {
+		for (int i = 0; i < channels.size(); i++) {
+			if (channels.get(i).getId().equals(channelId)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	/**
 	 * @return content of R.raw.channels json file
      */

@@ -31,6 +31,16 @@ public class SimpleChannelList implements IChannelList {
 	}
 
 	@Override
+	public int indexOf(String channelId) {
+		for (int i = 0; i < channels.size(); i++) {
+			if (channels.get(i).getId().equals(channelId)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	@Override
 	public Iterator<ChannelModel> iterator() {
 		return channels.iterator();
 	}
