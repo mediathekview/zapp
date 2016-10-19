@@ -43,7 +43,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private ChannelModel currentChannel;
 
 	private final Handler handler = new Handler();
-	private Timer timer = new Timer();
+	private Timer timer;
 	private final ObjectAnimator showProgressAnimator;
 
 	private final ProgramGuideRequest.Listener programGuideListener = new ProgramGuideRequest.Listener() {
@@ -107,9 +107,14 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 	public void pause() {
 		timer.cancel();
+		timer = null;
 	}
 
 	public void resume() {
+		if (timer != null) {
+			return;
+		}
+
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new UpdateShowInfoTask(), 0,
 				TimeUnit.SECONDS.toMillis(updateShowInfoIntervalSeconds));
