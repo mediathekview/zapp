@@ -20,12 +20,9 @@ public class GridAutofitLayoutManager extends GridLayoutManager {
 	public GridAutofitLayoutManager(Context context, int columnWidth) {
 		/* Initially set spanCount to 1, will be changed automatically later. */
 		super(context, 1);
-		setColumnWidth(checkedColumnWidth(context, columnWidth));
-	}
-
-	public GridAutofitLayoutManager(Context context, int columnWidth, int orientation, boolean reverseLayout) {
-        /* Initially set spanCount to 1, will be changed automatically later. */
-		super(context, 1, orientation, reverseLayout);
+		// interprete as dip
+		columnWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, columnWidth,
+			context.getResources().getDisplayMetrics());
 		setColumnWidth(checkedColumnWidth(context, columnWidth));
 	}
 
@@ -52,13 +49,13 @@ public class GridAutofitLayoutManager extends GridLayoutManager {
 		int width = getWidth();
 		int height = getHeight();
 		if (mColumnWidthChanged && mColumnWidth > 0 && width > 0 && height > 0) {
-			int totalSpace;
+			float totalSpace;
 			if (getOrientation() == VERTICAL) {
 				totalSpace = width - getPaddingRight() - getPaddingLeft();
 			} else {
 				totalSpace = height - getPaddingTop() - getPaddingBottom();
 			}
-			int spanCount = Math.max(1, totalSpace / mColumnWidth);
+			int spanCount = (int) Math.max(1, totalSpace / mColumnWidth);
 			setSpanCount(spanCount);
 			mColumnWidthChanged = false;
 		}

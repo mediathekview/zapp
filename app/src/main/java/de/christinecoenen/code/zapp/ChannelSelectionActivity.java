@@ -43,7 +43,7 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 		listAdapter.setItemList(channelList.getList());
 
 		// view
-		RecyclerView.LayoutManager layoutManager = new GridAutofitLayoutManager(this, 400);
+		RecyclerView.LayoutManager layoutManager = new GridAutofitLayoutManager(this, 120);
 		channelListView.setLayoutManager(layoutManager);
 		channelListView.setAdapter(listAdapter, true);
 
