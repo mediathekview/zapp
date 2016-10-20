@@ -46,6 +46,7 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 		RecyclerView.LayoutManager layoutManager = new GridAutofitLayoutManager(this, 120);
 		channelListView.setLayoutManager(layoutManager);
 		channelListView.setAdapter(listAdapter, true);
+		channelListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
 		channelListView.setDragListListener(new SimpleDragListListener() {
 			@Override
