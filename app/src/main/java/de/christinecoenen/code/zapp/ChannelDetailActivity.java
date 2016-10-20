@@ -1,13 +1,11 @@
 package de.christinecoenen.code.zapp;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -31,6 +29,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
+import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
@@ -118,9 +117,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			}
 	};
 
-	public static Intent getStartIntent(Context context, int position) {
+	public static Intent getStartIntent(Context context, String channelId) {
 		Intent intent = new Intent(context, ChannelDetailActivity.class);
-		intent.putExtra(EXTRA_CHANNEL_ID, position);
+		intent.putExtra(EXTRA_CHANNEL_ID, channelId);
 		return intent;
 	}
 
@@ -139,7 +138,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		// set to channel
 		Bundle extras = getIntent().getExtras();
-		int channelId = extras.getInt(EXTRA_CHANNEL_ID);
+		String channelId = extras.getString(EXTRA_CHANNEL_ID);
+		int channelPosition = channelList.indexOf(channelId);
 
 		// listener
 		videoView.setOnErrorListener(new VideoErrorHandler(this));
@@ -149,7 +149,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		channelDetailAdapter = new ChannelDetailAdapter(
 				getSupportFragmentManager(), channelList, onItemChangedListener);
 		viewPager.setAdapter(channelDetailAdapter);
-		viewPager.setCurrentItem(channelId);
+		viewPager.setCurrentItem(channelPosition);
 		viewPager.addOnPageChangeListener(onPageChangeListener);
 		viewPager.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -162,7 +162,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (isInsideMultiWindow()) {
+		if (MultiWindowHelper.isInsideMultiWindow(this)) {
 			resumeActivity();
 		}
 	}
@@ -170,7 +170,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (!isInsideMultiWindow()) {
+		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
 			resumeActivity();
 		}
 	}
@@ -178,7 +178,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (!isInsideMultiWindow()) {
+		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
 			pauseActivity();
 		}
 	}
@@ -186,7 +186,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (isInsideMultiWindow()) {
+		if (MultiWindowHelper.isInsideMultiWindow(this)) {
 			pauseActivity();
 		}
 	}
@@ -309,10 +309,5 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
 		mControlsView.setBackgroundColor(colorAlpha);
-	}
-
-	@TargetApi(24)
-	private boolean isInsideMultiWindow() {
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInMultiWindowMode();
 	}
 }
