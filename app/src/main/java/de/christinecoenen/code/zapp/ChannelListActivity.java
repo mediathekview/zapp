@@ -39,7 +39,7 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 
 		channelList = new SortableJsonChannelList(this);
 		gridAdapter = new ChannelListAdapter(this, channelList, this);
-		channelGridView.setLayoutManager(new GridAutofitLayoutManager(this, 350));
+		channelGridView.setLayoutManager(new GridAutofitLayoutManager(this, 320));
 		channelGridView.setAdapter(gridAdapter);
 	}
 
