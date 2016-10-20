@@ -176,6 +176,10 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	}
 
 	private void reloadProgramGuide() {
+		if (currentChannel == null) {
+			return;
+		}
+
 		logMessage("reloadProgramGuide");
 		chancelProgramGuideLoading();
 		loadProgramGuide();
