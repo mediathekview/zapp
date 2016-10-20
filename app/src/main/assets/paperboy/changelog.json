@@ -1,5 +1,26 @@
 [
 	{
+		"name": "1.2.1",
+		"items": [
+			{
+				"type": "I",
+				"title": "Layout von \"Sender anordnen\"-Bildschirm verbessert"
+			},
+			{
+				"type": "B",
+				"title": "Programminformation werden nicht mehr herunter geladen, wenn die App pausiert wurde"
+			},
+			{
+				"type": "B",
+				"title": "Möglichen Absturz auf machen Geräten oder Emulatoren behoben, wenn man einen Kanal auswählt"
+			},
+			{
+				"type": "B",
+				"title": "Parlamentsfernsehen-Streams auf http umgestellt, damit sie wieder abspielen"
+			}
+		]
+	},
+	{
 		"name": "1.2.0",
 		"items": [
 			{
