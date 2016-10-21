@@ -4,13 +4,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 android {
-	compileSdkVersion 24
+	compileSdkVersion 25
 	buildToolsVersion "24.0.3"
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 21
-		targetSdkVersion 24
+		targetSdkVersion 25
 		versionCode 7
 		versionName "1.2.1"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,14 +32,14 @@ dependencies {
 
 	// tests
 	testCompile 'junit:junit:4.12'
-	androidTestCompile 'com.android.support:support-annotations:24.2.1'
+	androidTestCompile 'com.android.support:support-annotations:25.0.0'
 	androidTestCompile 'com.android.support.test:runner:0.5'
 	androidTestCompile 'com.android.support.test:rules:0.5'
 
 	// support
-	compile 'com.android.support:appcompat-v7:24.2.1'
-	compile 'com.android.support:support-v4:24.2.1'
-	compile 'com.android.support:design:24.2.1'
+	compile 'com.android.support:appcompat-v7:25.0.0'
+	compile 'com.android.support:support-v4:25.0.0'
+	compile 'com.android.support:design:25.0.0'
 
 	// helper
 	compile 'com.google.code.gson:gson:2.7'
