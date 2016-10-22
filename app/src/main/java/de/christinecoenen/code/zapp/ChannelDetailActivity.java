@@ -119,6 +119,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	public static Intent getStartIntent(Context context, String channelId) {
 		Intent intent = new Intent(context, ChannelDetailActivity.class);
+		intent.setAction(Intent.ACTION_VIEW);
 		intent.putExtra(EXTRA_CHANNEL_ID, channelId);
 		return intent;
 	}
