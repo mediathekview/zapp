@@ -4,12 +4,12 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<item
-		android:id="@+id/menu_channel_selection"
-		android:title="@string/menu_channel_selection"
+		android:id="@+id/menu_changelog"
+		android:title="@string/menu_changelog"
 		app:showAsAction="never"/>
 
 	<item
-		android:id="@+id/menu_changelog"
-		android:title="@string/menu_changelog"
+		android:id="@+id/menu_settings"
+		android:title="@string/menu_settings"
 		app:showAsAction="never"/>
 </menu>

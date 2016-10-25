@@ -1,7 +1,5 @@
 package de.christinecoenen.code.zapp;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +16,6 @@ import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener;
 
 public class ChannelSelectionActivity extends AppCompatActivity {
-
-	public static Intent getStartIntent(Context context) {
-		return new Intent(context, ChannelSelectionActivity.class);
-	}
 
 	protected @BindView(R.id.draglist_channel_selection) DragListView channelListView;
 

@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,8 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		setContentView(R.layout.activity_channel_list);
 		ButterKnife.bind(this);
@@ -95,12 +98,12 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 		Intent intent;
 
 		switch (item.getItemId()) {
-			case R.id.menu_channel_selection:
-				intent = ChannelSelectionActivity.getStartIntent(this);
-				startActivity(intent);
-				return true;
 			case R.id.menu_changelog:
 				intent = ChangelogActivity.getStartIntent(this);
+				startActivity(intent);
+				return true;
+			case R.id.menu_settings:
+				intent = SettingsActivity.getStartIntent(this);
 				startActivity(intent);
 				return true;
 			default:

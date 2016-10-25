@@ -2,12 +2,15 @@ package de.christinecoenen.code.zapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -174,6 +177,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
 			resumeActivity();
 		}
+
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean lockScreen = preferences.getBoolean("pref_detail_landscape", true);
+		if (lockScreen) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		}
 	}
 
 	@Override
@@ -202,10 +213,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_settings:
+			case R.id.menu_share:
 				Intent videoIntent = new Intent(Intent.ACTION_VIEW);
 				videoIntent.setDataAndType(Uri.parse(currentChannel.getStreamUrl()), "video/*");
 				startActivity(videoIntent);
+				return true;
+			case R.id.menu_settings:
+				Intent settingsIntent = SettingsActivity.getStartIntent(this);
+				startActivity(settingsIntent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
