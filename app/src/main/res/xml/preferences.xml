@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory
+		android:title="@string/pref_header_video">
+
+		<CheckBoxPreference
+			android:defaultValue="true"
+			android:key="pref_detail_landscape"
+			android:summaryOff="@string/pref_detail_landscape_summary_off"
+			android:summaryOn="@string/pref_detail_landscape_summary_on"
+			android:title="@string/pref_detail_landscape_title"/>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="@string/pref_header_channels">
+
+		<Preference android:title="@string/pref_channel_selection_title">
+			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY"/>
+		</Preference>
+	</PreferenceCategory>
+
+</PreferenceScreen>
