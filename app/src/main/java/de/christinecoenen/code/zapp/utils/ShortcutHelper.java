@@ -27,7 +27,7 @@ public class ShortcutHelper {
 	 * @return true if the channel could be added
      */
 	@TargetApi(25)
-	public boolean addShortcutForChannel(Context context, ChannelModel channel) {
+	public static boolean addShortcutForChannel(Context context, ChannelModel channel) {
 		ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 		ShortcutInfo shortcut = new ShortcutInfo.Builder(context, channel.getId())
 			.setShortLabel(channel.getName())
@@ -46,7 +46,7 @@ public class ShortcutHelper {
 	 * @param channelId  id of the channel you want to remove from shorcut menu
      */
 	@TargetApi(25)
-	public void removeShortcutForChannel(Context context, String channelId) {
+	public static void removeShortcutForChannel(Context context, String channelId) {
 		ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 		shortcutManager.removeDynamicShortcuts(Collections.singletonList(channelId));
 	}
@@ -57,7 +57,7 @@ public class ShortcutHelper {
 	 * @param context   to access system services
 	 * @param channelId id of the channel that has been selected
      */
-	public void reportShortcutUsageGuarded(Context context, String channelId) {
+	public static void reportShortcutUsageGuarded(Context context, String channelId) {
 		if (areShortcutsSupported()) {
 			ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 			shortcutManager.reportShortcutUsed(channelId);
@@ -67,7 +67,7 @@ public class ShortcutHelper {
 	/**
 	 * @return true if the current api level supports shortcuts
      */
-	public boolean areShortcutsSupported() {
+	public static boolean areShortcutsSupported() {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;
 	}
 }
