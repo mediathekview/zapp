@@ -21,6 +21,12 @@ public class SimpleChannelList implements IChannelList {
 	}
 
 	@Override
+	public ChannelModel get(String id) {
+		int index = indexOf(id);
+		return index == -1 ? null : get(index);
+	}
+
+	@Override
 	public int size() {
 		return channels.size();
 	}

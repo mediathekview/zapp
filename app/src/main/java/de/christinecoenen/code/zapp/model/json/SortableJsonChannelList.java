@@ -29,6 +29,11 @@ public class SortableJsonChannelList implements ISortableChannelList {
 	}
 
 	@Override
+	public ChannelModel get(String id) {
+		return channelList.get(id);
+	}
+
+	@Override
 	public int size() {
 		return channelList.size();
 	}

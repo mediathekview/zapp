@@ -37,6 +37,12 @@ public class JsonChannelList implements IChannelList {
 	}
 
 	@Override
+	public ChannelModel get(String id) {
+		int index = indexOf(id);
+		return index == -1 ? null : get(index);
+	}
+
+	@Override
 	public int size() {
 		return channels.size();
 	}
@@ -63,7 +69,7 @@ public class JsonChannelList implements IChannelList {
 
 	/**
 	 * @return content of R.raw.channels json file
-     */
+	 */
 	private String getJsonString() {
 		InputStream inputStream = context.getResources().openRawResource(R.raw.channels);
 		String channelJson = null;
