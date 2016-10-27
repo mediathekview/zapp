@@ -18,6 +18,15 @@
 		<Preference android:title="@string/pref_channel_selection_title">
 			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY"/>
 		</Preference>
+
+		<de.christinecoenen.code.zapp.preferences.ShortcutPreference
+			android:key="pref_shortcuts"
+			android:defaultValue="@array/empty"
+			android:entries="@array/empty"
+			android:entryValues="@array/empty"
+			android:title="@string/pref_shortcuts_title"
+			android:summary="@string/pref_shortcuts_summary_not_supported"
+			android:enabled="false"/>
 	</PreferenceCategory>
 
 </PreferenceScreen>

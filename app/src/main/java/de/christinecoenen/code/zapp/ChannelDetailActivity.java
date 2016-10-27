@@ -33,6 +33,7 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
+import de.christinecoenen.code.zapp.utils.ShortcutHelper;
 import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
@@ -101,6 +102,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 			playDelayed();
 			programInfoView.setChannel(channel);
+
+			ShortcutHelper.reportShortcutUsageGuarded(ChannelDetailActivity.this, channel.getId());
 		}
 	};
 
