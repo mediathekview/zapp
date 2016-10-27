@@ -75,6 +75,7 @@ public class ShortcutPreference extends MultiSelectListPreference implements Pre
 		if (ShortcutHelper.areShortcutsSupported()) {
 			loadChannelList();
 			setSummaryToSelectedChannels();
+			setEnabled(true);
 		}
 	}
 
