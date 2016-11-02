@@ -1,5 +1,26 @@
 [
 	{
+		"name": "1.3.0",
+		"items": [
+			{
+				"type": "I",
+				"title": "Alle Einstellungen auf einem Bildschirm gesammelt"
+			},
+			{
+				"type": "F",
+				"title": "Einstellung für das Sperren der Bildschirmrotation hinzugefügt"
+			},
+			{
+				"type": "F",
+				"title": "FAQ für allgemeine Informationen über Zapp eingeführt"
+			},
+			{
+				"type": "F",
+				"title": "App-Shortcuts für Android 7.1 eingeführt"
+			}
+		]
+	},
+	{
 		"name": "1.2.1",
 		"items": [
 			{
