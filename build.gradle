@@ -21,6 +21,9 @@ buildscript {
 allprojects {
 	repositories {
 		jcenter()
+
+		// for MarkdownView
+		maven { url "https://jitpack.io" }
 	}
 }
 

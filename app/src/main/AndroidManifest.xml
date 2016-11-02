@@ -22,7 +22,7 @@
 		<activity
 			android:name=".ChangelogActivity"
 			android:label="@string/activity_changelog_title"
-			android:parentActivityName=".ChannelListActivity">
+			android:parentActivityName=".AboutActivity">
 		</activity>
 		<activity
 			android:name=".ChannelListActivity"
@@ -40,12 +40,23 @@
 			android:parentActivityName=".SettingsActivity">
 			<intent-filter>
 				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY"/>
+
 				<category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
 		</activity>
 		<activity
 			android:name=".SettingsActivity"
 			android:label="@string/activity_settings_title">
+		</activity>
+		<activity
+			android:name=".AboutActivity"
+			android:label="@string/activity_about_title"
+			android:parentActivityName=".ChannelListActivity">
+		</activity>
+		<activity
+			android:name=".FaqActivity"
+			android:label="@string/activity_faq_title"
+			android:parentActivityName=".AboutActivity">
 		</activity>
 	</application>
 

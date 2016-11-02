@@ -4,8 +4,8 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<item
-		android:id="@+id/menu_changelog"
-		android:title="@string/menu_changelog"
+		android:id="@+id/menu_about"
+		android:title="@string/menu_about"
 		app:showAsAction="never"/>
 
 	<item

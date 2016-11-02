@@ -51,6 +51,9 @@ dependencies {
 	// sortable list
 	compile 'com.github.woxthebox:draglistview:1.3'
 
+	// markdown
+	compile 'com.github.fiskurgit:MarkdownView:1.1.0'
+
 	// butterknive:
 	compile 'com.jakewharton:butterknife:8.4.0'
 	apt 'com.jakewharton:butterknife-compiler:8.4.0'

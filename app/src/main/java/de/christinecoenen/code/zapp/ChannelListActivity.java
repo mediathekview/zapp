@@ -98,8 +98,8 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 		Intent intent;
 
 		switch (item.getItemId()) {
-			case R.id.menu_changelog:
-				intent = ChangelogActivity.getStartIntent(this);
+			case R.id.menu_about:
+				intent = AboutActivity.getStartIntent(this);
 				startActivity(intent);
 				return true;
 			case R.id.menu_settings:
