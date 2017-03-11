@@ -170,6 +170,8 @@ class ArdParser {
 						Channel.RBB_BERLIN,
 						Channel.RBB_BRANDENBURG
 				};
+			case "KiKA":
+				return  new Channel[] {Channel.KIKA};
 			case "EinsPlus": // ?
 			default:
 				return null;
