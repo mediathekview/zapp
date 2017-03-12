@@ -12,6 +12,7 @@ import de.christinecoenen.code.programguide.plugins.ard.ArdDownloader;
 import de.christinecoenen.code.programguide.plugins.arte.ArteDownloader;
 import de.christinecoenen.code.programguide.plugins.deutschewelle.DeutscheWelleDownloader;
 import de.christinecoenen.code.programguide.plugins.parliament.ParliamentDownloader;
+import de.christinecoenen.code.programguide.plugins.zdf.ZdfDownloader;
 
 public class PluginRegistry {
 
@@ -61,8 +62,7 @@ public class PluginRegistry {
 			case ZDF_INFO:
 			case ZDF_NEO:
 			case DREISAT:
-				// see: https://github.com/cemrich/zapp/issues/41
-				return null;
+				return new ZdfDownloader(queue, channel, listener);
 
 			case ARTE:
 				return new ArteDownloader(queue, channel, listener);
