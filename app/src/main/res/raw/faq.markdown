@@ -27,12 +27,6 @@ Sendungen zu durchsuchen. Dieser Ansatz ist nicht besonders zuverlässig und kan
 kaputt gehen, wenn eine Webseite geändert oder aktualisiert wird.
 
 
-### Warum sehe ich keinen Sendungsfortschritt bei ARTE?
-
-ARTEs ansonsten vorbildliche API gibt die Start- und Endzeit der Sendung nicht
-zurück, sodass Zapp sie auch nicht anzeigen kann.
-
-
 ### Warum fehlen einige Sender wie RTL oder Pro7?
 
 Zapp streamt nur öffentlich-rechtliche Sender. Sender wie RTL und Pro7 gehören privaten

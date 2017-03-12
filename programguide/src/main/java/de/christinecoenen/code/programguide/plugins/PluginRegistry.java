@@ -9,7 +9,6 @@ import com.android.volley.toolbox.Volley;
 import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.plugins.ard.ArdDownloader;
-import de.christinecoenen.code.programguide.plugins.arte.ArteDownloader;
 import de.christinecoenen.code.programguide.plugins.deutschewelle.DeutscheWelleDownloader;
 import de.christinecoenen.code.programguide.plugins.parliament.ParliamentDownloader;
 import de.christinecoenen.code.programguide.plugins.zdf.ZdfDownloader;
@@ -62,10 +61,8 @@ public class PluginRegistry {
 			case ZDF_INFO:
 			case ZDF_NEO:
 			case DREISAT:
-				return new ZdfDownloader(queue, channel, listener);
-
 			case ARTE:
-				return new ArteDownloader(queue, channel, listener);
+				return new ZdfDownloader(queue, channel, listener);
 
 			case DEUTSCHE_WELLE:
 				return new DeutscheWelleDownloader(queue, channel, listener);

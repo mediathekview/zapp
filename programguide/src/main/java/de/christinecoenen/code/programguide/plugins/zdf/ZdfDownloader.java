@@ -100,6 +100,8 @@ public class ZdfDownloader extends BaseProgramGuideDownloader {
 				return "3sat";
 			case KIKA:
 				return "ki.ka";
+			case ARTE:
+				return "arte";
 			default:
 				return null;
 		}
