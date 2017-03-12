@@ -53,10 +53,10 @@ public class PluginRegistry {
 			case ARD_ALPHA:
 			case TAGESSCHAU24:
 			case ONE:
+			case KIKA:
 				return new ArdDownloader(queue, channel, listener);
 
 			case ZDF:
-			case KIKA:
 			case PHOENIX:
 			case ZDF_INFO:
 			case ZDF_NEO:
