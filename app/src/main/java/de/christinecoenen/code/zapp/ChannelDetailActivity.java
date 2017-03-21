@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -324,7 +325,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		toolbar.setBackgroundColor(color);
 
 		int colorDarker = ColorHelper.darker(color, 0.075f);
-		window.setStatusBarColor(colorDarker);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			window.setStatusBarColor(colorDarker);
+		}
 
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
 		mControlsView.setBackgroundColor(colorAlpha);
