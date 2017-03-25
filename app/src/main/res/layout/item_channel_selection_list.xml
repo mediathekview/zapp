@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="@dimen/activity_channel_selection_item_width"
 	android:layout_height="@dimen/activity_channel_selection_item_height"
 	android:layout_margin="@dimen/activity_channel_selection_item_margin"
-	android:background="@android:color/white"
+	android:background="?android:attr/selectableItemBackground"
+	android:clickable="true"
+	android:focusable="true"
 	android:orientation="horizontal">
 
 	<ImageView
