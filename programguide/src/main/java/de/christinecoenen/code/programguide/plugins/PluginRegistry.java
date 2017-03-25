@@ -54,7 +54,6 @@ public class PluginRegistry {
 			case ARD_ALPHA:
 			case TAGESSCHAU24:
 			case ONE:
-				return new ArdDownloader(queue, channel, listener);
 
 			case ZDF:
 			case KIKA:
@@ -63,14 +62,12 @@ public class PluginRegistry {
 			case ZDF_NEO:
 			case DREISAT:
 			case ARTE:
-				return new ZappBackendDownloader(queue, channel, listener);
 
 			case DEUTSCHE_WELLE:
-				return new ZappBackendDownloader(queue, channel, listener);
 
 			case PARLAMENTSFERNSEHEN_1:
 			case PARLAMENTSFERNSEHEN_2:
-				return new ParliamentDownloader(queue, channel, listener);
+				return new ZappBackendDownloader(queue, channel, listener);
 		}
 		return null;
 	}
