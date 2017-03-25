@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +21,22 @@ import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 
-public class ChannelListActivity extends AppCompatActivity implements ChannelListAdapter.Listener{
+public class ChannelListActivity extends AppCompatActivity implements ChannelListAdapter.Listener {
 
+	private final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+		@Override
+		public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+			if (!recyclerView.isInTouchMode()) {
+				// collapsing toolbar will not collapse by default when
+				// navigating with keyboard, so we trigger it here
+				// see: https://www.novoda.com/blog/fixing-hiding-appbarlayout-android-tv/
+				boolean expand = (dy <= 0);
+				appBarLayout.setExpanded(expand, true);
+			}
+		}
+	};
+
+	protected @BindView(R.id.app_bar) AppBarLayout appBarLayout;
 	protected @BindView(R.id.toolbar) Toolbar toolbar;
 	protected @BindView(R.id.gridview_channels) RecyclerView channelGridView;
 
@@ -44,6 +59,7 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 		gridAdapter = new ChannelListAdapter(this, channelList, this);
 		channelGridView.setLayoutManager(new GridAutofitLayoutManager(this, 320));
 		channelGridView.setAdapter(gridAdapter);
+		channelGridView.addOnScrollListener(scrollListener);
 	}
 
 	@Override
