@@ -51,4 +51,9 @@ public enum Channel {
 	Channel(String id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+		return id;
+	}
 }
