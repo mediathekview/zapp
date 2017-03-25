@@ -26,13 +26,15 @@ class ZappBackendParser {
 
 		String title = showJson.getString("title");
 		String subtitle = getOptionalString(showJson, "subtitle");
-		String startTime = showJson.getString("startTime");
-		String endTime = showJson.getString("endTime");
+		String startTime = getOptionalString(showJson, "startTime");
+		String endTime = getOptionalString(showJson, "endTime");
 
 		show.setTitle(title);
 		show.setSubtitle(subtitle);
-		show.setStartTime(formatter.parseDateTime(startTime));
-		show.setEndTime(formatter.parseDateTime(endTime));
+		if (startTime != null && endTime != null) {
+			show.setStartTime(formatter.parseDateTime(startTime));
+			show.setEndTime(formatter.parseDateTime(endTime));
+		}
 
 		return show;
 	}
