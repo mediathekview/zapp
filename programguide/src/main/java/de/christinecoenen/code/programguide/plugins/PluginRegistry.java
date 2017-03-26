@@ -8,11 +8,7 @@ import com.android.volley.toolbox.Volley;
 
 import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Channel;
-import de.christinecoenen.code.programguide.plugins.ard.ArdDownloader;
-import de.christinecoenen.code.programguide.plugins.deutschewelle.DeutscheWelleDownloader;
-import de.christinecoenen.code.programguide.plugins.parliament.ParliamentDownloader;
 import de.christinecoenen.code.programguide.plugins.zappbackend.ZappBackendDownloader;
-import de.christinecoenen.code.programguide.plugins.zdf.ZdfDownloader;
 
 public class PluginRegistry {
 
