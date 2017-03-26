@@ -15,3 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+## start joda-time-android 2.8.0
+-dontwarn org.joda.convert.FromString
+-dontwarn org.joda.convert.ToString
+## end joda-time-android 2.8.0
