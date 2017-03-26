@@ -31,6 +31,9 @@ android {
 		foss {
 			versionNameSuffix "-foss"
 		}
+		google {
+			versionNameSuffix "-google"
+		}
 	}
 
 	// avoid warning for "Not all execution paths return a value"
