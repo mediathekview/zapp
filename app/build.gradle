@@ -21,6 +21,12 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
+	productFlavors {
+		foss {
+			applicationIdSuffix ".foss"
+			versionNameSuffix "-foss"
+		}
+	}
 
 	// avoid warning for "Not all execution paths return a value"
 	return void
