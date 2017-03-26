@@ -11,6 +11,7 @@ import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.plugins.ard.ArdDownloader;
 import de.christinecoenen.code.programguide.plugins.deutschewelle.DeutscheWelleDownloader;
 import de.christinecoenen.code.programguide.plugins.parliament.ParliamentDownloader;
+import de.christinecoenen.code.programguide.plugins.zappbackend.ZappBackendDownloader;
 import de.christinecoenen.code.programguide.plugins.zdf.ZdfDownloader;
 
 public class PluginRegistry {
@@ -53,7 +54,6 @@ public class PluginRegistry {
 			case ARD_ALPHA:
 			case TAGESSCHAU24:
 			case ONE:
-				return new ArdDownloader(queue, channel, listener);
 
 			case ZDF:
 			case KIKA:
@@ -62,14 +62,12 @@ public class PluginRegistry {
 			case ZDF_NEO:
 			case DREISAT:
 			case ARTE:
-				return new ZdfDownloader(queue, channel, listener);
 
 			case DEUTSCHE_WELLE:
-				return new DeutscheWelleDownloader(queue, channel, listener);
 
 			case PARLAMENTSFERNSEHEN_1:
 			case PARLAMENTSFERNSEHEN_2:
-				return new ParliamentDownloader(queue, channel, listener);
+				return new ZappBackendDownloader(queue, channel, listener);
 		}
 		return null;
 	}
