@@ -1,5 +1,22 @@
 [
 	{
+		"name": "1.3.3",
+		"items": [
+			{
+				"type": "I",
+				"title": "App verbraucht weniger Speicherplatz"
+			},
+			{
+				"type": "I",
+				"title": "Programminformationen werden von einem einzigen Backend geladen"
+			},
+			{
+				"type": "I",
+				"title": "Zapp ist jetzt auch in Google Play zu finden"
+			}
+		]
+	},
+	{
 		"name": "1.3.2",
 		"items": [
 			{
