@@ -29,7 +29,6 @@ android {
 	}
 	productFlavors {
 		foss {
-			applicationIdSuffix ".foss"
 			versionNameSuffix "-foss"
 		}
 	}
