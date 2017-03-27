@@ -2,8 +2,10 @@ package de.christinecoenen.code.zapp.preferences;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.Toast;
@@ -25,11 +27,13 @@ public class ShortcutPreference extends MultiSelectListPreference implements Pre
 	private Context context;
 	private IChannelList channelList;
 
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(context);
