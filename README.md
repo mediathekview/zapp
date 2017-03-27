@@ -10,6 +10,9 @@ Zapp gives you easy access to a large number of German public broadcasting live 
 
 ![ZAPP logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
+<a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+
 ---------------------
 
 ## FAQ
