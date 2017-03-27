@@ -5,12 +5,6 @@ import org.joda.time.Duration;
 
 public class Show {
 
-	public static Show getIntermission() {
-		Show intermission = new Show();
-		intermission.setTitle("Sendepause");
-		return intermission;
-	}
-
 	private String title;
 	private String subtitle;
 	private String description;

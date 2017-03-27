@@ -28,7 +28,7 @@ class JsonChannelsParser {
 	 * @param json  a json file with model data
 	 * @return      a list of fully parsed ChannelModels
 	 *              or null if the provided string is null
-	 * @see			"R.raw.channels" for channel format
+	 * See "R.raw.channels" for channel format'
      */
 	List<ChannelModel> parse(String json) {
 		return getChannelList(json);
