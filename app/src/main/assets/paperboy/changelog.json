@@ -1,5 +1,14 @@
 [
 	{
+		"name": "1.3.4",
+		"items": [
+			{
+				"type": "I",
+				"title": "Support für Android Kitkat und höher"
+			}
+		]
+	},
+	{
 		"name": "1.3.3",
 		"items": [
 			{
