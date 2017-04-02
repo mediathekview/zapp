@@ -74,6 +74,15 @@
 	"name": "Deutsche Welle",
 	"stream_url": "http://dwstream72-lh.akamaihd.net/i/dwstream72_live@123556/master.m3u8",
 	"logo_name": "channel_logo_deutsche_welle",
+	"subtitle": "Deutsch",
+	"color": "#012D5B"
+  },
+  {
+	"id": "deutsche_welle_plus",
+	"name": "Deutsche Welle+",
+	"stream_url": "http://dwstream5-lh.akamaihd.net/i/dwstream5_live@124540/master.m3u8",
+	"logo_name": "channel_logo_deutsche_welle",
+	"subtitle": "Deutsch+",
 	"color": "#012D5B"
   },
   {

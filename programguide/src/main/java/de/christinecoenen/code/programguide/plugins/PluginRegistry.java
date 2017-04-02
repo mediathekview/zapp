@@ -60,6 +60,7 @@ public class PluginRegistry {
 			case ARTE:
 
 			case DEUTSCHE_WELLE:
+			case DEUTSCHE_WELLE_PLUS:
 
 			case PARLAMENTSFERNSEHEN_1:
 			case PARLAMENTSFERNSEHEN_2:

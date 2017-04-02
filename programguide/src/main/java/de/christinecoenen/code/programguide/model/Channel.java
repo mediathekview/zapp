@@ -33,6 +33,7 @@ public enum Channel {
 	ZDF_NEO("zdf_neo"),
 
 	DEUTSCHE_WELLE("deutsche_welle"),
+	DEUTSCHE_WELLE_PLUS("deutsche_welle_plus"),
 
 	PARLAMENTSFERNSEHEN_1("parlamentsfernsehen_1"),
 	PARLAMENTSFERNSEHEN_2("parlamentsfernsehen_2");
