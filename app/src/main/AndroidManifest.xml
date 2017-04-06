@@ -4,10 +4,10 @@
 	package="de.christinecoenen.code.zapp">
 
 	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<application
 		android:allowBackup="false"
@@ -21,11 +21,11 @@
 			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:label="@string/app_name"
 			android:parentActivityName=".ChannelListActivity"
-			android:theme="@style/FullscreenTheme"></activity>
+			android:theme="@style/FullscreenTheme" />
 		<activity
 			android:name=".ChangelogActivity"
 			android:label="@string/activity_changelog_title"
-			android:parentActivityName=".AboutActivity"></activity>
+			android:parentActivityName=".AboutActivity" />
 		<activity
 			android:name=".ChannelListActivity"
 			android:label="@string/app_name"
@@ -48,15 +48,15 @@
 		</activity>
 		<activity
 			android:name=".SettingsActivity"
-			android:label="@string/activity_settings_title"></activity>
+			android:label="@string/activity_settings_title" />
 		<activity
 			android:name=".AboutActivity"
 			android:label="@string/activity_about_title"
-			android:parentActivityName=".ChannelListActivity"></activity>
+			android:parentActivityName=".ChannelListActivity" />
 		<activity
 			android:name=".FaqActivity"
 			android:label="@string/activity_faq_title"
-			android:parentActivityName=".AboutActivity"></activity>
+			android:parentActivityName=".AboutActivity" />
 		<activity
 			android:name=".UpnpTest"
 			android:label="Upnp">
@@ -67,7 +67,9 @@
 			</intent-filter>
 		</activity>
 
-		<service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl"/>
+		<service
+			android:name=".upnp.UpnpRendererService"
+			android:exported="false"/>
 	</application>
 
 </manifest>
