@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.upnp;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -89,6 +90,8 @@ public class DeviceDialog extends AppCompatDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
+
+		@SuppressLint("InflateParams")
 		View view = inflater.inflate(R.layout.dialog_upnp_device, null);
 
 		ButterKnife.bind(this, view);

@@ -24,12 +24,12 @@ import java.util.logging.Logger;
 
 public class UpnpService extends AndroidUpnpServiceImpl implements RegistryListener {
 
-	public static final String TAG = UpnpService.class.getSimpleName();
+	private static final String TAG = UpnpService.class.getSimpleName();
 
 	private final Binder binder = new Binder();
 	private final Handler handler = new Handler(Looper.getMainLooper());
-	private List<RendererDevice> devices = new ArrayList<>();
-	private WeakHashMap<Listener, Void> listeners = new WeakHashMap<>();
+	private final WeakHashMap<Listener, Void> listeners = new WeakHashMap<>();
+	private final List<RendererDevice> devices = new ArrayList<>();
 
 	@Override
 	public void onCreate() {
@@ -48,8 +48,8 @@ public class UpnpService extends AndroidUpnpServiceImpl implements RegistryListe
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		listeners = null;
-		devices = null;
+		listeners.clear();
+		devices.clear();
 		upnpService.getRegistry().removeListener(this);
 	}
 
@@ -159,7 +159,7 @@ public class UpnpService extends AndroidUpnpServiceImpl implements RegistryListe
 			return devices;
 		}
 
-		public void sendToDevice(RendererDevice device, String videoUrl, String title, IUpnpCommand.Listener listener) {
+		void sendToDevice(RendererDevice device, String videoUrl, String title, IUpnpCommand.Listener listener) {
 			IUpnpCommand command = new SendVideoCommand(upnpService, device, videoUrl, title);
 			command.setListener(listener);
 			command.execute();

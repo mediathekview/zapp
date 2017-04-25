@@ -148,6 +148,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		mHideHandler.postDelayed(mHidePart2Runnable, uiAnimationDelay);
 	}
 
+	@SuppressWarnings("WeakerAccess")
 	@SuppressLint("InlinedApi")
 	protected void show() {
 		// Show the system bar

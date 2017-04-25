@@ -15,10 +15,10 @@ class SendVideoCommand implements IUpnpCommand {
 	private static final String TAG = SendVideoCommand.class.getSimpleName();
 	private static final String METADATA = "<DIDL-Lite xmlns='urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/' xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:upnp='urn:schemas-upnp-org:metadata-1-0/upnp/' xmlns:dlna='urn:schemas-dlna-org:metadata-1-0/'><item id='sample' parentID='0' restricted='0'><dc:title>%s</dc:title><dc:creator>Mohit</dc:creator><upnp:genre>No Genre</upnp:genre><res protocolInfo='http-get:*:video/mpeg:DLNA.ORG_FLAGS=01700000000000000000000000000000;DLNA.ORG_CI=0;DLNA.ORG_OP=01'>%s</res><upnp:class>object.item.videoItem</upnp:class></item></DIDL-Lite>";
 
-	private UpnpService upnpService;
-	private RendererDevice device;
-	private String videoUrl;
-	private String videoTitle;
+	private final UpnpService upnpService;
+	private final RendererDevice device;
+	private final String videoUrl;
+	private final String videoTitle;
 	private Listener listener;
 
 	SendVideoCommand(UpnpService upnpService, RendererDevice device, String videoUrl, String videoTitle) {

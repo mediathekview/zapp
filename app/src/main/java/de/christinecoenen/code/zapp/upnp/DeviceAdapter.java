@@ -4,9 +4,9 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 
 
-public class DeviceAdapter extends ArrayAdapter<RendererDevice> implements UpnpService.Listener {
+class DeviceAdapter extends ArrayAdapter<RendererDevice> implements UpnpService.Listener {
 
-	public DeviceAdapter(Context context, int resource, UpnpService.Binder upnpRendererService) {
+	DeviceAdapter(Context context, int resource, UpnpService.Binder upnpRendererService) {
 		super(context, resource, upnpRendererService.getDevices());
 		upnpRendererService.addListener(this);
 	}

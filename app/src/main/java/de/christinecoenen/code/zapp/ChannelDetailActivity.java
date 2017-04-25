@@ -110,6 +110,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		public void onServiceDisconnected(ComponentName className) {
 			Log.d(TAG, "onUpnpServiceDisconnected");
+			upnpService.removeListener(upnpListener);
 			upnpService = null;
 		}
 	};
