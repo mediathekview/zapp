@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.upnp;
 
 
-interface IUpnpCommand {
+public interface IUpnpCommand {
 
 	void execute();
 

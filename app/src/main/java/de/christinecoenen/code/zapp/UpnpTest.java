@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.upnp.DeviceAdapter;
 import de.christinecoenen.code.zapp.upnp.RendererDevice;
-import de.christinecoenen.code.zapp.upnp.UpnpRendererService;
+import de.christinecoenen.code.zapp.upnp.UpnpService;
 
 public class UpnpTest extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -26,14 +26,14 @@ public class UpnpTest extends AppCompatActivity implements AdapterView.OnItemCli
 	@BindView(R.id.list)
 	protected ListViewCompat listView;
 
-	private UpnpRendererService.Binder upnpService;
+	private UpnpService.Binder upnpService;
 	private ArrayAdapter<RendererDevice> adapter;
 
 	private ServiceConnection serviceConnection = new ServiceConnection() {
 
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			Log.d("test", "onServiceConnected");
-			upnpService = (UpnpRendererService.Binder) service;
+			upnpService = (UpnpService.Binder) service;
 			upnpService.search();
 			adapter = new DeviceAdapter(UpnpTest.this, android.R.layout.simple_list_item_1, upnpService);
 			listView.setAdapter(adapter);
@@ -55,7 +55,7 @@ public class UpnpTest extends AppCompatActivity implements AdapterView.OnItemCli
 
 		// This will start the UPnP service if it wasn't already started
 		getApplicationContext().bindService(
-			new Intent(this, UpnpRendererService.class),
+			new Intent(this, UpnpService.class),
 			serviceConnection,
 			Context.BIND_AUTO_CREATE
 		);
@@ -73,6 +73,6 @@ public class UpnpTest extends AppCompatActivity implements AdapterView.OnItemCli
 	public void onItemClick(AdapterView<?> adapterView, android.view.View view, int position, long id) {
 		RendererDevice device = adapter.getItem(position);
 		Toast.makeText(this, device.toString(), Toast.LENGTH_LONG).show();
-		upnpService.sendToDevice(device, videoUrl, null);
+		upnpService.sendToDevice(device, videoUrl, "Test", null);
 	}
 }

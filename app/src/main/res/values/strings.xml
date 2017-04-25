@@ -27,10 +27,14 @@
 	<string name="error_stream_unsupported">Der Stream ist beschädigt oder das Format wird nicht unterstützt.</string>
 
 	<!-- menus -->
+	<string name="action_cast">Streamen</string>
 	<string name="action_share">Teilen</string>
 
 	<string name="menu_about">Über</string>
 	<string name="menu_settings">Einstellungen</string>
+
+	<!-- upnp -->
+	<string name="upnp_dlg_select_renderer">Wähle ein Gerät aus</string>
 
 	<!-- paperboy changelog -->
 	<string name="paperboy_section_name">Abschnitt</string>

@@ -68,7 +68,7 @@
 		</activity>
 
 		<service
-			android:name=".upnp.UpnpRendererService"
+			android:name=".upnp.UpnpService"
 			android:exported="false"/>
 	</application>
 

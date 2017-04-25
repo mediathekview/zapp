@@ -7,7 +7,7 @@ import org.fourthline.cling.model.types.UDAServiceType;
 
 public class RendererDevice {
 
-	private Device device;
+	private final Device device;
 
 	private final Service avTransportService;
 
@@ -21,8 +21,13 @@ public class RendererDevice {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return this.device.equals(device);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		RendererDevice that = (RendererDevice) o;
+
+		return device.equals(that.device);
 	}
 
 	@Override

@@ -22,12 +22,12 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UpnpRendererService extends AndroidUpnpServiceImpl implements RegistryListener {
+public class UpnpService extends AndroidUpnpServiceImpl implements RegistryListener {
 
-	public static final String TAG = UpnpRendererService.class.getSimpleName();
+	public static final String TAG = UpnpService.class.getSimpleName();
 
-	private Binder binder = new Binder();
-	private Handler handler = new Handler(Looper.getMainLooper());
+	private final Binder binder = new Binder();
+	private final Handler handler = new Handler(Looper.getMainLooper());
 	private List<RendererDevice> devices = new ArrayList<>();
 	private WeakHashMap<Listener, Void> listeners = new WeakHashMap<>();
 
@@ -48,6 +48,8 @@ public class UpnpRendererService extends AndroidUpnpServiceImpl implements Regis
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		listeners = null;
+		devices = null;
 		upnpService.getRegistry().removeListener(this);
 	}
 
@@ -146,7 +148,7 @@ public class UpnpRendererService extends AndroidUpnpServiceImpl implements Regis
 
 			// Now add all devices to the list we already know about
 			for (Device device : upnpService.getRegistry().getDevices()) {
-				UpnpRendererService.this.addDevice(device);
+				UpnpService.this.addDevice(device);
 			}
 
 			// Search asynchronously for all devices, they will respond soon
@@ -157,15 +159,21 @@ public class UpnpRendererService extends AndroidUpnpServiceImpl implements Regis
 			return devices;
 		}
 
-		public void sendToDevice(RendererDevice device, String videoUrl, IUpnpCommand.Listener listener) {
-			IUpnpCommand command = new SendVideoCommand(upnpService, device, videoUrl, "Some Title");
+		public void sendToDevice(RendererDevice device, String videoUrl, String title, IUpnpCommand.Listener listener) {
+			IUpnpCommand command = new SendVideoCommand(upnpService, device, videoUrl, title);
 			command.setListener(listener);
 			command.execute();
 		}
 	}
 
-	interface Listener {
+
+	public interface Listener {
+
+		@SuppressWarnings("UnusedParameters")
 		void onDeviceAdded(RendererDevice device);
+
+		@SuppressWarnings("UnusedParameters")
 		void onDeviceRemoved(RendererDevice device);
+
 	}
 }

@@ -18,21 +18,23 @@ class SendVideoCommand implements IUpnpCommand {
 	private UpnpService upnpService;
 	private RendererDevice device;
 	private String videoUrl;
+	private String videoTitle;
 	private Listener listener;
 
 	SendVideoCommand(UpnpService upnpService, RendererDevice device, String videoUrl, String videoTitle) {
 		this.upnpService = upnpService;
 		this.device = device;
 		this.videoUrl = videoUrl;
+		this.videoTitle = videoTitle;
 	}
 
 	@Override
 	public void execute() {
-		String metadata = String.format(METADATA, "Test", videoUrl);
+		String metadata = String.format(METADATA, videoTitle, videoUrl);
 		ActionCallback setAVTransportUriAction = new SetAVTransportURI(device.getAvTransportService(), videoUrl, metadata) {
 			@Override
 			public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-				Log.e(TAG, "Action SetAVTransportUri failed on " + device.toString() + ": " + defaultMsg);
+				Log.w(TAG, "Action SetAVTransportUri failed on " + device.toString() + ": " + defaultMsg);
 				if (listener != null) {
 					listener.onCommandFailure(defaultMsg);
 				}
@@ -41,13 +43,13 @@ class SendVideoCommand implements IUpnpCommand {
 			@Override
 			public void success(ActionInvocation invocation) {
 				super.success(invocation);
-				Log.e(TAG, "success: " + invocation.toString());
+				Log.d(TAG, "success: " + invocation.toString());
 
 				ActionCallback playAction = new Play(device.getAvTransportService()) {
 					@Override
 					public void success(ActionInvocation invocation) {
 						super.success(invocation);
-						Log.e(TAG, "success: " + invocation.toString());
+						Log.d(TAG, "success: " + invocation.toString());
 						if (listener != null) {
 							listener.onCommandSuccess();
 						}
@@ -55,7 +57,7 @@ class SendVideoCommand implements IUpnpCommand {
 
 					@Override
 					public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-						Log.e(TAG, "Action SetAVTransportUri failed on " + device.toString() + ": " + defaultMsg);
+						Log.w(TAG, "Action SetAVTransportUri failed on " + device.toString() + ": " + defaultMsg);
 						if (listener != null) {
 							listener.onCommandFailure(defaultMsg);
 						}
