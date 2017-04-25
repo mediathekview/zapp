@@ -89,7 +89,7 @@ public class DeviceDialog extends AppCompatDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		View view = inflater.inflate(R.layout.activity_upnp_test, null);
+		View view = inflater.inflate(R.layout.dialog_upnp_device, null);
 
 		ButterKnife.bind(this, view);
 
