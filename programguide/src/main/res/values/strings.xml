@@ -1,3 +1,5 @@
 <resources>
 	<string name="app_name">Program Guide</string>
+
+	<string name="program_info_show_time">%1$s – %2$s Uhr</string>
 </resources>

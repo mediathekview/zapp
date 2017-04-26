@@ -1,42 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools">
 
-	<TextView
-		android:id="@+id/text_show_title"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:ellipsize="end"
-		android:maxLines="2"
-		style="@style/TextAppearance.AppCompat.Title"
-		tools:text="Very very long and complicated show title"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<TextView
-		android:id="@+id/text_show_subtitle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="@dimen/view_program_info_subtitle_margin_bottom"
-		android:ellipsize="end"
-		android:maxLines="1"
-		style="@style/TextAppearance.AppCompat.Subhead"
-		tools:text="Show subtitle"/>
+	<data>
 
-	<TextView
-		android:id="@+id/text_show_time"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		style="@style/TextAppearance.AppCompat.Small"
-		tools:text="20:15 – 20:45 Uhr"/>
+		<import type="android.view.View" />
 
-	<ProgressBar
-		android:id="@+id/progressbar_show_progress"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:indeterminate="false"
-		android:max="1000"
-		tools:progress="300"
-		android:theme="@style/ShowProgress"
-		style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+		<variable
+			name="isLoading"
+			type="boolean" />
 
-</merge>
+		<variable
+			name="show"
+			type="de.christinecoenen.code.programguide.model.Show" />
+	</data>
+
+	<merge>
+
+		<TextView
+			android:id="@+id/text_show_title"
+			style="@style/TextAppearance.AppCompat.Title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:maxLines="2"
+			android:text="@{show.title ?? @string/activity_channel_detail_info_error}"
+			android:visibility="@{isLoading ? View.GONE : View.VISIBLE}" />
+
+		<TextView
+			android:id="@+id/text_show_subtitle"
+			style="@style/TextAppearance.AppCompat.Subhead"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/view_program_info_subtitle_margin_bottom"
+			android:ellipsize="end"
+			android:maxLines="1"
+			android:text="@{show.subtitle}"
+			android:visibility="@{show.subtitle == null ? View.GONE : View.VISIBLE}" />
+
+		<TextView
+			android:id="@+id/text_show_time"
+			style="@style/TextAppearance.AppCompat.Small"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@{show.getTimeString(context)}"
+			android:visibility="@{(show == null || !show.hasDuration()) ? View.GONE : View.VISIBLE}" />
+
+		<ProgressBar
+			android:id="@+id/progressbar_show_progress"
+			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:enabled="@{isLoading || show.hasDuration}"
+			android:indeterminate="@{isLoading}"
+			android:max="1000"
+			android:progress="@{Math.round(show.progressPercent * 1000)}"
+			android:theme="@style/ShowProgress"
+			android:visibility="@{(isLoading || show != null) ? View.VISIBLE : View.GONE}" />
+
+	</merge>
+</layout>

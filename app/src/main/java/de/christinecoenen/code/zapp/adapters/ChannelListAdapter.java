@@ -1,21 +1,18 @@
 package de.christinecoenen.code.zapp.adapters;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.WeakHashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.databinding.ItemChannelListBinding;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
 
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 
@@ -50,8 +47,9 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.item_channel_list, parent, false);
-		return new ViewHolder(view);
+		ItemChannelListBinding binding =
+			DataBindingUtil.inflate(inflater, R.layout.item_channel_list, parent, false);
+		return new ViewHolder(binding);
 	}
 
 	@Override
@@ -83,17 +81,16 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		@BindView(R.id.text_channel_subtitle) TextView subtitle;
-		@BindView(R.id.image_channel_logo) ImageView logo;
-		@BindView(R.id.program_info) ProgramInfoViewBase programInfoView;
 
+		private final ItemChannelListBinding binding;
 		private ChannelModel channel;
 
-		ViewHolder(View view) {
-			super(view);
-			ButterKnife.bind(this, view);
+		ViewHolder(ItemChannelListBinding binding) {
+			super(binding.getRoot());
 
-			view.setOnClickListener(this);
+			this.binding = binding;
+
+			binding.getRoot().setOnClickListener(this);
 		}
 
 		@Override
@@ -106,25 +103,16 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 		void setChannel(ChannelModel channel) {
 			this.channel = channel;
 
-			logo.setImageResource(channel.getDrawableId());
-			logo.setContentDescription(channel.getName());
-
-			if (channel.getSubtitle() == null) {
-				subtitle.setVisibility(View.GONE);
-			} else {
-				subtitle.setText(channel.getSubtitle());
-				subtitle.setVisibility(View.VISIBLE);
-			}
-
-			programInfoView.setChannel(channel);
+			binding.setChannel(channel);
+			binding.programInfo.setChannel(channel);
 		}
 
 		void pause() {
-			programInfoView.pause();
+			binding.programInfo.pause();
 		}
 
 		void resume() {
-			programInfoView.resume();
+			binding.programInfo.resume();
 		}
 	}
 

@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 
-// for butterknive:
-apply plugin: 'android-apt'
-
 android {
 	compileSdkVersion 25
 	buildToolsVersion '25.0.2'
@@ -14,6 +11,9 @@ android {
 		versionCode 12
 		versionName "1.3.4"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+	}
+	dataBinding {
+		enabled = true
 	}
 	buildTypes {
 		debug {
@@ -69,6 +69,6 @@ dependencies {
 	compile 'com.github.fiskurgit:MarkdownView:1.1.0'
 
 	// butterknive:
-	compile 'com.jakewharton:butterknife:8.4.0'
-	apt 'com.jakewharton:butterknife-compiler:8.4.0'
+	compile 'com.jakewharton:butterknife:8.5.1'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

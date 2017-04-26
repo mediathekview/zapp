@@ -1,7 +1,12 @@
 package de.christinecoenen.code.programguide.model;
 
+import android.content.Context;
+import android.text.format.DateUtils;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+
+import de.christinecoenen.code.programguide.R;
 
 public class Show {
 
@@ -49,6 +54,19 @@ public class Show {
 
 	public boolean hasDuration() {
 		return startTime != null && endTime != null;
+	}
+
+	public String getTimeString(Context context) {
+		if (!hasDuration()) {
+			return "";
+		}
+
+		String startTimeString = DateUtils.formatDateTime(context,
+			startTime.getMillis(), DateUtils.FORMAT_SHOW_TIME);
+		String endTimeString = DateUtils.formatDateTime(context,
+			endTime.getMillis(), DateUtils.FORMAT_SHOW_TIME);
+
+		return context.getString(R.string.program_info_show_time, startTimeString, endTimeString);
 	}
 
 	public float getProgressPercent() {
