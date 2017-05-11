@@ -28,6 +28,23 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
@@ -61,7 +78,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	ClickableViewPager viewPager;
 	protected
 	@BindView(R.id.video)
-	VideoView videoView;
+	SimpleExoPlayerView videoView;
 	protected
 	@BindView(R.id.progressbar_video)
 	ProgressBar progressView;
@@ -81,6 +98,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
+	private SimpleExoPlayer player;
+	private DataSource.Factory dataSourceFactory;
+	private final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
@@ -202,8 +222,17 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		int channelPosition = channelList.indexOf(channelId);
 
 		// listener
-		videoView.setOnErrorListener(new VideoErrorHandler(this));
-		videoView.setOnInfoListener(videoInfoListener);
+		//videoView.setOnErrorListener(new VideoErrorHandler(this));
+		//videoView.setOnInfoListener(videoInfoListener);
+
+		// player
+		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+		dataSourceFactory = new DefaultDataSourceFactory(this,
+			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
+		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+		videoView.setPlayer(player);
 
 		// pager
 		channelDetailAdapter = new ChannelDetailAdapter(
@@ -272,6 +301,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		// This will stop the UPnP service if nobody else is bound to it
 		getApplicationContext().unbindService(upnpServiceConnection);
+
+		player.release();
 	}
 
 	@Override
@@ -352,7 +383,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private void pauseActivity() {
 		programInfoView.pause();
-		videoView.stopPlayback();
+		player.stop();
 	}
 
 	private void resumeActivity() {
@@ -363,7 +394,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private void playDelayed() {
-		videoView.pause();
+		player.setPlayWhenReady(false);
 		progressView.setVisibility(View.VISIBLE);
 		playHandler.removeCallbacks(playRunnable);
 		playHandler.postDelayed(playRunnable, playStreamDelayMillis);
@@ -373,8 +404,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		Log.d(TAG, "play: " + currentChannel.getName());
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);
-		videoView.setVideoPath(currentChannel.getStreamUrl());
-		videoView.start();
+		//videoView.setVideoPath(currentChannel.getStreamUrl());
+
+		Uri videoUri = Uri.parse(currentChannel.getStreamUrl());
+		MediaSource videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory,
+			extractorsFactory, null, null);
+		player.prepare(videoSource);
+		player.setPlayWhenReady(true);
 	}
 
 	private boolean prevChannel() {
