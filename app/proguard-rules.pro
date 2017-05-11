@@ -21,3 +21,16 @@
 -dontwarn org.joda.convert.FromString
 -dontwarn org.joda.convert.ToString
 ## end joda-time-android 2.8.0
+
+## start cling
+-dontwarn org.fourthline.cling.**
+-dontwarn org.seamless.**
+-dontwarn org.eclipse.jetty.**
+
+-keep class javax.** { *; }
+-keep class org.** { *; }
+-keep class org.fourthline.cling.** { *;}
+-keep class org.seamless.** { *;}
+-keep class org.eclipse.jetty.** { *;}
+-keepattributes Annotation, InnerClasses, Signature
+# end cling

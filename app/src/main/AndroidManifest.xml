@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  xmlns:tools="http://schemas.android.com/tools"
-		  package="de.christinecoenen.code.zapp">
+	xmlns:tools="http://schemas.android.com/tools"
+	package="de.christinecoenen.code.zapp">
 
-	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<application
 		android:allowBackup="false"
@@ -17,21 +21,19 @@
 			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:label="@string/app_name"
 			android:parentActivityName=".ChannelListActivity"
-			android:theme="@style/FullscreenTheme">
-		</activity>
+			android:theme="@style/FullscreenTheme" />
 		<activity
 			android:name=".ChangelogActivity"
 			android:label="@string/activity_changelog_title"
-			android:parentActivityName=".AboutActivity">
-		</activity>
+			android:parentActivityName=".AboutActivity" />
 		<activity
 			android:name=".ChannelListActivity"
 			android:label="@string/app_name"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
+				<action android:name="android.intent.action.MAIN" />
 
-				<category android:name="android.intent.category.LAUNCHER"/>
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity
@@ -39,25 +41,26 @@
 			android:label="@string/activity_channel_selection_title"
 			android:parentActivityName=".SettingsActivity">
 			<intent-filter>
-				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY"/>
+				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 
-				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
 		<activity
 			android:name=".SettingsActivity"
-			android:label="@string/activity_settings_title">
-		</activity>
+			android:label="@string/activity_settings_title" />
 		<activity
 			android:name=".AboutActivity"
 			android:label="@string/activity_about_title"
-			android:parentActivityName=".ChannelListActivity">
-		</activity>
+			android:parentActivityName=".ChannelListActivity" />
 		<activity
 			android:name=".FaqActivity"
 			android:label="@string/activity_faq_title"
-			android:parentActivityName=".AboutActivity">
-		</activity>
+			android:parentActivityName=".AboutActivity" />
+
+		<service
+			android:name=".upnp.UpnpService"
+			android:exported="false"/>
 	</application>
 
 </manifest>

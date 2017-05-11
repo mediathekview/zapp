@@ -27,6 +27,7 @@ public class Show {
 		this.subtitle = subtitle;
 	}
 
+	@SuppressWarnings("unused")
 	public void setDescription(String description) {
 		this.description = description;
 	}
