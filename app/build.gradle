@@ -92,4 +92,11 @@ dependencies {
 	compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.18.v20150929'
 	compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.18.v20150929'
 	compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.14'
+
+	// exo player
+	compile 'com.google.android.exoplayer:exoplayer-core:r2.4.0'
+	compile 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
+	compile 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
+
+
 }
