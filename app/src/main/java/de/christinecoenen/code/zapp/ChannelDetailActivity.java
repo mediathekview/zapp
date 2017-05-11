@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,24 +25,31 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.VideoView;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import java.io.IOException;
 
 import butterknife.BindDrawable;
 import butterknife.BindInt;
@@ -59,13 +65,12 @@ import de.christinecoenen.code.zapp.upnp.UpnpService;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.ShortcutHelper;
-import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
 
 public class ChannelDetailActivity extends FullscreenActivity implements
-	VideoErrorHandler.IVideoErrorListener, DeviceDialog.Listener {
+	DeviceDialog.Listener, ExoPlayer.EventListener, AdaptiveMediaSourceEventListener {
 
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
@@ -100,7 +105,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private final Handler playHandler = new Handler();
 	private SimpleExoPlayer player;
 	private DataSource.Factory dataSourceFactory;
-	private final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
@@ -139,29 +143,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		@Override
 		public void run() {
 			play();
-		}
-	};
-
-	private final MediaPlayer.OnInfoListener videoInfoListener = new MediaPlayer.OnInfoListener() {
-		@Override
-		public boolean onInfo(MediaPlayer mediaPlayer, int what, int extra) {
-			switch (what) {
-				case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-					Log.d(TAG, "media player buffering start");
-					progressView.setVisibility(View.VISIBLE);
-					return true;
-				case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-					Log.d(TAG, "media player buffering end");
-					progressView.setVisibility(View.GONE);
-					return true;
-				case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-					Log.d(TAG, "media player rendering start");
-					progressView.setVisibility(View.GONE);
-					channelDetailAdapter.getCurrentFragment().onVideoStart();
-					return true;
-				default:
-					return false;
-			}
 		}
 	};
 
@@ -221,10 +202,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		String channelId = extras.getString(EXTRA_CHANNEL_ID);
 		int channelPosition = channelList.indexOf(channelId);
 
-		// listener
-		//videoView.setOnErrorListener(new VideoErrorHandler(this));
-		//videoView.setOnInfoListener(videoInfoListener);
-
 		// player
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -232,6 +209,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		dataSourceFactory = new DefaultDataSourceFactory(this,
 			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+		player.addListener(this);
 		videoView.setPlayer(player);
 
 		// pager
@@ -302,6 +280,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		// This will stop the UPnP service if nobody else is bound to it
 		getApplicationContext().unbindService(upnpServiceConnection);
 
+		player.removeListener(this);
 		player.release();
 	}
 
@@ -350,13 +329,54 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
-	public boolean onVideoError(int messageResourceId) {
+	public void onLoadingChanged(boolean isLoading) {
+		if (isLoading) {
+			Log.d(TAG, "media player buffering start");
+			progressView.setVisibility(View.VISIBLE);
+		} else {
+			Log.d(TAG, "media player buffering end");
+			progressView.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+		if (playWhenReady && playbackState == SimpleExoPlayer.STATE_READY) {
+			Log.d(TAG, "media player rendering start");
+			progressView.setVisibility(View.GONE);
+			channelDetailAdapter.getCurrentFragment().onVideoStart();
+		}
+	}
+
+	@Override
+	public void onPlayerError(ExoPlaybackException error) {
+		String message = getString(R.string.error_stream_unknown);
+
+		switch (error.type) {
+			case ExoPlaybackException.TYPE_SOURCE:
+				Log.e(TAG, "exo player error TYPE_SOURCE: " + error.getSourceException().getMessage());
+				message = getString(R.string.error_stream_io);
+				break;
+			case ExoPlaybackException.TYPE_RENDERER:
+				Log.e(TAG, "exo player error TYPE_RENDERER: " + error.getRendererException().getMessage());
+				message = getString(R.string.error_stream_unsupported);
+				break;
+			case ExoPlaybackException.TYPE_UNEXPECTED:
+				Log.e(TAG, "exo player error TYPE_UNEXPECTED: " + error.getUnexpectedException().getMessage());
+				break;
+		}
+
 		progressView.setVisibility(View.GONE);
-
-		String message = getString(messageResourceId);
 		channelDetailAdapter.getCurrentFragment().onVideoError(message);
+	}
 
-		return true;
+	@Override
+	public void onPositionDiscontinuity() {
+
+	}
+
+	@Override
+	public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
 	}
 
 	@Override
@@ -404,11 +424,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		Log.d(TAG, "play: " + currentChannel.getName());
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);
-		//videoView.setVideoPath(currentChannel.getStreamUrl());
 
 		Uri videoUri = Uri.parse(currentChannel.getStreamUrl());
-		MediaSource videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory,
-			extractorsFactory, null, null);
+		MediaSource videoSource = new HlsMediaSource(videoUri, dataSourceFactory, playHandler, this);
 		player.prepare(videoSource);
 		player.setPlayWhenReady(true);
 	}
@@ -457,5 +475,48 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private boolean isCastTargetAvailable() {
 		return upnpService != null && !upnpService.getDevices().isEmpty();
+	}
+
+	@Override
+	public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+	}
+
+	@Override
+	public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+	}
+
+	@Override
+	public void onLoadStarted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs) {
+
+	}
+
+	@Override
+	public void onLoadCompleted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
+
+	}
+
+	@Override
+	public void onLoadCanceled(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
+
+	}
+
+	@Override
+	public void onLoadError(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded, IOException error, boolean wasCanceled) {
+		// TODO: move error handling to VideoErrorHelper
+		String message = getString(R.string.error_stream_unknown);
+		progressView.setVisibility(View.GONE);
+		channelDetailAdapter.getCurrentFragment().onVideoError(message);
+	}
+
+	@Override
+	public void onUpstreamDiscarded(int trackType, long mediaStartTimeMs, long mediaEndTimeMs) {
+
+	}
+
+	@Override
+	public void onDownstreamFormatChanged(int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaTimeMs) {
+
 	}
 }
