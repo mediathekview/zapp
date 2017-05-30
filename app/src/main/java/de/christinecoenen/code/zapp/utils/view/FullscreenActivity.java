@@ -88,7 +88,6 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 
 		setContentView(getViewId());
 
-		mVisible = true;
 		ButterKnife.bind(this);
 	}
 
@@ -101,7 +100,14 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		mVisible = true;
+		
 		// Trigger the initial hide() shortly after the activity has been
 		// created, to briefly hint to the user that UI controls
 		// are available.
