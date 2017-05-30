@@ -29,11 +29,9 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
@@ -44,12 +42,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import java.io.IOException;
 
 import butterknife.BindDrawable;
 import butterknife.BindInt;
@@ -65,12 +60,13 @@ import de.christinecoenen.code.zapp.upnp.UpnpService;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.ShortcutHelper;
+import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
 
 public class ChannelDetailActivity extends FullscreenActivity implements
-	DeviceDialog.Listener, ExoPlayer.EventListener, AdaptiveMediaSourceEventListener {
+	DeviceDialog.Listener, ExoPlayer.EventListener, VideoErrorHandler.IVideoErrorListener {
 
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
@@ -103,6 +99,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
+	private final VideoErrorHandler videoErrorHandler = new VideoErrorHandler(this);
 	private SimpleExoPlayer player;
 	private DataSource.Factory dataSourceFactory;
 	private ChannelDetailAdapter channelDetailAdapter;
@@ -210,6 +207,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 		player.addListener(this);
+		player.addListener(videoErrorHandler);
 		videoView.setPlayer(player);
 
 		// pager
@@ -281,6 +279,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		getApplicationContext().unbindService(upnpServiceConnection);
 
 		player.removeListener(this);
+		player.removeListener(videoErrorHandler);
 		player.release();
 	}
 
@@ -329,6 +328,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
+	public void onTimelineChanged(Timeline timeline, Object manifest) {
+	}
+
+	@Override
+	public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+	}
+
+	@Override
 	public void onLoadingChanged(boolean isLoading) {
 		if (isLoading) {
 			Log.d(TAG, "media player buffering start");
@@ -350,29 +357,17 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	@Override
 	public void onPlayerError(ExoPlaybackException error) {
-		String message = getString(R.string.error_stream_unknown);
+	}
 
-		switch (error.type) {
-			case ExoPlaybackException.TYPE_SOURCE:
-				Log.e(TAG, "exo player error TYPE_SOURCE: " + error.getSourceException().getMessage());
-				message = getString(R.string.error_stream_io);
-				break;
-			case ExoPlaybackException.TYPE_RENDERER:
-				Log.e(TAG, "exo player error TYPE_RENDERER: " + error.getRendererException().getMessage());
-				message = getString(R.string.error_stream_unsupported);
-				break;
-			case ExoPlaybackException.TYPE_UNEXPECTED:
-				Log.e(TAG, "exo player error TYPE_UNEXPECTED: " + error.getUnexpectedException().getMessage());
-				break;
-		}
-
+	@Override
+	public void onVideoError(int messageResourceId) {
+		player.stop();
 		progressView.setVisibility(View.GONE);
-		channelDetailAdapter.getCurrentFragment().onVideoError(message);
+		channelDetailAdapter.getCurrentFragment().onVideoError(getString(messageResourceId));
 	}
 
 	@Override
 	public void onPositionDiscontinuity() {
-
 	}
 
 	@Override
@@ -426,7 +421,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		progressView.setVisibility(View.VISIBLE);
 
 		Uri videoUri = Uri.parse(currentChannel.getStreamUrl());
-		MediaSource videoSource = new HlsMediaSource(videoUri, dataSourceFactory, playHandler, this);
+		MediaSource videoSource = new HlsMediaSource(videoUri, dataSourceFactory, playHandler, videoErrorHandler);
 		player.prepare(videoSource);
 		player.setPlayWhenReady(true);
 	}
@@ -475,48 +470,5 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private boolean isCastTargetAvailable() {
 		return upnpService != null && !upnpService.getDevices().isEmpty();
-	}
-
-	@Override
-	public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-	}
-
-	@Override
-	public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-	}
-
-	@Override
-	public void onLoadStarted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs) {
-
-	}
-
-	@Override
-	public void onLoadCompleted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
-
-	}
-
-	@Override
-	public void onLoadCanceled(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
-
-	}
-
-	@Override
-	public void onLoadError(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded, IOException error, boolean wasCanceled) {
-		// TODO: move error handling to VideoErrorHelper
-		String message = getString(R.string.error_stream_unknown);
-		progressView.setVisibility(View.GONE);
-		channelDetailAdapter.getCurrentFragment().onVideoError(message);
-	}
-
-	@Override
-	public void onUpstreamDiscarded(int trackType, long mediaStartTimeMs, long mediaEndTimeMs) {
-
-	}
-
-	@Override
-	public void onDownstreamFormatChanged(int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaTimeMs) {
-
 	}
 }
