@@ -1,5 +1,22 @@
 [
 	{
+		"name": "1.4.0",
+		"items": [
+			{
+				"type": "I",
+				"title": "Sender \"Deutsche Welle Deutsch+\" hinzugefügt"
+			},
+			{
+				"type": "I",
+				"title": "Zuverlässigere Video-Wiedergabe für viele Sender."
+			},
+			{
+				"type": "B",
+				"title": "Verstecke Status-Bar nachdem die App pausiert wurde."
+			}
+		]
+	},
+	{
 		"name": "1.3.4",
 		"items": [
 			{
