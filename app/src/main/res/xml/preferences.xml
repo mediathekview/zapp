@@ -27,7 +27,8 @@
 			android:title="@string/pref_shortcuts_title" />
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="@string/pref_header_network">
+	<!-- disable completely for this release -->
+	<!--PreferenceCategory android:title="@string/pref_header_network">
 
 		<CheckBoxPreference
 			android:defaultValue="true"
@@ -35,6 +36,6 @@
 			android:summaryOff="@string/pref_upnp_enabled_summary_off"
 			android:summaryOn="@string/pref_upnp_enabled_summary_on"
 			android:title="@string/pref_upnp_enabled_title" />
-	</PreferenceCategory>
+	</PreferenceCategory-->
 
 </PreferenceScreen>

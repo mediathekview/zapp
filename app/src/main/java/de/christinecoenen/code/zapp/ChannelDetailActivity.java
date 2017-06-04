@@ -477,7 +477,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private boolean useUpnp() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		return preferences.getBoolean("pref_upnp_enabled", true);
+		// disable completely for this release
+		return false;
+		/*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		return preferences.getBoolean("pref_upnp_enabled", true);*/
 	}
 }
