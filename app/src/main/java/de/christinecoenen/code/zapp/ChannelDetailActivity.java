@@ -222,13 +222,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 				mContentView.performClick();
 			}
 		});
-
-		// This will start the UPnP service if it wasn't already started
-		getApplicationContext().bindService(
-			new Intent(this, UpnpService.class),
-			upnpServiceConnection,
-			Context.BIND_AUTO_CREATE
-		);
 	}
 
 	@Override
@@ -274,9 +267,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
-		// This will stop the UPnP service if nobody else is bound to it
-		getApplicationContext().unbindService(upnpServiceConnection);
 
 		player.removeListener(this);
 		player.removeListener(videoErrorHandler);
@@ -399,12 +389,26 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private void pauseActivity() {
 		programInfoView.pause();
 		player.stop();
+
+		if (useUpnp()) {
+			// This will stop the UPnP service if nobody else is bound to it
+			getApplicationContext().unbindService(upnpServiceConnection);
+		}
 	}
 
 	private void resumeActivity() {
 		programInfoView.resume();
 		if (isPlaying) {
 			play();
+		}
+
+		if (useUpnp()) {
+			// This will start the UPnP service if it wasn't already started
+			getApplicationContext().bindService(
+				new Intent(this, UpnpService.class),
+				upnpServiceConnection,
+				Context.BIND_AUTO_CREATE
+			);
 		}
 	}
 
@@ -470,5 +474,10 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private boolean isCastTargetAvailable() {
 		return upnpService != null && !upnpService.getDevices().isEmpty();
+	}
+
+	private boolean useUpnp() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		return preferences.getBoolean("pref_upnp_enabled", true);
 	}
 }
