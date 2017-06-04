@@ -43,12 +43,6 @@ parse channel websites for the shows currently running. This approach is not
 very reliable and may break whenever the websites change or update.
 
 
-### Why don't I see the shows progress on ARTE?
-
-ARTEs otherwise excellent API does not return the shows start and end time or
-progress so Zapp can't display it.
-
-
 ### Why are there channels missing, like RTL or Pro7?
 
 Zapp does only stream public broadcasting channels. Channels like RTL and Pro7
