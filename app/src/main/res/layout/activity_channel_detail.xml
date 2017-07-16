@@ -21,6 +21,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_gravity="center"
+			android:keepScreenOn="true"
 			app:use_controller="false" />
 
 		<de.christinecoenen.code.zapp.utils.view.ClickableViewPager
