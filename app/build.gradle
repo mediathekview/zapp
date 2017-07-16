@@ -19,7 +19,7 @@ android {
 		minSdkVersion 19
 		targetSdkVersion 25
 		versionCode 13
-		versionName "1.4.0"
+		versionName "1.4.1"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 	}
 	packagingOptions {

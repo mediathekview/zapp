@@ -1,5 +1,14 @@
 [
 	{
+		"name": "1.4.1",
+		"items": [
+			{
+				"type": "B",
+				"title": "Verhindere, dass der Bildschirm aus geht, während ein Stream läuft."
+			}
+		]
+	},
+	{
 		"name": "1.4.0",
 		"items": [
 			{
