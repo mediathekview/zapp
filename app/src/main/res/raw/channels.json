@@ -174,7 +174,7 @@
   {
 	"id": "rbb_berlin",
 	"name": "rbb Fernsehen Berlin",
-	"stream_url": "http://tv-live.rbb-online.de/i/rbb_berlin@108248/master.m3u8",
+	"stream_url": "https://rbblive-lh.akamaihd.net/i/rbb_berlin@144674/master.m3u8",
 	"logo_name": "channel_logo_rbb",
 	"subtitle": "Berlin",
 	"color": "#A71330"
@@ -182,7 +182,7 @@
   {
 	"id": "rbb_brandenburg",
 	"name": "rbb Fernsehen Brandenburg",
-	"stream_url": "http://tv-live.rbb-online.de/i/rbb_brandenburg@107638/master.m3u8",
+	"stream_url": "https://rbblive-lh.akamaihd.net/i/rbb_brandenburg@349369/master.m3u8",
 	"logo_name": "channel_logo_rbb",
 	"subtitle": "Brandenburg",
 	"color": "#A71330"
