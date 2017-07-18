@@ -12,10 +12,8 @@ Zapp gives you easy access to a large number of German public broadcasting live 
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
-<img src="app/src/main/play/de-DE/listing/phoneScreenshots/01_main.png" width="25%" alt="main screen" />
-<img src="app/src/main/play/de-DE/listing/phoneScreenshots/03_video.png" width="25%" alt="video screen" />
-<img src="app/src/main/play/de-DE/listing/phoneScreenshots/04_arrange.png" width="25%" alt="arrange screen" />
-<img src="app/src/main/play/de-DE/listing/phoneScreenshots/05_settings.png" width="25%" alt="settings screen" />
+<img src="app/src/main/play/de-DE/listing/phoneScreenshots/03_video.png" width="66%" alt="video screen" /><br>
+<img src="app/src/main/play/de-DE/listing/phoneScreenshots/01_main.png" width="33%" alt="main screen" /><img src="app/src/main/play/de-DE/listing/phoneScreenshots/04_arrange.png" width="33%" alt="arrange screen" /><img src="app/src/main/play/de-DE/listing/phoneScreenshots/05_settings.png" width="33%" alt="settings screen" />
 
 ---------------------
 
