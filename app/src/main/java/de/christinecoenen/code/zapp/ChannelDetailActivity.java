@@ -1,9 +1,7 @@
 package de.christinecoenen.code.zapp;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
@@ -12,9 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -54,9 +49,6 @@ import de.christinecoenen.code.zapp.adapters.ChannelDetailAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
-import de.christinecoenen.code.zapp.upnp.DeviceDialog;
-import de.christinecoenen.code.zapp.upnp.RendererDevice;
-import de.christinecoenen.code.zapp.upnp.UpnpService;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.ShortcutHelper;
@@ -66,7 +58,7 @@ import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
 
 public class ChannelDetailActivity extends FullscreenActivity implements
-	DeviceDialog.Listener, ExoPlayer.EventListener, VideoErrorHandler.IVideoErrorListener {
+	ExoPlayer.EventListener, VideoErrorHandler.IVideoErrorListener {
 
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
@@ -106,35 +98,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
 	private Window window;
-	private UpnpService.Binder upnpService;
-
-
-	private final UpnpService.Listener upnpListener = new UpnpService.Listener() {
-		@Override
-		public void onDeviceAdded(RendererDevice device) {
-			invalidateOptionsMenu();
-		}
-
-		@Override
-		public void onDeviceRemoved(RendererDevice device) {
-			invalidateOptionsMenu();
-		}
-	};
-
-	private final ServiceConnection upnpServiceConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			Log.d(TAG, "onUpnpServiceConnected");
-			upnpService = (UpnpService.Binder) service;
-			upnpService.addListener(upnpListener);
-			upnpService.search();
-		}
-
-		public void onServiceDisconnected(ComponentName className) {
-			Log.d(TAG, "onUpnpServiceDisconnected");
-			upnpService.removeListener(upnpListener);
-			upnpService = null;
-		}
-	};
 
 	private final Runnable playRunnable = new Runnable() {
 		@Override
@@ -275,9 +238,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		Log.d("Test", "onCreateOptionsMenu");
 		getMenuInflater().inflate(R.menu.activity_channel_detail, menu);
-		menu.findItem(R.id.menu_cast).setVisible(isCastTargetAvailable());
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -292,9 +253,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			case R.id.menu_settings:
 				Intent settingsIntent = SettingsActivity.getStartIntent(this);
 				startActivity(settingsIntent);
-				return true;
-			case R.id.menu_cast:
-				showCastTargetSelectionDialog();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -365,16 +323,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
-	public void onSendToDeviceSuccess() {
-		finish();
-	}
-
-	@Override
-	public void onSendToDeviceError(String reason) {
-		Toast.makeText(ChannelDetailActivity.this, reason, Toast.LENGTH_LONG).show();
-	}
-
-	@Override
 	protected int getViewId() {
 		return R.layout.activity_channel_detail;
 	}
@@ -389,26 +337,12 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private void pauseActivity() {
 		programInfoView.pause();
 		player.stop();
-
-		if (useUpnp()) {
-			// This will stop the UPnP service if nobody else is bound to it
-			getApplicationContext().unbindService(upnpServiceConnection);
-		}
 	}
 
 	private void resumeActivity() {
 		programInfoView.resume();
 		if (isPlaying) {
 			play();
-		}
-
-		if (useUpnp()) {
-			// This will start the UPnP service if it wasn't already started
-			getApplicationContext().bindService(
-				new Intent(this, UpnpService.class),
-				upnpServiceConnection,
-				Context.BIND_AUTO_CREATE
-			);
 		}
 	}
 
@@ -465,21 +399,5 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
 		mControlsView.setBackgroundColor(colorAlpha);
-	}
-
-	private void showCastTargetSelectionDialog() {
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		DeviceDialog.newInstance(currentChannel).show(fragmentManager, "dialog");
-	}
-
-	private boolean isCastTargetAvailable() {
-		return upnpService != null && !upnpService.getDevices().isEmpty();
-	}
-
-	private boolean useUpnp() {
-		// disable completely for this release
-		return false;
-		/*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		return preferences.getBoolean("pref_upnp_enabled", true);*/
 	}
 }

@@ -3,12 +3,6 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<item
-		android:id="@+id/menu_cast"
-		android:title="@string/action_cast"
-		android:icon="@drawable/ic_cast_white_24dp"
-		app:showAsAction="ifRoom"/>
-
-	<item
 		android:id="@+id/menu_share"
 		android:title="@string/action_share"
 		android:icon="@android:drawable/ic_menu_share"
