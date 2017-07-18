@@ -57,10 +57,6 @@
 			android:name=".FaqActivity"
 			android:label="@string/activity_faq_title"
 			android:parentActivityName=".AboutActivity" />
-
-		<service
-			android:name=".upnp.UpnpService"
-			android:exported="false"/>
 	</application>
 
 </manifest>

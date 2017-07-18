@@ -1,5 +1,14 @@
 [
 	{
+		"name": "1.4.2",
+		"items": [
+			{
+				"type": "B",
+				"title": "RBB-Streams repariert."
+			}
+		]
+	},
+	{
 		"name": "1.4.1",
 		"items": [
 			{

@@ -3,13 +3,6 @@ apply plugin: 'com.android.application'
 // for butterknive:
 apply plugin: 'android-apt'
 
-repositories {
-    maven {
-        // cling
-        url 'http://4thline.org/m2'
-    }
-}
-
 android {
 	compileSdkVersion 25
 	buildToolsVersion '25.0.2'
@@ -18,13 +11,9 @@ android {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 19
 		targetSdkVersion 25
-		versionCode 13
-		versionName "1.4.1"
+		versionCode 15
+		versionName "1.4.2"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-	}
-	packagingOptions {
-		// to fix cling DuplicateFileException
-		exclude 'META-INF/beans.xml'
 	}
 	buildTypes {
 		debug {
