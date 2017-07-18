@@ -1,4 +1,4 @@
-# ZAPP
+![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
 
 1. [About](#about)
 2. [FAQ](#faq)
@@ -8,10 +8,14 @@
 
 Zapp gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live. Zapp makes it easy to quickly switch between channels.
 
-![ZAPP logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+
+<img src="app/src/main/play/de-DE/listing/phoneScreenshots/01_main.png" width="25%" alt="main screen" />
+<img src="app/src/main/play/de-DE/listing/phoneScreenshots/03_video.png" width="25%" alt="video screen" />
+<img src="app/src/main/play/de-DE/listing/phoneScreenshots/04_arrange.png" width="25%" alt="arrange screen" />
+<img src="app/src/main/play/de-DE/listing/phoneScreenshots/05_settings.png" width="25%" alt="settings screen" />
 
 ---------------------
 
