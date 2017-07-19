@@ -34,7 +34,6 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -52,7 +51,8 @@ import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.ShortcutHelper;
-import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
+import de.christinecoenen.code.zapp.utils.video.TrackHelper;
+import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
@@ -93,6 +93,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private final Handler playHandler = new Handler();
 	private final VideoErrorHandler videoErrorHandler = new VideoErrorHandler(this);
 	private SimpleExoPlayer player;
+	private DefaultTrackSelector trackSelector;
+	private TrackHelper trackHelper;
 	private DataSource.Factory dataSourceFactory;
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
@@ -165,13 +167,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		// player
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+		trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 		dataSourceFactory = new DefaultDataSourceFactory(this,
 			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 		player.addListener(this);
 		player.addListener(videoErrorHandler);
 		videoView.setPlayer(player);
+		trackHelper = new TrackHelper(player, trackSelector);
 
 		// pager
 		channelDetailAdapter = new ChannelDetailAdapter(
@@ -300,6 +303,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			Log.d(TAG, "media player rendering start");
 			progressView.setVisibility(View.GONE);
 			channelDetailAdapter.getCurrentFragment().onVideoStart();
+
+			trackHelper.printTrackInfo();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.utils;
+package de.christinecoenen.code.zapp.utils.video;
 
 import android.util.Log;
 
