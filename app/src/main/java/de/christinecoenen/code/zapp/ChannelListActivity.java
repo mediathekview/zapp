@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,14 +13,11 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.christinecoenen.code.zapp.adapters.ChannelListAdapter;
-import de.christinecoenen.code.zapp.model.ChannelModel;
-import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
-import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
-import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 
-public class ChannelListActivity extends AppCompatActivity implements ChannelListAdapter.Listener {
+public class ChannelListActivity extends AppCompatActivity {
+
+	protected @BindView(R.id.app_bar) AppBarLayout appBarLayout;
+	protected @BindView(R.id.toolbar) Toolbar toolbar;
 
 	private final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
 		@Override
@@ -36,12 +32,13 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 		}
 	};
 
-	protected @BindView(R.id.app_bar) AppBarLayout appBarLayout;
-	protected @BindView(R.id.toolbar) Toolbar toolbar;
-	protected @BindView(R.id.gridview_channels) RecyclerView channelGridView;
+	public void addScrollListener(RecyclerView recyclerView) {
+		recyclerView.addOnScrollListener(scrollListener);
+	}
 
-	private ISortableChannelList channelList;
-	private ChannelListAdapter gridAdapter;
+	public void removeScrollListener(RecyclerView recyclerView) {
+		recyclerView.removeOnScrollListener(scrollListener);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,53 +50,6 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 		ButterKnife.bind(this);
 
 		setSupportActionBar(toolbar);
-		ViewCompat.setNestedScrollingEnabled(channelGridView, true);
-
-		channelList = new SortableJsonChannelList(this);
-		gridAdapter = new ChannelListAdapter(this, channelList, this);
-		channelGridView.setLayoutManager(new GridAutofitLayoutManager(this, 320));
-		channelGridView.setAdapter(gridAdapter);
-		channelGridView.addOnScrollListener(scrollListener);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		if (MultiWindowHelper.isInsideMultiWindow(this)) {
-			resumeActivity();
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		channelList.reloadChannelOrder();
-
-		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
-			resumeActivity();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
-			pauseActivity();
-		}
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		if (MultiWindowHelper.isInsideMultiWindow(this)) {
-			pauseActivity();
-		}
-	}
-
-	@Override
-	public void onItemClick(ChannelModel channel) {
-		Intent intent = ChannelDetailActivity.getStartIntent(this, channel.getId());
-		startActivity(intent);
 	}
 
 	@Override
@@ -125,13 +75,5 @@ public class ChannelListActivity extends AppCompatActivity implements ChannelLis
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	private void pauseActivity() {
-		gridAdapter.pause();
-	}
-
-	private void resumeActivity() {
-		gridAdapter.resume();
 	}
 }
