@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChannelListActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 	protected @BindView(R.id.app_bar) AppBarLayout appBarLayout;
 	protected @BindView(R.id.toolbar) Toolbar toolbar;
@@ -46,7 +46,7 @@ public class ChannelListActivity extends AppCompatActivity {
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-		setContentView(R.layout.activity_channel_list);
+		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
 		setSupportActionBar(toolbar);

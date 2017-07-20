@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.ChannelDetailActivity;
-import de.christinecoenen.code.zapp.ChannelListActivity;
+import de.christinecoenen.code.zapp.MainActivity;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.adapters.ChannelListAdapter;
 import de.christinecoenen.code.zapp.model.ChannelModel;
@@ -25,7 +25,7 @@ import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 
 
 public class ChannelListFragment extends Fragment implements ChannelListAdapter.Listener {
-	
+
 
 	@BindView(R.id.gridview_channels)
 	protected RecyclerView channelGridView;
@@ -100,12 +100,12 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	}
 
 	private void pauseActivity() {
-		((ChannelListActivity) getActivity()).removeScrollListener(channelGridView);
+		((MainActivity) getActivity()).removeScrollListener(channelGridView);
 		gridAdapter.pause();
 	}
 
 	private void resumeActivity() {
-		((ChannelListActivity) getActivity()).addScrollListener(channelGridView);
+		((MainActivity) getActivity()).addScrollListener(channelGridView);
 		gridAdapter.resume();
 	}
 }

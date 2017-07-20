@@ -8,4 +8,4 @@
 	android:clipToPadding="false"
 	android:scrollbars="vertical"
 	tools:context="de.christinecoenen.code.zapp.fragments.ChannelListFragment"
-	tools:showIn="@layout/activity_channel_list" />
+	tools:showIn="@layout/activity_main" />
