@@ -27,6 +27,11 @@ import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 public class ChannelListFragment extends Fragment implements ChannelListAdapter.Listener {
 
 
+	public static ChannelListFragment getInstance() {
+		return new ChannelListFragment();
+	}
+
+
 	@BindView(R.id.gridview_channels)
 	protected RecyclerView channelGridView;
 
@@ -49,7 +54,7 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_channel_list, container);
+		View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
 		ButterKnife.bind(this, view);
 
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true);
