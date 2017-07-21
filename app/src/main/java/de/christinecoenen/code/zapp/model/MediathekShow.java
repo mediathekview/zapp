@@ -1,8 +1,10 @@
 package de.christinecoenen.code.zapp.model;
 
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public class MediathekShow {
+public class MediathekShow implements Serializable {
 
 	private String id;
 	private String topic;

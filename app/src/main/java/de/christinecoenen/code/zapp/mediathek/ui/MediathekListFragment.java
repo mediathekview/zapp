@@ -82,7 +82,8 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 	@Override
 	public void onShowClicked(MediathekShow show) {
-		Toast.makeText(getContext(), show.getTitle(), Toast.LENGTH_SHORT).show();
+		((MediathekFragment) getParentFragment())
+			.navigateTo(MediathekDetailFragment.getInstance(show), show.getId());
 	}
 
 	private class ShowCallResponseListener implements Callback<MediathekAnswer> {

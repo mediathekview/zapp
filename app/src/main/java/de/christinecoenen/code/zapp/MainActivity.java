@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.fragments.ChannelListFragment;
-import de.christinecoenen.code.zapp.mediathek.ui.MediathekListFragment;
+import de.christinecoenen.code.zapp.mediathek.ui.MediathekFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,8 +66,21 @@ public class MainActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 
 		setSupportActionBar(toolbar);
+
 		viewPager.setAdapter(new MainPageAdapter(getSupportFragmentManager()));
 		tabLayout.setupWithViewPager(viewPager);
+	}
+
+	@Override
+	public void onBackPressed() {
+		Fragment currentFragment = getSupportFragmentManager()
+			.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+
+		if (currentFragment != null && currentFragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
+			currentFragment.getChildFragmentManager().popBackStack();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -112,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 				case 0:
 					return ChannelListFragment.getInstance();
 				default:
-					return MediathekListFragment.getInstance();
+					return MediathekFragment.getInstance();
 			}
 		}
 
