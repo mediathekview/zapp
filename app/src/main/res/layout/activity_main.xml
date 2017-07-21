@@ -10,17 +10,25 @@
 	<android.support.design.widget.AppBarLayout
 		android:id="@+id/app_bar"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/app_bar_height"
-		android:fitsSystemWindows="true"
-		android:theme="@style/AppTheme.AppBarOverlay">
+		android:layout_height="wrap_content"
+		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 		<android.support.design.widget.CollapsingToolbarLayout
 			android:id="@+id/toolbar_layout"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:fitsSystemWindows="true"
+			android:layout_height="wrap_content"
 			app:contentScrim="?attr/colorPrimary"
 			app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+			<ImageView
+				android:id="@+id/background"
+				android:layout_width="match_parent"
+				android:layout_height="140dp"
+				android:contentDescription="@null"
+				android:fitsSystemWindows="true"
+				android:scaleType="centerCrop"
+				android:src="@drawable/header"
+				app:layout_collapseMode="none" />
 
 			<android.support.v7.widget.Toolbar
 				android:id="@+id/toolbar"
@@ -30,6 +38,14 @@
 				app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 		</android.support.design.widget.CollapsingToolbarLayout>
+
+		<android.support.design.widget.TabLayout
+			android:id="@+id/tab_layout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			app:tabGravity="fill" />
+
 	</android.support.design.widget.AppBarLayout>
 
 
@@ -38,12 +54,6 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-		<android.support.design.widget.TabLayout
-			android:id="@+id/tab_layout"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			app:tabGravity="fill" />
 
 		<android.support.v4.view.ViewPager
 			android:id="@+id/view_pager"
