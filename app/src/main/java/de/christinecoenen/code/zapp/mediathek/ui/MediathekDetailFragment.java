@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.mediathek.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,15 @@ public class MediathekDetailFragment extends Fragment {
 
 	@BindView(R.id.text_show_description)
 	protected TextView descriptionView;
+
+	@BindView(R.id.text_show_time)
+	protected TextView timeView;
+
+	@BindView(R.id.text_show_channel)
+	protected TextView channelView;
+
+	@BindView(R.id.text_show_duration)
+	protected TextView durationView;
 
 
 	private MediathekShow show;
@@ -61,7 +71,18 @@ public class MediathekDetailFragment extends Fragment {
 		titleView.setText(show.getTitle());
 		descriptionView.setText(show.getDescription());
 
+		timeView.setText(getFormattedTimestamp(show.getTimestamp()));
+		channelView.setText(show.getChannel());
+		durationView.setText(getFormattedDuration(show.getDuration()));
+
 		return view;
 	}
 
+	private CharSequence getFormattedTimestamp(int timestamp) {
+		return DateUtils.getRelativeTimeSpanString(timestamp * DateUtils.SECOND_IN_MILLIS);
+	}
+
+	private String getFormattedDuration(int durationSeconds) {
+		return DateUtils.formatElapsedTime(durationSeconds);
+	}
 }

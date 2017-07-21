@@ -20,6 +20,12 @@
 
 	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
 
+	<!-- mediathek -->
+	<string name="fragment_mediathek_time">Eingestellt</string>
+	<string name="fragment_mediathek_channel">Sender</string>
+	<string name="fragment_mediathek_duration">Dauer</string>
+	<string name="fragment_mediathek_website">Website</string>
+
 	<!-- error messages -->
 	<string name="error_stream_unknown">Der Stream kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
 	<string name="error_stream_server_died">Es gab einen Fehler beim Abspielen. Vielleicht besteht keine Internet-Verbindung oder der Stream ist in deinem Land nicht verfügbar.</string>
