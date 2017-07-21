@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.mediathek.ui;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.MediathekShow;
 
@@ -76,6 +79,12 @@ public class MediathekDetailFragment extends Fragment {
 		durationView.setText(getFormattedDuration(show.getDuration()));
 
 		return view;
+	}
+
+	@OnClick(R.id.btn_website)
+	protected void onWebsiteClick() {
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(show.getWebsiteUrl()));
+		startActivity(browserIntent);
 	}
 
 	private CharSequence getFormattedTimestamp(int timestamp) {
