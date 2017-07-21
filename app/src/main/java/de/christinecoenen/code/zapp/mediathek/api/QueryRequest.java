@@ -9,8 +9,8 @@ public class QueryRequest {
 
 	private final List<Query> queries = new ArrayList<>();
 
-	private String sortBy;
-	private String sortOrder;
+	private String sortBy = "timestamp";
+	private String sortOrder = "desc";
 
 	@SuppressWarnings("FieldCanBeLocal")
 	private final boolean future = false;
