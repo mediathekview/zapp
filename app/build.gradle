@@ -78,5 +78,7 @@ dependencies {
 	compile 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
 	compile 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
 
-
+	// retrofit rest client
+	compile 'com.squareup.retrofit2:retrofit:2.3.0'
+	compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

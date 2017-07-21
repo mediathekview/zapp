@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="?android:attr/selectableItemBackground"
+	android:orientation="vertical"
+	android:paddingBottom="8dp"
+	android:paddingEnd="@dimen/activity_horizontal_margin"
+	android:paddingStart="@dimen/activity_horizontal_margin"
+	android:paddingTop="8dp"
+	android:textAppearance="?attr/textAppearanceListItem">
+
+	<TextView
+		android:id="@+id/topic"
+		style="@style/TextAppearance.AppCompat.Small"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:text="service:zuhause"/>
+
+	<TextView
+		android:id="@+id/title"
+		style="@style/TextAppearance.AppCompat.Subhead"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
+
+</LinearLayout>
