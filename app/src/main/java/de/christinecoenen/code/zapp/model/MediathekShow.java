@@ -14,7 +14,7 @@ public class MediathekShow implements Serializable {
 	private String description;
 	private String channel;
 	private int timestamp;
-	private int size;
+	private long size;
 	private int duration;
 	private int filmlisteTimestamp;
 
@@ -82,11 +82,11 @@ public class MediathekShow implements Serializable {
 		this.timestamp = timestamp;
 	}
 
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
 
