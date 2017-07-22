@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,10 +36,14 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	@BindView(R.id.list)
 	protected RecyclerView recyclerView;
 
+	@BindView(R.id.error)
+	protected TextView errorView;
+
 	private MediathekService service;
 	private Call<MediathekAnswer> getShowsCall;
 	private QueryRequest queryRequest;
 	private MediathekItemAdapter adapter;
+	private InfiniteScrollListener scrollListener;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,12 +74,14 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 		LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
 		recyclerView.setLayoutManager(layoutManager);
-		recyclerView.addOnScrollListener(new InfiniteScrollListener(layoutManager) {
+
+		scrollListener = new InfiniteScrollListener(layoutManager) {
 			@Override
 			public void onLoadMore(int totalItemCount) {
 				loadItems(totalItemCount);
 			}
-		});
+		};
+		recyclerView.addOnScrollListener(scrollListener);
 
 		adapter = new MediathekItemAdapter(MediathekListFragment.this);
 		recyclerView.setAdapter(adapter);
@@ -114,6 +120,16 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		getShowsCall.enqueue(new ShowCallResponseListener());
 	}
 
+	private void onMediathekApiError() {
+		showError(R.string.error_mediathek_info_not_available);
+		scrollListener.setLoadingFailed();
+	}
+
+	private void showError(int messageResId) {
+		errorView.setText(messageResId);
+		errorView.setVisibility(View.VISIBLE);
+	}
+
 	private class ShowCallResponseListener implements Callback<MediathekAnswer> {
 
 		@SuppressWarnings("ConstantConditions")
@@ -122,11 +138,14 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			adapter.setLoading(false);
 
 			if (response.body() == null || response.body().result == null) {
-				// TODO: handle error
-				Log.e(TAG, "No response");
-				Toast.makeText(getContext(), "No response", Toast.LENGTH_SHORT).show();
+				onMediathekApiError();
 			} else {
-				adapter.add(response.body().result.results);
+				if (response.body().err == null) {
+					adapter.add(response.body().result.results);
+					errorView.setVisibility(View.GONE);
+				} else {
+					onMediathekApiError();
+				}
 			}
 		}
 
@@ -134,9 +153,11 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		public void onFailure(Call<MediathekAnswer> call, Throwable t) {
 			adapter.setLoading(false);
 
-			// TODO: handle error
-			Log.e(TAG, t.getMessage());
-			Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+			if (!call.isCanceled()) {
+				// ignore canceled calls, because it most likely was canceled by app code
+				Log.e(TAG, t.toString());
+				onMediathekApiError();
+			}
 		}
 
 	}

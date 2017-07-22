@@ -21,6 +21,10 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
 		this.mLinearLayoutManager = linearLayoutManager;
 	}
 
+	public void setLoadingFailed() {
+		loading = false;
+	}
+
 	@Override
 	public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 		super.onScrolled(recyclerView, dx, dy);

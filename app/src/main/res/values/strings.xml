@@ -35,6 +35,9 @@
 	<string name="error_stream_timed_out">Der Server antwortet nicht.</string>
 	<string name="error_stream_unsupported">Der Stream ist beschädigt oder das Format wird nicht unterstützt.</string>
 
+	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
+
+
 	<!-- menus -->
 	<string name="action_share">Teilen</string>
 
