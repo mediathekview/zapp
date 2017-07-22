@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.joda.time.DateTimeZone;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -93,7 +95,10 @@ public class MediathekDetailFragment extends Fragment {
 	}
 
 	private CharSequence getFormattedTimestamp(int timestamp) {
-		return DateUtils.getRelativeTimeSpanString(timestamp * DateUtils.SECOND_IN_MILLIS);
+		long time = DateTimeZone
+			.forID("Europe/Berlin")
+			.convertLocalToUTC(timestamp * DateUtils.SECOND_IN_MILLIS, false);
+		return DateUtils.getRelativeTimeSpanString(time);
 	}
 
 	private String getFormattedDuration(int durationSeconds) {
