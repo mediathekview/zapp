@@ -9,36 +9,48 @@
 		android:orientation="vertical"
 		tools:context="de.christinecoenen.code.zapp.mediathek.ui.MediathekDetailFragment">
 
-		<TextView
-			android:id="@+id/text_show_topic"
-			style="@style/Base.TextAppearance.AppCompat.Medium"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			android:layout_marginStart="@dimen/activity_horizontal_margin"
-			android:layout_marginTop="@dimen/activity_vertical_margin"
-			android:ellipsize="end"
-			android:lines="1"
-			tools:text="Some show topic" />
 
-		<TextView
-			android:id="@+id/text_show_title"
-			style="@style/Base.TextAppearance.AppCompat.Headline"
+		<android.support.v7.widget.CardView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/activity_vertical_margin"
-			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			android:layout_marginStart="@dimen/activity_horizontal_margin"
-			tools:text="Some show title" />
+			android:layout_marginTop="@dimen/activity_vertical_margin">
 
-		<TextView
-			android:id="@+id/text_show_description"
-			style="@style/Base.TextAppearance.AppCompat.Body1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			android:layout_marginStart="@dimen/activity_horizontal_margin"
-			tools:text="Some show desciption" />
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingBottom="@dimen/activity_vertical_margin"
+				android:paddingEnd="@dimen/activity_horizontal_margin"
+				android:paddingStart="@dimen/activity_horizontal_margin"
+				android:paddingTop="@dimen/activity_vertical_margin">
+
+				<TextView
+					android:id="@+id/text_show_topic"
+					style="@style/Base.TextAppearance.AppCompat.Medium"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:ellipsize="end"
+					android:lines="1"
+					tools:text="Some show topic" />
+
+				<TextView
+					android:id="@+id/text_show_title"
+					style="@style/Base.TextAppearance.AppCompat.Headline"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="@dimen/activity_vertical_margin"
+					tools:text="Some show title" />
+
+				<TextView
+					android:id="@+id/text_show_description"
+					style="@style/Base.TextAppearance.AppCompat.Body1"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					tools:text="Some show desciption" />
+
+			</LinearLayout>
+
+		</android.support.v7.widget.CardView>
 
 		<android.support.design.widget.FloatingActionButton
 			android:id="@+id/btn_play"
@@ -46,7 +58,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="end"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			android:layout_marginTop="@dimen/activity_vertical_margin"
+			android:layout_marginTop="8dp"
 			android:src="@drawable/ic_play_arrow_white_24dp" />
 
 		<LinearLayout
