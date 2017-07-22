@@ -82,8 +82,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
 		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-		// TODO: add error handling
-		// TODO: add loading indicator
+		// TODO: addShows error handling
+		// TODO: addShows loading indicator
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.setPlayer(player);
@@ -112,8 +112,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 	protected void onPause() {
 		super.onPause();
 
-		// TODO: add multiwindow support (see ChannelDetailActivity)
-		// TODO: add lock screen orientation support (see ChannelDetailActivity)
+		// TODO: addShows multiwindow support (see ChannelDetailActivity)
+		// TODO: addShows lock screen orientation support (see ChannelDetailActivity)
 
 		player.stop();
 	}

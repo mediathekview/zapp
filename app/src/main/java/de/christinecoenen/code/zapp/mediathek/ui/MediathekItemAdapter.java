@@ -20,7 +20,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 	private static final int VIEW_TYPE_ITEM = 0;
 	private static final int VIEW_TYPE_FOOTER = 1;
 
-	private final List<MediathekShow> shows = new ArrayList<>();
+	private List<MediathekShow> shows = new ArrayList<>();
 	private final Listener listener;
 	private ProgressBar progressBar;
 
@@ -28,7 +28,12 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		this.listener = listener;
 	}
 
-	void add(List<MediathekShow> shows) {
+	void setShows(List<MediathekShow> shows) {
+		this.shows = shows;
+		notifyDataSetChanged();
+	}
+
+	void addShows(List<MediathekShow> shows) {
 		this.shows.addAll(shows);
 		notifyDataSetChanged();
 	}

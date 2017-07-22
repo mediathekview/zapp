@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.mediathek.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,7 +25,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener {
+public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
 
 	private static final String TAG = MediathekListFragment.class.getSimpleName();
 	private static final int ITEM_COUNT_PER_PAGE = 10;
@@ -38,6 +39,9 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 	@BindView(R.id.error)
 	protected TextView errorView;
+
+	@BindView(R.id.refresh_layout)
+	protected SwipeRefreshLayout swipeRefreshLayout;
 
 	private MediathekService service;
 	private Call<MediathekAnswer> getShowsCall;
@@ -78,15 +82,17 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		scrollListener = new InfiniteScrollListener(layoutManager) {
 			@Override
 			public void onLoadMore(int totalItemCount) {
-				loadItems(totalItemCount);
+				loadItems(totalItemCount, false);
 			}
 		};
 		recyclerView.addOnScrollListener(scrollListener);
+		swipeRefreshLayout.setOnRefreshListener(this);
+		swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
 
 		adapter = new MediathekItemAdapter(MediathekListFragment.this);
 		recyclerView.setAdapter(adapter);
 
-		loadItems(0);
+		loadItems(0, true);
 
 		return view;
 	}
@@ -106,7 +112,12 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			.navigateTo(MediathekDetailFragment.getInstance(show), show.getId());
 	}
 
-	private void loadItems(int startWith) {
+	@Override
+	public void onRefresh() {
+		loadItems(0, true);
+	}
+
+	private void loadItems(int startWith, boolean replaceItems) {
 		Log.d(TAG, "loadItems: " + startWith);
 
 		if (getShowsCall != null) {
@@ -117,12 +128,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 		queryRequest.setOffset(startWith);
 		getShowsCall = service.listShows(queryRequest);
-		getShowsCall.enqueue(new ShowCallResponseListener());
-	}
-
-	private void onMediathekApiError() {
-		showError(R.string.error_mediathek_info_not_available);
-		scrollListener.setLoadingFailed();
+		getShowsCall.enqueue(new ShowCallResponseListener(replaceItems));
 	}
 
 	private void showError(int messageResId) {
@@ -132,20 +138,29 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 	private class ShowCallResponseListener implements Callback<MediathekAnswer> {
 
+		private final boolean replaceItems;
+
+		ShowCallResponseListener(boolean replaceItems) {
+			this.replaceItems = replaceItems;
+		}
+
 		@SuppressWarnings("ConstantConditions")
 		@Override
 		public void onResponse(Call<MediathekAnswer> call, Response<MediathekAnswer> response) {
 			adapter.setLoading(false);
+			scrollListener.setLoadingFinished();
+			swipeRefreshLayout.setRefreshing(false);
+			errorView.setVisibility(View.GONE);
 
-			if (response.body() == null || response.body().result == null) {
-				onMediathekApiError();
+			if (response.body() == null || response.body().result == null || response.body().err != null) {
+				showError(R.string.error_mediathek_info_not_available);
+				return;
+			}
+
+			if (replaceItems) {
+				adapter.setShows(response.body().result.results);
 			} else {
-				if (response.body().err == null) {
-					adapter.add(response.body().result.results);
-					errorView.setVisibility(View.GONE);
-				} else {
-					onMediathekApiError();
-				}
+				adapter.addShows(response.body().result.results);
 			}
 		}
 
@@ -156,7 +171,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			if (!call.isCanceled()) {
 				// ignore canceled calls, because it most likely was canceled by app code
 				Log.e(TAG, t.toString());
-				onMediathekApiError();
+				showError(R.string.error_mediathek_info_not_available);
 			}
 		}
 
