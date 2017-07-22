@@ -108,8 +108,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 	@Override
 	public void onShowClicked(MediathekShow show) {
-		((MediathekFragment) getParentFragment())
-			.navigateTo(MediathekDetailFragment.getInstance(show), show.getId());
+		startActivity(MediathekDetailActivity.getStartIntent(getContext(), show));
 	}
 
 	@Override

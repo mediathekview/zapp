@@ -21,6 +21,7 @@
 	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
 
 	<!-- mediathek -->
+	<string name="fragment_mediathek_title">Sendungsdetails</string>
 	<string name="fragment_mediathek_time">Eingestellt</string>
 	<string name="fragment_mediathek_channel">Sender</string>
 	<string name="fragment_mediathek_duration">Dauer</string>

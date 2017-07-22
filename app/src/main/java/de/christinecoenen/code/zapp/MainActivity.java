@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.fragments.ChannelListFragment;
-import de.christinecoenen.code.zapp.mediathek.ui.MediathekFragment;
+import de.christinecoenen.code.zapp.mediathek.ui.MediathekListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 				case 0:
 					return ChannelListFragment.getInstance();
 				default:
-					return MediathekFragment.getInstance();
+					return MediathekListFragment.getInstance();
 			}
 		}
 
