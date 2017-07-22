@@ -81,6 +81,11 @@ public class MediathekDetailFragment extends Fragment {
 		return view;
 	}
 
+	@OnClick(R.id.btn_play)
+	protected void onPlayClick() {
+		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
+	}
+
 	@OnClick(R.id.btn_website)
 	protected void onWebsiteClick() {
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(show.getWebsiteUrl()));

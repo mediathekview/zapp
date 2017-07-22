@@ -57,6 +57,11 @@
 			android:name=".FaqActivity"
 			android:label="@string/activity_faq_title"
 			android:parentActivityName=".AboutActivity" />
+		<activity
+			android:name=".mediathek.ui.MediathekPlayerActivity"
+			android:label="@string/app_name"
+			android:parentActivityName=".MainActivity"
+			android:theme="@style/FullscreenTheme" />
 	</application>
 
 </manifest>
