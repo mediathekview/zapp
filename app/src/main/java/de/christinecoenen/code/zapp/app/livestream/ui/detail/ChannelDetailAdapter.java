@@ -9,24 +9,24 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 
 
-public class ChannelDetailAdapter extends FragmentStatePagerAdapter {
+class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 
 	private final IChannelList channelList;
 	private final OnItemChangedListener listener;
 	private StreamPageFragment currentFragment;
 
-	public ChannelDetailAdapter(FragmentManager fragmentManager, IChannelList channelList,
+	ChannelDetailAdapter(FragmentManager fragmentManager, IChannelList channelList,
 								OnItemChangedListener listener) {
 		super(fragmentManager);
 		this.channelList = channelList;
 		this.listener = listener;
 	}
 
-	public StreamPageFragment getCurrentFragment() {
+	StreamPageFragment getCurrentFragment() {
 		return currentFragment;
 	}
 
-	public ChannelModel getChannel(int index) {
+	ChannelModel getChannel(int index) {
 		return channelList.get(index);
 	}
 
@@ -61,7 +61,7 @@ public class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 		super.setPrimaryItem(container, position, object);
 	}
 
-	public interface OnItemChangedListener {
+	interface OnItemChangedListener {
 		void OnItemSelected(ChannelModel model);
 	}
 }

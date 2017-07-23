@@ -59,32 +59,31 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
-	protected
+
 	@BindView(R.id.toolbar)
-	Toolbar toolbar;
-	protected
+	protected Toolbar toolbar;
+
 	@BindView(R.id.viewpager_channels)
-	ClickableViewPager viewPager;
-	protected
+	protected ClickableViewPager viewPager;
+
 	@BindView(R.id.video)
-	SimpleExoPlayerView videoView;
-	protected
+	protected SimpleExoPlayerView videoView;
+
 	@BindView(R.id.progressbar_video)
-	ProgressBar progressView;
-	protected
+	protected ProgressBar progressView;
+
 	@BindView(R.id.program_info)
-	ProgramInfoViewBase programInfoView;
+	protected ProgramInfoViewBase programInfoView;
 
-	protected
+
 	@BindDrawable(android.R.drawable.ic_media_pause)
-	Drawable pauseIcon;
-	protected
-	@BindDrawable(android.R.drawable.ic_media_play)
-	Drawable playIcon;
+	protected Drawable pauseIcon;
 
-	protected
+	@BindDrawable(android.R.drawable.ic_media_play)
+	protected Drawable playIcon;
+
 	@BindInt(R.integer.activity_channel_detail_play_stream_delay_millis)
-	int playStreamDelayMillis;
+	protected int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
 	private final VideoErrorHandler videoErrorHandler = new VideoErrorHandler(this);

@@ -15,11 +15,11 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
 
-public class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelectionAdapter.ViewHolder> {
+class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelectionAdapter.ViewHolder> {
 
 	private final LayoutInflater inflater;
 
-	public ChannelSelectionAdapter(Context context) {
+	ChannelSelectionAdapter(Context context) {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		setHasStableIds(true);
 	}

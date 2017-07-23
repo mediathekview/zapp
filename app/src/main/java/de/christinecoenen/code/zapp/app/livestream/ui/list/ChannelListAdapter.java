@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 
-public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
+class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = ChannelListAdapter.class.getSimpleName();
@@ -27,7 +27,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 	private final WeakHashMap<ViewHolder, ?> visibleViews = new WeakHashMap<>();
 	private final Listener listener;
 
-	public ChannelListAdapter(Context context, IChannelList channelList, Listener listener) {
+	ChannelListAdapter(Context context, IChannelList channelList, Listener listener) {
 		this.channelList = channelList;
 		this.listener = listener;
 
@@ -35,13 +35,13 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 		setHasStableIds(true);
 	}
 
-	public void pause() {
+	void pause() {
 		for (ViewHolder holder : visibleViews.keySet()) {
 			holder.pause();
 		}
 	}
 
-	public void resume() {
+	void resume() {
 		notifyDataSetChanged();
 		for (ViewHolder holder : visibleViews.keySet()) {
 			holder.resume();

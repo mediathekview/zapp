@@ -17,7 +17,8 @@ import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener;
 
 public class ChannelSelectionActivity extends AppCompatActivity {
 
-	protected @BindView(R.id.draglist_channel_selection) DragListView channelListView;
+	@BindView(R.id.draglist_channel_selection)
+	protected DragListView channelListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

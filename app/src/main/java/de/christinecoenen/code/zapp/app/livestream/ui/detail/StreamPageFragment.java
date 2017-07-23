@@ -22,9 +22,14 @@ public class StreamPageFragment extends Fragment {
 	private static final String TAG = StreamPageFragment.class.getSimpleName();
 	private static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
-	protected @BindView(R.id.image_channel_logo) ImageView logoView;
-	protected @BindView(R.id.text_channel_subtitle) TextView subtitleText;
-	protected @BindView(R.id.text_error) TextView errorText;
+	@BindView(R.id.image_channel_logo)
+	protected ImageView logoView;
+
+	@BindView(R.id.text_channel_subtitle)
+	protected TextView subtitleText;
+
+	@BindView(R.id.text_error)
+	protected TextView errorText;
 
 	private View rootView;
 

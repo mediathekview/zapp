@@ -4,7 +4,7 @@ package de.christinecoenen.code.zapp.app.mediathek.api.request;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class QueryRequest {
 
 	private final List<Query> queries = new ArrayList<>();
