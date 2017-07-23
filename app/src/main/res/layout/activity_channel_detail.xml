@@ -60,7 +60,7 @@
 			android:paddingTop="@dimen/activity_vertical_margin"
 			tools:ignore="UselessParent">
 
-			<de.christinecoenen.code.zapp.views.ProgramInfoViewDetail
+			<de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewDetail
 				android:id="@+id/program_info"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />

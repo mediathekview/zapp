@@ -41,7 +41,7 @@
 
 	</LinearLayout>
 
-	<de.christinecoenen.code.zapp.views.ProgramInfoViewOverview
+	<de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewOverview
 		android:id="@+id/program_info"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

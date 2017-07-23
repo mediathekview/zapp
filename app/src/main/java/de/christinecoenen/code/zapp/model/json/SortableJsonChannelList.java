@@ -10,7 +10,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.ISortableChannelList;
 import de.christinecoenen.code.zapp.model.SimpleChannelList;
-import de.christinecoenen.code.zapp.preferences.PreferenceChannelOrderHelper;
+import de.christinecoenen.code.zapp.app.settings.helper.PreferenceChannelOrderHelper;
 
 public class SortableJsonChannelList implements ISortableChannelList {
 
