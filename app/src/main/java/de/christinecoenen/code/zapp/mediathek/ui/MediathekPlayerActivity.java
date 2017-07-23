@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -31,9 +34,12 @@ import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
+import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 
-public class MediathekPlayerActivity extends AppCompatActivity implements PlaybackControlView.VisibilityListener {
+public class MediathekPlayerActivity extends AppCompatActivity implements
+	PlaybackControlView.VisibilityListener, VideoErrorHandler.IVideoErrorListener {
 
+	private static final String TAG = MediathekPlayerActivity.class.toString();
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
 	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
 
@@ -54,9 +60,13 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 	@BindView(R.id.video)
 	protected SimpleExoPlayerView videoView;
 
+	@BindView(R.id.text_error)
+	protected TextView errorView;
+
 
 	private SimpleExoPlayer player;
 	private MediaSource videoSource;
+	private VideoErrorHandler videoErrorHandler;
 	private long millis = 0;
 
 
@@ -70,7 +80,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 		// set to show
 		MediathekShow show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
 		if (show == null) {
-			// TODO: handle error
+			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
+			finish();
 			return;
 		}
 
@@ -88,7 +99,9 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
 		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-		// TODO: addShows error handling
+
+		videoErrorHandler = new VideoErrorHandler(this);
+		player.addListener(videoErrorHandler);
 		// TODO: addShows loading indicator
 
 		videoView.setControllerVisibilityListener(this);
@@ -154,6 +167,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		player.removeListener(videoErrorHandler);
 		player.release();
 	}
 
@@ -166,15 +180,36 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 		}
 	}
 
+	@Override
+	public void onVideoError(int messageResourceId) {
+		showError(messageResourceId);
+	}
+
 	private void pauseActivity() {
 		millis = player.getCurrentPosition();
 		player.stop();
 	}
 
 	private void resumeActivity() {
+		hideError();
 		player.prepare(videoSource);
 		player.seekTo(millis);
 		player.setPlayWhenReady(true);
+	}
+
+	private void showError(int messageResId) {
+		Log.e(TAG, getString(messageResId));
+
+		videoView.setControllerHideOnTouch(false);
+		showSystemUi();
+		
+		errorView.setText(messageResId);
+		errorView.setVisibility(View.VISIBLE);
+	}
+
+	private void hideError() {
+		videoView.setControllerHideOnTouch(true);
+		errorView.setVisibility(View.GONE);
 	}
 
 	private void showSystemUi() {
