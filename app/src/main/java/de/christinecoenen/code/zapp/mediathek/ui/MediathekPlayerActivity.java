@@ -2,8 +2,11 @@ package de.christinecoenen.code.zapp.mediathek.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -27,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.MediathekShow;
+import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements PlaybackControlView.VisibilityListener {
 
@@ -52,6 +56,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 
 
 	private SimpleExoPlayer player;
+	private MediaSource videoSource;
+	private long millis = 0;
 
 
 	@Override
@@ -90,9 +96,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 		videoView.requestFocus();
 
 		Uri videoUri = Uri.parse(show.getVideoUrl());
-		MediaSource videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
-		player.prepare(videoSource);
-		player.setPlayWhenReady(true);
+		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
 	}
 
 	@Override
@@ -104,18 +108,53 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		long millis = savedInstanceState.getLong(ARG_VIDEO_MILLIS);
-		player.seekTo(millis);
+		millis = savedInstanceState.getLong(ARG_VIDEO_MILLIS);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (MultiWindowHelper.isInsideMultiWindow(this)) {
+			resumeActivity();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
+			resumeActivity();
+		}
+
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean lockScreen = preferences.getBoolean("pref_detail_landscape", true);
+		if (lockScreen) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		}
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if (!MultiWindowHelper.isInsideMultiWindow(this)) {
+			pauseActivity();
+		}
+	}
 
-		// TODO: addShows multiwindow support (see ChannelDetailActivity)
-		// TODO: addShows lock screen orientation support (see ChannelDetailActivity)
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (MultiWindowHelper.isInsideMultiWindow(this)) {
+			pauseActivity();
+		}
+	}
 
-		player.stop();
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		player.release();
 	}
 
 	@Override
@@ -125,6 +164,17 @@ public class MediathekPlayerActivity extends AppCompatActivity implements Playba
 		} else {
 			hideSystemUi();
 		}
+	}
+
+	private void pauseActivity() {
+		millis = player.getCurrentPosition();
+		player.stop();
+	}
+
+	private void resumeActivity() {
+		player.prepare(videoSource);
+		player.seekTo(millis);
+		player.setPlayWhenReady(true);
 	}
 
 	private void showSystemUi() {
