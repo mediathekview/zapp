@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,13 @@ import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
+import de.christinecoenen.code.zapp.utils.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements
-	PlaybackControlView.VisibilityListener, VideoErrorHandler.IVideoErrorListener {
+	PlaybackControlView.VisibilityListener,
+	VideoErrorHandler.IVideoErrorListener,
+	VideoBufferingHandler.IVideoBufferingListener {
 
 	private static final String TAG = MediathekPlayerActivity.class.toString();
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
@@ -63,10 +67,14 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@BindView(R.id.text_error)
 	protected TextView errorView;
 
+	@BindView(R.id.progress)
+	protected ProgressBar loadingIndicator;
+
 
 	private SimpleExoPlayer player;
 	private MediaSource videoSource;
 	private VideoErrorHandler videoErrorHandler;
+	private VideoBufferingHandler bufferingHandler;
 	private long millis = 0;
 
 
@@ -102,7 +110,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		videoErrorHandler = new VideoErrorHandler(this);
 		player.addListener(videoErrorHandler);
-		// TODO: addShows loading indicator
+		bufferingHandler = new VideoBufferingHandler(this);
+		player.addListener(bufferingHandler);
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.setPlayer(player);
@@ -168,6 +177,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 		player.removeListener(videoErrorHandler);
+		player.removeListener(bufferingHandler);
 		player.release();
 	}
 
@@ -183,6 +193,16 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	public void onVideoError(int messageResourceId) {
 		showError(messageResourceId);
+	}
+
+	@Override
+	public void onBufferingStarted() {
+		loadingIndicator.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onBufferingEnded() {
+		loadingIndicator.setVisibility(View.INVISIBLE);
 	}
 
 	private void pauseActivity() {
@@ -202,9 +222,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		videoView.setControllerHideOnTouch(false);
 		showSystemUi();
-		
+
 		errorView.setText(messageResId);
 		errorView.setVisibility(View.VISIBLE);
+		loadingIndicator.setVisibility(View.INVISIBLE);
 	}
 
 	private void hideError() {

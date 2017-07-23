@@ -21,19 +21,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -52,13 +46,14 @@ import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.ColorHelper;
 import de.christinecoenen.code.zapp.utils.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.ShortcutHelper;
+import de.christinecoenen.code.zapp.utils.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
 import de.christinecoenen.code.zapp.views.ProgramInfoViewBase;
 
 public class ChannelDetailActivity extends FullscreenActivity implements
-	ExoPlayer.EventListener, VideoErrorHandler.IVideoErrorListener {
+	VideoErrorHandler.IVideoErrorListener, VideoBufferingHandler.IVideoBufferingListener {
 
 	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
@@ -92,6 +87,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private final Handler playHandler = new Handler();
 	private final VideoErrorHandler videoErrorHandler = new VideoErrorHandler(this);
+	private final VideoBufferingHandler bufferingHandler = new VideoBufferingHandler(this);
 	private SimpleExoPlayer player;
 	private DataSource.Factory dataSourceFactory;
 	private ChannelDetailAdapter channelDetailAdapter;
@@ -169,7 +165,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		dataSourceFactory = new DefaultDataSourceFactory(this,
 			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-		player.addListener(this);
+		player.addListener(bufferingHandler);
 		player.addListener(videoErrorHandler);
 		videoView.setPlayer(player);
 
@@ -231,7 +227,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 
-		player.removeListener(this);
+		player.removeListener(bufferingHandler);
 		player.removeListener(videoErrorHandler);
 		player.release();
 	}
@@ -276,38 +272,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
-	public void onTimelineChanged(Timeline timeline, Object manifest) {
-	}
-
-	@Override
-	public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-	}
-
-	@Override
-	public void onLoadingChanged(boolean isLoading) {
-		if (isLoading) {
-			Log.d(TAG, "media player buffering start");
-			progressView.setVisibility(View.VISIBLE);
-		} else {
-			Log.d(TAG, "media player buffering end");
-			progressView.setVisibility(View.GONE);
-		}
-	}
-
-	@Override
-	public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-		if (playWhenReady && playbackState == SimpleExoPlayer.STATE_READY) {
-			Log.d(TAG, "media player rendering start");
-			progressView.setVisibility(View.GONE);
-			channelDetailAdapter.getCurrentFragment().onVideoStart();
-		}
-	}
-
-	@Override
-	public void onPlayerError(ExoPlaybackException error) {
-	}
-
-	@Override
 	public void onVideoError(int messageResourceId) {
 		player.stop();
 		progressView.setVisibility(View.GONE);
@@ -315,11 +279,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
-	public void onPositionDiscontinuity() {
+	public void onBufferingStarted() {
+		progressView.setVisibility(View.VISIBLE);
 	}
 
 	@Override
-	public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+	public void onBufferingEnded() {
+		progressView.setVisibility(View.GONE);
+		channelDetailAdapter.getCurrentFragment().onVideoStart();
 	}
 
 	@Override
