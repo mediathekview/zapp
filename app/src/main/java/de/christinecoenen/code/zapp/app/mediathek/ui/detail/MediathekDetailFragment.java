@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.joda.time.DateTimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,9 +73,9 @@ public class MediathekDetailFragment extends Fragment {
 		titleView.setText(show.getTitle());
 		descriptionView.setText(show.getDescription());
 
-		timeView.setText(getFormattedTimestamp(show.getTimestamp()));
+		timeView.setText(show.getFormattedTimestamp());
 		channelView.setText(show.getChannel());
-		durationView.setText(getFormattedDuration(show.getDuration()));
+		durationView.setText(show.getFormattedDuration());
 
 		return view;
 	}
@@ -92,16 +89,5 @@ public class MediathekDetailFragment extends Fragment {
 	protected void onWebsiteClick() {
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(show.getWebsiteUrl()));
 		startActivity(browserIntent);
-	}
-
-	private CharSequence getFormattedTimestamp(int timestamp) {
-		long time = DateTimeZone
-			.forID("Europe/Berlin")
-			.convertLocalToUTC(timestamp * DateUtils.SECOND_IN_MILLIS, false);
-		return DateUtils.getRelativeTimeSpanString(time);
-	}
-
-	private String getFormattedDuration(int durationSeconds) {
-		return DateUtils.formatElapsedTime(durationSeconds);
 	}
 }

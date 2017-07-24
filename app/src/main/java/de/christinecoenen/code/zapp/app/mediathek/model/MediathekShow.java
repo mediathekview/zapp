@@ -1,12 +1,35 @@
 package de.christinecoenen.code.zapp.app.mediathek.model;
 
 
+import android.text.format.DateUtils;
+
 import com.google.gson.annotations.SerializedName;
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.io.Serializable;
 
+
 @SuppressWarnings("unused")
 public class MediathekShow implements Serializable {
+
+	private static final PeriodFormatter hourPeriodFormatter = new PeriodFormatterBuilder()
+		.appendHours()
+		.appendSeparatorIfFieldsBefore("h ")
+		.appendMinutes()
+		.appendSeparatorIfFieldsBefore("m")
+		.toFormatter();
+
+	private static final PeriodFormatter secondsPeriodFormatter = new PeriodFormatterBuilder()
+		.appendMinutes()
+		.appendSeparatorIfFieldsBefore("m ")
+		.appendSeconds()
+		.appendSeparatorIfFieldsBefore("s")
+		.toFormatter();
 
 	private String id;
 	private String topic;
@@ -78,6 +101,13 @@ public class MediathekShow implements Serializable {
 		return timestamp;
 	}
 
+	public CharSequence getFormattedTimestamp() {
+		long time = DateTimeZone
+			.forID("Europe/Berlin")
+			.convertLocalToUTC(timestamp * DateUtils.SECOND_IN_MILLIS, false);
+		return DateUtils.getRelativeTimeSpanString(time);
+	}
+
 	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
 	}
@@ -92,6 +122,12 @@ public class MediathekShow implements Serializable {
 
 	public int getDuration() {
 		return duration;
+	}
+
+	public String getFormattedDuration() {
+		Period period = Duration.standardSeconds(duration).toPeriod();
+		PeriodFormatter formatter = (period.getHours() > 0) ? hourPeriodFormatter : secondsPeriodFormatter;
+		return period.toString(formatter);
 	}
 
 	public void setDuration(int duration) {

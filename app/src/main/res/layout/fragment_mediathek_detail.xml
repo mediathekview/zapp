@@ -81,17 +81,16 @@
 					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/fragment_mediathek_time" />
+					android:text="@string/fragment_mediathek_duration" />
 
 				<TextView
-					android:id="@+id/text_show_time"
+					android:id="@+id/text_show_duration"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					tools:text="vor 2 Tagen" />
+					tools:text="120 min" />
 
 			</LinearLayout>
-
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -114,25 +113,24 @@
 
 			</LinearLayout>
 
-
 			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_weight="1.5"
+				android:layout_weight="1"
 				android:orientation="vertical">
 
 				<TextView
 					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/fragment_mediathek_duration" />
+					android:text="@string/fragment_mediathek_time" />
 
 				<TextView
-					android:id="@+id/text_show_duration"
+					android:id="@+id/text_show_time"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					tools:text="120 min" />
+					tools:text="vor 2 Tagen" />
 
 			</LinearLayout>
 

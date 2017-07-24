@@ -112,6 +112,15 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		@BindView(R.id.topic)
 		protected TextView topic;
 
+		@BindView(R.id.text_show_duration)
+		protected TextView duration;
+
+		@BindView(R.id.text_show_channel)
+		protected TextView channel;
+
+		@BindView(R.id.text_show_time)
+		protected TextView time;
+
 		private final View view;
 
 		ItemViewHolder(View view) {
@@ -123,6 +132,9 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		void setShow(MediathekShow show) {
 			title.setText(show.getTitle());
 			topic.setText(show.getTopic());
+			duration.setText(show.getFormattedDuration());
+			channel.setText(show.getChannel());
+			time.setText(show.getFormattedTimestamp());
 		}
 
 		@Override
