@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
@@ -20,18 +22,39 @@ public class MediathekDetailActivity extends AppCompatActivity {
 		return intent;
 	}
 
+	private MediathekShow show;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mediathek_detail);
 		ButterKnife.bind(this);
 
-		MediathekShow show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
+		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 				.add(R.id.container, MediathekDetailFragment.getInstance(show), "MediathekDetailFragment")
 				.commit();
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_mediathek_detail, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_share) {
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("text/plain");
+			intent.putExtra(Intent.EXTRA_SUBJECT, show.getTopic() + " - " + show.getTitle());
+			intent.putExtra(Intent.EXTRA_TEXT, show.getVideoUrl());
+			startActivity(Intent.createChooser(intent, "Share Text"));
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

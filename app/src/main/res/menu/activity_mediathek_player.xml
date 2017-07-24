@@ -4,13 +4,8 @@
 
 	<item
 		android:id="@+id/menu_share"
-		android:title="@string/action_share"
 		android:icon="@drawable/ic_share_white_24dp"
-		app:showAsAction="never"/>
-
-	<item
-		android:id="@+id/menu_settings"
-		android:title="@string/menu_settings"
-		app:showAsAction="never"/>
+		android:title="@string/action_share"
+		app:showAsAction="ifRoom" />
 
 </menu>

@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -71,6 +73,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected ProgressBar loadingIndicator;
 
 
+	private MediathekShow show;
 	private SimpleExoPlayer player;
 	private MediaSource videoSource;
 	private VideoErrorHandler videoErrorHandler;
@@ -86,7 +89,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		ButterKnife.bind(this);
 
 		// set to show
-		MediathekShow show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
+		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
 		if (show == null) {
 			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
 			finish();
@@ -179,6 +182,22 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		player.removeListener(videoErrorHandler);
 		player.removeListener(bufferingHandler);
 		player.release();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_mediathek_player, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_share) {
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(show.getVideoUrl()));
+			startActivity(browserIntent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
