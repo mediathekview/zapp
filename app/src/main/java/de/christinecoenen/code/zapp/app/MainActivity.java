@@ -10,11 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +25,11 @@ import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener {
+
+	private static final String ARG_QUERY = "ARG_QUERY";
+	private static final int PAGE_CHANNEL_LIST = 0;
+	private static final int PAGE_MEDIATHEK_LIST = 1;
 
 	@BindView(R.id.app_bar)
 	protected AppBarLayout appBarLayout;
@@ -38,26 +43,10 @@ public class MainActivity extends AppCompatActivity {
 	@BindView(R.id.tab_layout)
 	protected TabLayout tabLayout;
 
-	private final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
-		@Override
-		public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-			if (!recyclerView.isInTouchMode()) {
-				// collapsing toolbar will not collapse by default when
-				// navigating with keyboard, so we trigger it here
-				// see: https://www.novoda.com/blog/fixing-hiding-appbarlayout-android-tv/
-				boolean expand = (dy <= 0);
-				appBarLayout.setExpanded(expand, true);
-			}
-		}
-	};
+	@BindView(R.id.search)
+	protected SearchView searchView;
 
-	public void addScrollListener(RecyclerView recyclerView) {
-		recyclerView.addOnScrollListener(scrollListener);
-	}
-
-	public void removeScrollListener(RecyclerView recyclerView) {
-		recyclerView.removeOnScrollListener(scrollListener);
-	}
+	private String searchQuery;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +60,27 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 
 		viewPager.setAdapter(new MainPageAdapter(getSupportFragmentManager()));
+		viewPager.addOnPageChangeListener(this);
 		tabLayout.setupWithViewPager(viewPager);
+
+		searchView.setOnQueryTextListener(this);
+		searchView.setIconified(false);
+		searchView.setIconifiedByDefault(false);
+
+		onPageSelected(viewPager.getCurrentItem());
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(ARG_QUERY, searchQuery);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		searchQuery = savedInstanceState.getString(ARG_QUERY);
+		search(searchQuery);
 	}
 
 	@Override
@@ -99,6 +108,50 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	@Override
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+		searchView.clearFocus();
+
+		switch (position) {
+			case PAGE_MEDIATHEK_LIST:
+				searchView.setVisibility(View.VISIBLE);
+				break;
+			case PAGE_CHANNEL_LIST:
+			default:
+				searchView.setVisibility(View.GONE);
+				break;
+		}
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int state) {
+	}
+
+	private void search(String query) {
+		Fragment currentFragment = getSupportFragmentManager()
+			.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+
+		if (currentFragment instanceof MediathekListFragment) {
+			((MediathekListFragment) currentFragment).search(query);
+		}
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		this.searchQuery = newText;
+		search(this.searchQuery);
+		return true;
+	}
+
 	private class MainPageAdapter extends FragmentPagerAdapter {
 
 		MainPageAdapter(FragmentManager fragmentManager) {
@@ -113,8 +166,9 @@ public class MainActivity extends AppCompatActivity {
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
-				case 0:
+				case PAGE_CHANNEL_LIST:
 					return ChannelListFragment.getInstance();
+				case PAGE_MEDIATHEK_LIST:
 				default:
 					return MediathekListFragment.getInstance();
 			}
@@ -125,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
 			switch (position) {
 				case 0:
 					return getString(R.string.activity_main_tab_live);
+				case PAGE_MEDIATHEK_LIST:
 				default:
 					return getString(R.string.activity_main_tab_mediathek);
 			}

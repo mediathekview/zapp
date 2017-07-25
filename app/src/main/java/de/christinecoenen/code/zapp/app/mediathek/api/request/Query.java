@@ -1,16 +1,18 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-class Query {
+class Query implements Serializable {
 
 	private final List<String> fields = new ArrayList<>();
 	private final String query;
 
-	Query(String fieldName, String queryString) {
-		fields.add(fieldName);
+	Query(String queryString, String... fieldNames) {
+		Collections.addAll(fields, fieldNames);
 		query = queryString;
 	}
 

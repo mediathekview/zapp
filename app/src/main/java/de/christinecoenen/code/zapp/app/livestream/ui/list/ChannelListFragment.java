@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.christinecoenen.code.zapp.app.MainActivity;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
@@ -104,12 +103,10 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	}
 
 	private void pauseActivity() {
-		((MainActivity) getActivity()).removeScrollListener(channelGridView);
 		gridAdapter.pause();
 	}
 
 	private void resumeActivity() {
-		((MainActivity) getActivity()).addScrollListener(channelGridView);
 		gridAdapter.resume();
 	}
 }

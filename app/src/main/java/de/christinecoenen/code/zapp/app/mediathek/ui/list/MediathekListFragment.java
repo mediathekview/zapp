@@ -14,9 +14,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
+import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener;
@@ -55,6 +55,11 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public MediathekListFragment() {
+	}
+
+	public void search(String query) {
+		queryRequest.setSimpleSearch(query);
+		loadItems(0, true);
 	}
 
 	@Override
