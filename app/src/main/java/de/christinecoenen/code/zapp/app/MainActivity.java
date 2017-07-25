@@ -75,18 +75,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public void onBackPressed() {
-		Fragment currentFragment = getSupportFragmentManager()
-			.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
-
-		if (currentFragment != null && currentFragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
-			currentFragment.getChildFragmentManager().popBackStack();
-		} else {
-			super.onBackPressed();
-		}
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_channel_list, menu);
