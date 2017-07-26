@@ -16,7 +16,6 @@
 			android:name=".app.livestream.ui.detail.ChannelDetailActivity"
 			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:label="@string/app_name"
-			android:parentActivityName=".app.MainActivity"
 			android:theme="@style/FullscreenTheme" />
 		<activity
 			android:name=".app.about.ui.ChangelogActivity"
@@ -47,8 +46,7 @@
 			android:label="@string/activity_settings_title" />
 		<activity
 			android:name=".app.about.ui.AboutActivity"
-			android:label="@string/activity_about_title"
-			android:parentActivityName=".app.MainActivity" />
+			android:label="@string/activity_about_title" />
 		<activity
 			android:name=".app.about.ui.FaqActivity"
 			android:label="@string/activity_faq_title"
@@ -56,12 +54,10 @@
 		<activity
 			android:name=".app.mediathek.ui.detail.MediathekPlayerActivity"
 			android:label="@string/app_name"
-			android:parentActivityName=".app.MainActivity"
 			android:theme="@style/FullscreenTheme" />
 		<activity
 			android:name=".app.mediathek.ui.detail.MediathekDetailActivity"
-			android:label="@string/fragment_mediathek_title"
-			android:parentActivityName=".app.MainActivity" />
+			android:label="@string/fragment_mediathek_title" />
 	</application>
 
 </manifest>

@@ -250,6 +250,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 				Intent settingsIntent = SettingsActivity.getStartIntent(this);
 				startActivity(settingsIntent);
 				return true;
+			case android.R.id.home:
+				finish();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}

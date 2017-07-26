@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -31,11 +32,26 @@ public class AboutActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_about);
 		ButterKnife.bind(this);
 
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
 		try {
 			versionText.setText(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
 		} catch (PackageManager.NameNotFoundException e) {
 			Log.w(TAG, "could not retreive version name");
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	@OnClick(R.id.button_faq)

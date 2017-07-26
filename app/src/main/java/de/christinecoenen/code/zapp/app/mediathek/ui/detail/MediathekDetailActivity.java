@@ -32,6 +32,10 @@ public class MediathekDetailActivity extends AppCompatActivity {
 
 		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
 
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 				.add(R.id.container, MediathekDetailFragment.getInstance(show), "MediathekDetailFragment")
@@ -47,14 +51,19 @@ public class MediathekDetailActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_share) {
-			Intent intent = new Intent(Intent.ACTION_SEND);
-			intent.setType("text/plain");
-			intent.putExtra(Intent.EXTRA_SUBJECT, show.getTopic() + " - " + show.getTitle());
-			intent.putExtra(Intent.EXTRA_TEXT, show.getVideoUrl());
-			startActivity(Intent.createChooser(intent, "Share Text"));
-			return true;
+		switch (item.getItemId()) {
+			case R.id.menu_share:
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_SUBJECT, show.getTopic() + " - " + show.getTitle());
+				intent.putExtra(Intent.EXTRA_TEXT, show.getVideoUrl());
+				startActivity(Intent.createChooser(intent, "Share Text"));
+				return true;
+			case android.R.id.home:
+				finish();
+				return true;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 }
