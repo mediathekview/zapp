@@ -21,3 +21,26 @@
 -dontwarn org.joda.convert.FromString
 -dontwarn org.joda.convert.ToString
 ## end joda-time-android 2.8.0
+
+
+## start retrofit
+
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+-keepclasseswithmembers interface * {
+    @retrofit2.http.* <methods>;
+}
+
+-dontwarn okio.**
+-dontwarn okhttp3.**
+-keep class de.christinecoenen.code.zapp.app.mediathek.model.** { *; }
+-keep class de.christinecoenen.code.zapp.app.mediathek.api.request.** { *; }
+-keep class de.christinecoenen.code.zapp.app.mediathek.api.result.** { *; }
+
+## end retrofit

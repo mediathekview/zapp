@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="?android:attr/selectableItemBackground"
+	android:clickable="true"
+	android:focusable="true"
+	android:orientation="vertical"
+	android:paddingBottom="8dp"
+	android:paddingTop="8dp"
+	android:textAppearance="?attr/textAppearanceListItem">
+
+	<TextView
+		android:id="@+id/topic"
+		style="@style/TextAppearance.AppCompat.Subhead.Inverse"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@color/colorAccent"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
+
+	<TextView
+		android:id="@+id/title"
+		style="@style/TextAppearance.AppCompat.Title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="-2dp"
+		android:ellipsize="end"
+		android:maxLines="2"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin">
+
+		<TextView
+			android:id="@+id/text_show_duration"
+			style="@style/TextAppearance.AppCompat.Small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="@dimen/activity_horizontal_margin"
+			tools:text="58:59 Minuten" />
+
+		<TextView
+			android:id="@+id/text_show_channel"
+			style="@style/TextAppearance.AppCompat.Small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="@dimen/activity_horizontal_margin"
+			tools:text="ZDF-tivi" />
+
+		<TextView
+			android:id="@+id/text_show_time"
+			style="@style/TextAppearance.AppCompat.Small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:text="vor 29 Minuten" />
+
+	</LinearLayout>
+
+</LinearLayout>

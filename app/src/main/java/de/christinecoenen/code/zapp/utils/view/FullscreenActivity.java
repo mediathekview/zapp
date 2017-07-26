@@ -21,26 +21,32 @@ import de.christinecoenen.code.zapp.R;
  */
 public abstract class FullscreenActivity extends AppCompatActivity {
 
-	protected @BindView(R.id.fullscreen_content) View mContentView;
-	protected @BindView(R.id.fullscreen_content_controls) View mControlsView;
+	@BindView(R.id.fullscreen_content)
+	protected View mContentView;
+
+	@BindView(R.id.fullscreen_content_controls)
+	protected View mControlsView;
 
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #autoHideUiMillis} milliseconds.
 	 */
-	protected @BindBool(R.bool.activity_fullscreen_auto_hide_ui) boolean autoHideUi;
+	@BindBool(R.bool.activity_fullscreen_auto_hide_ui)
+	protected boolean autoHideUi;
 
 	/**
 	 * If {@link #autoHideUi} is set, the number of milliseconds to wait after
 	 * user interaction before hiding the system UI.
 	 */
-	protected @BindInt(R.integer.activity_fullscreen_auto_hide_ui_millis) int autoHideUiMillis;
+	@BindInt(R.integer.activity_fullscreen_auto_hide_ui_millis)
+	protected int autoHideUiMillis;
 
 	/**
 	 * Some older devices needs a small delay between UI widget updates
 	 * and a change of the status and navigation bar.
 	 */
-	protected @BindInt(R.integer.activity_fullscreen_ui_animation_delay) int uiAnimationDelay;
+	@BindInt(R.integer.activity_fullscreen_ui_animation_delay)
+	protected int uiAnimationDelay;
 
 	private final Handler mHideHandler = new Handler();
 	private final Runnable mHidePart2Runnable = new Runnable() {
@@ -98,16 +104,11 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	}
 
 	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 
 		mVisible = true;
-		
+
 		// Trigger the initial hide() shortly after the activity has been
 		// created, to briefly hint to the user that UI controls
 		// are available.

@@ -1,6 +1,9 @@
 <resources>
 	<string name="app_name">Zapp</string>
 
+	<string name="activity_main_tab_live">Live</string>
+	<string name="activity_main_tab_mediathek">Mediathek</string>
+
 	<string name="activity_about_title">Über Zapp</string>
 	<string name="activity_about_summary">Zapp gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.</string>
 	<string name="activity_about_version">Version</string>
@@ -17,14 +20,21 @@
 
 	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
 
+	<!-- mediathek -->
+	<string name="fragment_mediathek_title">Sendungsdetails</string>
+	<string name="fragment_mediathek_time">Eingestellt</string>
+	<string name="fragment_mediathek_channel">Sender</string>
+	<string name="fragment_mediathek_duration">Dauer</string>
+	<string name="fragment_mediathek_website">Website</string>
+
 	<!-- error messages -->
-	<string name="error_stream_unknown">Der Stream kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
-	<string name="error_stream_server_died">Es gab einen Fehler beim Abspielen. Vielleicht besteht keine Internet-Verbindung oder der Stream ist in deinem Land nicht verfügbar.</string>
-	<string name="error_stream_io">Der Stream konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder der Stream ist in deinem Land nicht verfügbar.</string>
-	<string name="error_stream_malformed">Der Stream wird beschädigt ausgeliefert.</string>
-	<string name="error_stream_progressive_playback">Der Stream kann nicht progressiv abgespielt werden.</string>
-	<string name="error_stream_timed_out">Der Server antwortet nicht.</string>
-	<string name="error_stream_unsupported">Der Stream ist beschädigt oder das Format wird nicht unterstützt.</string>
+	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
+	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
+	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
+
+	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
+	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
+
 
 	<!-- menus -->
 	<string name="action_share">Teilen</string>
@@ -32,8 +42,6 @@
 	<string name="menu_about">Über</string>
 	<string name="menu_settings">Einstellungen</string>
 
-	<!-- upnp -->
-	<string name="upnp_dlg_select_renderer">Wähle ein Gerät aus</string>
 
 	<!-- paperboy changelog -->
 	<string name="paperboy_section_name">Abschnitt</string>
@@ -49,15 +57,10 @@
 	<!-- preferences -->
 	<string name="pref_header_video">Videos</string>
 	<string name="pref_header_channels">Sender</string>
-	<string name="pref_header_network">Netzwerk</string>
 
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary_on">Sperrt die App im Querformat, solange ein Video läuft</string>
 	<string name="pref_detail_landscape_summary_off">Querformat oder Portrait-Modus werden von deinen Systemeinstellungen bestimmt</string>
-
-	<string name="pref_upnp_enabled_title">Nach Streaming-Geräten suchen</string>
-	<string name="pref_upnp_enabled_summary_on">Sucht nach UPNP-Renderern, um Videos an andere Geräte zu senden</string>
-	<string name="pref_upnp_enabled_summary_off">Schaltet die UPNP-Funktion komplett aus und spart so Netzwerkressourcen</string>
 
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 

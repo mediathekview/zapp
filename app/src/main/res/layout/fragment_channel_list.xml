@@ -7,5 +7,5 @@
 	android:layout_height="match_parent"
 	android:clipToPadding="false"
 	android:scrollbars="vertical"
-	tools:context="de.christinecoenen.code.zapp.fragments.ChannelListFragment"
+	tools:context=".app.livestream.ui.list.ChannelListFragment"
 	tools:showIn="@layout/activity_main" />

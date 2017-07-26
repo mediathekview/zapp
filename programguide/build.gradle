@@ -19,9 +19,6 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
-
-	// avoid warning for "Not all execution paths return a value"
-	return void
 }
 
 dependencies {

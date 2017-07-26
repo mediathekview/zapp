@@ -1,0 +1,140 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingTop="@dimen/activity_vertical_margin"
+		tools:context=".app.mediathek.ui.detail.MediathekDetailFragment">
+
+
+		<android.support.v7.widget.CardView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_margin="4dp"
+			android:layout_marginEnd="@dimen/activity_horizontal_margin"
+			android:layout_weight="3">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingBottom="70dp"
+				android:paddingEnd="@dimen/activity_horizontal_margin"
+				android:paddingStart="@dimen/activity_horizontal_margin"
+				android:paddingTop="@dimen/activity_vertical_margin">
+
+				<TextView
+					android:id="@+id/text_show_topic"
+					style="@style/Base.TextAppearance.AppCompat.Medium"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:ellipsize="end"
+					android:lines="1"
+					tools:text="Some show topic" />
+
+				<TextView
+					android:id="@+id/text_show_title"
+					style="@style/Base.TextAppearance.AppCompat.Headline"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="@dimen/activity_vertical_margin"
+					tools:text="Some show title" />
+
+				<TextView
+					android:id="@+id/text_show_description"
+					style="@style/Base.TextAppearance.AppCompat.Body1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					tools:text="Some show desciption" />
+
+			</LinearLayout>
+
+			<android.support.design.widget.FloatingActionButton
+				android:id="@+id/btn_play"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="end|bottom"
+				android:layout_marginBottom="8dp"
+				android:layout_marginEnd="8dp"
+				android:src="@drawable/ic_play_arrow_white_24dp" />
+
+		</android.support.v7.widget.CardView>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:orientation="vertical">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="4dp"
+				android:background="@color/colorPrimary"
+				android:baselineAligned="false"
+				android:orientation="vertical"
+				android:padding="@dimen/activity_vertical_margin">
+
+				<TextView
+					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/fragment_mediathek_duration" />
+
+				<TextView
+					android:id="@+id/text_show_duration"
+					style="@style/TextAppearance.AppCompat.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					tools:text="120 min" />
+
+				<TextView
+					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/activity_vertical_margin"
+					android:text="@string/fragment_mediathek_channel" />
+
+				<TextView
+					android:id="@+id/text_show_channel"
+					style="@style/TextAppearance.AppCompat.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					tools:text="ARTE.DE" />
+
+				<TextView
+					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/activity_vertical_margin"
+					android:text="@string/fragment_mediathek_time" />
+
+				<TextView
+					android:id="@+id/text_show_time"
+					style="@style/TextAppearance.AppCompat.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					tools:text="vor 2 Tagen" />
+
+			</LinearLayout>
+
+			<Button
+				android:id="@+id/btn_website"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_home_white_24dp"
+				android:text="@string/fragment_mediathek_website" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -5,7 +5,7 @@
 	android:id="@+id/activity_channel_selection"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="de.christinecoenen.code.zapp.ChannelSelectionActivity">
+	tools:context=".app.settings.ui.ChannelSelectionActivity">
 
 	<com.woxthebox.draglistview.DragListView
 		android:id="@+id/draglist_channel_selection"
