@@ -26,7 +26,7 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 
 	@Override
 	public ChannelSelectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.item_channel_selection_list, parent, false);
+		View view = inflater.inflate(R.layout.activity_channel_selection_item, parent, false);
 		return new ViewHolder(view);
 	}
 

@@ -50,7 +50,7 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.item_channel_list, parent, false);
+		View view = inflater.inflate(R.layout.fragment_channel_list_item, parent, false);
 		return new ViewHolder(view);
 	}
 
