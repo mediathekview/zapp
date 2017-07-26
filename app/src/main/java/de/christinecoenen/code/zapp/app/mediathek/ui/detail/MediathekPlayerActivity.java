@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,9 +73,9 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@BindView(R.id.progress)
 	protected ProgressBar loadingIndicator;
 
-
 	private MediathekShow show;
 	private SimpleExoPlayer player;
+	private PlaybackControlView controlView;
 	private MediaSource videoSource;
 	private VideoErrorHandler videoErrorHandler;
 	private VideoBufferingHandler bufferingHandler;
@@ -119,6 +120,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		videoView.setControllerVisibilityListener(this);
 		videoView.setPlayer(player);
 		videoView.requestFocus();
+		controlView = (PlaybackControlView) videoView.getChildAt(1);
 
 		Uri videoUri = Uri.parse(show.getVideoUrl());
 		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
@@ -206,6 +208,39 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+			case KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD:
+			case KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD:
+			case KeyEvent.KEYCODE_MEDIA_REWIND:
+				rewind();
+				return true;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+			case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
+			case KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD:
+			case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+				fastForward();
+				return true;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_MEDIA_TOP_MENU:
+				toggleSystemUi();
+				return true;
+			case KeyEvent.KEYCODE_MEDIA_PLAY:
+				resumeActivity();
+				return true;
+			case KeyEvent.KEYCODE_MEDIA_PAUSE:
+				pauseActivity();
+				return true;
+			case KeyEvent.KEYCODE_MEDIA_CLOSE:
+				finish();
+				return true;
+		}
+
+		return super.onKeyUp(keyCode, event);
+	}
+
+	@Override
 	public void onVisibilityChange(int visibility) {
 		if (visibility == View.VISIBLE) {
 			showSystemUi();
@@ -255,6 +290,26 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private void hideError() {
 		videoView.setControllerHideOnTouch(true);
 		errorView.setVisibility(View.GONE);
+	}
+
+	private void rewind() {
+		player.seekTo(
+			Math.max(player.getCurrentPosition() - PlaybackControlView.DEFAULT_REWIND_MS, 0)
+		);
+	}
+
+	private void fastForward() {
+		player.seekTo(
+			Math.min(player.getCurrentPosition() + PlaybackControlView.DEFAULT_FAST_FORWARD_MS, player.getDuration())
+		);
+	}
+
+	private void toggleSystemUi() {
+		if (controlView.isVisible()) {
+			controlView.hide();
+		} else {
+			controlView.show();
+		}
 	}
 
 	private void showSystemUi() {
