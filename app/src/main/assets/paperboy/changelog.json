@@ -1,5 +1,14 @@
 [
 	{
+		"name": "1.5.0",
+		"items": [
+			{
+				"type": "F",
+				"title": "Mediathek-Sendungen von vielen öffentlich-rechtlichen Sendern hinzugefügt. Mit freundlicher Genehmigung vom <a href=\"https://mediathekviewweb.de/\">MediathekViewWeb-Projekt</a>."
+			}
+		]
+	},
+	{
 		"name": "1.4.2",
 		"items": [
 			{

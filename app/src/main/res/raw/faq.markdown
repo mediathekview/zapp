@@ -31,3 +31,18 @@ kaputt gehen, wenn eine Webseite geändert oder aktualisiert wird.
 
 Zapp streamt nur öffentlich-rechtliche Sender. Sender wie RTL und Pro7 gehören privaten
 Firmen und dürfen ohne Bezahlung nicht gestreamt werden.
+
+
+### Warum fehlen Sendungen in der Mediathek?
+
+Zapp darf freundlicherweise die Mediathek-API von [MediathekWebView](https://mediathekviewweb.de/)
+benutzen. Die meisten Sender haben allerdings keine öffentliche API, um Sendungsinformationen
+abfragen zu können. Daher kann es passieren, dass Sender oder einzelne Sendungen fehlen oder
+Sendungsinformationen auch einmal unvollständig sind.
+
+
+### Warum werden in der Mediathek Sendungen doppelt angezeigt?
+
+Es kommt öfter vor, dass die gleiche Sendung in den Mediatheken verschiedener Sender
+hochgeladen wird. Da Zapp alle verfügbaren Sendungen anzeigt sieht es dann manchmal so aus,
+als würden Sendungen doppelt angezeigt.
