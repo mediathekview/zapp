@@ -80,3 +80,6 @@ Zapp uses a lot of awesome open source libraries:
 - [Paperboy](https://github.com/porokoro/paperboy) to easily display a nice looking changelog
 - [DragListView](https://github.com/woxblom/DragListView) to let you reorder the channel list intuitively
 - [Butterknive](https://jakewharton.github.io/butterknife/) to avoid writing a lot of boilerplate code
+- [exo player](https://google.github.io/ExoPlayer/) the better video player
+- [Retrofit](https://square.github.io/retrofit/) for easy server api communication
+- [Joda time](http://www.joda.org/joda-time/) for sane date and time handling in Java
