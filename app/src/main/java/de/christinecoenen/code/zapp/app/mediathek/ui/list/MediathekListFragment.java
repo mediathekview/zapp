@@ -44,6 +44,9 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	@BindView(R.id.error)
 	protected TextView errorView;
 
+	@BindView(R.id.no_shows)
+	protected View noShowsWarning;
+
 	@BindView(R.id.refresh_layout)
 	protected SwipeRefreshLayout swipeRefreshLayout;
 
@@ -151,6 +154,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			getShowsCall.cancel();
 		}
 
+		noShowsWarning.setVisibility(View.GONE);
 		adapter.setLoading(true);
 
 		queryRequest.setOffset(startWith);
@@ -188,6 +192,10 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 				adapter.setShows(response.body().result.results);
 			} else {
 				adapter.addShows(response.body().result.results);
+			}
+
+			if (adapter.getItemCount() == 1) {
+				noShowsWarning.setVisibility(View.VISIBLE);
 			}
 		}
 

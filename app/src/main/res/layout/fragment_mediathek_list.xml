@@ -26,6 +26,30 @@
 		tools:ignore="UnusedAttribute"
 		tools:visibility="visible" />
 
+	<LinearLayout
+		android:id="@+id/no_shows"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:orientation="vertical"
+		tools:ignore="UseCompoundDrawables">
+
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="100dp"
+			android:contentDescription="@null"
+			android:src="@drawable/ic_sad_tv"
+			android:tint="@android:color/secondary_text_dark" />
+
+		<TextView
+			style="@style/TextAppearance.AppCompat.Display1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:text="@string/fragment_mediathek_no_results" />
+
+	</LinearLayout>
+
 	<android.support.v4.widget.SwipeRefreshLayout
 		android:id="@+id/refresh_layout"
 		android:layout_width="match_parent"
