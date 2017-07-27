@@ -5,6 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@android:color/black"
+	android:animateLayoutChanges="true"
 	tools:context=".app.mediathek.ui.detail.MediathekPlayerActivity">
 
 	<com.google.android.exoplayer2.ui.SimpleExoPlayerView
@@ -12,6 +13,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_gravity="center"
+		android:animateLayoutChanges="true"
 		android:keepScreenOn="true" />
 
 	<ProgressBar
@@ -41,6 +43,7 @@
 	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:animateLayoutChanges="true"
 		android:fitsSystemWindows="true">
 
 		<android.support.v7.widget.Toolbar

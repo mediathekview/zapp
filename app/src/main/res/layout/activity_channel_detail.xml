@@ -44,6 +44,7 @@
 	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:animateLayoutChanges="true"
 		android:fitsSystemWindows="true">
 
 		<LinearLayout
@@ -63,7 +64,8 @@
 			<de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewDetail
 				android:id="@+id/program_info"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:animateLayoutChanges="true" />
 
 		</LinearLayout>
 

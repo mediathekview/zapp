@@ -23,6 +23,7 @@
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="?attr/actionBarSize"
+				android:animateLayoutChanges="true"
 				app:popupTheme="@style/AppTheme.PopupOverlay">
 
 				<android.support.v7.widget.SearchView

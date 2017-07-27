@@ -9,35 +9,34 @@
 	android:orientation="horizontal"
 	tools:ignore="Overdraw">
 
-	<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="110dp"
-		android:paddingTop="@dimen/activity_vertical_margin"
-		android:paddingBottom="@dimen/activity_vertical_margin"
-		android:paddingStart="10dip"
-		android:paddingEnd="10dip"
 		android:layout_height="match_parent"
-		android:orientation="vertical">
+		android:orientation="vertical"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingEnd="10dip"
+		android:paddingStart="10dip"
+		android:paddingTop="@dimen/activity_vertical_margin">
 
 		<ImageView
 			android:id="@+id/image_channel_logo"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
-			android:layout_weight="10"
 			android:layout_gravity="center"
+			android:layout_weight="10"
 			android:scaleType="centerInside"
-			tools:src="@drawable/channel_logo_das_erste"
-			tools:ignore="ContentDescription"/>
+			tools:ignore="ContentDescription"
+			tools:src="@drawable/channel_logo_das_erste" />
 
 		<TextView
 			android:id="@+id/text_channel_subtitle"
+			style="@style/TextAppearance.AppCompat.Small"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:gravity="center"
-			tools:text="Very Long Subtitle"
-			style="@style/TextAppearance.AppCompat.Small"/>
+			tools:text="Very Long Subtitle" />
 
 	</LinearLayout>
 
@@ -45,6 +44,7 @@
 		android:id="@+id/program_info"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingEnd="@dimen/activity_horizontal_margin"/>
+		android:animateLayoutChanges="true"
+		android:paddingEnd="@dimen/activity_horizontal_margin" />
 
 </LinearLayout>
