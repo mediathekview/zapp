@@ -106,7 +106,9 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	}
 
 	public void pause() {
-		timer.cancel();
+		if (timer != null) {
+			timer.cancel();
+		}
 		timer = null;
 	}
 
