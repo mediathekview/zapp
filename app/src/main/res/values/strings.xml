@@ -32,6 +32,7 @@
 	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
 	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
+	<string name="error_no_app_for_link">Keine App zum Öffnen von Links gefunden.</string>
 
 	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>

@@ -1,8 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 
 
 public class MediathekDetailFragment extends Fragment {
@@ -87,7 +86,6 @@ public class MediathekDetailFragment extends Fragment {
 
 	@OnClick(R.id.btn_website)
 	protected void onWebsiteClick() {
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(show.getWebsiteUrl()));
-		startActivity(browserIntent);
+		IntentHelper.openUrl(getContext(), show.getWebsiteUrl());
 	}
 }
