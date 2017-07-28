@@ -38,7 +38,7 @@ public class MediathekShow implements Serializable {
 	private String channel;
 	private int timestamp;
 	private long size;
-	private int duration;
+	private String duration;
 	private int filmlisteTimestamp;
 
 	@SerializedName("url_website")
@@ -120,18 +120,17 @@ public class MediathekShow implements Serializable {
 		this.size = size;
 	}
 
-	public int getDuration() {
-		return duration;
-	}
-
 	public String getFormattedDuration() {
+		int duration;
+		try {
+			duration = Integer.parseInt(this.duration);
+		} catch (NumberFormatException e) {
+			return "?";
+		}
+
 		Period period = Duration.standardSeconds(duration).toPeriod();
 		PeriodFormatter formatter = (period.getHours() > 0) ? hourPeriodFormatter : secondsPeriodFormatter;
 		return period.toString(formatter);
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
 	}
 
 	public int getFilmlisteTimestamp() {
