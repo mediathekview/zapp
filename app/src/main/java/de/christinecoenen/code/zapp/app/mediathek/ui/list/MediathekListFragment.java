@@ -202,6 +202,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		@Override
 		public void onFailure(Call<MediathekAnswer> call, Throwable t) {
 			adapter.setLoading(false);
+			swipeRefreshLayout.setRefreshing(false);
 
 			if (!call.isCanceled()) {
 				// ignore canceled calls, because it most likely was canceled by app code
