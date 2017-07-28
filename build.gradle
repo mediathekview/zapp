@@ -21,6 +21,9 @@ allprojects {
 
 		// for MarkdownView
 		maven { url "https://jitpack.io" }
+
+		// google support libs
+		maven { url "https://maven.google.com" }
 	}
 }
 
