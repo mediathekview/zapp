@@ -14,6 +14,7 @@
 
 
 	<application
+		android:name=".app.ZappApplication"
 		android:allowBackup="false"
 		android:banner="@drawable/banner_tv"
 		android:icon="@mipmap/ic_launcher"

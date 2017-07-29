@@ -76,4 +76,7 @@ dependencies {
 	// retrofit rest client
 	compile 'com.squareup.retrofit2:retrofit:2.3.0'
 	compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+	// ACRA crash reporting
+	releaseCompile 'ch.acra:acra:4.9.2'
 }
