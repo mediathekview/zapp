@@ -188,6 +188,14 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	@Override
+	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
+		if (isInPictureInPictureMode) {
+			controlView.hide();
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_mediathek_player, menu);
 		return true;
@@ -271,9 +279,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private void resumeActivity() {
 		hideError();
-		player.prepare(videoSource);
-		player.seekTo(millis);
-		player.setPlayWhenReady(true);
+		if (player.getPlaybackState() == SimpleExoPlayer.STATE_IDLE) {
+			player.prepare(videoSource);
+			player.seekTo(millis);
+			player.setPlayWhenReady(true);
+		}
 	}
 
 	private void showError(int messageResId) {

@@ -141,7 +141,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		}
 	}
 
-	private void hide() {
+	protected void hide() {
 		// Hide UI first
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {

@@ -40,18 +40,18 @@ import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
+import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
-import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
-import de.christinecoenen.code.zapp.utils.view.ColorHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
+import de.christinecoenen.code.zapp.utils.view.ColorHelper;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
-import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 
 public class ChannelDetailActivity extends FullscreenActivity implements
 	VideoErrorHandler.IVideoErrorListener, VideoBufferingHandler.IVideoBufferingListener {
@@ -94,6 +94,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private ChannelModel currentChannel;
 	private boolean isPlaying = false;
 	private Window window;
+	private IChannelList channelList;
 
 	private final Runnable playRunnable = new Runnable() {
 		@Override
@@ -151,12 +152,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 
-		final IChannelList channelList = new SortableJsonChannelList(this);
-
-		// set to channel
-		Bundle extras = getIntent().getExtras();
-		String channelId = extras.getString(EXTRA_CHANNEL_ID);
-		int channelPosition = channelList.indexOf(channelId);
+		channelList = new SortableJsonChannelList(this);
 
 		// player
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -173,7 +169,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		channelDetailAdapter = new ChannelDetailAdapter(
 			getSupportFragmentManager(), channelList, onItemChangedListener);
 		viewPager.setAdapter(channelDetailAdapter);
-		viewPager.setCurrentItem(channelPosition);
 		viewPager.addOnPageChangeListener(onPageChangeListener);
 		viewPager.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -181,6 +176,16 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 				mContentView.performClick();
 			}
 		});
+
+		parseIntent(getIntent());
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		// called when coming back from picture in picture mode
+		isPlaying = false;
+		parseIntent(intent);
 	}
 
 	@Override
@@ -230,6 +235,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		player.removeListener(bufferingHandler);
 		player.removeListener(videoErrorHandler);
 		player.release();
+	}
+
+	@Override
+	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
+		if (isInPictureInPictureMode) {
+			hide();
+		}
 	}
 
 	@Override
@@ -302,6 +315,16 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	public boolean onPagerTouch() {
 		delayHide();
 		return false;
+	}
+
+	private void parseIntent(Intent intent) {
+		Bundle extras = intent.getExtras();
+		String channelId = extras.getString(EXTRA_CHANNEL_ID);
+		int channelPosition = channelList.indexOf(channelId);
+
+		viewPager.removeOnPageChangeListener(onPageChangeListener);
+		viewPager.setCurrentItem(channelPosition);
+		viewPager.addOnPageChangeListener(onPageChangeListener);
 	}
 
 	private void pauseActivity() {
