@@ -1,1 +1,5 @@
-* Mediathek-Funktion hinzugefügt - mit freundlicher Genehmigung von https://mediathekviewweb.de/
+* Rudimentäre Picture-in-Picture-Unterstützung für Android O
+* Rudimentäre Unterstützung für Android TV
+* Diverse mögliche Absturz-Ursachen behoben
+* Möglichkeit zum Senden von Absturzberichten eingebaut
+* Animationen verbessert

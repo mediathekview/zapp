@@ -8,6 +8,7 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import de.christinecoenen.code.zapp.R;
+import timber.log.Timber;
 
 @ReportsCrashes(mailTo = "code.coenen@gmail.com",
 	mode = ReportingInteractionMode.DIALOG,

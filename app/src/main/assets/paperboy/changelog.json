@@ -1,5 +1,30 @@
 [
 	{
+	"name": "1.6.0",
+		"items": [
+			{
+				"type": "F",
+				"title": "Rudimentäre Picture-in-Picture-Unterstützung für Android O."
+			},
+			{
+				"type": "F",
+				"title": "Rudimentäre Unterstützung für Android TV."
+			},
+			{
+				"type": "B",
+				"title": "Diverse mögliche Absturz-Ursachen behoben."
+			},
+			{
+				"type": "I",
+				"title": "Möglichkeit zum Senden von Absturzberichten eingebaut."
+			},
+			{
+				"type": "I",
+				"title": "Animationen eingebaut."
+			}
+		]
+	},
+	{
 		"name": "1.5.0",
 		"items": [
 			{
