@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,11 +51,11 @@ import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.ColorHelper;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
+import timber.log.Timber;
 
 public class ChannelDetailActivity extends FullscreenActivity implements
 	VideoErrorHandler.IVideoErrorListener, VideoBufferingHandler.IVideoBufferingListener {
 
-	private static final String TAG = ChannelDetailActivity.class.getSimpleName();
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
 
@@ -347,7 +346,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private void play() {
-		Log.d(TAG, "play: " + currentChannel.getName());
+		Timber.d("play: " + currentChannel.getName());
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);
 

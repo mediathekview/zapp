@@ -1,7 +1,5 @@
 package de.christinecoenen.code.zapp.utils.video;
 
-import android.util.Log;
-
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -10,10 +8,10 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 
+import timber.log.Timber;
+
 
 public class VideoBufferingHandler implements ExoPlayer.EventListener {
-
-	private static final String TAG = VideoBufferingHandler.class.getSimpleName();
 
 	private final IVideoBufferingListener listener;
 
@@ -32,10 +30,10 @@ public class VideoBufferingHandler implements ExoPlayer.EventListener {
 	@Override
 	public void onLoadingChanged(boolean isLoading) {
 		if (isLoading) {
-			Log.d(TAG, "media player buffering start");
+			Timber.v("media player buffering start");
 			listener.onBufferingStarted();
 		} else {
-			Log.d(TAG, "media player buffering end");
+			Timber.v("media player buffering end");
 			listener.onBufferingEnded();
 		}
 	}
@@ -43,7 +41,7 @@ public class VideoBufferingHandler implements ExoPlayer.EventListener {
 	@Override
 	public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 		if (playWhenReady && playbackState == SimpleExoPlayer.STATE_READY) {
-			Log.d(TAG, "media player rendering start");
+			Timber.d("media player rendering start");
 			listener.onBufferingEnded();
 		}
 	}

@@ -1,7 +1,5 @@
 package de.christinecoenen.code.zapp.utils.video;
 
-import android.util.Log;
-
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
@@ -16,11 +14,10 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import java.io.IOException;
 
 import de.christinecoenen.code.zapp.R;
+import timber.log.Timber;
 
 
 public class VideoErrorHandler implements ExoPlayer.EventListener, AdaptiveMediaSourceEventListener {
-
-	private static final String TAG = VideoErrorHandler.class.getSimpleName();
 
 	private final IVideoErrorListener listener;
 
@@ -54,15 +51,15 @@ public class VideoErrorHandler implements ExoPlayer.EventListener, AdaptiveMedia
 
 		switch (error.type) {
 			case ExoPlaybackException.TYPE_SOURCE:
-				Log.e(TAG, "exo player error TYPE_SOURCE: " + error.getSourceException().getMessage());
+				Timber.e("exo player error TYPE_SOURCE", error);
 				errorMessageResourceId = R.string.error_stream_io;
 				break;
 			case ExoPlaybackException.TYPE_RENDERER:
-				Log.e(TAG, "exo player error TYPE_RENDERER: " + error.getRendererException().getMessage());
+				Timber.e("exo player error TYPE_RENDERER", error);
 				errorMessageResourceId = R.string.error_stream_unsupported;
 				break;
 			case ExoPlaybackException.TYPE_UNEXPECTED:
-				Log.e(TAG, "exo player error TYPE_UNEXPECTED: " + error.getUnexpectedException().getMessage());
+				Timber.e("exo player error TYPE_UNEXPECTED", error);
 				break;
 		}
 

@@ -2,16 +2,14 @@ package de.christinecoenen.code.programguide;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.programguide.plugins.IProgramGuideDownloader;
 import de.christinecoenen.code.programguide.plugins.PluginRegistry;
+import timber.log.Timber;
 
 public class ProgramGuideRequest {
-
-	private static final String TAG = ProgramGuideRequest.class.getSimpleName();
 
 	private final Context context;
 	private Listener listener;
@@ -38,7 +36,7 @@ public class ProgramGuideRequest {
 		try {
 			newChannel = Channel.getById(channelId);
 		} catch (IllegalArgumentException e) {
-			Log.w(TAG, channelId + " is no valid channel id");
+			Timber.w(channelId + " is no valid channel id");
 		}
 
 		return setChannelId(newChannel);
@@ -50,7 +48,7 @@ public class ProgramGuideRequest {
 		}
 
 		if (channelId == null) {
-			Log.w(TAG, "no valid channel id set");
+			Timber.w("no valid channel id set");
 			listener.onRequestError();
 			return this;
 		}
@@ -74,6 +72,7 @@ public class ProgramGuideRequest {
 
 	public interface Listener {
 		void onRequestError();
+
 		void onRequestSuccess(Show currentShow);
 	}
 }

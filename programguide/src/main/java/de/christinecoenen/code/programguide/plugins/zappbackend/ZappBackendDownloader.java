@@ -1,8 +1,6 @@
 package de.christinecoenen.code.programguide.plugins.zappbackend;
 
 
-import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,10 +14,9 @@ import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Channel;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.programguide.plugins.BaseProgramGuideDownloader;
+import timber.log.Timber;
 
 public class ZappBackendDownloader extends BaseProgramGuideDownloader {
-
-	private static final String TAG = ZappBackendDownloader.class.getSimpleName();
 
 	private static final String API_URL = "https://zappbackend.herokuapp.com/v1/shows/";
 
@@ -33,13 +30,13 @@ public class ZappBackendDownloader extends BaseProgramGuideDownloader {
 		request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 			@Override
 			public void onResponse(JSONObject response) {
-				Log.d(TAG, "json loaded");
+				Timber.d("json loaded");
 				parse(response);
 			}
 		}, new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Log.d(TAG, "error loading json: " + error.getMessage());
+				Timber.d("error loading json: " + error.getMessage());
 				downloaderListener.onRequestError();
 			}
 		});
@@ -53,7 +50,7 @@ public class ZappBackendDownloader extends BaseProgramGuideDownloader {
 		try {
 			show = ZappBackendParser.parse(json);
 		} catch (JSONException e) {
-			Log.d(TAG, e.getMessage());
+			Timber.d(e);
 			downloaderListener.onRequestError();
 			return;
 		}

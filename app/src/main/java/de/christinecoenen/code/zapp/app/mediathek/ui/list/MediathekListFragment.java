@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +27,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
 
-	private static final String TAG = MediathekListFragment.class.getSimpleName();
 	private static final int ITEM_COUNT_PER_PAGE = 10;
 
 	public static MediathekListFragment getInstance() {
@@ -148,7 +147,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	}
 
 	private void loadItems(int startWith, boolean replaceItems) {
-		Log.d(TAG, "loadItems: " + startWith);
+		Timber.d("loadItems: " + startWith);
 
 		if (getShowsCall != null) {
 			getShowsCall.cancel();
@@ -206,7 +205,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 			if (!call.isCanceled()) {
 				// ignore canceled calls, because it most likely was canceled by app code
-				Log.e(TAG, t.toString());
+				Timber.e(t.toString());
 				showError(R.string.error_mediathek_info_not_available);
 			}
 		}

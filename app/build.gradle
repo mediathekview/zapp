@@ -79,4 +79,7 @@ dependencies {
 
 	// ACRA crash reporting
 	releaseCompile 'ch.acra:acra:4.9.2'
+
+	// timber logging
+	compile 'com.jakewharton.timber:timber:4.5.1'
 }

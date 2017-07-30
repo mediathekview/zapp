@@ -7,7 +7,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -25,10 +24,9 @@ import de.christinecoenen.code.programguide.ProgramGuideRequest;
 import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
+import timber.log.Timber;
 
 public abstract class ProgramInfoViewBase extends LinearLayout {
-
-	private static final String TAG = ProgramInfoViewBase.class.getSimpleName();
 
 	protected @BindView(R.id.text_show_title) TextView showTitleView;
 	protected @BindView(R.id.text_show_subtitle) TextView showSubtitleView;
@@ -213,7 +211,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 		if (currentChannel != null) {
 			channelId = currentChannel.getId();
 		}
-		Log.d(TAG, channelId + " - " + message);
+		Timber.d(channelId + " - " + message);
 	}
 
 	private class UpdateShowTimeTask extends TimerTask {

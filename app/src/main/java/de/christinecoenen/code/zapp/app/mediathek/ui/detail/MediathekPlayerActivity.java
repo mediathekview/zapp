@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,13 +40,13 @@ import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
+import timber.log.Timber;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements
 	PlaybackControlView.VisibilityListener,
 	VideoErrorHandler.IVideoErrorListener,
 	VideoBufferingHandler.IVideoBufferingListener {
 
-	private static final String TAG = MediathekPlayerActivity.class.toString();
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
 	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
 
@@ -287,7 +286,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void showError(int messageResId) {
-		Log.e(TAG, getString(messageResId));
+		Timber.e(getString(messageResId));
 
 		videoView.setControllerHideOnTouch(false);
 		showSystemUi();

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -13,10 +12,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
+import timber.log.Timber;
 
 public class AboutActivity extends AppCompatActivity {
-
-	private static final String TAG = AboutActivity.class.getSimpleName();
 
 	public static Intent getStartIntent(Context context) {
 		return new Intent(context, AboutActivity.class);
@@ -39,7 +37,7 @@ public class AboutActivity extends AppCompatActivity {
 		try {
 			versionText.setText(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
 		} catch (PackageManager.NameNotFoundException e) {
-			Log.w(TAG, "could not retreive version name");
+			Timber.w("could not retreive version name");
 		}
 	}
 

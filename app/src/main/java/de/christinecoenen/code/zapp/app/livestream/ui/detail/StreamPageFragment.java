@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.model.ChannelModel;
+import timber.log.Timber;
 
 public class StreamPageFragment extends Fragment {
 
-	private static final String TAG = StreamPageFragment.class.getSimpleName();
 	private static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
 	@BindView(R.id.image_channel_logo)
@@ -58,7 +57,7 @@ public class StreamPageFragment extends Fragment {
 				subtitleText.setText(channel.getSubtitle());
 			}
 		} else {
-			Log.w(TAG, "channel argument is null");
+			Timber.w("channel argument is null");
 		}
 
 		return rootView;
@@ -90,10 +89,11 @@ public class StreamPageFragment extends Fragment {
 	private void fadeOutLogo() {
 		if (rootView.getVisibility() == View.VISIBLE) {
 			Animation fadeOutAnimation = AnimationUtils.
-					loadAnimation(getContext(), android.R.anim.fade_out);
+				loadAnimation(getContext(), android.R.anim.fade_out);
 			fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
 				@Override
-				public void onAnimationStart(Animation animation) {}
+				public void onAnimationStart(Animation animation) {
+				}
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
@@ -101,7 +101,8 @@ public class StreamPageFragment extends Fragment {
 				}
 
 				@Override
-				public void onAnimationRepeat(Animation animation) {}
+				public void onAnimationRepeat(Animation animation) {
+				}
 			});
 
 			rootView.startAnimation(fadeOutAnimation);

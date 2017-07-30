@@ -32,4 +32,5 @@ dependencies {
 	compile 'com.android.volley:volley:1.0.0'
 	compile 'joda-time:joda-time:2.9.4'
 	compile 'org.jsoup:jsoup:1.9.2'
+	compile 'com.jakewharton.timber:timber:4.5.1'
 }
