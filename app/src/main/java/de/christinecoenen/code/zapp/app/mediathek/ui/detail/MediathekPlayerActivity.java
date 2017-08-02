@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,24 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.mediathek.controller.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
@@ -74,12 +62,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected ProgressBar loadingIndicator;
 
 	private MediathekShow show;
-	private SimpleExoPlayer player;
+	private Player player;
 	private PlaybackControlView controlView;
-	private MediaSource videoSource;
-	private VideoErrorHandler videoErrorHandler;
-	private VideoBufferingHandler bufferingHandler;
-	private long millis = 0;
 
 
 	@Override
@@ -104,38 +88,24 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			getSupportActionBar().setSubtitle(show.getTitle());
 		}
 
-		// player
-		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-		DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this,
-			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
-		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-
-		videoErrorHandler = new VideoErrorHandler(this);
-		player.addListener(videoErrorHandler);
-		bufferingHandler = new VideoBufferingHandler(this);
-		player.addListener(bufferingHandler);
+		player = new Player(this, show, this, this);
+		player.setView(videoView);
 
 		videoView.setControllerVisibilityListener(this);
-		videoView.setPlayer(player);
 		videoView.requestFocus();
 		controlView = (PlaybackControlView) videoView.getChildAt(1);
-
-		Uri videoUri = Uri.parse(show.getVideoUrl());
-		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(ARG_VIDEO_MILLIS, player.getCurrentPosition());
+		outState.putLong(ARG_VIDEO_MILLIS, player.getMillis());
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		millis = savedInstanceState.getLong(ARG_VIDEO_MILLIS);
+		player.setMillis(savedInstanceState.getLong(ARG_VIDEO_MILLIS));
 	}
 
 	@Override
@@ -181,9 +151,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		player.removeListener(videoErrorHandler);
-		player.removeListener(bufferingHandler);
-		player.release();
+		player.destroy();
 	}
 
 	@Override
@@ -221,13 +189,13 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			case KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD:
 			case KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD:
 			case KeyEvent.KEYCODE_MEDIA_REWIND:
-				rewind();
+				player.rewind();
 				return true;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 			case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
 			case KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD:
 			case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-				fastForward();
+				player.fastForward();
 				return true;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_MEDIA_TOP_MENU:
@@ -272,17 +240,12 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void pauseActivity() {
-		millis = player.getCurrentPosition();
-		player.stop();
+		player.pause();
 	}
 
 	private void resumeActivity() {
 		hideError();
-		if (player.getPlaybackState() == SimpleExoPlayer.STATE_IDLE) {
-			player.prepare(videoSource);
-			player.seekTo(millis);
-			player.setPlayWhenReady(true);
-		}
+		player.resume();
 	}
 
 	private void showError(int messageResId) {
@@ -299,18 +262,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private void hideError() {
 		videoView.setControllerHideOnTouch(true);
 		errorView.setVisibility(View.GONE);
-	}
-
-	private void rewind() {
-		player.seekTo(
-			Math.max(player.getCurrentPosition() - PlaybackControlView.DEFAULT_REWIND_MS, 0)
-		);
-	}
-
-	private void fastForward() {
-		player.seekTo(
-			Math.min(player.getCurrentPosition() + PlaybackControlView.DEFAULT_FAST_FORWARD_MS, player.getDuration())
-		);
 	}
 
 	private void toggleSystemUi() {
