@@ -1,3 +1,11 @@
+- [Die Videos laufen nicht – was soll ich tun?](#video-problems)
+- [Warum sehe für einige Sender keine Programminformationen?](#missing-info)
+- [Warum fehlen einige Sender wie RTL oder Pro7?](#missing-channel)
+- [Warum fehlen Sendungen in der Mediathek?](#missing-show)
+- [Warum werden in der Mediathek Sendungen doppelt angezeigt?](#doubled-show)
+- [Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?](#subtitle-problems)
+
+<a name="video-problems"></a>
 ### Die Videos laufen nicht – was soll ich tun?
 
 Wenn die Video-Streams auf Android nicht abspielen kann das mehrere Gründe haben:
@@ -19,6 +27,7 @@ Wenn Google Video Player den Stream auch nicht abspielen kann, wird das Videofor
 ziemlich sicher nicht von deinem Gerät unterstützt.
 
 
+<a name="missing-info"></a>
 ### Warum sehe für einige Sender keine Programminformationen?
 
 Die meisten Sender haben keine öffentliche API, um Sendungsinformationen abfragen zu
@@ -27,12 +36,14 @@ Sendungen zu durchsuchen. Dieser Ansatz ist nicht besonders zuverlässig und kan
 kaputt gehen, wenn eine Webseite geändert oder aktualisiert wird.
 
 
+<a name="missing-channel"></a>
 ### Warum fehlen einige Sender wie RTL oder Pro7?
 
 Zapp streamt nur öffentlich-rechtliche Sender. Sender wie RTL und Pro7 gehören privaten
 Firmen und dürfen ohne Bezahlung nicht gestreamt werden.
 
 
+<a name="missing-show"></a>
 ### Warum fehlen Sendungen in der Mediathek?
 
 Zapp darf freundlicherweise die Mediathek-API von [MediathekWebView](https://mediathekviewweb.de/)
@@ -41,8 +52,17 @@ abfragen zu können. Daher kann es passieren, dass Sender oder einzelne Sendunge
 Sendungsinformationen auch einmal unvollständig sind.
 
 
+<a name="doubled-show"></a>
 ### Warum werden in der Mediathek Sendungen doppelt angezeigt?
 
 Es kommt öfter vor, dass die gleiche Sendung in den Mediatheken verschiedener Sender
 hochgeladen wird. Da Zapp alle verfügbaren Sendungen anzeigt sieht es dann manchmal so aus,
 als würden Sendungen doppelt angezeigt.
+
+
+<a name="subtitle-problems"></a>
+### Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?
+
+Manchmal werden Untertitel von den Mediatheken in einem unerwarteten Format ausgeliefert,
+sodass Zapp sie nicht darstellen kann. Leider gibt es keinen Weg, diese Fehler vorher zu
+erkennen.
