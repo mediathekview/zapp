@@ -135,6 +135,9 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		@BindView(R.id.text_show_time)
 		protected TextView time;
 
+		@BindView(R.id.text_show_subtitle)
+		protected TextView subtitle;
+
 		private final View view;
 
 		ItemViewHolder(View view) {
@@ -149,6 +152,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 			duration.setText(show.getFormattedDuration());
 			channel.setText(show.getChannel());
 			time.setText(show.getFormattedTimestamp());
+			subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 		}
 
 		@Override

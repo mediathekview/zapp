@@ -39,6 +39,9 @@ public class MediathekDetailFragment extends Fragment {
 	@BindView(R.id.text_show_duration)
 	protected TextView durationView;
 
+	@BindView(R.id.text_show_subtitle)
+	protected TextView subtitleView;
+
 
 	private MediathekShow show;
 
@@ -75,6 +78,7 @@ public class MediathekDetailFragment extends Fragment {
 		timeView.setText(show.getFormattedTimestamp());
 		channelView.setText(show.getChannel());
 		durationView.setText(show.getFormattedDuration());
+		subtitleView.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
 		return view;
 	}

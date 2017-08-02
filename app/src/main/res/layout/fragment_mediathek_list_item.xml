@@ -63,7 +63,18 @@
 			style="@style/TextAppearance.AppCompat.Small"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			tools:text="vor 29 Minuten" />
+
+		<TextView
+			android:id="@+id/text_show_subtitle"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@color/colorAccent"
+			android:paddingEnd="4dp"
+			android:paddingStart="4dp"
+			android:text="@string/fragment_mediathek_batch_subtitle" />
 
 	</LinearLayout>
 
