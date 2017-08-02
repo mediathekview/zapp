@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.model;
 
 
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 
 import com.google.gson.annotations.SerializedName;
@@ -157,6 +158,10 @@ public class MediathekShow implements Serializable {
 		this.subtitleUrl = subtitleUrl;
 	}
 
+	public boolean hasSubtitle() {
+		return !TextUtils.isEmpty(subtitleUrl);
+	}
+
 	public String getVideoUrl() {
 		return videoUrl;
 	}
@@ -179,6 +184,22 @@ public class MediathekShow implements Serializable {
 
 	public void setVideoUrlHd(String videoUrlHd) {
 		this.videoUrlHd = videoUrlHd;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		MediathekShow that = (MediathekShow) o;
+
+		return id.equals(that.id);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
 	}
 
 	@Override

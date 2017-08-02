@@ -26,22 +26,36 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 
 	MediathekItemAdapter(Listener listener) {
 		this.listener = listener;
+		setHasStableIds(true);
 	}
 
 	void setShows(List<MediathekShow> shows) {
-		this.shows = shows;
-		notifyDataSetChanged();
+		if (!shows.equals(this.shows)) {
+			this.shows = shows;
+			notifyDataSetChanged();
+		}
 	}
 
 	void addShows(List<MediathekShow> shows) {
-		this.shows.addAll(shows);
-		notifyDataSetChanged();
+		if (!shows.isEmpty()) {
+			this.shows.addAll(shows);
+			notifyDataSetChanged();
+		}
 	}
 
 	void setLoading(boolean loading) {
 		if (progressBar != null) {
 			progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
 		}
+	}
+
+	@Override
+	public long getItemId(int position) {
+		if (position == shows.size()) {
+			// fixed id for footer
+			return 0;
+		}
+		return shows.get(position).hashCode();
 	}
 
 	@Override
