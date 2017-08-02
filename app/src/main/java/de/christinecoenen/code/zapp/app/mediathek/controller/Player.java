@@ -4,11 +4,15 @@ package de.christinecoenen.code.zapp.app.mediathek.controller;
 import android.content.Context;
 import android.net.Uri;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -17,6 +21,7 @@ import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
@@ -29,11 +34,12 @@ public class Player {
 	private final SimpleExoPlayer player;
 	private final VideoErrorHandler videoErrorHandler;
 	private final VideoBufferingHandler bufferingHandler;
-	private final MediaSource videoSource;
+	private MediaSource videoSource;
 	private long millis = 0;
 
 	public Player(Context context,
 				  MediathekShow show,
+				  boolean showSubtitles,
 				  VideoErrorHandler.IVideoErrorListener errorListener,
 				  VideoBufferingHandler.IVideoBufferingListener bufferingListener) {
 
@@ -51,6 +57,14 @@ public class Player {
 
 		Uri videoUri = Uri.parse(show.getVideoUrl());
 		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
+
+		if (showSubtitles) {
+			Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML,
+				null, Format.NO_VALUE, Format.NO_VALUE, "de", null);
+			MediaSource textMediaSource = new SingleSampleMediaSource(Uri.parse(show.getSubtitleUrl()),
+				dataSourceFactory, textFormat, C.TIME_UNSET);
+			videoSource = new MergingMediaSource(videoSource, textMediaSource);
+		}
 	}
 
 	public void setView(SimpleExoPlayerView videoView) {

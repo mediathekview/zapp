@@ -88,7 +88,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			getSupportActionBar().setSubtitle(show.getTitle());
 		}
 
-		player = new Player(this, show, this, this);
+		boolean showSubtitles = show.hasSubtitle();
+		player = new Player(this, show, showSubtitles, this, this);
 		player.setView(videoView);
 
 		videoView.setControllerVisibilityListener(this);
