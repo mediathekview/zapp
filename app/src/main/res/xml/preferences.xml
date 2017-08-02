@@ -9,6 +9,14 @@
 			android:summaryOff="@string/pref_detail_landscape_summary_off"
 			android:summaryOn="@string/pref_detail_landscape_summary_on"
 			android:title="@string/pref_detail_landscape_title" />
+
+		<CheckBoxPreference
+			android:defaultValue="false"
+			android:key="pref_enable_subtitles"
+			android:summaryOff="@string/pref_enable_subtitles_summary_off"
+			android:summaryOn="@string/pref_enable_subtitles_summary_on"
+			android:title="@string/pref_enable_subtitles_title" />
+
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="@string/pref_header_channels">

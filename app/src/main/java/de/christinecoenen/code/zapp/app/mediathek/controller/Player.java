@@ -2,7 +2,9 @@ package de.christinecoenen.code.zapp.app.mediathek.controller;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -39,7 +41,6 @@ public class Player {
 
 	public Player(Context context,
 				  MediathekShow show,
-				  boolean showSubtitles,
 				  VideoErrorHandler.IVideoErrorListener errorListener,
 				  VideoBufferingHandler.IVideoBufferingListener bufferingListener) {
 
@@ -58,7 +59,11 @@ public class Player {
 		Uri videoUri = Uri.parse(show.getVideoUrl());
 		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
 
-		if (showSubtitles) {
+
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean showSubtitlesPref = preferences.getBoolean("pref_enable_subtitles", false);
+
+		if (show.hasSubtitle() && showSubtitlesPref) {
 			Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML,
 				null, Format.NO_VALUE, Format.NO_VALUE, "de", null);
 			MediaSource textMediaSource = new SingleSampleMediaSource(Uri.parse(show.getSubtitleUrl()),
