@@ -44,6 +44,8 @@
 	<!-- menus & buttons -->
 	<string name="action_share">Teilen</string>
 	<string name="action_continue">Weiter</string>
+	<string name="action_enable_subtitles">Untertitel aktivieren</string>
+	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 
 	<string name="menu_refresh">Aktualisieren</string>
 	<string name="menu_about">Über</string>

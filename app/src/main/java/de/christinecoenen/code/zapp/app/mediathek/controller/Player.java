@@ -17,8 +17,8 @@ import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -36,6 +36,10 @@ public class Player {
 	private final SimpleExoPlayer player;
 	private final VideoErrorHandler videoErrorHandler;
 	private final VideoBufferingHandler bufferingHandler;
+	private final MappingTrackSelector trackSelector;
+	private final boolean hasSubtitles;
+	private final int subtitleRendererIndex;
+	private boolean isShowingSubtitles;
 	private MediaSource videoSource;
 	private long millis = 0;
 
@@ -48,7 +52,8 @@ public class Player {
 		DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context,
 			Util.getUserAgent(context, context.getString(R.string.app_name)), bandwidthMeter);
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+		trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
 		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 
 		videoErrorHandler = new VideoErrorHandler(errorListener);
@@ -62,14 +67,18 @@ public class Player {
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean showSubtitlesPref = preferences.getBoolean("pref_enable_subtitles", false);
+		hasSubtitles = show.hasSubtitle();
 
-		if (show.hasSubtitle() && showSubtitlesPref) {
+		if (hasSubtitles && showSubtitlesPref) {
 			Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML,
 				null, Format.NO_VALUE, Format.NO_VALUE, "de", null);
 			MediaSource textMediaSource = new SingleSampleMediaSource(Uri.parse(show.getSubtitleUrl()),
 				dataSourceFactory, textFormat, C.TIME_UNSET);
 			videoSource = new MergingMediaSource(videoSource, textMediaSource);
+			isShowingSubtitles = true;
 		}
+
+		subtitleRendererIndex = getRendererIndex(C.TRACK_TYPE_TEXT);
 	}
 
 	public void setView(SimpleExoPlayerView videoView) {
@@ -82,6 +91,14 @@ public class Player {
 
 	public long getMillis() {
 		return player.getCurrentPosition();
+	}
+
+	public void enableSubtitles() {
+		enableSubtitles(true);
+	}
+
+	public void disableSubtitles() {
+		enableSubtitles(false);
 	}
 
 	public void pause() {
@@ -113,5 +130,29 @@ public class Player {
 		player.removeListener(videoErrorHandler);
 		player.removeListener(bufferingHandler);
 		player.release();
+	}
+
+	public boolean hasSubtitles() {
+		return hasSubtitles;
+	}
+
+	public boolean isShowingSubtitles() {
+		return isShowingSubtitles;
+	}
+
+	private void enableSubtitles(boolean enabled) {
+		if (subtitleRendererIndex != -1) {
+			trackSelector.setRendererDisabled(subtitleRendererIndex, !enabled);
+		}
+		isShowingSubtitles = enabled;
+	}
+
+	private int getRendererIndex(int trackType) {
+		for (int i = 0; i < player.getRendererCount(); i++) {
+			if (player.getRendererType(i) == trackType) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.controller.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
@@ -55,6 +57,12 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@BindView(R.id.video)
 	protected SimpleExoPlayerView videoView;
 
+	@BindView(R.id.btn_caption_enable)
+	protected ImageButton captionButtonEnable;
+
+	@BindView(R.id.btn_caption_disable)
+	protected ImageButton captionButtonDisable;
+
 	@BindView(R.id.text_error)
 	protected TextView errorView;
 
@@ -87,10 +95,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			setTitle(show.getTopic());
 			getSupportActionBar().setSubtitle(show.getTitle());
 		}
-		
+
 
 		player = new Player(this, show, this, this);
 		player.setView(videoView);
+		updateSubtitleButtons();
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
@@ -240,6 +249,18 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		loadingIndicator.setVisibility(View.INVISIBLE);
 	}
 
+	@OnClick(R.id.btn_caption_disable)
+	public void onDisableCaptionsClick() {
+		player.disableSubtitles();
+		updateSubtitleButtons();
+	}
+
+	@OnClick(R.id.btn_caption_enable)
+	public void onEnableCaptionsClick() {
+		player.enableSubtitles();
+		updateSubtitleButtons();
+	}
+
 	private void pauseActivity() {
 		player.pause();
 	}
@@ -247,6 +268,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private void resumeActivity() {
 		hideError();
 		player.resume();
+	}
+
+	private void updateSubtitleButtons() {
+		captionButtonEnable.setVisibility(player.hasSubtitles() && !player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
+		captionButtonDisable.setVisibility(player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
 	}
 
 	private void showError(int messageResId) {
