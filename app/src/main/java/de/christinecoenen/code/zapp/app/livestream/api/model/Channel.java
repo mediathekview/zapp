@@ -1,4 +1,4 @@
-package de.christinecoenen.code.programguide.model;
+package de.christinecoenen.code.zapp.app.livestream.api.model;
 
 
 public enum Channel {

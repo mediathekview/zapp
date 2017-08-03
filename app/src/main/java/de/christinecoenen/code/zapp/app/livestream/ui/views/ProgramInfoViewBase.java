@@ -20,24 +20,36 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.christinecoenen.code.programguide.ProgramGuideRequest;
-import de.christinecoenen.code.programguide.model.Show;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.livestream.api.ProgramGuideRequest;
+import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import timber.log.Timber;
 
 public abstract class ProgramInfoViewBase extends LinearLayout {
 
-	protected @BindView(R.id.text_show_title) TextView showTitleView;
-	protected @BindView(R.id.text_show_subtitle) TextView showSubtitleView;
-	protected @BindView(R.id.text_show_time) TextView showTimeView;
-	protected @BindView(R.id.progressbar_show_progress) ProgressBar progressBarView;
+	protected
+	@BindView(R.id.text_show_title)
+	TextView showTitleView;
+	protected
+	@BindView(R.id.text_show_subtitle)
+	TextView showSubtitleView;
+	protected
+	@BindView(R.id.text_show_time)
+	TextView showTimeView;
+	protected
+	@BindView(R.id.progressbar_show_progress)
+	ProgressBar progressBarView;
 
-	protected @BindInt(R.integer.view_program_info_update_show_info_interval_seconds) int updateShowInfoIntervalSeconds;
-	protected @BindInt(R.integer.view_program_info_update_show_time_interval_seconds) int updateShowTimeIntervalSeconds;
+	protected
+	@BindInt(R.integer.view_program_info_update_show_info_interval_seconds)
+	int updateShowInfoIntervalSeconds;
+	protected
+	@BindInt(R.integer.view_program_info_update_show_time_interval_seconds)
+	int updateShowTimeIntervalSeconds;
 
 	private ProgramGuideRequest currentShowInfoRequest;
-	private Show currentShow = null;
+	private LiveShow currentShow = null;
 	private ChannelModel currentChannel;
 
 	private final Handler handler = new Handler();
@@ -56,7 +68,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 		}
 
 		@Override
-		public void onRequestSuccess(Show currentShow) {
+		public void onRequestSuccess(LiveShow currentShow) {
 			logMessage("show info loaded: " + currentShow);
 
 			ProgramInfoViewBase.this.currentShow = currentShow;
@@ -72,13 +84,13 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 		setGravity(Gravity.CENTER_VERTICAL);
 
 		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(getViewId(), this, true);
 
 		ButterKnife.bind(this, this);
 
 		showProgressAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(context,
-				R.animator.view_program_info_show_progress);
+			R.animator.view_program_info_show_progress);
 		showProgressAnimator.setTarget(progressBarView);
 	}
 
@@ -117,17 +129,17 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new UpdateShowInfoTask(), 0,
-				TimeUnit.SECONDS.toMillis(updateShowInfoIntervalSeconds));
+			TimeUnit.SECONDS.toMillis(updateShowInfoIntervalSeconds));
 		timer.scheduleAtFixedRate(new UpdateShowTimeTask(), 0,
-				TimeUnit.SECONDS.toMillis(updateShowTimeIntervalSeconds));
+			TimeUnit.SECONDS.toMillis(updateShowTimeIntervalSeconds));
 	}
 
 	protected abstract int getViewId();
 
 	private void updateShowInfo() {
 		if (currentShow == null ||
-				currentShow.getEndTime() == null ||
-				currentShow.getEndTime().isBeforeNow()) {
+			currentShow.getEndTime() == null ||
+			currentShow.getEndTime().isBeforeNow()) {
 			reloadProgramGuide();
 		}
 	}
@@ -141,9 +153,9 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 			float progressPercent = currentShow.getProgressPercent();
 			int progress = Math.round(progressPercent * progressBarView.getMax());
 			String startTime = DateUtils.formatDateTime(getContext(),
-					currentShow.getStartTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
+				currentShow.getStartTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
 			String endTime = DateUtils.formatDateTime(getContext(),
-					currentShow.getEndTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
+				currentShow.getEndTime().getMillis(), DateUtils.FORMAT_SHOW_TIME);
 			String fullTime = getContext().getString(R.string.view_program_info_show_time, startTime, endTime);
 			showTimeView.setText(fullTime);
 			showTimeView.setVisibility(VISIBLE);
@@ -188,10 +200,10 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private void loadProgramGuide() {
 		progressBarView.setEnabled(true);
 		progressBarView.setIndeterminate(true);
-		currentShowInfoRequest = new ProgramGuideRequest(getContext())
-				.setChannelId(currentChannel.getId())
-				.setListener(programGuideListener)
-				.execute();
+		currentShowInfoRequest = new ProgramGuideRequest()
+			.setChannelId(currentChannel.getId())
+			.setListener(programGuideListener)
+			.execute();
 	}
 
 	private void chancelProgramGuideLoading() {

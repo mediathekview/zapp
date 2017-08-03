@@ -1,1 +1,1 @@
-include ':app', ':programguide'
+include ':app'

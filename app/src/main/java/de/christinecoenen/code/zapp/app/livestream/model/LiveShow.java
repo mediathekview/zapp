@@ -1,9 +1,9 @@
-package de.christinecoenen.code.programguide.model;
+package de.christinecoenen.code.zapp.app.livestream.model;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-public class Show {
+public class LiveShow {
 
 	private String title;
 	private String subtitle;

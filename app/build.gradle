@@ -37,7 +37,6 @@ android {
 
 dependencies {
 	compile fileTree(include: ['*.jar'], dir: 'libs')
-	compile project(':programguide')
 
 	// tests
 	testCompile 'junit:junit:4.12'
@@ -82,4 +81,7 @@ dependencies {
 
 	// timber logging
 	compile 'com.jakewharton.timber:timber:4.5.1'
+
+	// joda time
+	compile 'joda-time:joda-time:2.9.4'
 }

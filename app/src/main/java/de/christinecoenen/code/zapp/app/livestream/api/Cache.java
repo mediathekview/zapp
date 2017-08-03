@@ -1,42 +1,38 @@
-package de.christinecoenen.code.programguide;
+package de.christinecoenen.code.zapp.app.livestream.api;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
-import de.christinecoenen.code.programguide.model.Channel;
-import de.christinecoenen.code.programguide.model.Show;
+import de.christinecoenen.code.zapp.app.livestream.api.model.Channel;
+import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 import timber.log.Timber;
 
 /**
  * Cache singleton for currently running show on any channel.
  */
-public class Cache {
+class Cache {
 
 	private static Cache instance = null;
 
-	private final Map<Channel, Show> shows = new HashMap<>();
+	private final Map<Channel, LiveShow> shows = new HashMap<>();
 
-	public static Cache getInstance() {
+	static Cache getInstance() {
 		if (instance == null) {
 			instance = new Cache();
 		}
 		return instance;
 	}
 
-	public void save(Channel channel, Show show) {
+	public void save(Channel channel, LiveShow show) {
 		this.shows.put(channel, show);
-	}
-
-	public void save(Map<Channel, Show> shows) {
-		this.shows.putAll(shows);
 	}
 
 	/**
 	 * @return currently running show or null in case of cache miss
 	 */
-	public Show getShow(Channel channel) {
-		Show show = shows.get(channel);
+	LiveShow getShow(Channel channel) {
+		LiveShow show = shows.get(channel);
 
 		if (show == null) {
 			Timber.d("cache miss: " + channel);
