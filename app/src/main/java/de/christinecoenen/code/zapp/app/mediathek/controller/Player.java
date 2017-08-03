@@ -39,6 +39,7 @@ public class Player {
 	private final MappingTrackSelector trackSelector;
 	private final boolean hasSubtitles;
 	private final int subtitleRendererIndex;
+	private final SharedPreferences preferences;
 	private boolean isShowingSubtitles;
 	private MediaSource videoSource;
 	private long millis = 0;
@@ -65,7 +66,7 @@ public class Player {
 		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
 
 
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean showSubtitlesPref = preferences.getBoolean("pref_enable_subtitles", false);
 		hasSubtitles = show.hasSubtitle();
 
@@ -145,6 +146,10 @@ public class Player {
 			trackSelector.setRendererDisabled(subtitleRendererIndex, !enabled);
 		}
 		isShowingSubtitles = enabled;
+
+		preferences.edit()
+			.putBoolean("pref_enable_subtitles", enabled)
+			.apply();
 	}
 
 	private int getRendererIndex(int trackType) {

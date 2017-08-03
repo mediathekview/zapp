@@ -71,10 +71,6 @@
 	<string name="pref_detail_landscape_summary_on">Sperrt die App im Querformat, solange ein Video läuft</string>
 	<string name="pref_detail_landscape_summary_off">Querformat oder Portrait-Modus werden von deinen Systemeinstellungen bestimmt</string>
 
-	<string name="pref_enable_subtitles_title">Untertitel anzeigen</string>
-	<string name="pref_enable_subtitles_summary_on">Zeigt untertitelte Videos an, wann immer es möglich ist</string>
-	<string name="pref_enable_subtitles_summary_off">Zeigt Videos niemals untertitelt an</string>
-
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 
 	<string name="pref_shortcuts_title">Sender-Shortcuts</string>
