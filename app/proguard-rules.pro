@@ -42,5 +42,6 @@
 -keep class de.christinecoenen.code.zapp.app.mediathek.model.** { *; }
 -keep class de.christinecoenen.code.zapp.app.mediathek.api.request.** { *; }
 -keep class de.christinecoenen.code.zapp.app.mediathek.api.result.** { *; }
+-keep class de.christinecoenen.code.zapp.app.livestream.api.model.** { *; }
 
 ## end retrofit
