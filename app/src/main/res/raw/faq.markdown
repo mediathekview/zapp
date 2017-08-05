@@ -65,4 +65,5 @@ als würden Sendungen doppelt angezeigt.
 
 Manchmal werden Untertitel von den Mediatheken in einem unerwarteten Format ausgeliefert,
 sodass Zapp sie nicht darstellen kann. Leider gibt es keinen Weg, diese Fehler vorher zu
-erkennen.
+erkennen. Oft reicht es aber schon aus, ein bisschen zu warten, bis die Untertitel fertig
+geladen haben.
