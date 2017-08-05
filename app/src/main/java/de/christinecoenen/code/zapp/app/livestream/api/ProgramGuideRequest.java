@@ -89,7 +89,9 @@ public class ProgramGuideRequest implements Callback<ShowResponse> {
 
 	@Override
 	public void onFailure(Call<ShowResponse> call, Throwable t) {
-		listener.onRequestError();
+		if (!call.isCanceled()) {
+			listener.onRequestError();
+		}
 	}
 
 	public interface Listener {
