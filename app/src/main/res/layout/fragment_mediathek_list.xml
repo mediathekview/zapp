@@ -39,7 +39,7 @@
 			android:layout_height="100dp"
 			android:contentDescription="@null"
 			android:src="@drawable/ic_sad_tv"
-			android:tint="@android:color/secondary_text_dark" />
+			android:tint="#bebebe" />
 
 		<TextView
 			style="@style/TextAppearance.AppCompat.Display1"
