@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.Collections;
 
+import javax.net.ssl.SSLHandshakeException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
@@ -226,7 +228,11 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 				// ignore canceled calls, because it most likely was canceled by app code
 				t.getCause().printStackTrace();
 				Timber.e(t.toString());
-				showError(R.string.error_mediathek_info_not_available);
+				if (t instanceof SSLHandshakeException) {
+					showError(R.string.error_mediathek_ssl_error);
+				} else {
+					showError(R.string.error_mediathek_info_not_available);
+				}
 			}
 		}
 

@@ -38,6 +38,7 @@
 	<string name="error_no_app_for_link">Keine App zum Öffnen von Links gefunden.</string>
 
 	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
+	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
 
 
