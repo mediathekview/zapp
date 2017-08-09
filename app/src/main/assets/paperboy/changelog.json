@@ -1,5 +1,27 @@
 [
 	{
+		"name": "1.7.1",
+		"items": [
+			{
+				"type": "B",
+				"title": "Absturz für ältere Android-Versionen behoben."
+			},
+			{
+				"type": "B",
+				"title": "Verhindert, dass Mediathek-Sendungen auf Android 7 nicht geladen werden können."
+			}
+		]
+	},
+	{
+		"name": "1.7.0",
+		"items": [
+			{
+				"type": "F",
+				"title": "Untertitel für Mediathek-Videos."
+			}
+		]
+	},
+	{
 	"name": "1.6.0",
 		"items": [
 			{
