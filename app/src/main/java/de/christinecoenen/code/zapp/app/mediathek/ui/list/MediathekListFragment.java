@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
@@ -22,6 +24,9 @@ import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,8 +80,22 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		queryRequest = new QueryRequest()
 			.setSize(ITEM_COUNT_PER_PAGE);
 
+		// workaround to avoid SSLHandshakeException on Android 7 devices
+		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
+		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+			.cipherSuites(CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+			.cipherSuites(CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256)
+			.cipherSuites(CipherSuite.TLS_DHE_RSA_WITH_AES_256_GCM_SHA384)
+			.cipherSuites(CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256)
+			.build();
+
+		OkHttpClient client = new OkHttpClient.Builder()
+			.connectionSpecs(Collections.singletonList(spec))
+			.build();
+
 		Retrofit retrofit = new Retrofit.Builder()
 			.baseUrl("https://mediathekviewweb.de/api/")
+			.client(client)
 			.addConverterFactory(GsonConverterFactory.create())
 			.build();
 
@@ -205,6 +224,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 			if (!call.isCanceled()) {
 				// ignore canceled calls, because it most likely was canceled by app code
+				t.getCause().printStackTrace();
 				Timber.e(t.toString());
 				showError(R.string.error_mediathek_info_not_available);
 			}
