@@ -1,5 +1,14 @@
 [
 	{
+		"name": "1.7.2",
+		"items": [
+			{
+				"type": "B",
+				"title": "Möglichen Absturz bei Ladeproblemen behoben."
+			}
+		]
+	},
+	{
 		"name": "1.7.1",
 		"items": [
 			{

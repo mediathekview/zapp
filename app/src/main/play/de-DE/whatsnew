@@ -1,2 +1,1 @@
-* Absturz für ältere Android-Versionen behoben.
-* Verhindert, dass Mediathek-Sendungen auf Android 7 nicht geladen werden können.
+* Möglichen Absturz bei Ladeproblemen behoben.
