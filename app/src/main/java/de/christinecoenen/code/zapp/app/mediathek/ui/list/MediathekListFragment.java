@@ -226,8 +226,8 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 			if (!call.isCanceled()) {
 				// ignore canceled calls, because it most likely was canceled by app code
-				t.getCause().printStackTrace();
-				Timber.e(t.toString());
+				Timber.e(t);
+
 				if (t instanceof SSLHandshakeException) {
 					showError(R.string.error_mediathek_ssl_error);
 				} else {
