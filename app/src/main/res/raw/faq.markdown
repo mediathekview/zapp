@@ -46,7 +46,7 @@ Firmen und dürfen ohne Bezahlung nicht gestreamt werden.
 <a name="missing-show"></a>
 ### Warum fehlen Sendungen in der Mediathek?
 
-Zapp darf freundlicherweise die Mediathek-API von [MediathekWebView](https://mediathekviewweb.de/)
+Zapp darf freundlicherweise die Mediathek-API von [MediathekViewWeb](https://mediathekviewweb.de/)
 benutzen. Die meisten Sender haben allerdings keine öffentliche API, um Sendungsinformationen
 abfragen zu können. Daher kann es passieren, dass Sender oder einzelne Sendungen fehlen oder
 Sendungsinformationen auch einmal unvollständig sind.
