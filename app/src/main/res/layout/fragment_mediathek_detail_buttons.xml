@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:showIn="@layout/fragment_mediathek_detail">
+
+	<Button
+		android:id="@+id/btn_website"
+		style="@style/Widget.AppCompat.Button.Colored"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableStart="@drawable/ic_home_white_24dp"
+		android:text="@string/fragment_mediathek_website" />
+
+</merge>

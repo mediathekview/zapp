@@ -30,29 +30,7 @@
 				android:paddingStart="@dimen/activity_horizontal_margin"
 				android:paddingTop="@dimen/activity_vertical_margin">
 
-				<TextView
-					android:id="@+id/text_show_topic"
-					style="@style/Base.TextAppearance.AppCompat.Medium"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:ellipsize="end"
-					android:lines="1"
-					tools:text="Some show topic" />
-
-				<TextView
-					android:id="@+id/text_show_title"
-					style="@style/Base.TextAppearance.AppCompat.Headline"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="@dimen/activity_vertical_margin"
-					tools:text="Some show title" />
-
-				<TextView
-					android:id="@+id/text_show_description"
-					style="@style/Base.TextAppearance.AppCompat.Body1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					tools:text="Some show desciption" />
+				<include layout="@layout/fragment_mediathek_detail_titles_and_description" />
 
 			</LinearLayout>
 
@@ -147,13 +125,7 @@
 
 			</LinearLayout>
 
-			<Button
-				android:id="@+id/btn_website"
-				style="@style/Widget.AppCompat.Button.Colored"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:drawableStart="@drawable/ic_home_white_24dp"
-				android:text="@string/fragment_mediathek_website" />
+			<include layout="@layout/fragment_mediathek_detail_buttons" />
 
 		</LinearLayout>
 
