@@ -79,6 +79,7 @@
 			android:layout_gravity="end"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			android:layout_marginTop="8dp"
+			android:contentDescription="@string/exo_controls_play_description"
 			android:src="@drawable/ic_play_arrow_white_24dp" />
 
 		<LinearLayout

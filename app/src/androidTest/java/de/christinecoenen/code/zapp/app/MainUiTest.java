@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app;
 
 
 import android.content.pm.ActivityInfo;
+import android.support.test.espresso.contrib.AccessibilityChecks;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -36,9 +37,15 @@ public class MainUiTest {
 	 * Basic ui test that calls every screen and asserts nothing
 	 * is crashing very badly. Run this when you are unsure if your
 	 * changes broke something.
+	 * <p>
+	 * Also, this test will output acessibility errors to logcat.
 	 */
 	@Test
 	public void mainUiTest() throws InterruptedException {
+		AccessibilityChecks.enable()
+			.setRunChecksFromRootView(true)
+			.setThrowExceptionForErrors(false);
+
 		// change to mediathek
 		onView(withText(R.string.activity_main_tab_mediathek))
 			.check(matches(isDisplayed()))
@@ -137,5 +144,4 @@ public class MainUiTest {
 		onView(withText(R.string.pref_channel_selection_title))
 			.perform(click());
 	}
-
 }

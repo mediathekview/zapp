@@ -63,28 +63,29 @@
 				android:layout_gravity="end|bottom"
 				android:layout_marginBottom="8dp"
 				android:layout_marginEnd="8dp"
+				android:contentDescription="@string/exo_controls_play_description"
 				android:src="@drawable/ic_play_arrow_white_24dp" />
 
-				<LinearLayout
-					android:layout_width="match_parent"
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|start"
+				android:layout_marginBottom="@dimen/activity_vertical_margin"
+				android:layout_marginStart="@dimen/activity_vertical_margin"
+				android:orientation="horizontal">
+
+				<TextView
+					android:id="@+id/text_show_subtitle"
+					style="@style/TextAppearance.AppCompat.Small"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="@dimen/activity_vertical_margin"
-					android:layout_marginStart="@dimen/activity_vertical_margin"
-					android:layout_gravity="bottom|start"
-					android:orientation="horizontal">
+					android:background="@color/colorAccent"
+					android:paddingEnd="4dp"
+					android:paddingStart="4dp"
+					android:text="@string/fragment_mediathek_batch_subtitle"
+					android:textColor="@android:color/white" />
 
-					<TextView
-						android:id="@+id/text_show_subtitle"
-						style="@style/TextAppearance.AppCompat.Small"
-						android:textColor="@android:color/white"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="@color/colorAccent"
-						android:paddingEnd="4dp"
-						android:paddingStart="4dp"
-						android:text="@string/fragment_mediathek_batch_subtitle" />
-
-				</LinearLayout>
+			</LinearLayout>
 
 		</android.support.v7.widget.CardView>
 
