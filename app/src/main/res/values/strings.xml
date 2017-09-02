@@ -27,6 +27,7 @@
 	<string name="fragment_mediathek_channel">Sender</string>
 	<string name="fragment_mediathek_duration">Dauer</string>
 	<string name="fragment_mediathek_website">Website</string>
+	<string name="fragment_mediathek_download">Download</string>
 	<string name="fragment_mediathek_batch_subtitle">UT</string>
 
 	<!-- error messages -->

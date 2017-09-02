@@ -1,7 +1,13 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +20,7 @@ import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
+import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
 
 
 public class MediathekDetailFragment extends Fragment {
@@ -83,6 +90,15 @@ public class MediathekDetailFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == PermissionHelper.REQUEST_CODE_WRITE_EXTERNAL_STORAGE &&
+			grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+			onDownloadClick();
+		}
+	}
+
 	@OnClick(R.id.btn_play)
 	protected void onPlayClick() {
 		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
@@ -91,5 +107,27 @@ public class MediathekDetailFragment extends Fragment {
 	@OnClick(R.id.btn_website)
 	protected void onWebsiteClick() {
 		IntentHelper.openUrl(getContext(), show.getWebsiteUrl());
+	}
+
+	@OnClick(R.id.btn_download)
+	protected void onDownloadClick() {
+		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
+			return;
+		}
+
+		Uri uri = Uri.parse(show.getVideoUrl());
+
+		// create request for android download manager
+		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+		DownloadManager.Request request = new DownloadManager.Request(uri);
+
+		// setting title and directory of request
+		request.setTitle(show.getTitle());
+		request.allowScanningByMediaScanner();
+
+		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + show.getDownloadFileName());
+
+		// enqueue download
+		downloadManager.enqueue(request);
 	}
 }

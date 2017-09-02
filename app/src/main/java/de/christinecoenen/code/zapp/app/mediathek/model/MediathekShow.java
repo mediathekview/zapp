@@ -186,6 +186,10 @@ public class MediathekShow implements Serializable {
 		this.videoUrlHd = videoUrlHd;
 	}
 
+	public String getDownloadFileName() {
+		return title;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
