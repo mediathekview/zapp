@@ -137,6 +137,8 @@
 
 		<include layout="@layout/fragment_mediathek_detail_buttons" />
 
+		<include layout="@layout/fragment_mediathek_detail_qualities" />
+
 	</LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

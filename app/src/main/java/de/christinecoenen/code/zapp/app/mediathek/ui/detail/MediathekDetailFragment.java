@@ -3,11 +3,9 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +47,15 @@ public class MediathekDetailFragment extends Fragment {
 	@BindView(R.id.text_show_subtitle)
 	protected TextView subtitleView;
 
+	@BindView(R.id.quality_row_high)
+	protected View qualityRowHigh;
+
+	@BindView(R.id.quality_row_low)
+	protected View qualityRowLow;
+
+	@BindView(R.id.quality_row_subtitle)
+	protected View qualityRowSubtitle;
+
 
 	private MediathekShow show;
 
@@ -87,16 +94,11 @@ public class MediathekDetailFragment extends Fragment {
 		durationView.setText(show.getFormattedDuration());
 		subtitleView.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		return view;
-	}
+		qualityRowHigh.setVisibility(show.hasQualityHd() ? View.VISIBLE : View.GONE);
+		qualityRowLow.setVisibility(show.hasQualityLow() ? View.VISIBLE : View.GONE);
+		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == PermissionHelper.REQUEST_CODE_WRITE_EXTERNAL_STORAGE &&
-			grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-			onDownloadClick();
-		}
+		return view;
 	}
 
 	@OnClick(R.id.btn_play)
@@ -109,13 +111,32 @@ public class MediathekDetailFragment extends Fragment {
 		IntentHelper.openUrl(getContext(), show.getWebsiteUrl());
 	}
 
-	@OnClick(R.id.btn_download)
-	protected void onDownloadClick() {
+	@OnClick(R.id.btn_download_high)
+	protected void onDownloadHighClick() {
+		download(show.getVideoUrlHd(), show.getDownloadFileNameHd());
+	}
+
+	@OnClick(R.id.btn_download_medium)
+	protected void onDownloadMediumClick() {
+		download(show.getVideoUrl(), show.getDownloadFileName());
+	}
+
+	@OnClick(R.id.btn_download_low)
+	protected void onDownloadLowClick() {
+		download(show.getVideoUrlLow(), show.getDownloadFileNameLow());
+	}
+
+	@OnClick(R.id.btn_download_subtitle)
+	protected void onDownloadSubtitleClick() {
+		download(show.getSubtitleUrl(), show.getDownloadFileNameSubtitle());
+	}
+
+	private void download(String url, String downloadFileName) {
 		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
 			return;
 		}
 
-		Uri uri = Uri.parse(show.getVideoUrl());
+		Uri uri = Uri.parse(url);
 
 		// create request for android download manager
 		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -127,7 +148,7 @@ public class MediathekDetailFragment extends Fragment {
 		request.setVisibleInDownloadsUi(true);
 		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
-		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + show.getDownloadFileName());
+		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
 
 		// enqueue download
 		downloadManager.enqueue(request);

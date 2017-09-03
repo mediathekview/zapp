@@ -186,7 +186,31 @@ public class MediathekShow implements Serializable {
 		this.videoUrlHd = videoUrlHd;
 	}
 
+	public boolean hasQualityHd() {
+		return !TextUtils.isEmpty(videoUrlHd);
+	}
+
+	public boolean hasQualityLow() {
+		return !TextUtils.isEmpty(videoUrlLow);
+	}
+
 	public String getDownloadFileName() {
+		// TODO: append file type extension
+		return title;
+	}
+
+	public String getDownloadFileNameHd() {
+		// TODO: append file type extension
+		return title;
+	}
+
+	public String getDownloadFileNameLow() {
+		// TODO: append file type extension
+		return title;
+	}
+
+	public String getDownloadFileNameSubtitle() {
+		// TODO: append file type extension
 		return title;
 	}
 

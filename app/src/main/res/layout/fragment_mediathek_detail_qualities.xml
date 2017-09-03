@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="@dimen/activity_horizontal_margin"
+	tools:showIn="@layout/fragment_mediathek_detail">
+
+	<TextView
+		style="@style/TextAppearance.AppCompat.Subhead"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/fragment_mediathek_qualities_title" />
+
+	<LinearLayout
+		android:id="@+id/quality_row_high"
+		style="@style/MediathekDetailQualityRow">
+
+		<TextView
+			style="@style/MediathekDetailQualityTitle"
+			android:text="@string/fragment_mediathek_qualities_high" />
+
+		<TextView
+			style="@style/MediathekDetailQualitySize"
+			tools:text="13,74 MB" />
+
+		<ImageButton
+			android:id="@+id/btn_download_high"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_file_download_white_24dp" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/quality_row_medium"
+		style="@style/MediathekDetailQualityRow">
+
+		<TextView
+			style="@style/MediathekDetailQualityTitle"
+			android:text="@string/fragment_mediathek_qualities_medium" />
+
+		<TextView
+			style="@style/MediathekDetailQualitySize"
+			tools:text="10 MB" />
+
+		<ImageButton
+			android:id="@+id/btn_download_medium"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_file_download_white_24dp" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/quality_row_low"
+		style="@style/MediathekDetailQualityRow">
+
+		<TextView
+			style="@style/MediathekDetailQualityTitle"
+			android:text="@string/fragment_mediathek_qualities_low" />
+
+		<TextView
+			style="@style/MediathekDetailQualitySize"
+			tools:text="6,3 MB" />
+
+		<ImageButton
+			android:id="@+id/btn_download_low"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_file_download_white_24dp" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/quality_row_subtitle"
+		style="@style/MediathekDetailQualityRow">
+
+		<TextView
+			style="@style/MediathekDetailQualityTitle"
+			android:layout_weight="1"
+			android:text="@string/fragment_mediathek_batch_subtitle" />
+
+		<ImageButton
+			android:id="@+id/btn_download_subtitle"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_file_download_white_24dp" />
+
+	</LinearLayout>
+
+</LinearLayout>

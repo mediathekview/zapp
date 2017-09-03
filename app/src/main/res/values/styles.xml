@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<!-- Base application theme. -->
 	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -47,4 +47,36 @@
 		<item name="android:paddingStart">4dp</item>
 		<item name="android:paddingEnd">4dp</item>
 	</style>
+
+	<style name="MediathekDetailQualityRow">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:orientation">horizontal</item>
+		<item name="android:weightSum">1</item>
+	</style>
+
+	<style name="MediathekDetailQualityTitle">
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_width">0dp</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:layout_weight">1</item>
+	</style>
+
+	<style name="MediathekDetailQualitySize">
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_width">0dp</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:layout_weight">0.5</item>
+		<item name="android:visibility">gone</item>
+	</style>
+
+	<style name="MediathekDetailQualityButton" parent="Widget.AppCompat.ImageButton">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:backgroundTint" tools:ignore="NewApi">@color/colorPrimary</item>
+		<item name="android:layout_marginTop">-4dp</item>
+		<item name="android:layout_marginBottom">-4dp</item>
+		<item name="android:layout_marginEnd">-4dp</item>
+	</style>
+
 </resources>
