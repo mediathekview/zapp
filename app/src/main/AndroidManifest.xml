@@ -81,6 +81,11 @@
 		<activity
 			android:name=".app.mediathek.ui.detail.MediathekDetailActivity"
 			android:label="@string/fragment_mediathek_title" />
+		<receiver android:name=".app.mediathek.controller.DownloadReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
+			</intent-filter>
+		</receiver>
 	</application>
 
 </manifest>
