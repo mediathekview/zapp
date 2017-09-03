@@ -124,6 +124,7 @@ public class MediathekDetailFragment extends Fragment {
 		// setting title and directory of request
 		request.setTitle(show.getTitle());
 		request.allowScanningByMediaScanner();
+		request.setVisibleInDownloadsUi(true);
 		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
 		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + show.getDownloadFileName());
