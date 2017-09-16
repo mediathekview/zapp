@@ -27,6 +27,12 @@
 			tools:text="13,74 MB" />
 
 		<ImageButton
+			android:id="@+id/btn_share_high"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_share_white_24dp" />
+
+		<ImageButton
 			android:id="@+id/btn_download_high"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
@@ -47,6 +53,12 @@
 			tools:text="10 MB" />
 
 		<ImageButton
+			android:id="@+id/btn_share_medium"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_share_white_24dp" />
+
+		<ImageButton
 			android:id="@+id/btn_download_medium"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
@@ -65,6 +77,12 @@
 		<TextView
 			style="@style/MediathekDetailQualitySize"
 			tools:text="6,3 MB" />
+
+		<ImageButton
+			android:id="@+id/btn_share_low"
+			style="@style/MediathekDetailQualityButton"
+			android:contentDescription="@string/fragment_mediathek_download"
+			android:src="@drawable/ic_share_white_24dp" />
 
 		<ImageButton
 			android:id="@+id/btn_download_low"

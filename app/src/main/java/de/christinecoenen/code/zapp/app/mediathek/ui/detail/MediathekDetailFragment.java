@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -129,6 +130,27 @@ public class MediathekDetailFragment extends Fragment {
 	@OnClick(R.id.btn_download_subtitle)
 	protected void onDownloadSubtitleClick() {
 		download(show.getSubtitleUrl(), show.getDownloadFileNameSubtitle());
+	}
+
+	@OnClick(R.id.btn_share_high)
+	protected void onShareHighClick() {
+		share(show.getVideoUrlHd());
+	}
+
+	@OnClick(R.id.btn_share_medium)
+	protected void onShareMediumClick() {
+		share(show.getVideoUrl());
+	}
+
+	@OnClick(R.id.btn_share_low)
+	protected void onShareLowClick() {
+		share(show.getVideoUrlLow());
+	}
+
+	private void share(String url) {
+		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
+		videoIntent.setDataAndType(Uri.parse(url), "video/*");
+		startActivity(videoIntent);
 	}
 
 	private void download(String url, String downloadFileName) {
