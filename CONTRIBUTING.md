@@ -62,18 +62,3 @@ Android Studio operation.
 2. Run `JsonChannelListTest` and make sure all tests pass.
 3. Test the changes on an actual device (emulators may have trouble with video 
 playback).
-
-
-## How to add a programmguide plugin
-
-If you added a new channel, you can write a programmguide plugin to get metadata 
-of the show currently running on this channel.
-
-1. Add the new channel to [Channel.java](programguide/src/main/java/de/christinecoenen/code/programguide/model/Channel.java). 
-Make sure the id maches the one provided inside `channels.json`.
-2. Add a new Downloader (extending `BaseProgramGuideDownloader`) and a new Parser 
-for the API. Use the [Jsoup API](https://jsoup.org/) for parsing and [Volley](https://developer.android.com/training/volley/index.html). 
-Use the existing Downloaders as reference. Make sure to respect the devices 
-configured timezone.
-3. Add your downloader to the [PluginRegistry](programguide/src/main/java/de/christinecoenen/code/programguide/plugins/PluginRegistry.java).
-4. Test a few days on your device.
