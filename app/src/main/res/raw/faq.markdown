@@ -8,7 +8,7 @@
 <a name="video-problems"></a>
 ### Die Videos laufen nicht – was soll ich tun?
 
-Wenn die Video-Streams auf Android nicht abspielen, kann das mehrere Gründe haben:
+Wenn die Video-Streams auf Android nicht abspielbar sind, kann das mehrere Gründe haben:
 
 - Vielleicht benutzt du Zapp außerhalb Deutschlands. Einige Sender blockieren
 den Zugriff auf ihre Streams oder einzelne Sendungen für Nutzer außerhalb
