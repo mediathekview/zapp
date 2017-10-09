@@ -328,14 +328,10 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private void pauseActivity() {
 		programInfoView.pause();
-		player.stop();
 	}
 
 	private void resumeActivity() {
 		programInfoView.resume();
-		if (isPlaying) {
-			play();
-		}
 	}
 
 	private void playDelayed() {
