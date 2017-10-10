@@ -8,7 +8,7 @@
 <a name="video-problems"></a>
 ### Die Videos laufen nicht – was soll ich tun?
 
-Wenn die Video-Streams auf Android nicht abspielen kann das mehrere Gründe haben:
+Wenn die Video-Streams auf Android nicht abspielbar sind, kann das mehrere Gründe haben:
 
 - Vielleicht benutzt du Zapp außerhalb Deutschlands. Einige Sender blockieren
 den Zugriff auf ihre Streams oder einzelne Sendungen für Nutzer außerhalb
@@ -56,7 +56,7 @@ Sendungsinformationen auch einmal unvollständig sind.
 ### Warum werden in der Mediathek Sendungen doppelt angezeigt?
 
 Es kommt öfter vor, dass die gleiche Sendung in den Mediatheken verschiedener Sender
-hochgeladen wird. Da Zapp alle verfügbaren Sendungen anzeigt sieht es dann manchmal so aus,
+hochgeladen wird. Da Zapp alle verfügbaren Sendungen anzeigt, sieht es dann manchmal so aus,
 als würden Sendungen doppelt angezeigt.
 
 
