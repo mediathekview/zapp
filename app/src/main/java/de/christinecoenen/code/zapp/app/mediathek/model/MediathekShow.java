@@ -6,6 +6,7 @@ import android.text.format.DateUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Period;
@@ -195,23 +196,24 @@ public class MediathekShow implements Serializable {
 	}
 
 	public String getDownloadFileName() {
-		// TODO: append file type extension
-		return title;
+		return getDownloadFileName(videoUrl);
 	}
 
 	public String getDownloadFileNameHd() {
-		// TODO: append file type extension
-		return title;
+		return getDownloadFileName(videoUrlHd);
 	}
 
 	public String getDownloadFileNameLow() {
-		// TODO: append file type extension
-		return title;
+		return getDownloadFileName(videoUrlLow);
 	}
 
 	public String getDownloadFileNameSubtitle() {
-		// TODO: append file type extension
-		return title;
+		return getDownloadFileName(subtitleUrl);
+	}
+
+	private String getDownloadFileName(String videoUrl) {
+		String extension = FilenameUtils.getExtension(videoUrl);
+		return title + "." + extension;
 	}
 
 	@Override
