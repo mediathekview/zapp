@@ -1,5 +1,26 @@
 [
 	{
+		"name": "1.8.0",
+		"items": [
+			{
+				"type": "B",
+				"title": "WDR-Stream repariert (danke an Medusalix)."
+			},
+			{
+				"type": "F",
+				"title": "Download von Sendungen möglich."
+			},
+			{
+				"type": "I",
+				"title": "Rechtschreibfehler korrigiert (danke an kiandru und bagbag)."
+			},
+			{
+				"type": "I",
+				"title": "ZDFneo-Logo aktualisiert (danke an bvdaakster)."
+			}
+		]
+	},
+	{
 		"name": "1.7.2",
 		"items": [
 			{
