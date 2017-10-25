@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.net.UnknownServiceException;
 import java.util.Collections;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -228,7 +229,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 				// ignore canceled calls, because it most likely was canceled by app code
 				Timber.e(t);
 
-				if (t instanceof SSLHandshakeException) {
+				if (t instanceof SSLHandshakeException || t instanceof UnknownServiceException) {
 					showError(R.string.error_mediathek_ssl_error);
 				} else {
 					showError(R.string.error_mediathek_info_not_available);
