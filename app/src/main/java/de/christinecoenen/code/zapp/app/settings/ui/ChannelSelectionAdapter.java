@@ -38,7 +38,7 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 	}
 
 	@Override
-	public long getItemId(int position) {
+	public long getUniqueItemId(int position) {
 		return mItemList.get(position).getId().hashCode();
 	}
 

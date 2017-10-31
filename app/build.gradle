@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 26
-	buildToolsVersion '26.0.1'
+	buildToolsVersion '26.0.2'
+	flavorDimensions "store"
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
@@ -42,9 +43,9 @@ dependencies {
 
 	// tests
 	testCompile 'junit:junit:4.12'
-	androidTestCompile 'com.android.support:support-annotations:26.0.0'
-	androidTestCompile 'com.android.support.test:runner:0.5'
-	androidTestCompile 'com.android.support.test:rules:0.5'
+	androidTestCompile 'com.android.support:support-annotations:26.1.0'
+	androidTestCompile 'com.android.support.test:runner:1.0.1'
+	androidTestCompile 'com.android.support.test:rules:1.0.1'
 
 	androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
 		exclude group: 'com.android.support', module: 'support-annotations'
@@ -57,27 +58,27 @@ dependencies {
 	}
 
 	// support
-	compile 'com.android.support:appcompat-v7:26.0.0'
-	compile 'com.android.support:support-v4:26.0.0'
-	compile 'com.android.support:design:26.0.0'
-	compile 'com.android.support:cardview-v7:26.0.0'
+	compile 'com.android.support:appcompat-v7:26.1.0'
+	compile 'com.android.support:support-v4:26.1.0'
+	compile 'com.android.support:design:26.1.0'
+	compile 'com.android.support:cardview-v7:26.1.0'
 
 	// helper
-	compile 'com.google.code.gson:gson:2.7'
-	compile 'commons-io:commons-io:2.5'
+	compile 'com.google.code.gson:gson:2.8.2'
+	compile 'commons-io:commons-io:2.6'
 
 	// changelog
 	compile 'com.github.porokoro.paperboy:paperboy:3.0.0'
 
 	// sortable list
-	compile 'com.github.woxthebox:draglistview:1.3'
+	compile 'com.github.woxthebox:draglistview:1.5.0'
 
 	// markdown
 	compile 'com.github.fiskurgit:MarkdownView:1.1.0'
 
 	// butterknive:
-	compile 'com.jakewharton:butterknife:8.7.0'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+	compile 'com.jakewharton:butterknife:8.8.1'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 	// exo player
 	compile 'com.google.android.exoplayer:exoplayer-core:r2.4.0'
@@ -92,8 +93,8 @@ dependencies {
 	releaseCompile 'ch.acra:acra:4.9.2'
 
 	// timber logging
-	compile 'com.jakewharton.timber:timber:4.5.1'
+	compile 'com.jakewharton.timber:timber:4.6.0'
 
 	// joda time
-	compile 'joda-time:joda-time:2.9.4'
+	compile 'joda-time:joda-time:2.9.9'
 }
