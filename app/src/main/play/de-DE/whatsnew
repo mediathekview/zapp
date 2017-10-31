@@ -1,4 +1,2 @@
-* WDR-Stream repariert (danke an Medusalix)
-* Download von Sendungen möglich
-* Rechtschreibfehler korrigiert (danke an kiandru und bagbag)
-* ZDFneo-Logo aktualisiert (danke an bvdaakster)
+* KiKA-Stream repariert (danke an SubhrajyotiSen)
+* Korrekte Fehlermeldung angezeigt, wenn das Laden der Mediathek auf älteren Android-Versionen fehl schlägt.

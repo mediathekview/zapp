@@ -1,5 +1,18 @@
 [
 	{
+		"name": "1.8.1",
+		"items": [
+			{
+				"type": "B",
+				"title": "KiKA-Stream repariert (danke an SubhrajyotiSen)."
+			},
+			{
+				"type": "B",
+				"title": "Korrekte Fehlermeldung angezeigt, wenn das Laden der Mediathek auf älteren Android-Versionen fehl schlägt."
+			}
+		]
+	},
+	{
 		"name": "1.8.0",
 		"items": [
 			{
