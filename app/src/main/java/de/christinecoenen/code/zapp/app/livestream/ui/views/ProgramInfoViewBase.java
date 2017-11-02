@@ -229,24 +229,16 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private class UpdateShowTimeTask extends TimerTask {
 		@Override
 		public void run() {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					displayTime();
-				}
-			});
+			handler.post(ProgramInfoViewBase.this::displayTime);
 		}
 	}
 
 	private class UpdateShowInfoTask extends TimerTask {
 		@Override
 		public void run() {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					logMessage("UpdateShowInfoTask");
-					updateShowInfo();
-				}
+			handler.post(() -> {
+				logMessage("UpdateShowInfoTask");
+				updateShowInfo();
 			});
 		}
 	}

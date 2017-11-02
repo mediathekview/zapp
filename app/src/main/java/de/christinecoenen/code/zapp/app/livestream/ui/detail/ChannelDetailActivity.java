@@ -95,12 +95,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private Window window;
 	private IChannelList channelList;
 
-	private final Runnable playRunnable = new Runnable() {
-		@Override
-		public void run() {
-			play();
-		}
-	};
+	private final Runnable playRunnable = this::play;
 
 	private final ChannelDetailAdapter.OnItemChangedListener onItemChangedListener =
 		new ChannelDetailAdapter.OnItemChangedListener() {
@@ -169,12 +164,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			getSupportFragmentManager(), channelList, onItemChangedListener);
 		viewPager.setAdapter(channelDetailAdapter);
 		viewPager.addOnPageChangeListener(onPageChangeListener);
-		viewPager.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mContentView.performClick();
-			}
-		});
+		viewPager.setOnClickListener(view -> mContentView.performClick());
 
 		parseIntent(getIntent());
 	}

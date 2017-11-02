@@ -91,12 +91,9 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		ItemViewHolder itemHodler = (ItemViewHolder) holder;
 		itemHodler.setShow(show);
 
-		itemHodler.view.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (null != listener) {
-					listener.onShowClicked(show);
-				}
+		itemHodler.view.setOnClickListener(v -> {
+			if (null != listener) {
+				listener.onShowClicked(show);
 			}
 		});
 	}

@@ -78,12 +78,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		}
 	};
 	private boolean mVisible;
-	private final Runnable mHideRunnable = new Runnable() {
-		@Override
-		public void run() {
-			hide();
-		}
-	};
+	private final Runnable mHideRunnable = this::hide;
 
 	@SuppressWarnings("SameReturnValue")
 	protected abstract int getViewId();
