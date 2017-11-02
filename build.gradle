@@ -2,6 +2,7 @@
 
 buildscript {
 	repositories {
+		google()
 		jcenter()
 
 		// for butterknive:
@@ -17,13 +18,11 @@ buildscript {
 
 allprojects {
 	repositories {
+		google()
 		jcenter()
 
 		// for MarkdownView
 		maven { url "https://jitpack.io" }
-
-		// google support libs
-		maven { url "https://maven.google.com" }
 	}
 }
 
