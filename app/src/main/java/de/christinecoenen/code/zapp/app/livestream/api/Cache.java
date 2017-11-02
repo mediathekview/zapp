@@ -35,22 +35,22 @@ class Cache {
 		LiveShow show = shows.get(channel);
 
 		if (show == null) {
-			Timber.d("cache miss: " + channel);
+			Timber.d("cache miss: %s", channel);
 			return null;
 		}
 
 		if (show.getEndTime() == null) {
-			Timber.d("cache miss: " + channel + ", no show end time");
+			Timber.d("cache miss: %s, no show end time", channel);
 			return null;
 		}
 
 		if (show.getEndTime().isBeforeNow()) {
-			Timber.d("cache miss: " + channel + ", show too old");
+			Timber.d("cache miss: %s, show too old", channel);
 			shows.remove(channel);
 			return null;
 		}
 
-		Timber.d("cache hit: " + channel + " - " + show);
+		Timber.d("cache hit: %s - %s", channel, show);
 
 		return show;
 	}

@@ -169,7 +169,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	}
 
 	private void loadItems(int startWith, boolean replaceItems) {
-		Timber.d("loadItems: " + startWith);
+		Timber.d("loadItems: %s", startWith);
 
 		if (getShowsCall != null) {
 			getShowsCall.cancel();

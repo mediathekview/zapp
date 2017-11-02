@@ -336,7 +336,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private void play() {
-		Timber.d("play: " + currentChannel.getName());
+		Timber.d("play: %s", currentChannel.getName());
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);
 

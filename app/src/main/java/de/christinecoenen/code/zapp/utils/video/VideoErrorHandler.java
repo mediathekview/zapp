@@ -51,15 +51,15 @@ public class VideoErrorHandler implements ExoPlayer.EventListener, AdaptiveMedia
 
 		switch (error.type) {
 			case ExoPlaybackException.TYPE_SOURCE:
-				Timber.e("exo player error TYPE_SOURCE", error);
+				Timber.e(error,"exo player error TYPE_SOURCE");
 				errorMessageResourceId = R.string.error_stream_io;
 				break;
 			case ExoPlaybackException.TYPE_RENDERER:
-				Timber.e("exo player error TYPE_RENDERER", error);
+				Timber.e(error,"exo player error TYPE_RENDERER");
 				errorMessageResourceId = R.string.error_stream_unsupported;
 				break;
 			case ExoPlaybackException.TYPE_UNEXPECTED:
-				Timber.e("exo player error TYPE_UNEXPECTED", error);
+				Timber.e(error,"exo player error TYPE_UNEXPECTED");
 				break;
 		}
 

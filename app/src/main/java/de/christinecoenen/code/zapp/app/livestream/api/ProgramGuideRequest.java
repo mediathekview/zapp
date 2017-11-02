@@ -39,7 +39,7 @@ public class ProgramGuideRequest implements Callback<ShowResponse> {
 		try {
 			newChannel = Channel.getById(channelId);
 		} catch (IllegalArgumentException e) {
-			Timber.w(channelId + " is no valid channel id");
+			Timber.w("%s is no valid channel id", channelId);
 		}
 
 		return setChannelId(newChannel);
