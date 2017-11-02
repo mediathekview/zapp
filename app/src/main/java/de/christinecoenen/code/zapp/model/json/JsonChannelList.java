@@ -71,18 +71,12 @@ public class JsonChannelList implements IChannelList {
 	 * @return content of R.raw.channels json file
 	 */
 	private String getJsonString() {
-		InputStream inputStream = context.getResources().openRawResource(R.raw.channels);
-		String channelJson = null;
-
-		try {
-			channelJson = IOUtils.toString(inputStream, "UTF-8");
+		try (InputStream inputStream = context.getResources().openRawResource(R.raw.channels)) {
+			return IOUtils.toString(inputStream, "UTF-8");
 		} catch (IOException e) {
 			// we know, this file is bundled with the app,
 			// so this should never happen
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-
-		IOUtils.closeQuietly(inputStream);
-		return channelJson;
 	}
 }

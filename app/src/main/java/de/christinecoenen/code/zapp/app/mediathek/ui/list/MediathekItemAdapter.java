@@ -75,7 +75,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		if (viewType == VIEW_TYPE_ITEM) {
 			return new ItemViewHolder(view);
 		} else {
-			progressBar = ButterKnife.findById(view, R.id.progress);
+			progressBar = view.findViewById(R.id.progress);
 			return new ViewHolder(view);
 		}
 	}
