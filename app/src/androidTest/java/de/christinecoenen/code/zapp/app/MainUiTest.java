@@ -31,7 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class MainUiTest {
 
 	@Rule
-	public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+	public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
 	/**
 	 * Basic ui test that calls every screen and asserts nothing

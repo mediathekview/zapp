@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 
 public class PermissionHelper {
 
-	public static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
+	private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
 
 	public static boolean writeExternalStorageAllowed(Fragment fragment) {
 		if (ActivityCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
