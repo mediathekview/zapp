@@ -10,6 +10,8 @@
 
 	<string name="activity_changelog_title">Changelog</string>
 
+	<string name="activity_libraries_title">Open Source</string>
+
 	<string name="activity_faq_title">FAQ</string>
 
 	<string name="activity_channel_detail_info_error">Keine Programminfo</string>

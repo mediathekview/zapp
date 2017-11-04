@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,5 +63,16 @@ public class AboutActivity extends AppCompatActivity {
 	@OnClick(R.id.button_changelog)
 	public void onChangelogButtonClick() {
 		startActivity(ChangelogActivity.getStartIntent(this));
+	}
+
+	@OnClick(R.id.button_libraries)
+	public void onLibrariesButtonClick() {
+		new LibsBuilder()
+			.withActivityTitle(getString(R.string.activity_libraries_title))
+			.withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+			.withFields(R.string.class.getFields())
+			.withAutoDetect(true)
+			.withLibraries(new String[]{"acra", "commonsio"})
+			.start(this);
 	}
 }

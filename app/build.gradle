@@ -93,4 +93,9 @@ dependencies {
 
 	// joda time
 	compile 'joda-time:joda-time:2.9.9'
+
+	// about libraries view
+	implementation('com.mikepenz:aboutlibraries:6.0.0@aar') {
+		transitive = true
+	}
 }

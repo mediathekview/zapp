@@ -45,3 +45,10 @@
 -keep class de.christinecoenen.code.zapp.app.livestream.api.model.** { *; }
 
 ## end retrofit
+
+## start about libraries
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
+## end about libraries
