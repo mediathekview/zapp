@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.app.livestream.api;
 
 
+import android.support.annotation.NonNull;
+
 import de.christinecoenen.code.zapp.app.livestream.api.model.Channel;
 import de.christinecoenen.code.zapp.app.livestream.api.model.ShowResponse;
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
@@ -75,7 +77,7 @@ public class ProgramGuideRequest implements Callback<ShowResponse> {
 	}
 
 	@Override
-	public void onResponse(Call<ShowResponse> call, Response<ShowResponse> response) {
+	public void onResponse(@NonNull Call<ShowResponse> call, @NonNull Response<ShowResponse> response) {
 		//noinspection ConstantConditions
 		if (response.body() == null || !response.body().isSuccess()) {
 			listener.onRequestError();
@@ -88,7 +90,7 @@ public class ProgramGuideRequest implements Callback<ShowResponse> {
 	}
 
 	@Override
-	public void onFailure(Call<ShowResponse> call, Throwable t) {
+	public void onFailure(@NonNull Call<ShowResponse> call, @NonNull Throwable t) {
 		if (!call.isCanceled()) {
 			listener.onRequestError();
 		}

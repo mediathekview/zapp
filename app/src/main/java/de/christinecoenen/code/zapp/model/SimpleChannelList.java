@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.model;
 
 
+import android.support.annotation.NonNull;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +48,7 @@ public class SimpleChannelList implements IChannelList {
 		return -1;
 	}
 
+	@NonNull
 	@Override
 	public Iterator<ChannelModel> iterator() {
 		return channels.iterator();

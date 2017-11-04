@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.model.json;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +44,7 @@ public class SortableJsonChannelList implements ISortableChannelList {
 		return channelList.getList();
 	}
 
+	@NonNull
 	@Override
 	public Iterator<ChannelModel> iterator() {
 		return channelList.iterator();

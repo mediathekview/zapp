@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -198,7 +199,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 		@SuppressWarnings("ConstantConditions")
 		@Override
-		public void onResponse(Call<MediathekAnswer> call, Response<MediathekAnswer> response) {
+		public void onResponse(@NonNull Call<MediathekAnswer> call, @NonNull Response<MediathekAnswer> response) {
 			adapter.setLoading(false);
 			scrollListener.setLoadingFinished();
 			swipeRefreshLayout.setRefreshing(false);
@@ -221,7 +222,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		}
 
 		@Override
-		public void onFailure(Call<MediathekAnswer> call, Throwable t) {
+		public void onFailure(@NonNull Call<MediathekAnswer> call, @NonNull Throwable t) {
 			adapter.setLoading(false);
 			swipeRefreshLayout.setRefreshing(false);
 

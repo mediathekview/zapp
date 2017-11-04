@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.model.json;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.apache.commons.io.IOUtils;
 
@@ -52,6 +53,7 @@ public class JsonChannelList implements IChannelList {
 		return channels;
 	}
 
+	@NonNull
 	@Override
 	public Iterator<ChannelModel> iterator() {
 		return channels.iterator();
