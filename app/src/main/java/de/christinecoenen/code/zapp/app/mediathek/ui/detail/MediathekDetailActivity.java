@@ -30,6 +30,7 @@ public class MediathekDetailActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_mediathek_detail);
 		ButterKnife.bind(this);
 
+		//noinspection ConstantConditions
 		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
 
 		if (getSupportActionBar() != null) {

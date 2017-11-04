@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -161,7 +162,6 @@ public class MediathekDetailFragment extends Fragment {
 		Uri uri = Uri.parse(url);
 
 		// create request for android download manager
-		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 		DownloadManager.Request request = new DownloadManager.Request(uri);
 
 		// setting title and directory of request
@@ -173,6 +173,11 @@ public class MediathekDetailFragment extends Fragment {
 		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
 
 		// enqueue download
-		downloadManager.enqueue(request);
+		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+		if (downloadManager == null) {
+			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
+		} else {
+			downloadManager.enqueue(request);
+		}
 	}
 }

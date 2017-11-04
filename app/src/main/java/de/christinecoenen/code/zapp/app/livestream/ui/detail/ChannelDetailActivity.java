@@ -308,6 +308,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	private void parseIntent(Intent intent) {
 		Bundle extras = intent.getExtras();
+		//noinspection ConstantConditions
 		String channelId = extras.getString(EXTRA_CHANNEL_ID);
 		int channelPosition = channelList.indexOf(channelId);
 

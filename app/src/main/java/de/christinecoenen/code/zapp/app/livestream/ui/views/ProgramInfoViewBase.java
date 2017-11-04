@@ -85,6 +85,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		LayoutInflater inflater = (LayoutInflater) context
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		//noinspection ConstantConditions
 		inflater.inflate(getViewId(), this, true);
 
 		ButterKnife.bind(this, this);

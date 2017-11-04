@@ -34,7 +34,7 @@ public class ShortcutHelper {
 	public static boolean addShortcutForChannel(Context context, ChannelModel channel) {
 		ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 
-		if (shortcutManager.getDynamicShortcuts().size() >= 4) {
+		if (shortcutManager == null || shortcutManager.getDynamicShortcuts().size() >= 4) {
 			return false;
 		}
 
@@ -99,12 +99,18 @@ public class ShortcutHelper {
 	@TargetApi(25)
 	public static void removeShortcutForChannel(Context context, String channelId) {
 		ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-		shortcutManager.removeDynamicShortcuts(Collections.singletonList(channelId));
+		if (shortcutManager != null) {
+			shortcutManager.removeDynamicShortcuts(Collections.singletonList(channelId));
+		}
 	}
 
 	@TargetApi(25)
 	public static List<String> getChannelIdsOfShortcuts(Context context) {
 		ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+		if (shortcutManager == null) {
+			return Collections.emptyList();
+		}
+
 		List<ShortcutInfo> shortcuts = shortcutManager.getDynamicShortcuts();
 		List<String> ids = new ArrayList<>(shortcuts.size());
 		for (ShortcutInfo shortcut : shortcuts) {
@@ -123,7 +129,9 @@ public class ShortcutHelper {
 	public static void reportShortcutUsageGuarded(Context context, String channelId) {
 		if (areShortcutsSupported()) {
 			ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-			shortcutManager.reportShortcutUsed(channelId);
+			if (shortcutManager != null) {
+				shortcutManager.reportShortcutUsed(channelId);
+			}
 		}
 	}
 

@@ -82,6 +82,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		ButterKnife.bind(this);
 
 		// set to show
+		//noinspection ConstantConditions
 		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
 		if (show == null) {
 			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
