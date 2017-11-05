@@ -2,77 +2,52 @@ package de.christinecoenen.code.zapp.app.about.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.mikepenz.aboutlibraries.LibsConfiguration;
+import com.mikepenz.aboutlibraries.ui.LibsActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
-import timber.log.Timber;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends LibsActivity {
 
 	public static Intent getStartIntent(Context context) {
 		return new Intent(context, AboutActivity.class);
 	}
 
-	@BindView(R.id.text_version)
-	TextView versionText;
+	private final LibsConfiguration.LibsListener buttonListener = new LibsConfiguration.LibsListenerImpl() {
+		@Override
+		public boolean onExtraClicked(View v, Libs.SpecialButton specialButton) {
+			switch (specialButton) {
+				case SPECIAL1:
+					startActivity(FaqActivity.getStartIntent(AboutActivity.this));
+					return true;
+				case SPECIAL2:
+					startActivity(ChangelogActivity.getStartIntent(AboutActivity.this));
+					return true;
+				default:
+					return super.onExtraClicked(v, specialButton);
+			}
+		}
+	};
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_about);
-		ButterKnife.bind(this);
-
-		if (getSupportActionBar() != null) {
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-
-		try {
-			versionText.setText(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-		} catch (PackageManager.NameNotFoundException e) {
-			Timber.w("could not retreive version name");
-		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
-	@OnClick(R.id.button_faq)
-	public void onFaqButtonClick() {
-		startActivity(FaqActivity.getStartIntent(this));
-	}
-
-	@OnClick(R.id.button_changelog)
-	public void onChangelogButtonClick() {
-		startActivity(ChangelogActivity.getStartIntent(this));
-	}
-
-	@OnClick(R.id.button_libraries)
-	public void onLibrariesButtonClick() {
-		new LibsBuilder()
-			.withActivityTitle(getString(R.string.activity_libraries_title))
+	public void onCreate(Bundle savedInstanceState) {
+		
+		Intent intent = new LibsBuilder()
+			.withActivityTitle(getString(R.string.activity_about_title))
 			.withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
 			.withFields(R.string.class.getFields())
 			.withAutoDetect(true)
-			.withLibraries(new String[]{"acra", "commonsio"})
-			.start(this);
+			.withLibraries("acra", "commonsio")
+			.withListener(buttonListener)
+			.intent(this);
+
+		setIntent(intent);
+
+		super.onCreate(savedInstanceState);
 	}
 }
