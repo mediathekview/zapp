@@ -13,7 +13,9 @@ public class DownloadReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 
 		if (DownloadManager.ACTION_NOTIFICATION_CLICKED.equals(action)) {
-			context.startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+			Intent downloadManagerIntent = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+			downloadManagerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(downloadManagerIntent);
 		}
 	}
 }
