@@ -51,4 +51,5 @@
 -keep class **.R$* {
     <fields>;
 }
+-dontwarn javax.annotation.**
 ## end about libraries
