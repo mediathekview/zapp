@@ -1,5 +1,26 @@
 [
 	{
+		"name": "1.9.0",
+		"items": [
+			{
+				"type": "B",
+				"title": "Streams von ARD One, MDR und NDR repariert."
+			},
+			{
+				"type": "B",
+				"title": "Absturz verhindert, wenn man auf die Download-Notification klickt."
+			},
+			{
+				"type": "I",
+				"title": "Adaptives App-Icon erstellt."
+			},
+			{
+				"type": "I",
+				"title": "Über-Sektion der App überarbeitet und verwendete Bibliotheken angezeigt."
+			}
+		]
+	},
+	{
 		"name": "1.8.1",
 		"items": [
 			{

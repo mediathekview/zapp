@@ -1,2 +1,4 @@
-* KiKA-Stream repariert (danke an SubhrajyotiSen)
-* Korrekte Fehlermeldung angezeigt, wenn das Laden der Mediathek auf älteren Android-Versionen fehl schlägt.
+* Streams von ARD One, MDR und NDR repariert.
+* Absturz verhindert, wenn man auf die Download-Notification klickt.
+* Adaptives App-Icon erstellt.
+* Über-Sektion der App überarbeitet und verwendete Bibliotheken angezeigt.
