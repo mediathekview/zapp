@@ -88,7 +88,7 @@
   {
 	"id": "one",
 	"name": "ONE",
-	"stream_url": "http://wdr_einsfestival-lh.akamaihd.net/i/wdr_einsfestival@328300/master.m3u8",
+	"stream_url": "http://onelivestream-lh.akamaihd.net/i/one_livestream@568814/master.m3u8",
 	"logo_name": "channel_logo_one",
 	"color": "#D6004F"
   },
@@ -118,7 +118,7 @@
   {
 	"id": "mdr_sachsen",
 	"name": "MDR Sachsen",
-	"stream_url": "http://livetvsachsen.mdr.de/i/livetvmdrsachsen_de@106902/master.m3u8",
+	"stream_url": "http://mdrsnhls-lh.akamaihd.net/i/livetvmdrsachsen_de@513998/master.m3u8",
 	"logo_name": "channel_logo_mdr",
 	"subtitle": "Sachsen",
 	"color": "#0063AD"
@@ -126,7 +126,7 @@
   {
 	"id": "mdr_sachsen_anhalt",
 	"name": "MDR Sachsen-Anhalt",
-	"stream_url": "http://livetvsachsenanhalt.mdr.de/i/livetvmdrsachsenanhalt_de@106901/master.m3u8",
+	"stream_url": "http://mdrsahls-lh.akamaihd.net/i/livetvmdrsachsenanhalt_de@513999/master.m3u8",
 	"logo_name": "channel_logo_mdr",
 	"subtitle": "Sachsen-Anhalt",
 	"color": "#0063AD"
@@ -134,7 +134,7 @@
   {
 	"id": "mdr_thueringen",
 	"name": "MDR Thüringen",
-	"stream_url": "http://livetvthueringen.mdr.de/i/livetvmdrthueringen_de@106903/master.m3u8",
+	"stream_url": "http://mdrthuhls-lh.akamaihd.net/i/livetvmdrthueringen_de@514027/master.m3u8",
 	"logo_name": "channel_logo_mdr",
 	"subtitle": "Thüringen",
 	"color": "#0063AD"
@@ -142,7 +142,7 @@
   {
 	"id": "ndr_hh",
 	"name": "NDR Hamburg",
-	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_hh@119223/master.m3u8",
+	"stream_url": "https://ndrfs-lh.akamaihd.net/i/ndrfs_hh@430231/master.m3u8",
 	"logo_name": "channel_logo_ndr",
 	"subtitle": "Hamburg",
 	"color": "#173E7D"
@@ -150,7 +150,7 @@
   {
 	"id": "ndr_mv",
 	"name": "NDR Mecklenburg-Vorpommern",
-	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_mv@119226/master.m3u8",
+	"stream_url": "https://ndrfs-lh.akamaihd.net/i/ndrfs_mv@430232/master.m3u8",
 	"logo_name": "channel_logo_ndr",
 	"subtitle": "Mecklenburg-Vorpommern",
 	"color": "#173E7D"
@@ -158,7 +158,7 @@
   {
 	"id": "ndr_nds",
 	"name": "NRD Niedersachsen",
-	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_nds@119224/master.m3u8",
+	"stream_url": "https://ndrfs-lh.akamaihd.net/i/ndrfs_nds@430233/master.m3u8",
 	"logo_name": "channel_logo_ndr",
 	"subtitle": "Nieder\u00adsachsen",
 	"color": "#173E7D"
@@ -166,7 +166,7 @@
   {
 	"id": "ndr_sh",
 	"name": "NDR Schleswig-Holstein",
-	"stream_url": "http://ndr_fs-lh.akamaihd.net/i/ndrfs_sh@119225/master.m3u8",
+	"stream_url": "https://ndrfs-lh.akamaihd.net/i/ndrfs_sh@430234/master.m3u8",
 	"logo_name": "channel_logo_ndr",
 	"subtitle": "Schleswig-Holstein",
 	"color": "#173E7D"
