@@ -1,4 +1,1 @@
-* Streams von ARD One, MDR und NDR repariert.
-* Absturz verhindert, wenn man auf die Download-Notification klickt.
-* Adaptives App-Icon erstellt.
-* Über-Sektion der App überarbeitet und verwendete Bibliotheken angezeigt.
+* SSL-Fehler beim Laden der Mediathek behoben (danke an axel-rank).
