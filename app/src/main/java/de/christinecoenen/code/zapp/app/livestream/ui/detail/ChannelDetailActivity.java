@@ -285,13 +285,17 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 	@Override
 	public void onBufferingStarted() {
-		progressView.setVisibility(View.VISIBLE);
+		if (player.getBufferedPercentage() == 0) {
+			progressView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
 	public void onBufferingEnded() {
-		progressView.setVisibility(View.GONE);
-		channelDetailAdapter.getCurrentFragment().onVideoStart();
+		if (player.getBufferedPercentage() > 0 && progressView.getVisibility() == View.VISIBLE) {
+			progressView.setVisibility(View.GONE);
+			channelDetailAdapter.getCurrentFragment().onVideoStart();
+		}
 	}
 
 	@Override
