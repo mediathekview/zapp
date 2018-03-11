@@ -77,9 +77,9 @@ dependencies {
 	annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 	// exo player
-	compile 'com.google.android.exoplayer:exoplayer-core:r2.4.0'
-	compile 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
-	compile 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
+	compile 'com.google.android.exoplayer:exoplayer-core:2.7.0'
+	compile 'com.google.android.exoplayer:exoplayer-hls:2.7.0'
+	compile 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
 
 	// retrofit rest client
 	compile 'com.squareup.retrofit2:retrofit:2.3.0'

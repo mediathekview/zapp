@@ -28,7 +28,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -66,7 +66,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	protected ClickableViewPager viewPager;
 
 	@BindView(R.id.video)
-	protected SimpleExoPlayerView videoView;
+	protected PlayerView videoView;
 
 	@BindView(R.id.progressbar_video)
 	protected ProgressBar progressView;
@@ -346,7 +346,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		progressView.setVisibility(View.VISIBLE);
 
 		Uri videoUri = Uri.parse(currentChannel.getStreamUrl());
-		MediaSource videoSource = new HlsMediaSource(videoUri, dataSourceFactory, playHandler, videoErrorHandler);
+		MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory)
+			.createMediaSource(videoUri, playHandler, videoErrorHandler);
 		player.prepare(videoSource);
 		player.setPlayWhenReady(true);
 	}

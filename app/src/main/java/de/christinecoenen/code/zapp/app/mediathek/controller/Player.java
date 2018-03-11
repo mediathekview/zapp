@@ -10,7 +10,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -19,8 +18,8 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
@@ -63,8 +62,8 @@ public class Player {
 		player.addListener(bufferingHandler);
 
 		Uri videoUri = Uri.parse(show.getVideoUrl());
-		videoSource = new ExtractorMediaSource(videoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
-
+		videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+			.createMediaSource(videoUri);
 
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean showSubtitlesPref = preferences.getBoolean("pref_enable_subtitles", false);
@@ -72,9 +71,9 @@ public class Player {
 
 		if (hasSubtitles && showSubtitlesPref) {
 			Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML,
-				null, Format.NO_VALUE, Format.NO_VALUE, "de", null);
-			MediaSource textMediaSource = new SingleSampleMediaSource(Uri.parse(show.getSubtitleUrl()),
-				dataSourceFactory, textFormat, C.TIME_UNSET);
+				C.SELECTION_FLAG_FORCED, "de");
+			MediaSource textMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory)
+				.createMediaSource(Uri.parse(show.getSubtitleUrl()), textFormat, C.TIME_UNSET);
 			videoSource = new MergingMediaSource(videoSource, textMediaSource);
 			isShowingSubtitles = true;
 		}
@@ -82,7 +81,7 @@ public class Player {
 		subtitleRendererIndex = getRendererIndex(C.TRACK_TYPE_TEXT);
 	}
 
-	public void setView(SimpleExoPlayerView videoView) {
+	public void setView(PlayerView videoView) {
 		videoView.setPlayer(player);
 	}
 
@@ -108,7 +107,7 @@ public class Player {
 	}
 
 	public void resume() {
-		if (player.getPlaybackState() == SimpleExoPlayer.STATE_IDLE) {
+		if (player.getPlaybackState() == com.google.android.exoplayer2.Player.STATE_IDLE) {
 			player.prepare(videoSource);
 			player.seekTo(millis);
 			player.setPlayWhenReady(true);
@@ -117,13 +116,13 @@ public class Player {
 
 	public void rewind() {
 		player.seekTo(
-			Math.max(player.getCurrentPosition() - PlaybackControlView.DEFAULT_REWIND_MS, 0)
+			Math.max(player.getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS, 0)
 		);
 	}
 
 	public void fastForward() {
 		player.seekTo(
-			Math.min(player.getCurrentPosition() + PlaybackControlView.DEFAULT_FAST_FORWARD_MS, player.getDuration())
+			Math.min(player.getCurrentPosition() + PlayerControlView.DEFAULT_FAST_FORWARD_MS, player.getDuration())
 		);
 	}
 

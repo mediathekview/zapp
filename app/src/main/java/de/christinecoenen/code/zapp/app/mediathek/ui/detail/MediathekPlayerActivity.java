@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +33,7 @@ import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import timber.log.Timber;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements
-	PlaybackControlView.VisibilityListener,
+	PlayerControlView.VisibilityListener,
 	VideoErrorHandler.IVideoErrorListener,
 	VideoBufferingHandler.IVideoBufferingListener {
 
@@ -55,7 +55,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected Toolbar toolbar;
 
 	@BindView(R.id.video)
-	protected SimpleExoPlayerView videoView;
+	protected PlayerView videoView;
 
 	@BindView(R.id.btn_caption_enable)
 	protected ImageButton captionButtonEnable;
@@ -71,7 +71,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private MediathekShow show;
 	private Player player;
-	private PlaybackControlView controlView;
+	private PlayerControlView controlView;
 
 
 	@Override
@@ -104,7 +104,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
-		controlView = (PlaybackControlView) videoView.getChildAt(1);
+		controlView = (PlayerControlView) videoView.getChildAt(2);
 	}
 
 	@Override

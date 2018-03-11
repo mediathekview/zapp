@@ -1,13 +1,9 @@
 package de.christinecoenen.code.zapp.utils.video;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 
@@ -17,7 +13,7 @@ import de.christinecoenen.code.zapp.R;
 import timber.log.Timber;
 
 
-public class VideoErrorHandler implements ExoPlayer.EventListener, AdaptiveMediaSourceEventListener {
+public class VideoErrorHandler extends Player.DefaultEventListener implements MediaSourceEventListener {
 
 	private final IVideoErrorListener listener;
 
@@ -26,54 +22,24 @@ public class VideoErrorHandler implements ExoPlayer.EventListener, AdaptiveMedia
 	}
 
 	@Override
-	public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-	}
-
-	@Override
-	public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-	}
-
-	@Override
-	public void onLoadingChanged(boolean isLoading) {
-
-	}
-
-	@Override
-	public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-	}
-
-	@Override
 	public void onPlayerError(ExoPlaybackException error) {
 		int errorMessageResourceId = R.string.error_stream_unknown;
 
 		switch (error.type) {
 			case ExoPlaybackException.TYPE_SOURCE:
-				Timber.e(error,"exo player error TYPE_SOURCE");
+				Timber.e(error, "exo player error TYPE_SOURCE");
 				errorMessageResourceId = R.string.error_stream_io;
 				break;
 			case ExoPlaybackException.TYPE_RENDERER:
-				Timber.e(error,"exo player error TYPE_RENDERER");
+				Timber.e(error, "exo player error TYPE_RENDERER");
 				errorMessageResourceId = R.string.error_stream_unsupported;
 				break;
 			case ExoPlaybackException.TYPE_UNEXPECTED:
-				Timber.e(error,"exo player error TYPE_UNEXPECTED");
+				Timber.e(error, "exo player error TYPE_UNEXPECTED");
 				break;
 		}
 
 		listener.onVideoError(errorMessageResourceId);
-	}
-
-	@Override
-	public void onPositionDiscontinuity() {
-
-	}
-
-	@Override
-	public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
 	}
 
 	@Override
