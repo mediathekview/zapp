@@ -213,7 +213,8 @@ public class MediathekShow implements Serializable {
 
 	private String getDownloadFileName(String videoUrl) {
 		String extension = FilenameUtils.getExtension(videoUrl);
-		return title + "." + extension;
+		String fileName = title.replace("/", "-");
+		return fileName + "." + extension;
 	}
 
 	@Override
