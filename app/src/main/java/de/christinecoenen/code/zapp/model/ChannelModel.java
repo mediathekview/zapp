@@ -1,5 +1,8 @@
 package de.christinecoenen.code.zapp.model;
 
+import android.content.Intent;
+import android.net.Uri;
+
 import java.io.Serializable;
 
 public class ChannelModel implements Serializable {
@@ -57,6 +60,12 @@ public class ChannelModel implements Serializable {
 
 	public void setColor(int color) {
 		this.color = color;
+	}
+
+	public Intent getVideoShareIntent() {
+		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
+		videoIntent.setDataAndType(Uri.parse(streamUrl), "video/*");
+		return videoIntent;
 	}
 
 	@Override

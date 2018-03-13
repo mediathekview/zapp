@@ -7,9 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +39,7 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 
 	private ISortableChannelList channelList;
 	private ChannelListAdapter gridAdapter;
+	private ChannelModel longClickChannel;
 
 
 	public ChannelListFragment() {
@@ -100,6 +104,24 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	public void onItemClick(ChannelModel channel) {
 		Intent intent = ChannelDetailActivity.getStartIntent(getContext(), channel.getId());
 		startActivity(intent);
+	}
+
+	@Override
+	public void onItemLongClick(ChannelModel channel, View view) {
+		this.longClickChannel = channel;
+		PopupMenu menu = new PopupMenu(getContext(), view, Gravity.TOP | Gravity.END);
+		menu.inflate(R.menu.activity_channel_list_context);
+		menu.show();
+		menu.setOnMenuItemClickListener(this::onContextMenuItemClicked);
+	}
+
+	private boolean onContextMenuItemClicked(MenuItem menuItem) {
+		switch (menuItem.getItemId()) {
+			case R.id.menu_share:
+				startActivity(longClickChannel.getVideoShareIntent());
+				return true;
+		}
+		return false;
 	}
 
 	private void pauseActivity() {

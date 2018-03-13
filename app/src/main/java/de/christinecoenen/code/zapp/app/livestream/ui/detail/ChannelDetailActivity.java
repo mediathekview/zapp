@@ -244,9 +244,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
-				Intent videoIntent = new Intent(Intent.ACTION_VIEW);
-				videoIntent.setDataAndType(Uri.parse(currentChannel.getStreamUrl()), "video/*");
-				startActivity(videoIntent);
+				startActivity(currentChannel.getVideoShareIntent());
 				return true;
 			case R.id.menu_settings:
 				Intent settingsIntent = SettingsActivity.getStartIntent(this);

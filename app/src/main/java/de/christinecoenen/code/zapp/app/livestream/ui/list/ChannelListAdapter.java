@@ -13,9 +13,9 @@ import java.util.WeakHashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 
 class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 
@@ -82,10 +82,15 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 		return position;
 	}
 
-	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		@BindView(R.id.text_channel_subtitle) TextView subtitle;
-		@BindView(R.id.image_channel_logo) ImageView logo;
-		@BindView(R.id.program_info) ProgramInfoViewBase programInfoView;
+	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+		@BindView(R.id.text_channel_subtitle)
+		TextView subtitle;
+
+		@BindView(R.id.image_channel_logo)
+		ImageView logo;
+
+		@BindView(R.id.program_info)
+		ProgramInfoViewBase programInfoView;
 
 		private ChannelModel channel;
 
@@ -93,6 +98,7 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 			super(view);
 			ButterKnife.bind(this, view);
 
+			view.setOnLongClickListener(this);
 			view.setOnClickListener(this);
 		}
 
@@ -101,6 +107,14 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 			if (channel != null) {
 				ChannelListAdapter.this.listener.onItemClick(channel);
 			}
+		}
+
+		@Override
+		public boolean onLongClick(View view) {
+			if (channel != null) {
+				ChannelListAdapter.this.listener.onItemLongClick(channel, view);
+			}
+			return true;
 		}
 
 		void setChannel(ChannelModel channel) {
@@ -130,5 +144,7 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 
 	public interface Listener {
 		void onItemClick(ChannelModel channel);
+
+		void onItemLongClick(ChannelModel channel, View view);
 	}
 }
