@@ -1,1 +1,4 @@
-* SSL-Fehler beim Laden der Mediathek behoben (danke an axel-rank).
+* Einstellung zur Beschränkung auf W-Lan-Wiedergabe hinzugefügt.
+* Bug beim Herunterladen von Videos behoben (danke an michaelof).
+* Teilen von Videos über ein Long-Press-Menü.
+* Bibliotheken und Android-Version aktualisiert.

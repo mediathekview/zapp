@@ -1,5 +1,26 @@
 [
 	{
+		"name": "1.10.0",
+		"items": [
+			{
+				"type": "F",
+				"title": "Einstellung zur Beschränkung auf W-Lan-Wiedergabe hinzugefügt."
+			},
+			{
+				"type": "B",
+				"title": "Bug beim Herunterladen von Videos behoben (danke an michaelof)."
+			},
+			{
+				"type": "F",
+				"title": "Teilen von Videos über ein Long-Press-Menü."
+			},
+			{
+				"type": "I",
+				"title": "Bibliotheken und Android-Version aktualisiert."
+			}
+		]
+	},
+	{
 		"name": "1.9.1",
 		"items": [
 			{

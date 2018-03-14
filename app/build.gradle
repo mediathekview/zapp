@@ -8,8 +8,8 @@ android {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 19
 		targetSdkVersion 27
-		versionCode 24
-		versionName "1.9.1"
+		versionCode 25
+		versionName "1.10.0"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 	}
 	compileOptions {
