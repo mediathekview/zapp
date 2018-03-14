@@ -40,10 +40,10 @@ public class Player {
 	private final boolean hasSubtitles;
 	private final int subtitleRendererIndex;
 	private final SharedPreferences preferences;
+	private final NetworkConnectionHelper networkConnectionHelper;
 	private boolean isShowingSubtitles;
 	private MediaSource videoSource;
 	private long millis = 0;
-	private NetworkConnectionHelper networkConnectionHelper;
 
 	public Player(Context context,
 				  MediathekShow show,

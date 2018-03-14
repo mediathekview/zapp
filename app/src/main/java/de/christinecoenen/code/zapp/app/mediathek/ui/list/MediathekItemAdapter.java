@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,8 +64,9 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		return position == shows.size() ? VIEW_TYPE_FOOTER : VIEW_TYPE_ITEM;
 	}
 
+	@NonNull
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		int layoutId = (viewType == VIEW_TYPE_ITEM) ?
 			R.layout.fragment_mediathek_list_item : R.layout.fragment_mediathek_list_item_footer;
 
@@ -81,7 +83,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 		if (position == shows.size()) {
 			// nothing to do for footer
 			return;

@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,26 +49,27 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 		}
 	}
 
+	@NonNull
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = inflater.inflate(R.layout.fragment_channel_list_item, parent, false);
 		return new ViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		ChannelModel channel = channelList.get(position);
 		holder.setChannel(channel);
 	}
 
 	@Override
-	public void onViewDetachedFromWindow(ViewHolder holder) {
+	public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
 		holder.pause();
 		visibleViews.remove(holder);
 	}
 
 	@Override
-	public void onViewAttachedToWindow(ViewHolder holder) {
+	public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
 		holder.resume();
 		visibleViews.put(holder, null);
 	}

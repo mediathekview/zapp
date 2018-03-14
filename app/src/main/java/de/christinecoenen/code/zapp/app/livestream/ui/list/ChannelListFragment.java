@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.livestream.ui.list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -55,7 +56,7 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
 		ButterKnife.bind(this, view);
 

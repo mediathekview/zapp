@@ -15,8 +15,8 @@ import java.lang.ref.WeakReference;
 
 public class NetworkConnectionHelper {
 
-	private NetworkReceiver networkReceiver = new NetworkReceiver();
-	private WeakReference<Context> contextReference;
+	private final NetworkReceiver networkReceiver = new NetworkReceiver();
+	private final WeakReference<Context> contextReference;
 	private Listener listener;
 
 	public NetworkConnectionHelper(Context context) {

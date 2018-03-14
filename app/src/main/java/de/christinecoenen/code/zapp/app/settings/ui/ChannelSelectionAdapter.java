@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.settings.ui;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +25,15 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 		setHasStableIds(true);
 	}
 
+	@NonNull
 	@Override
-	public ChannelSelectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public ChannelSelectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = inflater.inflate(R.layout.activity_channel_selection_item, parent, false);
 		return new ViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(ChannelSelectionAdapter.ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull ChannelSelectionAdapter.ViewHolder holder, int position) {
 		super.onBindViewHolder(holder, position);
 		ChannelModel channel = mItemList.get(position);
 		holder.setChannel(channel);
