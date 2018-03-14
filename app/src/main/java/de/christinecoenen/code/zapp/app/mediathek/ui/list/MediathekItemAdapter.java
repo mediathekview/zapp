@@ -98,6 +98,14 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 				listener.onShowClicked(show);
 			}
 		});
+
+		itemHodler.view.setOnLongClickListener(v -> {
+			if (null != listener) {
+				listener.onShowLongClicked(show, v);
+				return true;
+			}
+			return false;
+		});
 	}
 
 	@Override
@@ -108,6 +116,8 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 
 	interface Listener {
 		void onShowClicked(MediathekShow show);
+
+		void onShowLongClicked(MediathekShow show, View view);
 	}
 
 

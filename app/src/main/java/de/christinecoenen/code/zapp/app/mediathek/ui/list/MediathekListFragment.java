@@ -1,17 +1,20 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.net.UnknownServiceException;
@@ -63,6 +66,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	private QueryRequest queryRequest;
 	private MediathekItemAdapter adapter;
 	private InfiniteScrollListener scrollListener;
+	private MediathekShow longClickShow;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -161,9 +165,27 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	}
 
 	@Override
+	public void onShowLongClicked(MediathekShow show, View view) {
+		this.longClickShow = show;
+		PopupMenu menu = new PopupMenu(getContext(), view, Gravity.TOP | Gravity.END);
+		menu.inflate(R.menu.activity_mediathek_detail);
+		menu.show();
+		menu.setOnMenuItemClickListener(this::onContextMenuItemClicked);
+	}
+
+	@Override
 	public void onRefresh() {
 		swipeRefreshLayout.setRefreshing(true);
 		loadItems(0, true);
+	}
+
+	private boolean onContextMenuItemClicked(MenuItem menuItem) {
+		switch (menuItem.getItemId()) {
+			case R.id.menu_share:
+				startActivity(Intent.createChooser(longClickShow.getShareIntentPlain(), getString(R.string.action_share)));
+				return true;
+		}
+		return false;
 	}
 
 	private void loadItems(int startWith, boolean replaceItems) {

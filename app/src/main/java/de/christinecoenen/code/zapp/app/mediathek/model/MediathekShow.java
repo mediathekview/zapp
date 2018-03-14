@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.model;
 
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
@@ -209,6 +210,14 @@ public class MediathekShow implements Serializable {
 
 	public String getDownloadFileNameSubtitle() {
 		return getDownloadFileName(subtitleUrl);
+	}
+
+	public Intent getShareIntentPlain() {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_SUBJECT, topic + " - " + title);
+		intent.putExtra(Intent.EXTRA_TEXT, videoUrl);
+		return intent;
 	}
 
 	private String getDownloadFileName(String videoUrl) {

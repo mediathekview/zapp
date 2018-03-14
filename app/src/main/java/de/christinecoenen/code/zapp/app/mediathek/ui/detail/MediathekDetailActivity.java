@@ -54,11 +54,7 @@ public class MediathekDetailActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
-				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.setType("text/plain");
-				intent.putExtra(Intent.EXTRA_SUBJECT, show.getTopic() + " - " + show.getTitle());
-				intent.putExtra(Intent.EXTRA_TEXT, show.getVideoUrl());
-				startActivity(Intent.createChooser(intent, "Share Text"));
+				startActivity(Intent.createChooser(show.getShareIntentPlain(), getString(R.string.action_share)));
 				return true;
 			case android.R.id.home:
 				finish();
