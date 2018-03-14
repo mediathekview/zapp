@@ -42,6 +42,7 @@
 	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
 	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
+	<string name="error_stream_not_in_wifi">Das Abspielen über Mobilverbindungen wurde in den Einstellungen deaktiviert.</string>
 	<string name="error_no_app_for_link">Keine App zum Öffnen von Links gefunden.</string>
 
 	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
@@ -79,6 +80,10 @@
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary_on">Sperrt die App im Querformat, solange ein Video läuft</string>
 	<string name="pref_detail_landscape_summary_off">Querformat oder Portrait-Modus werden von deinen Systemeinstellungen bestimmt</string>
+
+	<string name="pref_wifi_only_title">Nur über W-Lan streamen</string>
+	<string name="pref_wifi_only_summary_on">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
+	<string name="pref_wifi_only_summary_off">Videos spielen unabhängig von der Verbindungsart ab und können dein Mobilfunk-Volumen belasten</string>
 
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 

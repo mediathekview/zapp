@@ -10,6 +10,13 @@
 			android:summaryOn="@string/pref_detail_landscape_summary_on"
 			android:title="@string/pref_detail_landscape_title" />
 
+		<CheckBoxPreference
+			android:defaultValue="true"
+			android:key="pref_wifi_only"
+			android:summaryOff="@string/pref_wifi_only_summary_off"
+			android:summaryOn="@string/pref_wifi_only_summary_on"
+			android:title="@string/pref_wifi_only_title" />
+
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="@string/pref_header_channels">
@@ -27,16 +34,5 @@
 			android:summary="@string/pref_shortcuts_summary_not_supported"
 			android:title="@string/pref_shortcuts_title" />
 	</PreferenceCategory>
-
-	<!-- disable completely for this release -->
-	<!--PreferenceCategory android:title="@string/pref_header_network">
-
-		<CheckBoxPreference
-			android:defaultValue="true"
-			android:key="pref_upnp_enabled"
-			android:summaryOff="@string/pref_upnp_enabled_summary_off"
-			android:summaryOn="@string/pref_upnp_enabled_summary_on"
-			android:title="@string/pref_upnp_enabled_title" />
-	</PreferenceCategory-->
 
 </PreferenceScreen>

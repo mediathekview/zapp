@@ -241,6 +241,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	@Override
+	public void onVideoErrorInvalid() {
+		hideError();
+	}
+
+	@Override
 	public void onBufferingStarted() {
 		loadingIndicator.setVisibility(View.VISIBLE);
 	}

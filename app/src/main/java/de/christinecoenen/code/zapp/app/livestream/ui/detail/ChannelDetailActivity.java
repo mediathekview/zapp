@@ -45,6 +45,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
+import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
@@ -87,6 +88,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private final Handler playHandler = new Handler();
 	private final VideoErrorHandler videoErrorHandler = new VideoErrorHandler(this);
 	private final VideoBufferingHandler bufferingHandler = new VideoBufferingHandler(this);
+	private final NetworkConnectionHelper networkConnectionHelper = new NetworkConnectionHelper(this);
 	private SimpleExoPlayer player;
 	private DataSource.Factory dataSourceFactory;
 	private ChannelDetailAdapter channelDetailAdapter;
@@ -147,6 +149,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		}
 
 		channelList = new SortableJsonChannelList(this);
+
+		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
 
 		// player
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -224,6 +228,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		player.removeListener(bufferingHandler);
 		player.removeListener(videoErrorHandler);
 		player.release();
+
+		networkConnectionHelper.endListenForNetworkChanges();
 	}
 
 	@Override
@@ -282,6 +288,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
+	public void onVideoErrorInvalid() {
+
+	}
+
+	@Override
 	public void onBufferingStarted() {
 		if (player.getBufferedPercentage() == 0) {
 			progressView.setVisibility(View.VISIBLE);
@@ -306,6 +317,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	public boolean onPagerTouch() {
 		delayHide();
 		return false;
+	}
+
+	private void onNetworkConnectionChanged() {
+		if (networkConnectionHelper.isVideoPlaybackAllowed()) {
+			play();
+		} else {
+			onVideoError(R.string.error_stream_not_in_wifi);
+		}
 	}
 
 	private void parseIntent(Intent intent) {
@@ -339,6 +358,15 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private void play() {
+		if (!networkConnectionHelper.isVideoPlaybackAllowed()) {
+			onVideoError(R.string.error_stream_not_in_wifi);
+			return;
+		}
+
+		if (currentChannel == null) {
+			return;
+		}
+
 		Timber.d("play: %s", currentChannel.getName());
 		isPlaying = true;
 		progressView.setVisibility(View.VISIBLE);

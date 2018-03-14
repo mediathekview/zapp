@@ -27,6 +27,7 @@ import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 
@@ -42,11 +43,15 @@ public class Player {
 	private boolean isShowingSubtitles;
 	private MediaSource videoSource;
 	private long millis = 0;
+	private NetworkConnectionHelper networkConnectionHelper;
 
 	public Player(Context context,
 				  MediathekShow show,
 				  VideoErrorHandler.IVideoErrorListener errorListener,
 				  VideoBufferingHandler.IVideoBufferingListener bufferingListener) {
+
+		networkConnectionHelper = new NetworkConnectionHelper(context);
+		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
 
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context,
@@ -107,6 +112,11 @@ public class Player {
 	}
 
 	public void resume() {
+		if (!networkConnectionHelper.isVideoPlaybackAllowed()) {
+			videoErrorHandler.onWrongNetworkError();
+			return;
+		}
+
 		if (player.getPlaybackState() == com.google.android.exoplayer2.Player.STATE_IDLE) {
 			player.prepare(videoSource);
 			player.seekTo(millis);
@@ -127,6 +137,8 @@ public class Player {
 	}
 
 	public void destroy() {
+		networkConnectionHelper.endListenForNetworkChanges();
+
 		player.removeListener(videoErrorHandler);
 		player.removeListener(bufferingHandler);
 		player.release();
@@ -138,6 +150,16 @@ public class Player {
 
 	public boolean isShowingSubtitles() {
 		return isShowingSubtitles;
+	}
+
+	private void onNetworkConnectionChanged() {
+		if (networkConnectionHelper.isVideoPlaybackAllowed()) {
+			resume();
+			videoErrorHandler.onWrongNetworkErrorInvalid();
+		} else {
+			pause();
+			videoErrorHandler.onWrongNetworkError();
+		}
 	}
 
 	private void enableSubtitles(boolean enabled) {

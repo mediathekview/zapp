@@ -79,7 +79,17 @@ public class VideoErrorHandler extends Player.DefaultEventListener implements Me
 
 	}
 
+	public void onWrongNetworkError() {
+		listener.onVideoError(R.string.error_stream_not_in_wifi);
+	}
+
+	public void onWrongNetworkErrorInvalid() {
+		listener.onVideoErrorInvalid();
+	}
+
 	public interface IVideoErrorListener {
 		void onVideoError(int messageResourceId);
+
+		void onVideoErrorInvalid();
 	}
 }
