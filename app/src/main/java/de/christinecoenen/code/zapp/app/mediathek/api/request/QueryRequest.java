@@ -7,61 +7,48 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.MatchAllQuery;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Query;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Text;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.TextQuery;
+
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public class QueryRequest implements Serializable {
 
-	private final List<Query> queries = new ArrayList<>();
-
-	private String sortBy = "timestamp";
-	private String sortOrder = "desc";
-
-	@SuppressWarnings("FieldCanBeLocal")
-	private final boolean future = false;
-	private int offset = 0;
-	private int size = 10;
+	private Query body = new MatchAllQuery();
+	private List<Sort> sorts;
+	private int skip = 0;
+	private int limit = 10;
 
 	public QueryRequest setSimpleSearch(String queryString) {
-		this.queries.clear();
-		if (!TextUtils.isEmpty(queryString)) {
-			this.queries.add(new Query(queryString, "title", "topic"));
+		if (TextUtils.isEmpty(queryString)) {
+			this.body = new MatchAllQuery();
+		} else {
+			Text text = new Text()
+				.setText(queryString)
+				.addField(Field.TITLE)
+				.addField(Field.TOPIC);
+			this.body = new TextQuery(text);
 		}
 		return this;
 	}
 
-	public QueryRequest addQuery(String fieldName, String queryString) {
-		this.queries.add(new Query(queryString, fieldName));
-		return this;
-	}
-
-	public QueryRequest setSortBy(String sortBy) {
-		this.sortBy = sortBy;
-		return this;
-	}
-
-	public QueryRequest setSortOrder(String sortOrder) {
-		this.sortOrder = sortOrder;
+	public QueryRequest setSortAscending(Field... fields) {
+		sorts = new ArrayList<>();
+		for (Field field : fields) {
+			sorts.add(new Sort(field, Sort.Order.DESCENDING));
+		}
 		return this;
 	}
 
 	public QueryRequest setOffset(int offset) {
-		this.offset = offset;
+		this.skip = offset;
 		return this;
 	}
 
 	public QueryRequest setSize(int size) {
-		this.size = size;
+		this.limit = size;
 		return this;
-	}
-
-	@Override
-	public String toString() {
-		return "QueryRequest{" +
-			"queries=" + queries +
-			", sortBy='" + sortBy + '\'' +
-			", sortOrder='" + sortOrder + '\'' +
-			", future=" + future +
-			", offset=" + offset +
-			", size=" + size +
-			'}';
 	}
 }

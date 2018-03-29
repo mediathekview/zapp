@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
@@ -86,7 +87,8 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		setHasOptionsMenu(true);
 
 		queryRequest = new QueryRequest()
-			.setSize(ITEM_COUNT_PER_PAGE);
+			.setSize(ITEM_COUNT_PER_PAGE)
+			.setSortAscending(Field.TIMESTAMP, Field.DURATION);
 
 		// workaround to avoid SSLHandshakeException on Android 7 devices
 		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
