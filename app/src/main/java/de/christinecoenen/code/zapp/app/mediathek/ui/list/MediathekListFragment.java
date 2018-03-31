@@ -35,6 +35,7 @@ import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,12 +97,16 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			.tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2)
 			.build();
 
+		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+		loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+
 		OkHttpClient client = new OkHttpClient.Builder()
 			.connectionSpecs(Collections.singletonList(spec))
+			.addInterceptor(loggingInterceptor)
 			.build();
 
 		Retrofit retrofit = new Retrofit.Builder()
-			.baseUrl("https://mediathekviewweb.de/api/")
+			.baseUrl("https://testing.mediathekviewweb.de/api/v2/")
 			.client(client)
 			.addConverterFactory(GsonConverterFactory.create())
 			.build();
@@ -232,9 +237,9 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			}
 
 			if (replaceItems) {
-				adapter.setShows(response.body().result.results);
+				adapter.setShows(response.body().result.items);
 			} else {
-				adapter.addShows(response.body().result.results);
+				adapter.addShows(response.body().result.items);
 			}
 
 			if (adapter.getItemCount() == 1) {

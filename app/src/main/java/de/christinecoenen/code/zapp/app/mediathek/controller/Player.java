@@ -66,7 +66,7 @@ public class Player {
 		bufferingHandler = new VideoBufferingHandler(bufferingListener);
 		player.addListener(bufferingHandler);
 
-		Uri videoUri = Uri.parse(show.getVideoUrl());
+		Uri videoUri = Uri.parse(show.getHighestQualityVideoUrl());
 		videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
 			.createMediaSource(videoUri);
 

@@ -183,7 +183,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
-				IntentHelper.openUrl(this, show.getVideoUrl());
+				IntentHelper.openUrl(this, show.getHighestQualityVideoUrl());
 				return true;
 			case android.R.id.home:
 				finish();

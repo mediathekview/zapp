@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.query.TextQuery;
 public class QueryRequest implements Serializable {
 
 	private Query body = new MatchAllQuery();
-	private List<Sort> sorts;
+	private List<Sort> sort;
 	private int skip = 0;
 	private int limit = 10;
 
@@ -35,9 +35,9 @@ public class QueryRequest implements Serializable {
 	}
 
 	public QueryRequest setSortAscending(Field... fields) {
-		sorts = new ArrayList<>();
+		sort = new ArrayList<>();
 		for (Field field : fields) {
-			sorts.add(new Sort(field, Sort.Order.DESCENDING));
+			sort.add(new Sort(field, Sort.Order.DESCENDING));
 		}
 		return this;
 	}

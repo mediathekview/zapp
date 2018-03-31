@@ -14,7 +14,7 @@ public abstract class Query implements Serializable {
 		@SerializedName("and")
 		AND,
 
-		@SerializedName("ot")
+		@SerializedName("or")
 		OR
 	}
 

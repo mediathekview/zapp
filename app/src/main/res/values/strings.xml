@@ -29,9 +29,12 @@
 	<string name="fragment_mediathek_download">Download</string>
 	<string name="fragment_mediathek_batch_subtitle">UT</string>
 	<string name="fragment_mediathek_qualities_title">Qualitäten</string>
+	<string name="fragment_mediathek_qualities_ultra_low">Ultra niedrig</string>
+	<string name="fragment_mediathek_qualities_very_low">Sehr niedrig</string>
 	<string name="fragment_mediathek_qualities_low">Niedrig</string>
 	<string name="fragment_mediathek_qualities_medium">Mittel</string>
 	<string name="fragment_mediathek_qualities_high">Hoch</string>
+	<string name="fragment_mediathek_qualities_very_high">Sehr hoch</string>
 
 	<!-- error messages -->
 	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>

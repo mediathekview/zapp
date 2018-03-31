@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 
 public interface MediathekService {
 
-	@Headers("Content-Type: text/plain")
-	@POST("query")
+	@Headers("Content-Type: application/json")
+	@POST("search")
 	Call<MediathekAnswer> listShows(@Body QueryRequest queryRequest);
 }

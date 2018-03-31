@@ -2,10 +2,8 @@ package de.christinecoenen.code.zapp.app.mediathek.model;
 
 
 import android.content.Intent;
-import android.text.TextUtils;
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
-
-import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTimeZone;
@@ -15,6 +13,7 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @SuppressWarnings("unused")
@@ -40,24 +39,9 @@ public class MediathekShow implements Serializable {
 	private String description;
 	private String channel;
 	private int timestamp;
-	private long size;
-	private String duration;
-	private int filmlisteTimestamp;
-
-	@SerializedName("url_website")
-	private String websiteUrl;
-
-	@SerializedName("url_subtitle")
-	private String subtitleUrl;
-
-	@SerializedName("url_video")
-	private String videoUrl;
-
-	@SerializedName("url_video_low")
-	private String videoUrlLow;
-
-	@SerializedName("url_video_hd")
-	private String videoUrlHd;
+	private long duration;
+	private String website;
+	private List<MediathekMedia> media;
 
 
 	public String getId() {
@@ -104,6 +88,10 @@ public class MediathekShow implements Serializable {
 		return timestamp;
 	}
 
+	public List<MediathekMedia> getMedia() {
+		return media;
+	}
+
 	public CharSequence getFormattedTimestamp() {
 		long time = DateTimeZone
 			.forID("Europe/Berlin")
@@ -115,115 +103,71 @@ public class MediathekShow implements Serializable {
 		this.timestamp = timestamp;
 	}
 
-	public long getSize() {
-		return size;
-	}
-
-	public void setSize(long size) {
-		this.size = size;
-	}
-
 	public String getFormattedDuration() {
-		int duration;
-		try {
-			duration = Integer.parseInt(this.duration);
-		} catch (NumberFormatException e) {
-			return "?";
-		}
-
 		Period period = Duration.standardSeconds(duration).toPeriod();
 		PeriodFormatter formatter = (period.getHours() > 0) ? hourPeriodFormatter : secondsPeriodFormatter;
 		return period.toString(formatter);
 	}
 
-	public int getFilmlisteTimestamp() {
-		return filmlisteTimestamp;
+	public String getWebsite() {
+		return website;
 	}
 
-	public void setFilmlisteTimestamp(int filmlisteTimestamp) {
-		this.filmlisteTimestamp = filmlisteTimestamp;
-	}
-
-	public String getWebsiteUrl() {
-		return websiteUrl;
-	}
-
-	public void setWebsiteUrl(String websiteUrl) {
-		this.websiteUrl = websiteUrl;
-	}
-
-	public String getSubtitleUrl() {
-		return subtitleUrl;
-	}
-
-	public void setSubtitleUrl(String subtitleUrl) {
-		this.subtitleUrl = subtitleUrl;
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 
 	public boolean hasSubtitle() {
-		return !TextUtils.isEmpty(subtitleUrl);
+		return getSubtitleMedia() != null;
 	}
 
-	public String getVideoUrl() {
-		return videoUrl;
+	public @NonNull
+	String getHighestQualityVideoUrl() {
+		MediathekMedia highestQualityMedia = null;
+		for (MediathekMedia media : media) {
+			if (highestQualityMedia == null ||
+				highestQualityMedia.getQuality().ordinal() < media.getQuality().ordinal()) {
+				highestQualityMedia = media;
+			}
+		}
+
+		if (highestQualityMedia == null) {
+			throw new RuntimeException("show has no media attached");
+		} else {
+			return highestQualityMedia.getUrl();
+		}
 	}
 
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
+	public String getSubtitleUrl() {
+		MediathekMedia subtitleMedia = getSubtitleMedia();
+		return subtitleMedia == null ? null : subtitleMedia.getUrl();
 	}
 
-	public String getVideoUrlLow() {
-		return videoUrlLow;
-	}
-
-	public void setVideoUrlLow(String videoUrlLow) {
-		this.videoUrlLow = videoUrlLow;
-	}
-
-	public String getVideoUrlHd() {
-		return videoUrlHd;
-	}
-
-	public void setVideoUrlHd(String videoUrlHd) {
-		this.videoUrlHd = videoUrlHd;
-	}
-
-	public boolean hasQualityHd() {
-		return !TextUtils.isEmpty(videoUrlHd);
-	}
-
-	public boolean hasQualityLow() {
-		return !TextUtils.isEmpty(videoUrlLow);
-	}
-
-	public String getDownloadFileName() {
-		return getDownloadFileName(videoUrl);
-	}
-
-	public String getDownloadFileNameHd() {
-		return getDownloadFileName(videoUrlHd);
-	}
-
-	public String getDownloadFileNameLow() {
-		return getDownloadFileName(videoUrlLow);
+	public String getDownloadFileName(MediathekMedia media) {
+		String extension = FilenameUtils.getExtension(media.getUrl());
+		String fileName = title.replace("/", "-");
+		return fileName + "." + extension;
 	}
 
 	public String getDownloadFileNameSubtitle() {
-		return getDownloadFileName(subtitleUrl);
+		return getDownloadFileName(getSubtitleMedia());
 	}
 
 	public Intent getShareIntentPlain() {
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
 		intent.putExtra(Intent.EXTRA_SUBJECT, topic + " - " + title);
-		intent.putExtra(Intent.EXTRA_TEXT, videoUrl);
+		intent.putExtra(Intent.EXTRA_TEXT, getHighestQualityVideoUrl());
 		return intent;
 	}
 
-	private String getDownloadFileName(String videoUrl) {
-		String extension = FilenameUtils.getExtension(videoUrl);
-		String fileName = title.replace("/", "-");
-		return fileName + "." + extension;
+	private MediathekMedia getSubtitleMedia() {
+		for (MediathekMedia media : media) {
+			if (media.isSubtitle()) {
+				return media;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -251,14 +195,9 @@ public class MediathekShow implements Serializable {
 			", description='" + description + '\'' +
 			", channel='" + channel + '\'' +
 			", timestamp=" + timestamp +
-			", size=" + size +
 			", duration=" + duration +
-			", filmlisteTimestamp=" + filmlisteTimestamp +
-			", websiteUrl='" + websiteUrl + '\'' +
-			", subtitleUrl='" + subtitleUrl + '\'' +
-			", videoUrl='" + videoUrl + '\'' +
-			", videoUrlLow='" + videoUrlLow + '\'' +
-			", videoUrlHd='" + videoUrlHd + '\'' +
+			", website='" + website + '\'' +
+			", media=" + media +
 			'}';
 	}
 }

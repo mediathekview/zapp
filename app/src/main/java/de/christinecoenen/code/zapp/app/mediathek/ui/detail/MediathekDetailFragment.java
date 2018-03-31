@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +20,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.mediathek.model.MediathekMedia;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
 
 
-public class MediathekDetailFragment extends Fragment {
+public class MediathekDetailFragment extends Fragment implements QualityRowView.Listener {
 
 	private static final String ARG_SHOW = "ARG_SHOW";
 
@@ -50,11 +52,8 @@ public class MediathekDetailFragment extends Fragment {
 	@BindView(R.id.text_show_subtitle)
 	protected TextView subtitleView;
 
-	@BindView(R.id.quality_row_high)
-	protected View qualityRowHigh;
-
-	@BindView(R.id.quality_row_low)
-	protected View qualityRowLow;
+	@BindView(R.id.qualities_container)
+	protected LinearLayout qualitiesContainer;
 
 	@BindView(R.id.quality_row_subtitle)
 	protected View qualityRowSubtitle;
@@ -97,9 +96,14 @@ public class MediathekDetailFragment extends Fragment {
 		durationView.setText(show.getFormattedDuration());
 		subtitleView.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		qualityRowHigh.setVisibility(show.hasQualityHd() ? View.VISIBLE : View.GONE);
-		qualityRowLow.setVisibility(show.hasQualityLow() ? View.VISIBLE : View.GONE);
 		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+
+		for (MediathekMedia media : show.getMedia()) {
+			QualityRowView qualityRowView = new QualityRowView(getContext());
+			qualityRowView.setMedia(media);
+			qualityRowView.setListener(this);
+			qualitiesContainer.addView(qualityRowView, 1);
+		}
 
 		return view;
 	}
@@ -111,22 +115,7 @@ public class MediathekDetailFragment extends Fragment {
 
 	@OnClick(R.id.btn_website)
 	protected void onWebsiteClick() {
-		IntentHelper.openUrl(getContext(), show.getWebsiteUrl());
-	}
-
-	@OnClick(R.id.btn_download_high)
-	protected void onDownloadHighClick() {
-		download(show.getVideoUrlHd(), show.getDownloadFileNameHd());
-	}
-
-	@OnClick(R.id.btn_download_medium)
-	protected void onDownloadMediumClick() {
-		download(show.getVideoUrl(), show.getDownloadFileName());
-	}
-
-	@OnClick(R.id.btn_download_low)
-	protected void onDownloadLowClick() {
-		download(show.getVideoUrlLow(), show.getDownloadFileNameLow());
+		IntentHelper.openUrl(getContext(), show.getWebsite());
 	}
 
 	@OnClick(R.id.btn_download_subtitle)
@@ -134,19 +123,14 @@ public class MediathekDetailFragment extends Fragment {
 		download(show.getSubtitleUrl(), show.getDownloadFileNameSubtitle());
 	}
 
-	@OnClick(R.id.btn_share_high)
-	protected void onShareHighClick() {
-		share(show.getVideoUrlHd());
+	@Override
+	public void onDownloadClick(MediathekMedia media) {
+		download(media.getUrl(), show.getDownloadFileName(media));
 	}
 
-	@OnClick(R.id.btn_share_medium)
-	protected void onShareMediumClick() {
-		share(show.getVideoUrl());
-	}
-
-	@OnClick(R.id.btn_share_low)
-	protected void onShareLowClick() {
-		share(show.getVideoUrlLow());
+	@Override
+	public void onShareClick(MediathekMedia media) {
+		share(media.getUrl());
 	}
 
 	private void share(String url) {

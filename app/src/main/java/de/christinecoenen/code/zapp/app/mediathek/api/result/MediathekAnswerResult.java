@@ -8,6 +8,6 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 @SuppressWarnings({"CanBeFinal", "unused"})
 public class MediathekAnswerResult {
 
-	public List<MediathekShow> results;
+	public List<MediathekShow> items;
 
 }

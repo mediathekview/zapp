@@ -8,7 +8,7 @@ public class Text implements Serializable {
 
 	private List<Field> fields = new ArrayList<>();
 	private String text;
-	private Query.Operator operator = Query.Operator.OR;
+	private Query.Operator operator = Query.Operator.AND;
 
 	public Text addField(Field field) {
 		fields.add(field);
