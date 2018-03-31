@@ -10,6 +10,7 @@ import java.util.List;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.BoolQuery;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.MatchAllQuery;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.RangeQuery;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.TextQuery;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
@@ -18,6 +19,9 @@ public class QueryRequest implements Serializable {
 	private static final TextQuery EXCLUDE_CHANNELS_QUERY = new TextQuery()
 		.addField(Field.CHANNEL)
 		.setText("ARTE.FR");
+	private static final RangeQuery EXCLUDE_FUTURE_QUERY = new RangeQuery()
+		.setField(Field.TIMESTAMP)
+		.setLte("now+2h/m");
 
 	private transient MatchAllQuery noSearchQuery = new MatchAllQuery();
 	private transient TextQuery searchQuery = new TextQuery()
@@ -26,7 +30,8 @@ public class QueryRequest implements Serializable {
 
 	private BoolQuery body = new BoolQuery()
 		.setNotQueries(EXCLUDE_CHANNELS_QUERY)
-		.setMustQueries(noSearchQuery);
+		.setMustQueries(noSearchQuery)
+		.setFilterQueries(EXCLUDE_FUTURE_QUERY);
 
 	private List<Sort> sort;
 	private int skip = 0;
