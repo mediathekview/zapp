@@ -1,8 +1,9 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request.query;
 
+@SuppressWarnings("unused")
 public class RangeQuery extends Query {
 
-	private Range range = new Range();
+	private final Range range = new Range();
 
 	public RangeQuery setField(Field field) {
 		range.setField(field);

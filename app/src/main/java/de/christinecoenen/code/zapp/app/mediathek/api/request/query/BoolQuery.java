@@ -1,8 +1,9 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request.query;
 
+@SuppressWarnings("unused")
 public class BoolQuery extends Query {
 
-	private Bool bool = new Bool();
+	private final Bool bool = new Bool();
 
 	public BoolQuery setMustQueries(Query... queries) {
 		bool.setMustQueries(queries);

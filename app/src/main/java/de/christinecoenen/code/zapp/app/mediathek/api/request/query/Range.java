@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request.query;
 
-public class Range {
+class Range {
 
 	private Field field;
 	private String lt;

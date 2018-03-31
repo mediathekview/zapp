@@ -3,7 +3,7 @@ package de.christinecoenen.code.zapp.app.mediathek.api.request.query;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bool {
+class Bool {
 
 	private List<Query> must;
 	private List<Query> should;

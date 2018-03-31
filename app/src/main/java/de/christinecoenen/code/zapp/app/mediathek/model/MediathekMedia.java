@@ -33,7 +33,7 @@ public class MediathekMedia implements Serializable {
 		@SerializedName("5")
 		VERY_HIGH(R.string.fragment_mediathek_qualities_very_high);
 
-		private int titleResId;
+		private final int titleResId;
 
 		Quality(int titleResId) {
 			this.titleResId = titleResId;

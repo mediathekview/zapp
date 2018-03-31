@@ -13,7 +13,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.query.MatchAllQuer
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.RangeQuery;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.TextQuery;
 
-@SuppressWarnings({"unused", "UnusedReturnValue"})
+@SuppressWarnings({"unused", "UnusedReturnValue", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"})
 public class QueryRequest implements Serializable {
 
 	private static final TextQuery EXCLUDE_CHANNELS_QUERY = new TextQuery()
@@ -23,12 +23,12 @@ public class QueryRequest implements Serializable {
 		.setField(Field.TIMESTAMP)
 		.setLte("now+2h/m");
 
-	private transient MatchAllQuery noSearchQuery = new MatchAllQuery();
-	private transient TextQuery searchQuery = new TextQuery()
+	private final transient MatchAllQuery noSearchQuery = new MatchAllQuery();
+	private final transient TextQuery searchQuery = new TextQuery()
 		.addField(Field.TITLE)
 		.addField(Field.TOPIC);
 
-	private BoolQuery body = new BoolQuery()
+	private final BoolQuery body = new BoolQuery()
 		.setNotQueries(EXCLUDE_CHANNELS_QUERY)
 		.setMustQueries(noSearchQuery)
 		.setFilterQueries(EXCLUDE_FUTURE_QUERY);

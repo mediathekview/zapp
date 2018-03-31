@@ -6,8 +6,10 @@ import java.io.Serializable;
 
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
 
+@SuppressWarnings("unused")
 public class Sort implements Serializable {
 
+	@SuppressWarnings("unused")
 	public enum Order {
 		@SerializedName("ascending")
 		ASCENTING,
