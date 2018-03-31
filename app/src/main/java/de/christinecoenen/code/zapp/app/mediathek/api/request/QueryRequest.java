@@ -7,29 +7,37 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.BoolQuery;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.MatchAllQuery;
-import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Query;
-import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Text;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.query.TextQuery;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public class QueryRequest implements Serializable {
 
-	private Query body = new MatchAllQuery();
+	private static final TextQuery EXCLUDE_CHANNELS_QUERY = new TextQuery()
+		.addField(Field.CHANNEL)
+		.setText("ARTE.FR");
+
+	private transient MatchAllQuery noSearchQuery = new MatchAllQuery();
+	private transient TextQuery searchQuery = new TextQuery()
+		.addField(Field.TITLE)
+		.addField(Field.TOPIC);
+
+	private BoolQuery body = new BoolQuery()
+		.setNotQueries(EXCLUDE_CHANNELS_QUERY)
+		.setMustQueries(noSearchQuery);
+
 	private List<Sort> sort;
 	private int skip = 0;
 	private int limit = 10;
 
 	public QueryRequest setSimpleSearch(String queryString) {
 		if (TextUtils.isEmpty(queryString)) {
-			this.body = new MatchAllQuery();
+			body.setMustQueries(noSearchQuery);
 		} else {
-			Text text = new Text()
-				.setText(queryString)
-				.addField(Field.TITLE)
-				.addField(Field.TOPIC);
-			this.body = new TextQuery(text);
+			searchQuery.setText(queryString);
+			body.setMustQueries(searchQuery);
 		}
 		return this;
 	}

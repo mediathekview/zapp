@@ -98,7 +98,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			.build();
 
 		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-		loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+		loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 		OkHttpClient client = new OkHttpClient.Builder()
 			.connectionSpecs(Collections.singletonList(spec))

@@ -10,14 +10,12 @@ public class Text implements Serializable {
 	private String text;
 	private Query.Operator operator = Query.Operator.AND;
 
-	public Text addField(Field field) {
+	public void addField(Field field) {
 		fields.add(field);
-		return this;
 	}
 
-	public Text setText(String text) {
+	public void setText(String text) {
 		this.text = text;
-		return this;
 	}
 
 	@Override
