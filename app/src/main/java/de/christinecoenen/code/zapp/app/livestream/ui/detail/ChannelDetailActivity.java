@@ -150,8 +150,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		channelList = new SortableJsonChannelList(this);
 
-		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
-
 		// player
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -171,6 +169,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		viewPager.setOnClickListener(view -> mContentView.performClick());
 
 		parseIntent(getIntent());
+
+		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
 	}
 
 	@Override
@@ -284,7 +284,10 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	public void onVideoError(int messageResourceId) {
 		player.stop();
 		progressView.setVisibility(View.GONE);
-		channelDetailAdapter.getCurrentFragment().onVideoError(getString(messageResourceId));
+
+		if (channelDetailAdapter.getCurrentFragment() != null) {
+			channelDetailAdapter.getCurrentFragment().onVideoError(getString(messageResourceId));
+		}
 	}
 
 	@Override
