@@ -39,7 +39,7 @@ dependencies {
 
 	// tests
 	testImplementation 'junit:junit:4.12'
-	androidTestImplementation 'com.android.support:support-annotations:27.1.0'
+	androidTestImplementation 'com.android.support:support-annotations:27.1.1'
 	androidTestImplementation 'com.android.support.test:runner:1.0.1'
 	androidTestImplementation 'com.android.support.test:rules:1.0.1'
 
@@ -54,10 +54,10 @@ dependencies {
 	}
 
 	// support
-	implementation 'com.android.support:appcompat-v7:27.1.0'
-	implementation 'com.android.support:support-v4:27.1.0'
-	implementation 'com.android.support:design:27.1.0'
-	implementation 'com.android.support:cardview-v7:27.1.0'
+	implementation 'com.android.support:appcompat-v7:27.1.1'
+	implementation 'com.android.support:support-v4:27.1.1'
+	implementation 'com.android.support:design:27.1.1'
+	implementation 'com.android.support:cardview-v7:27.1.1'
 
 	// helper
 	implementation 'com.google.code.gson:gson:2.8.2'
@@ -67,7 +67,7 @@ dependencies {
 	implementation 'com.github.porokoro.paperboy:paperboy:3.0.0'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.5.2'
+	implementation 'com.github.woxthebox:draglistview:1.5.4'
 
 	// markdown
 	implementation 'com.github.fiskurgit:MarkdownView:1.1.0'
@@ -82,14 +82,14 @@ dependencies {
 	implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
 
 	// retrofit rest client
-	implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-	implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+	implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
 	// ACRA crash reporting
-	releaseImplementation 'ch.acra:acra:4.9.2'
+	releaseImplementation 'ch.acra:acra:4.11'
 
 	// timber logging
-	implementation 'com.jakewharton.timber:timber:4.6.1'
+	implementation 'com.jakewharton.timber:timber:4.7.0'
 
 	// joda time
 	implementation 'joda-time:joda-time:2.9.9'
