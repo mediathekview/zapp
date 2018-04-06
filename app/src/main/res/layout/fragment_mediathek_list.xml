@@ -8,6 +8,8 @@
 	android:orientation="vertical"
 	tools:context=".app.mediathek.ui.list.MediathekListFragment">
 
+	<include layout="@layout/fragment_mediathek_list_filter" />
+
 	<TextView
 		android:id="@+id/error"
 		style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
