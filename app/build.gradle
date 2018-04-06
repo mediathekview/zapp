@@ -35,18 +35,18 @@ android {
 }
 
 dependencies {
-	compile fileTree(include: ['*.jar'], dir: 'libs')
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
 	// tests
-	testCompile 'junit:junit:4.12'
-	androidTestCompile 'com.android.support:support-annotations:27.1.0'
-	androidTestCompile 'com.android.support.test:runner:1.0.1'
-	androidTestCompile 'com.android.support.test:rules:1.0.1'
+	testImplementation 'junit:junit:4.12'
+	androidTestImplementation 'com.android.support:support-annotations:27.1.0'
+	androidTestImplementation 'com.android.support.test:runner:1.0.1'
+	androidTestImplementation 'com.android.support.test:rules:1.0.1'
 
-	androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+	androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2', {
 		exclude group: 'com.android.support', module: 'support-annotations'
 	}
-	androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+	androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
 		exclude group: 'com.android.support', module: 'support-annotations'
 		exclude group: 'com.android.support', module: 'support-v4'
 		exclude group: 'com.android.support', module: 'design'
@@ -54,45 +54,45 @@ dependencies {
 	}
 
 	// support
-	compile 'com.android.support:appcompat-v7:27.1.0'
-	compile 'com.android.support:support-v4:27.1.0'
-	compile 'com.android.support:design:27.1.0'
-	compile 'com.android.support:cardview-v7:27.1.0'
+	implementation 'com.android.support:appcompat-v7:27.1.0'
+	implementation 'com.android.support:support-v4:27.1.0'
+	implementation 'com.android.support:design:27.1.0'
+	implementation 'com.android.support:cardview-v7:27.1.0'
 
 	// helper
-	compile 'com.google.code.gson:gson:2.8.2'
-	compile 'commons-io:commons-io:2.6'
+	implementation 'com.google.code.gson:gson:2.8.2'
+	implementation 'commons-io:commons-io:2.6'
 
 	// changelog
-	compile 'com.github.porokoro.paperboy:paperboy:3.0.0'
+	implementation 'com.github.porokoro.paperboy:paperboy:3.0.0'
 
 	// sortable list
-	compile 'com.github.woxthebox:draglistview:1.5.2'
+	implementation 'com.github.woxthebox:draglistview:1.5.2'
 
 	// markdown
-	compile 'com.github.fiskurgit:MarkdownView:1.1.0'
+	implementation 'com.github.fiskurgit:MarkdownView:1.1.0'
 
 	// butterknive:
-	compile 'com.jakewharton:butterknife:8.8.1'
+	implementation 'com.jakewharton:butterknife:8.8.1'
 	annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 	// exo player
-	compile 'com.google.android.exoplayer:exoplayer-core:2.7.0'
-	compile 'com.google.android.exoplayer:exoplayer-hls:2.7.0'
-	compile 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
+	implementation 'com.google.android.exoplayer:exoplayer-core:2.7.0'
+	implementation 'com.google.android.exoplayer:exoplayer-hls:2.7.0'
+	implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
 
 	// retrofit rest client
-	compile 'com.squareup.retrofit2:retrofit:2.3.0'
-	compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+	implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
 	// ACRA crash reporting
-	releaseCompile 'ch.acra:acra:4.9.2'
+	releaseImplementation 'ch.acra:acra:4.9.2'
 
 	// timber logging
-	compile 'com.jakewharton.timber:timber:4.6.1'
+	implementation 'com.jakewharton.timber:timber:4.6.1'
 
 	// joda time
-	compile 'joda-time:joda-time:2.9.9'
+	implementation 'joda-time:joda-time:2.9.9'
 
 	// about libraries view
 	implementation('com.mikepenz:aboutlibraries:6.0.0@aar') {
