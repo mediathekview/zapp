@@ -115,11 +115,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		switch (position) {
 			case PAGE_MEDIATHEK_LIST:
+				setTitle(R.string.activity_main_tab_mediathek);
 				searchView.setVisibility(View.VISIBLE);
 				navigationView.getMenu().findItem(R.id.menu_mediathek).setChecked(true);
 				break;
 			case PAGE_CHANNEL_LIST:
 			default:
+				setTitle(R.string.activity_main_tab_live);
 				searchView.setVisibility(View.GONE);
 				navigationView.getMenu().findItem(R.id.menu_live).setChecked(true);
 				break;
