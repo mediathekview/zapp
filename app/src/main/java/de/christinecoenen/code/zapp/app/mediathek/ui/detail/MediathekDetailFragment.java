@@ -22,6 +22,7 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
+import timber.log.Timber;
 
 
 public class MediathekDetailFragment extends Fragment {
@@ -157,6 +158,7 @@ public class MediathekDetailFragment extends Fragment {
 
 	private void download(String url, String downloadFileName) {
 		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
+			Timber.w("no permission to download show");
 			return;
 		}
 
