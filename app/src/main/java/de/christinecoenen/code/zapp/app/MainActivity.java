@@ -156,10 +156,12 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 			case R.id.menu_about:
 				intent = AboutActivity.getStartIntent(this);
 				startActivity(intent);
+				drawerLayout.closeDrawers();
 				return true;
 			case R.id.menu_settings:
 				intent = SettingsActivity.getStartIntent(this);
 				startActivity(intent);
+				drawerLayout.closeDrawers();
 				return true;
 		}
 
