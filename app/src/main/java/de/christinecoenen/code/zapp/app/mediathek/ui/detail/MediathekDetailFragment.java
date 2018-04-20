@@ -196,12 +196,12 @@ public class MediathekDetailFragment extends Fragment {
 		if (downloadManager == null) {
 			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
 		} else {
-			downloadManager.enqueue(request);
+			long downloadId = downloadManager.enqueue(request);
 
 			String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
 			Snackbar snackbar = Snackbar
 				.make(Objects.requireNonNull(getView()), infoString, Snackbar.LENGTH_LONG);
-
+			snackbar.setAction(R.string.action_cancel, v -> downloadManager.remove(downloadId));
 			snackbar.show();
 		}
 	}

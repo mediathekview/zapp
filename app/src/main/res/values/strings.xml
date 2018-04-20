@@ -51,6 +51,7 @@
 
 
 	<!-- menus & buttons -->
+	<string name="action_cancel">Abbrechen</string>
 	<string name="action_share">Teilen</string>
 	<string name="action_continue">Weiter</string>
 	<string name="action_enable_subtitles">Untertitel aktivieren</string>
