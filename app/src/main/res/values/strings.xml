@@ -36,6 +36,9 @@
 	<string name="fragment_mediathek_qualities_high">Hoch</string>
 	<string name="fragment_mediathek_qualities_very_high">Sehr hoch</string>
 
+	<string name="fragment_mediathek_filter_duration">Dauer</string>
+	<string name="fragment_mediathek_filter_channel">Sender</string>
+
 	<!-- error messages -->
 	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
 
