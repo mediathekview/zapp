@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -168,43 +170,39 @@ public class MediathekDetailFragment extends Fragment {
 		DownloadManager.Request request = null;
 		try {
 			// create request for android download manager
-			 request = new DownloadManager.Request(uri);
-		}
-		catch (Exception e)
-		{
+			request = new DownloadManager.Request(uri);
+		} catch (Exception e) {
 			request = null;
-		}
-		finally {
-
-			if(request == null)
-			{
+		} finally {
+			if (request == null) {
 				Toast.makeText(getContext(), R.string.error_mediathek_invalid_url, Toast.LENGTH_LONG).show();
-			}
-			else {
-				// setting title and directory of request
-				request.setTitle(show.getTitle());
-				request.allowScanningByMediaScanner();
-				request.setVisibleInDownloadsUi(true);
-				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-				request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
-
-				// enqueue download
-				DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-				if (downloadManager == null) {
-					Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
-				} else {
-					downloadManager.enqueue(request);
-
-
-					String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
-					Snackbar snackbar = Snackbar
-						.make(getView(), infoString, Snackbar.LENGTH_LONG);
-
-					snackbar.show();
-				}
+			} else {
+				enqueDownload(request, downloadFileName);
 			}
 		}
+	}
 
+	private void enqueDownload(DownloadManager.Request request, String downloadFileName) {
+		// setting title and directory of request
+		request.setTitle(show.getTitle());
+		request.allowScanningByMediaScanner();
+		request.setVisibleInDownloadsUi(true);
+		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
+
+		// enqueue download
+		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+		if (downloadManager == null) {
+			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
+		} else {
+			downloadManager.enqueue(request);
+
+			String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
+			Snackbar snackbar = Snackbar
+				.make(Objects.requireNonNull(getView()), infoString, Snackbar.LENGTH_LONG);
+
+			snackbar.show();
+		}
 	}
 }
