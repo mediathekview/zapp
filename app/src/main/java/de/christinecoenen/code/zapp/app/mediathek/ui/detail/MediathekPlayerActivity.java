@@ -8,10 +8,15 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -73,6 +78,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private Player player;
 	private PlayerControlView controlView;
 
+	private GestureDetector gestureDetector;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +111,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
 		controlView = (PlayerControlView) videoView.getChildAt(2);
+
+		WipingControlGestureListener listener = new WipingControlGestureListener();
+		gestureDetector = new GestureDetector(getApplicationContext(), listener);
+		gestureDetector.setIsLongpressEnabled(false);
+		videoView.setOnTouchListener(listener);
 	}
 
 	@Override
@@ -325,4 +336,51 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 	}
+
+
+
+	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
+
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+
+			gestureDetector.onTouchEvent(event);
+		/*if (event.getAction() == MotionEvent.ACTION_UP && isMoving) {
+			isMoving = false;
+			onScrollEnd();
+		}*/
+			return true;
+		}
+
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+
+			if (e1.getX() > videoView.getWidth() / 2) {
+
+				WindowManager.LayoutParams lp = getWindow().getAttributes();
+
+				float currentBrightness = lp.screenBrightness;
+				if(currentBrightness == -1) currentBrightness = 0.5f;
+
+				float minBrightness = 0.01f;
+				float maxBrightness = 1.0f;
+
+				currentBrightness += distanceY/videoView.getHeight();
+
+				currentBrightness = Math.min(maxBrightness, Math.max(minBrightness, currentBrightness));
+				lp.screenBrightness = currentBrightness;
+				getWindow().setAttributes(lp);
+
+			}
+			else
+			{
+
+			}
+			return super.onScroll(e1, e2, distanceX, distanceY);
+		}
+	}
+
+
 }
