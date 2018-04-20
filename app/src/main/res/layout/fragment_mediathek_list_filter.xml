@@ -28,6 +28,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_filter_duration"
+			android:visibility="gone"
 			app:layout_constraintStart_toStartOf="parent" />
 
 		<SeekBar
@@ -36,6 +37,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="@dimen/activity_horizontal_margin"
 			android:max="300"
+			android:visibility="gone"
 			app:layout_constraintBottom_toBottomOf="@+id/label_duration"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@id/barrier_labels_end"
@@ -62,7 +64,6 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="@dimen/activity_horizontal_margin"
-			android:layout_marginTop="8dp"
 			android:scrollbars="none"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@id/barrier_labels_end"
