@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import butterknife.BindArray;
@@ -23,6 +23,7 @@ import de.christinecoenen.code.zapp.R;
 public class MediathekListFilterFragment extends Fragment {
 
 	private static final String SHARED_PREFS_KEY_FILTER_OPEN = "SHARED_PREFS_FRILTER_OPEN";
+	private static final String SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED_ = "SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED_";
 
 	@BindArray(R.array.mediathek_channels)
 	protected String[] channelNames;
@@ -31,7 +32,7 @@ public class MediathekListFilterFragment extends Fragment {
 	protected LinearLayout channelButtonContainer;
 
 
-	private OnFragmentInteractionListener mListener;
+	private Listener listener;
 	private SharedPreferences sharedPreferences;
 
 	public MediathekListFilterFragment() {
@@ -48,6 +49,19 @@ public class MediathekListFilterFragment extends Fragment {
 
 	public int getMenuIconResId() {
 		return isOpen() ? R.drawable.ic_keyboard_arrow_up_white_24dp : R.drawable.ic_tune_white_24dp;
+	}
+
+	public String[] getExcludedChannels() {
+		ArrayList<String> excludedChannels = new ArrayList<>();
+
+		for (int i = 0; i < channelButtonContainer.getChildCount(); i++) {
+			ToggleButton channelButton = (ToggleButton) channelButtonContainer.getChildAt(i);
+			if (!channelButton.isChecked()) {
+				excludedChannels.add(channelButton.getText().toString());
+			}
+		}
+
+		return excludedChannels.toArray(new String[excludedChannels.size()]);
 	}
 
 	@Override
@@ -74,21 +88,21 @@ public class MediathekListFilterFragment extends Fragment {
 		setOpenOrClosedFromMemory();
 	}
 
-	/*@Override
+	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
-		if (context instanceof OnFragmentInteractionListener) {
-			mListener = (OnFragmentInteractionListener) context;
+
+		if (getParentFragment() instanceof Listener) {
+			listener = (Listener) getParentFragment();
 		} else {
-			throw new RuntimeException(context.toString()
-				+ " must implement OnFragmentInteractionListener");
+			throw new RuntimeException("Parent fragment must implement listener.");
 		}
-	}*/
+	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		listener = null;
 	}
 
 	private void setOpenOrClosedFromMemory() {
@@ -120,26 +134,29 @@ public class MediathekListFilterFragment extends Fragment {
 	private void addChannelButton(LayoutInflater inflater, String channelName) {
 		ToggleButton channelButton = (ToggleButton) inflater.inflate(
 			R.layout.fragment_mediathek_list_filter_toggle_button,
-			channelButtonContainer,
-			false);
+			channelButtonContainer, false);
 		channelButton.setTextOff(channelName);
 		channelButton.setTextOn(channelName);
-		channelButton.setChecked(true);
+
+		boolean isChecked = sharedPreferences.getBoolean(SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED_ + channelName, true);
+		channelButton.setChecked(isChecked);
+
+		channelButton.setOnClickListener(v -> onChannelButtonClicked((ToggleButton) v, channelName));
 		channelButtonContainer.addView(channelButton);
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated
-	 * to the activity and potentially other fragments contained in that
-	 * activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
-		void onFragmentInteraction(Uri uri);
+	private void onChannelButtonClicked(ToggleButton button, String channelName) {
+		sharedPreferences
+			.edit()
+			.putBoolean(SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED_ + channelName, button.isChecked())
+			.apply();
+
+		if (listener != null) {
+			listener.onChannelsChanged();
+		}
+	}
+
+	public interface Listener {
+		void onChannelsChanged();
 	}
 }

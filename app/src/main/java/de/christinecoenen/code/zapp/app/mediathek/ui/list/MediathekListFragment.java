@@ -44,7 +44,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
-public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
+public class MediathekListFragment extends Fragment implements
+	MediathekItemAdapter.Listener,
+	SwipeRefreshLayout.OnRefreshListener,
+	MediathekListFilterFragment.Listener {
 
 	private static final int ITEM_COUNT_PER_PAGE = 10;
 
@@ -140,6 +143,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 		filter = (MediathekListFilterFragment) getChildFragmentManager().findFragmentById(R.id.fragment_filter);
 
+		setChannelFilter();
 		loadItems(0, true);
 
 		return view;
@@ -200,6 +204,16 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	public void onRefresh() {
 		swipeRefreshLayout.setRefreshing(true);
 		loadItems(0, true);
+	}
+
+	@Override
+	public void onChannelsChanged() {
+		setChannelFilter();
+		loadItems(0, true);
+	}
+
+	private void setChannelFilter() {
+		queryRequest.excludeChannels(filter.getExcludedChannels());
 	}
 
 	private boolean onContextMenuItemClicked(MenuItem menuItem) {

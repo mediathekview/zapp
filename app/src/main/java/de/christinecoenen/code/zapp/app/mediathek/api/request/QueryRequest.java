@@ -47,6 +47,21 @@ public class QueryRequest implements Serializable {
 		return this;
 	}
 
+	public QueryRequest excludeChannels(String... channels) {
+		TextQuery[] dynamicExcludeChannelQueries = new TextQuery[channels.length + 1];
+		int i = 0;
+		dynamicExcludeChannelQueries[i++] = EXCLUDE_CHANNELS_QUERY;
+
+		for (String channel : channels) {
+			dynamicExcludeChannelQueries[i++] = new TextQuery()
+				.addField(Field.CHANNEL)
+				.setText(channel);
+		}
+
+		body.setNotQueries(dynamicExcludeChannelQueries);
+		return this;
+	}
+
 	public QueryRequest setSortAscending(Field... fields) {
 		sort = new ArrayList<>();
 		for (Field field : fields) {
