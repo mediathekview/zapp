@@ -9,13 +9,13 @@ import de.christinecoenen.code.zapp.R;
 public class MediathekMedia implements Serializable {
 
 	public enum Type {
-		@SerializedName("MediaType.Video")
+		@SerializedName("video")
 		VIDEO,
 
-		@SerializedName("MediaType.Audio")
+		@SerializedName("audio")
 		AUDIO,
 
-		@SerializedName("MediaType.Subtitle")
+		@SerializedName("subtitle")
 		SUBTITLE
 	}
 

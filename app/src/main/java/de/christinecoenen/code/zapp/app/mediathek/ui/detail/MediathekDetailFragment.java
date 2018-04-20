@@ -100,6 +100,10 @@ public class MediathekDetailFragment extends Fragment implements QualityRowView.
 		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
 		for (MediathekMedia media : show.getMedia()) {
+			if (media.isSubtitle()) {
+				continue;
+			}
+
 			QualityRowView qualityRowView = new QualityRowView(getContext());
 			qualityRowView.setMedia(media);
 			qualityRowView.setListener(this);
