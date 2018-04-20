@@ -7,17 +7,22 @@ import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -40,6 +45,7 @@ import butterknife.BindView;
 import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
+import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekPlayerActivity;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
@@ -96,6 +102,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private boolean isPlaying = false;
 	private Window window;
 	private IChannelList channelList;
+
+	private GestureDetector gestureDetector;
 
 	private final Runnable playRunnable = this::play;
 
@@ -171,6 +179,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		parseIntent(getIntent());
 
 		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
+
+		WipingControlGestureListener listener = new WipingControlGestureListener();
+		gestureDetector = new GestureDetector(getApplicationContext(), listener);
+		gestureDetector.setIsLongpressEnabled(false);
+		viewPager.setOnTouchListener(listener);
 	}
 
 	@Override
@@ -417,4 +430,82 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
 		mControlsView.setBackgroundColor(colorAlpha);
 	}
+
+	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener, GestureDetector.OnGestureListener {
+
+		private boolean canUseWipeControls = false;
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+
+			if(event.getAction() == MotionEvent.ACTION_DOWN)
+			{
+				canUseWipeControls = (mControlsView.getVisibility() == View.GONE);
+			}
+
+			return gestureDetector.onTouchEvent(event);
+		}
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return super.onDown(e);
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+
+			return super.onSingleTapUp(e);
+
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+
+			if(!canUseWipeControls)
+			{
+				return super.onScroll(e1, e2, distanceX, distanceY);
+			}
+
+			float distanceXSinceTouchbegin = e1.getX() - e2.getX();
+			if(Math.abs(distanceXSinceTouchbegin) > 100) // finger moved to much sideways
+			{
+				canUseWipeControls = false;
+				return super.onScroll(e1, e2, distanceX, distanceY);
+			}
+
+
+			float deltaMovement = distanceY/videoView.getHeight();
+
+			if (e1.getX() > videoView.getWidth() / 2) {
+
+				WindowManager.LayoutParams lp = getWindow().getAttributes();
+
+				float currentBrightness = lp.screenBrightness;
+				if(currentBrightness == -1) currentBrightness = 0.5f;
+
+				float minBrightness = 0.01f;
+				float maxBrightness = 1.0f;
+
+				currentBrightness += deltaMovement;
+
+				currentBrightness = Math.min(maxBrightness, Math.max(minBrightness, currentBrightness));
+				lp.screenBrightness = currentBrightness;
+				getWindow().setAttributes(lp);
+
+			}
+			else
+			{
+				float currentVolume = player.getVolume();
+
+				currentVolume += deltaMovement;
+
+				currentVolume = Math.min(1, Math.max(0, currentVolume));
+				player.setVolume(currentVolume);
+			}
+
+			return true;
+		}
+	}
+
+
 }
