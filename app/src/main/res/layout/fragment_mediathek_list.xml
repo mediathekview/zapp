@@ -62,7 +62,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:scrollbars="vertical"
-			app:layoutManager="LinearLayoutManager"
+			app:layoutManager="android.support.v7.widget.LinearLayoutManager"
 			tools:listitem="@layout/fragment_mediathek_list_item" />
 
 	</android.support.v4.widget.SwipeRefreshLayout>

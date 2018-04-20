@@ -2,10 +2,13 @@ package de.christinecoenen.code.zapp.app;
 
 
 import android.content.pm.ActivityInfo;
-import android.support.test.espresso.contrib.AccessibilityChecks;
+import android.support.test.espresso.contrib.DrawerActions;
+import android.support.test.espresso.contrib.DrawerMatchers;
+import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +23,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
@@ -33,6 +37,14 @@ public class MainUiTest {
 	@Rule
 	public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+	@BeforeClass
+	public static void enableAccessibilityChecks() {
+		// TODO: re-enable as soon as 3.0.2 is released
+		//AccessibilityChecks.enable()
+		//	.setRunChecksFromRootView(true)
+		//	.setThrowExceptionForErrors(false);
+	}
+
 	/**
 	 * Basic ui test that calls every screen and asserts nothing
 	 * is crashing very badly. Run this when you are unsure if your
@@ -42,14 +54,14 @@ public class MainUiTest {
 	 */
 	@Test
 	public void mainUiTest() throws InterruptedException {
-		AccessibilityChecks.enable()
-			.setRunChecksFromRootView(true)
-			.setThrowExceptionForErrors(false);
+		// open menu
+		onView(withId(R.id.layout_drawer))
+			.perform(DrawerActions.open())
+			.check(matches(DrawerMatchers.isOpen()));
 
 		// change to mediathek
-		onView(withText(R.string.activity_main_tab_mediathek))
-			.check(matches(isDisplayed()))
-			.perform(click());
+		onView(withId(R.id.nav_view))
+			.perform(NavigationViewActions.navigateTo(R.id.menu_mediathek));
 
 		// scroll down and select a show
 		onView(withId(R.id.list))
@@ -80,7 +92,9 @@ public class MainUiTest {
 		Thread.sleep(500);
 
 		// try to refresh
-		onView(withId(R.id.menu_refresh))
+		openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+		Thread.sleep(200);
+		onView(withText(R.string.menu_refresh))
 			.check(matches(isDisplayed()))
 			.perform(click());
 
@@ -94,18 +108,24 @@ public class MainUiTest {
 			.check(matches(isDisplayed()))
 			.perform(click());
 
+		// open menu
+		onView(withId(R.id.layout_drawer))
+			.perform(DrawerActions.open())
+			.check(matches(DrawerMatchers.isOpen()));
+
 		// go to about screen
-		openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-		Thread.sleep(200);
-		onView(withText(R.string.menu_about))
-			.check(matches(isDisplayed()))
-			.perform(click());
+		onView(withId(R.id.nav_view))
+			.perform(NavigationViewActions.navigateTo(R.id.menu_about));
+		pressBack();
+
+		// open menu
+		onView(withId(R.id.layout_drawer))
+			.perform(DrawerActions.open())
+			.check(matches(DrawerMatchers.isOpen()));
 
 		// go to FAQ screen
-		onView(withText(R.string.activity_faq_title))
-			.check(matches(isDisplayed()))
-			.perform(click());
-		pressBack();
+		onView(withId(R.id.nav_view))
+			.perform(NavigationViewActions.navigateTo(R.id.menu_about));
 
 		// go to changelog
 		onView(withText(R.string.activity_changelog_title))
@@ -118,9 +138,8 @@ public class MainUiTest {
 		Thread.sleep(200);
 
 		// change to live tab
-		onView(withText(R.string.activity_main_tab_live))
-			.check(matches(isDisplayed()))
-			.perform(click());
+		onView(withId(R.id.list))
+			.perform(swipeRight());
 
 		// select a channel
 		onView(withId(R.id.gridview_channels))
@@ -133,12 +152,14 @@ public class MainUiTest {
 		// back live tab
 		pressBack();
 
-		// go to settings screen
-		openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-		Thread.sleep(200);
-		onView(withText(R.string.menu_settings))
-			.check(matches(isDisplayed()))
-			.perform(click());
+		// open menu
+		onView(withId(R.id.layout_drawer))
+			.perform(DrawerActions.open())
+			.check(matches(DrawerMatchers.isOpen()));
+
+		// go to FAQ screen
+		onView(withId(R.id.nav_view))
+			.perform(NavigationViewActions.navigateTo(R.id.menu_settings));
 
 		// open channel selection
 		onView(withText(R.string.pref_channel_selection_title))

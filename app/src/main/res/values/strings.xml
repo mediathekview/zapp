@@ -57,6 +57,10 @@
 	<string name="action_enable_subtitles">Untertitel aktivieren</string>
 	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 
+	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
+
+	<string name="menu_category_shows">Sendungen</string>
+	<string name="menu_category_settings">Einstellungen</string>
 	<string name="menu_refresh">Aktualisieren</string>
 	<string name="menu_about">Über</string>
 	<string name="menu_settings">Einstellungen</string>

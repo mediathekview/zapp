@@ -4,16 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -24,6 +25,7 @@ import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
+import de.christinecoenen.code.zapp.utils.system.MenuHelper;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener {
 
@@ -40,11 +42,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	@BindView(R.id.view_pager)
 	protected ViewPager viewPager;
 
-	@BindView(R.id.tab_layout)
-	protected TabLayout tabLayout;
-
 	@BindView(R.id.search)
 	protected SearchView searchView;
+
+	@BindView(R.id.nav_view)
+	protected NavigationView navigationView;
+
+	@BindView(R.id.layout_drawer)
+	protected DrawerLayout drawerLayout;
 
 	private String searchQuery;
 
@@ -59,13 +64,18 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		setSupportActionBar(toolbar);
 
+		ActionBar actionbar = getSupportActionBar();
+		actionbar.setDisplayHomeAsUpEnabled(true);
+		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+
 		viewPager.setAdapter(new MainPageAdapter(getSupportFragmentManager()));
 		viewPager.addOnPageChangeListener(this);
-		tabLayout.setupWithViewPager(viewPager);
 
 		searchView.setOnQueryTextListener(this);
 		searchView.setIconified(false);
 		searchView.setIconifiedByDefault(false);
+
+		navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 
 		onPageSelected(viewPager.getCurrentItem());
 	}
@@ -84,24 +94,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.activity_channel_list, menu);
-		return true;
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent;
-
 		switch (item.getItemId()) {
-			case R.id.menu_about:
-				intent = AboutActivity.getStartIntent(this);
-				startActivity(intent);
-				return true;
-			case R.id.menu_settings:
-				intent = SettingsActivity.getStartIntent(this);
-				startActivity(intent);
+			case android.R.id.home:
+				drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -114,15 +110,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 	@Override
 	public void onPageSelected(int position) {
+		MenuHelper.uncheckItems(navigationView.getMenu());
 		searchView.clearFocus();
 
 		switch (position) {
 			case PAGE_MEDIATHEK_LIST:
+				setTitle(R.string.activity_main_tab_mediathek);
 				searchView.setVisibility(View.VISIBLE);
+				navigationView.getMenu().findItem(R.id.menu_mediathek).setChecked(true);
 				break;
 			case PAGE_CHANNEL_LIST:
 			default:
+				setTitle(R.string.activity_main_tab_live);
 				searchView.setVisibility(View.GONE);
+				navigationView.getMenu().findItem(R.id.menu_live).setChecked(true);
 				break;
 		}
 	}
@@ -138,6 +139,33 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		if (currentFragment instanceof MediathekListFragment) {
 			((MediathekListFragment) currentFragment).search(query);
 		}
+	}
+
+	private boolean onNavigationItemSelected(MenuItem menuItem) {
+		Intent intent;
+
+		switch (menuItem.getItemId()) {
+			case R.id.menu_live:
+				viewPager.setCurrentItem(PAGE_CHANNEL_LIST, false);
+				drawerLayout.closeDrawers();
+				return true;
+			case R.id.menu_mediathek:
+				viewPager.setCurrentItem(PAGE_MEDIATHEK_LIST, false);
+				drawerLayout.closeDrawers();
+				return true;
+			case R.id.menu_about:
+				intent = AboutActivity.getStartIntent(this);
+				startActivity(intent);
+				drawerLayout.closeDrawers();
+				return true;
+			case R.id.menu_settings:
+				intent = SettingsActivity.getStartIntent(this);
+				startActivity(intent);
+				drawerLayout.closeDrawers();
+				return true;
+		}
+
+		return false;
 	}
 
 	@Override

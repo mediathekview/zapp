@@ -24,6 +24,7 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekMedia;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
+import timber.log.Timber;
 
 
 public class MediathekDetailFragment extends Fragment implements QualityRowView.Listener {
@@ -141,6 +142,7 @@ public class MediathekDetailFragment extends Fragment implements QualityRowView.
 
 	private void download(String url, String downloadFileName) {
 		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
+			Timber.w("no permission to download show");
 			return;
 		}
 
