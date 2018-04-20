@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,23 +165,46 @@ public class MediathekDetailFragment extends Fragment {
 
 		Uri uri = Uri.parse(url);
 
-		// create request for android download manager
-		DownloadManager.Request request = new DownloadManager.Request(uri);
-
-		// setting title and directory of request
-		request.setTitle(show.getTitle());
-		request.allowScanningByMediaScanner();
-		request.setVisibleInDownloadsUi(true);
-		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
-
-		// enqueue download
-		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-		if (downloadManager == null) {
-			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
-		} else {
-			downloadManager.enqueue(request);
+		DownloadManager.Request request = null;
+		try {
+			// create request for android download manager
+			 request = new DownloadManager.Request(uri);
 		}
+		catch (Exception e)
+		{
+			request = null;
+		}
+		finally {
+
+			if(request == null)
+			{
+				Toast.makeText(getContext(), R.string.error_mediathek_invalid_url, Toast.LENGTH_LONG).show();
+			}
+			else {
+				// setting title and directory of request
+				request.setTitle(show.getTitle());
+				request.allowScanningByMediaScanner();
+				request.setVisibleInDownloadsUi(true);
+				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+				request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
+
+				// enqueue download
+				DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+				if (downloadManager == null) {
+					Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
+				} else {
+					downloadManager.enqueue(request);
+
+
+					String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
+					Snackbar snackbar = Snackbar
+						.make(getView(), infoString, Snackbar.LENGTH_LONG);
+
+					snackbar.show();
+				}
+			}
+		}
+
 	}
 }
