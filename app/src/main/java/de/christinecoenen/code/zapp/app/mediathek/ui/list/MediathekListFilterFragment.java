@@ -10,15 +10,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import java.util.Objects;
 
+import butterknife.BindArray;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 
 public class MediathekListFilterFragment extends Fragment {
 
 	private static final String SHARED_PREFS_KEY_FILTER_OPEN = "SHARED_PREFS_FRILTER_OPEN";
+
+	@BindArray(R.array.mediathek_channels)
+	protected String[] channelNames;
+
+	@BindView(R.id.container_channel_buttons)
+	protected LinearLayout channelButtonContainer;
+
 
 	private OnFragmentInteractionListener mListener;
 	private SharedPreferences sharedPreferences;
@@ -49,6 +60,11 @@ public class MediathekListFilterFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_mediathek_list_filter, container, false);
 		ButterKnife.bind(this, view);
+
+		for (String channelName : channelNames) {
+			addChannelButton(inflater, channelName);
+		}
+
 		return view;
 	}
 
@@ -99,6 +115,17 @@ public class MediathekListFilterFragment extends Fragment {
 		View rootView = Objects.requireNonNull(getView());
 		rootView.setVisibility(View.GONE);
 		sharedPreferences.edit().putBoolean(SHARED_PREFS_KEY_FILTER_OPEN, false).apply();
+	}
+
+	private void addChannelButton(LayoutInflater inflater, String channelName) {
+		ToggleButton channelButton = (ToggleButton) inflater.inflate(
+			R.layout.fragment_mediathek_list_filter_toggle_button,
+			channelButtonContainer,
+			false);
+		channelButton.setTextOff(channelName);
+		channelButton.setTextOn(channelName);
+		channelButton.setChecked(true);
+		channelButtonContainer.addView(channelButton);
 	}
 
 	/**
