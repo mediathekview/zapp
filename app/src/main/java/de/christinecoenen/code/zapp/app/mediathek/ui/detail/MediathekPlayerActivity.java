@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -337,26 +338,48 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 	}
 
-	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
+	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener, OnGestureListener {
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 
 			gestureDetector.onTouchEvent(event);
-		/*if (event.getAction() == MotionEvent.ACTION_UP && isMoving) {
-			isMoving = false;
-			onScrollEnd();
-		}*/
-			return false;
+			return true;
 		}
 
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return super.onDown(e);
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+
+			if(!controlView.isVisible()) {
+				controlView.show();
+			}
+			else
+			{
+				controlView.hide();
+			}
+			return true;
+		}
 
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			if(controlView.isVisible())
+			{
+				return super.onScroll(e1, e2, distanceX, distanceY);
+			}
+
+			if(e1 == null)
+			{
+				return super.onScroll(e1, e2, distanceX, distanceY);
+			}
 
 			float deltaMovement = distanceY/videoView.getHeight();
 
-			if (e1.getX() > videoView.getWidth() / 2) {
+			if (e2.getX() > videoView.getWidth() / 2) {
 
 				WindowManager.LayoutParams lp = getWindow().getAttributes();
 
@@ -383,7 +406,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				player.setAudioVolume(currentVolume);
 			}
 
-			return super.onScroll(e1, e2, distanceX, distanceY);
+			return true;
 		}
 	}
 
