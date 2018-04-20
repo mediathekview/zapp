@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.net.UnknownServiceException;
 import java.util.Collections;
+import java.util.Objects;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -26,8 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
-import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
+import de.christinecoenen.code.zapp.app.mediathek.api.request.query.Field;
 import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
@@ -47,6 +48,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 	private static final int ITEM_COUNT_PER_PAGE = 10;
 
+	@NonNull
 	public static MediathekListFragment getInstance() {
 		return new MediathekListFragment();
 	}
@@ -69,6 +71,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	private MediathekItemAdapter adapter;
 	private InfiniteScrollListener scrollListener;
 	private MediathekShow longClickShow;
+	private MediathekListFilterFragment filter;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -135,6 +138,8 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		adapter = new MediathekItemAdapter(MediathekListFragment.this);
 		recyclerView.setAdapter(adapter);
 
+		filter = (MediathekListFilterFragment) getChildFragmentManager().findFragmentById(R.id.fragment_filter);
+
 		loadItems(0, true);
 
 		return view;
@@ -156,8 +161,19 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	}
 
 	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		MenuItem filterMenuItem = menu.findItem(R.id.menu_filter);
+		filterMenuItem.setIcon(filter.getMenuIconResId());
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_filter:
+				filter.toggle();
+				Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+				return true;
 			case R.id.menu_refresh:
 				onRefresh();
 				return true;

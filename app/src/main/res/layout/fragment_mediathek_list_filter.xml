@@ -6,8 +6,10 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_marginBottom="@dimen/cardview_default_elevation"
+	android:visibility="gone"
 	app:contentPadding="@dimen/activity_vertical_margin"
-	tools:showIn="@layout/fragment_mediathek_list">
+	tools:showIn="@layout/fragment_mediathek_list"
+	tools:visibility="visible">
 
 	<LinearLayout
 		android:layout_width="match_parent"
