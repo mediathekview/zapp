@@ -142,18 +142,43 @@ public class MediathekListFilterFragment extends Fragment {
 		channelButton.setChecked(isChecked);
 
 		channelButton.setOnClickListener(v -> onChannelButtonClicked((ToggleButton) v, channelName));
+		channelButton.setOnLongClickListener(v -> onChannelButtonLongClicked((ToggleButton) v, channelName));
 		channelButtonContainer.addView(channelButton);
 	}
 
 	private void onChannelButtonClicked(ToggleButton button, String channelName) {
-		sharedPreferences
-			.edit()
-			.putBoolean(SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED_ + channelName, button.isChecked())
-			.apply();
+		setChannelButton(button, channelName, button.isChecked());
 
 		if (listener != null) {
 			listener.onChannelsChanged();
 		}
+	}
+
+	private boolean onChannelButtonLongClicked(ToggleButton button, String channelName) {
+		boolean isOnlyOneChecked = getExcludedChannels().length >= channelButtonContainer.getChildCount() - 1;
+		boolean doOthersCheck = button.isChecked() && isOnlyOneChecked;
+
+		for (int i = 0; i < channelButtonContainer.getChildCount(); i++) {
+			ToggleButton channelButton = (ToggleButton) channelButtonContainer.getChildAt(i);
+			if (channelButton != button) {
+				setChannelButton(channelButton, channelButton.getTextOn().toString(), doOthersCheck);
+			}
+		}
+		setChannelButton(button, channelName, true);
+
+		if (listener != null) {
+			listener.onChannelsChanged();
+		}
+
+		return true;
+	}
+
+	private void setChannelButton(ToggleButton button, String channelName, boolean checked) {
+		sharedPreferences
+			.edit()
+			.putBoolean(SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED_ + channelName, checked)
+			.apply();
+		button.setChecked(checked);
 	}
 
 	public interface Listener {
