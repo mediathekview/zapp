@@ -337,10 +337,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 	}
 
-
-
 	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
-
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
@@ -350,12 +347,14 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			isMoving = false;
 			onScrollEnd();
 		}*/
-			return true;
+			return false;
 		}
 
 
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+
+			float deltaMovement = distanceY/videoView.getHeight();
 
 			if (e1.getX() > videoView.getWidth() / 2) {
 
@@ -367,7 +366,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				float minBrightness = 0.01f;
 				float maxBrightness = 1.0f;
 
-				currentBrightness += distanceY/videoView.getHeight();
+				currentBrightness += deltaMovement;
 
 				currentBrightness = Math.min(maxBrightness, Math.max(minBrightness, currentBrightness));
 				lp.screenBrightness = currentBrightness;
@@ -376,8 +375,14 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			}
 			else
 			{
+				float currentVolume = player.getAudioVolume();
 
+				currentVolume += deltaMovement;
+
+				currentVolume = Math.min(1, Math.max(0, currentVolume));
+				player.setAudioVolume(currentVolume);
 			}
+
 			return super.onScroll(e1, e2, distanceX, distanceY);
 		}
 	}
