@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
@@ -16,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -342,24 +340,16 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-
 			gestureDetector.onTouchEvent(event);
 			return true;
 		}
 
 		@Override
-		public boolean onDown(MotionEvent e) {
-			return super.onDown(e);
-		}
-
-		@Override
 		public boolean onSingleTapUp(MotionEvent e) {
 
-			if(!controlView.isVisible()) {
+			if (!controlView.isVisible()) {
 				controlView.show();
-			}
-			else
-			{
+			} else {
 				controlView.hide();
 			}
 			return true;
@@ -367,24 +357,22 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			if(controlView.isVisible())
-			{
+			if (controlView.isVisible()) {
 				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
 
-			if(e1 == null)
-			{
+			if (e1 == null) {
 				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
 
-			float deltaMovement = distanceY/videoView.getHeight();
+			float deltaMovement = distanceY / videoView.getHeight();
 
 			if (e2.getX() > videoView.getWidth() / 2) {
 
 				WindowManager.LayoutParams lp = getWindow().getAttributes();
 
 				float currentBrightness = lp.screenBrightness;
-				if(currentBrightness == -1) currentBrightness = 0.5f;
+				if (currentBrightness == -1) currentBrightness = 0.5f;
 
 				float minBrightness = 0.01f;
 				float maxBrightness = 1.0f;
@@ -395,9 +383,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				lp.screenBrightness = currentBrightness;
 				getWindow().setAttributes(lp);
 
-			}
-			else
-			{
+			} else {
+
 				float currentVolume = player.getAudioVolume();
 
 				currentVolume += deltaMovement;
@@ -409,6 +396,4 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			return true;
 		}
 	}
-
-
 }

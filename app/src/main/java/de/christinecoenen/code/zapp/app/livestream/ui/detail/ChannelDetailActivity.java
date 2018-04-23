@@ -7,14 +7,12 @@ import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -45,7 +43,6 @@ import butterknife.BindView;
 import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekPlayerActivity;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
@@ -438,8 +435,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 
-			if(event.getAction() == MotionEvent.ACTION_DOWN)
-			{
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				canUseWipeControls = (mControlsView.getVisibility() == View.GONE);
 			}
 
@@ -447,41 +443,28 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		}
 
 		@Override
-		public boolean onDown(MotionEvent e) {
-			return super.onDown(e);
-		}
-
-		@Override
-		public boolean onSingleTapUp(MotionEvent e) {
-
-			return super.onSingleTapUp(e);
-
-		}
-
-		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
-			if(!canUseWipeControls)
-			{
+			if (!canUseWipeControls) {
 				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
 
 			float distanceXSinceTouchbegin = e1.getX() - e2.getX();
-			if(Math.abs(distanceXSinceTouchbegin) > 100) // finger moved to much sideways
+			if (Math.abs(distanceXSinceTouchbegin) > 100) // finger moved to much sideways
 			{
 				canUseWipeControls = false;
 				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
 
 
-			float deltaMovement = distanceY/videoView.getHeight();
+			float deltaMovement = distanceY / videoView.getHeight();
 
 			if (e1.getX() > videoView.getWidth() / 2) {
 
 				WindowManager.LayoutParams lp = getWindow().getAttributes();
 
 				float currentBrightness = lp.screenBrightness;
-				if(currentBrightness == -1) currentBrightness = 0.5f;
+				if (currentBrightness == -1) currentBrightness = 0.5f;
 
 				float minBrightness = 0.01f;
 				float maxBrightness = 1.0f;
@@ -492,9 +475,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 				lp.screenBrightness = currentBrightness;
 				getWindow().setAttributes(lp);
 
-			}
-			else
-			{
+			} else {
 				float currentVolume = player.getVolume();
 
 				currentVolume += deltaMovement;
@@ -506,6 +487,4 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			return true;
 		}
 	}
-
-
 }
