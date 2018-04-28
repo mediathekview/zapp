@@ -8,21 +8,16 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.ui.PlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +27,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
+import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import timber.log.Timber;
@@ -59,7 +55,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected Toolbar toolbar;
 
 	@BindView(R.id.video)
-	protected PlayerView videoView;
+	protected SwipeablePlayerView videoView;
 
 	@BindView(R.id.btn_caption_enable)
 	protected ImageButton captionButtonEnable;
@@ -75,9 +71,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private MediathekShow show;
 	private Player player;
-	private PlayerControlView controlView;
-
-	private GestureDetector gestureDetector;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +102,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
-		controlView = (PlayerControlView) videoView.getChildAt(2);
-
-		WipingControlGestureListener listener = new WipingControlGestureListener();
-		gestureDetector = new GestureDetector(getApplicationContext(), listener);
-		gestureDetector.setIsLongpressEnabled(false);
-		videoView.setOnTouchListener(listener);
 	}
 
 	@Override
@@ -179,7 +166,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
 		if (isInPictureInPictureMode) {
-			controlView.hide();
+			videoView.hideControls();
 		}
 	}
 
@@ -220,7 +207,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				return true;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_MEDIA_TOP_MENU:
-				toggleSystemUi();
+				videoView.toggleControls();
 				return true;
 			case KeyEvent.KEYCODE_MEDIA_PLAY:
 				resumeActivity();
@@ -307,14 +294,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		errorView.setVisibility(View.GONE);
 	}
 
-	private void toggleSystemUi() {
-		if (controlView.isVisible()) {
-			controlView.hide();
-		} else {
-			controlView.show();
-		}
-	}
-
 	private void showSystemUi() {
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().show();
@@ -334,66 +313,5 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-	}
-
-	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener, OnGestureListener {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			gestureDetector.onTouchEvent(event);
-			return true;
-		}
-
-		@Override
-		public boolean onSingleTapUp(MotionEvent e) {
-
-			if (!controlView.isVisible()) {
-				controlView.show();
-			} else {
-				controlView.hide();
-			}
-			return true;
-		}
-
-		@Override
-		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			if (controlView.isVisible()) {
-				return super.onScroll(e1, e2, distanceX, distanceY);
-			}
-
-			if (e1 == null) {
-				return super.onScroll(e1, e2, distanceX, distanceY);
-			}
-
-			float deltaMovement = distanceY / videoView.getHeight();
-
-			if (e2.getX() > videoView.getWidth() / 2) {
-
-				WindowManager.LayoutParams lp = getWindow().getAttributes();
-
-				float currentBrightness = lp.screenBrightness;
-				if (currentBrightness == -1) currentBrightness = 0.5f;
-
-				float minBrightness = 0.01f;
-				float maxBrightness = 1.0f;
-
-				currentBrightness += deltaMovement;
-
-				currentBrightness = Math.min(maxBrightness, Math.max(minBrightness, currentBrightness));
-				lp.screenBrightness = currentBrightness;
-				getWindow().setAttributes(lp);
-
-			} else {
-
-				float currentVolume = player.getAudioVolume();
-
-				currentVolume += deltaMovement;
-
-				currentVolume = Math.min(1, Math.max(0, currentVolume));
-				player.setAudioVolume(currentVolume);
-			}
-
-			return true;
-		}
 	}
 }
