@@ -28,7 +28,6 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -47,6 +46,7 @@ import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
+import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
@@ -67,7 +67,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	protected ClickableViewPager viewPager;
 
 	@BindView(R.id.video)
-	protected PlayerView videoView;
+	protected SwipeablePlayerView videoView;
 
 	@BindView(R.id.progressbar_video)
 	protected ProgressBar progressView;
@@ -159,7 +159,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 		player.addListener(bufferingHandler);
 		player.addListener(videoErrorHandler);
+
 		videoView.setPlayer(player);
+		videoView.setTouchOverlay(viewPager);
 
 		// pager
 		channelDetailAdapter = new ChannelDetailAdapter(

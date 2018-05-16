@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.ui.PlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +27,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
+import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import timber.log.Timber;
@@ -55,7 +55,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected Toolbar toolbar;
 
 	@BindView(R.id.video)
-	protected PlayerView videoView;
+	protected SwipeablePlayerView videoView;
 
 	@BindView(R.id.btn_caption_enable)
 	protected ImageButton captionButtonEnable;
@@ -71,8 +71,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private MediathekShow show;
 	private Player player;
-	private PlayerControlView controlView;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +102,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
-		controlView = (PlayerControlView) videoView.getChildAt(2);
 	}
 
 	@Override
@@ -169,7 +166,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
 		if (isInPictureInPictureMode) {
-			controlView.hide();
+			videoView.hideControls();
 		}
 	}
 
@@ -210,7 +207,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				return true;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_MEDIA_TOP_MENU:
-				toggleSystemUi();
+				videoView.toggleControls();
 				return true;
 			case KeyEvent.KEYCODE_MEDIA_PLAY:
 				resumeActivity();
@@ -295,14 +292,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private void hideError() {
 		videoView.setControllerHideOnTouch(true);
 		errorView.setVisibility(View.GONE);
-	}
-
-	private void toggleSystemUi() {
-		if (controlView.isVisible()) {
-			controlView.hide();
-		} else {
-			controlView.show();
-		}
 	}
 
 	private void showSystemUi() {
