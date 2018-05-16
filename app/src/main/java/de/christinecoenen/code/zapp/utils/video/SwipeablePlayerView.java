@@ -1,26 +1,33 @@
 package de.christinecoenen.code.zapp.utils.video;
 
+import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 
-import timber.log.Timber;
+import de.christinecoenen.code.zapp.R;
 
 
 public class SwipeablePlayerView extends PlayerView {
 
+	private static final int INDICATOR_WIDTH = 300;
+
 	private PlayerControlView controlView;
 	private GestureDetector gestureDetector;
+	private SwipeIndicatorView volumeIndicator;
+	private SwipeIndicatorView brightnessIndicator;
 	private WipingControlGestureListener listener;
 	private Window window;
 	private AudioManager audioManager;
@@ -69,10 +76,20 @@ public class SwipeablePlayerView extends PlayerView {
 		window = ((Activity) context).getWindow();
 		audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
+		volumeIndicator = new SwipeIndicatorView(context);
+		volumeIndicator.setIconResId(R.drawable.ic_volume_up_white_24dp);
+		addView(volumeIndicator, new LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
+
+		brightnessIndicator = new SwipeIndicatorView(context);
+		brightnessIndicator.setIconResId(R.drawable.ic_brightness_6_white_24dp);
+		addView(brightnessIndicator, new LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END));
+
 		listener = new WipingControlGestureListener();
 		gestureDetector = new GestureDetector(context.getApplicationContext(), listener);
 		gestureDetector.setIsLongpressEnabled(false);
 		setOnTouchListener(listener);
+
+		setLayoutTransition(new LayoutTransition());
 	}
 
 	private void adjustBrightness(float yPercent) {
@@ -80,13 +97,20 @@ public class SwipeablePlayerView extends PlayerView {
 		lp.screenBrightness = yPercent;
 		window.setAttributes(lp);
 
-		Timber.v("adjustBrightness: %f", yPercent);
+		brightnessIndicator.setValue(yPercent);
 	}
 
 	private void adjustVolume(float yPercent) {
 		int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 		int volume = (int) (yPercent * maxVolume);
 		audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+
+		volumeIndicator.setValue(yPercent);
+	}
+
+	private void endScroll() {
+		volumeIndicator.setVisibility(GONE);
+		brightnessIndicator.setVisibility(GONE);
 	}
 
 	private class WipingControlGestureListener extends GestureDetector.SimpleOnGestureListener implements OnTouchListener {
@@ -98,6 +122,13 @@ public class SwipeablePlayerView extends PlayerView {
 		@Override
 		public boolean onTouch(View view, MotionEvent motionEvent) {
 			gestureDetector.onTouchEvent(motionEvent);
+
+			switch (motionEvent.getAction()) {
+				case MotionEvent.ACTION_UP:
+					endScroll();
+					break;
+			}
+
 			return getUseController();
 		}
 
@@ -114,32 +145,32 @@ public class SwipeablePlayerView extends PlayerView {
 			return super.onDown(e);
 		}
 
-		// TODO: show indicators / toasts
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 			if (!canUseWipeControls || e1 == null) {
 				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
 
-			float distanceXSinceTouchbegin = e1.getX() - e2.getX();
 			float distanceYSinceTouchbegin = e1.getY() - e2.getY();
 			maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchbegin));
-			boolean tooMuchSidewayMovement = Math.abs(distanceXSinceTouchbegin) > 100;
 			boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
-			if (tooMuchSidewayMovement || !enoughVerticalMovement) {
+			if (!enoughVerticalMovement) {
 				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
 
 			float yPercent = 1 - (e2.getY() / getHeight());
 
-			if (e2.getX() > getWidth() / 2) {
-				adjustBrightness(yPercent);
-			} else {
+			if (e2.getX() < INDICATOR_WIDTH) {
 				adjustVolume(yPercent);
+				return true;
+			} else if (e2.getX() > getWidth() - INDICATOR_WIDTH) {
+				adjustBrightness(yPercent);
+				return true;
+			} else {
+				endScroll();
+				return super.onScroll(e1, e2, distanceX, distanceY);
 			}
-
-			return true;
 		}
 	}
 }
