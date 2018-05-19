@@ -86,6 +86,14 @@ public class Player {
 		subtitleRendererIndex = getRendererIndex(C.TRACK_TYPE_TEXT);
 	}
 
+	public float getAudioVolume() {
+		return player.getVolume();
+	}
+
+	public void setAudioVolume(float audioVolume) {
+		player.setVolume(audioVolume);
+	}
+
 	public void setView(PlayerView videoView) {
 		videoView.setPlayer(player);
 	}

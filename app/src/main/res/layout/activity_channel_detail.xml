@@ -16,7 +16,7 @@
 		android:layout_height="match_parent"
 		android:layout_gravity="center">
 
-		<com.google.android.exoplayer2.ui.SimpleExoPlayerView
+		<de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView
 			android:id="@+id/video"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
