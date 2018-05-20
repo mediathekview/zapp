@@ -1,4 +1,6 @@
-* Einstellung zur Beschränkung auf W-Lan-Wiedergabe hinzugefügt.
-* Bug beim Herunterladen von Videos behoben (danke an michaelof).
-* Teilen von Videos über ein Long-Press-Menü.
-* Bibliotheken und Android-Version aktualisiert.
+* Bug beim Herunterladen von Videos auf Android 8.1 behoben (danke an pmk1c).
+* Absturz beim Starten ohne Internet*Verbindung behoben (danke an alle Reporter).
+* Absturz beim Herunterladen von bestimmten Videos behoben.
+* Lautstärke und Bildschirmhelligkeit können per Swipe geändert werden.
+* Möglichkeit hinzugefügt, einen laufenden Download abzubrechen.
+* User Interface überarbeitet, um Platz für neue Features zu machen.
