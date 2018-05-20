@@ -21,7 +21,7 @@ public class QueryRequest implements Serializable {
 		.setText("ARTE.FR");
 	private static final RangeQuery EXCLUDE_FUTURE_QUERY = new RangeQuery()
 		.setField(Field.TIMESTAMP)
-		.setLte("now+2h/m");
+		.setLte("now");
 
 	private final transient MatchAllQuery noSearchQuery = new MatchAllQuery();
 	private final transient TextQuery searchQuery = new TextQuery()

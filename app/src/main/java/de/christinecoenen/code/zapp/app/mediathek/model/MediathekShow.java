@@ -93,10 +93,7 @@ public class MediathekShow implements Serializable {
 	}
 
 	public CharSequence getFormattedTimestamp() {
-		long time = DateTimeZone
-			.forID("Europe/Berlin")
-			.convertLocalToUTC(timestamp * DateUtils.SECOND_IN_MILLIS, false);
-		return DateUtils.getRelativeTimeSpanString(time);
+		return DateUtils.getRelativeTimeSpanString(timestamp * DateUtils.SECOND_IN_MILLIS);
 	}
 
 	public void setTimestamp(int timestamp) {
