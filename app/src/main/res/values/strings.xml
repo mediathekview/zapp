@@ -32,7 +32,7 @@
 	<string name="fragment_mediathek_qualities_low">Niedrig</string>
 	<string name="fragment_mediathek_qualities_medium">Mittel</string>
 	<string name="fragment_mediathek_qualities_high">Hoch</string>
-	<string name="fragment_mediathek_download_started">Download von \'%s\' gestartet...</string>
+	<string name="fragment_mediathek_download_started">Download von \'%s\' gestartet…</string>
 
 	<!-- error messages -->
 	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
