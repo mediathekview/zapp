@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app;
 
 
 import android.content.pm.ActivityInfo;
+import android.support.test.espresso.accessibility.AccessibilityChecks;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.DrawerMatchers;
 import android.support.test.espresso.contrib.NavigationViewActions;
@@ -39,10 +40,9 @@ public class MainUiTest {
 
 	@BeforeClass
 	public static void enableAccessibilityChecks() {
-		// TODO: re-enable as soon as 3.0.2 is released
-		//AccessibilityChecks.enable()
-		//	.setRunChecksFromRootView(true)
-		//	.setThrowExceptionForErrors(false);
+		AccessibilityChecks.enable()
+			.setRunChecksFromRootView(true)
+			.setThrowExceptionForErrors(false);
 	}
 
 	/**

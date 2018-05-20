@@ -1,5 +1,34 @@
 [
 	{
+		"name": "1.11.0",
+		"items": [
+			{
+				"type": "B",
+				"title": "Bug beim Herunterladen von Videos auf Android 8.1 behoben (danke an pmk1c)."
+			},
+			{
+				"type": "B",
+				"title": "Absturz beim Starten ohne Internet-Verbindung behoben (danke an alle Reporter)."
+			},
+			{
+				"type": "B",
+				"title": "Absturz beim Herunterladen von bestimmten Videos behoben."
+			},
+			{
+				"type": "F",
+				"title": "Lautstärke und Bildschirmhelligkeit können per Swipe geändert werden."
+			},
+			{
+				"type": "I",
+				"title": "Möglichkeit hinzugefügt, einen laufenden Download abzubrechen."
+			},
+			{
+				"type": "I",
+				"title": "User Interface überarbeitet, um Platz für neue Features zu machen."
+			}
+		]
+	},
+	{
 		"name": "1.10.0",
 		"items": [
 			{
