@@ -5,6 +5,7 @@ import android.app.Application;
 import timber.log.Timber;
 
 
+@SuppressWarnings("WeakerAccess")
 public class ZappApplication extends Application {
 
 	@Override
