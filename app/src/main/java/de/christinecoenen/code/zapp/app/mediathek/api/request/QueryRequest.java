@@ -27,10 +27,13 @@ public class QueryRequest implements Serializable {
 	private final transient TextQuery searchQuery = new TextQuery()
 		.addField(Field.TITLE)
 		.addField(Field.TOPIC);
+	private final transient RangeQuery lengthQuery = new RangeQuery()
+		.setField(Field.DURATION)
+		.setGte("0");
 
 	private final BoolQuery body = new BoolQuery()
 		.setNotQueries(EXCLUDE_CHANNELS_QUERY)
-		.setMustQueries(noSearchQuery)
+		.setMustQueries(noSearchQuery, lengthQuery)
 		.setFilterQueries(EXCLUDE_FUTURE_QUERY);
 
 	private List<Sort> sort;
@@ -39,11 +42,16 @@ public class QueryRequest implements Serializable {
 
 	public QueryRequest setSimpleSearch(String queryString) {
 		if (TextUtils.isEmpty(queryString)) {
-			body.setMustQueries(noSearchQuery);
+			body.setMustQueries(noSearchQuery, lengthQuery);
 		} else {
 			searchQuery.setText(queryString);
-			body.setMustQueries(searchQuery);
+			body.setMustQueries(searchQuery, lengthQuery);
 		}
+		return this;
+	}
+
+	public QueryRequest setMinLength(int minLengthSeconds) {
+		lengthQuery.setGte(String.valueOf(minLengthSeconds));
 		return this;
 	}
 

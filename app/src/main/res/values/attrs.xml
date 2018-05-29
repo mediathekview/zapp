@@ -9,4 +9,10 @@
 		<attr name="metaButtonBarButtonStyle" format="reference" />
 	</declare-styleable>
 
+	<declare-styleable name="PillowButtonScrollerFragment">
+		<attr name="shared_prefs_prefix" format="string"/>
+		<attr name="key_list_res_id" format="reference"/>
+		<attr name="label_list_res_id" format="reference"/>
+	</declare-styleable>
+
 </resources>

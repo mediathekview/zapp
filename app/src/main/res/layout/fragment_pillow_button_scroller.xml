@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/channel_scroller"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:scrollbars="none"
+	tools:context=".utils.view.PillowButtonScrollerFragment">
+
+	<LinearLayout
+		android:id="@+id/container_toggle_buttons"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:orientation="horizontal" />
+
+</HorizontalScrollView>

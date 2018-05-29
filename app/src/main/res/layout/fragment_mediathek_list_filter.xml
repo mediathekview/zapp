@@ -28,54 +28,52 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_filter_duration"
-			android:visibility="gone"
-			app:layout_constraintStart_toStartOf="parent" />
+			app:layout_constraintBottom_toBottomOf="@+id/fragment_length_filter"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/fragment_length_filter" />
 
-		<SeekBar
-			android:id="@+id/seekbar_duration"
+		<fragment
+			android:id="@+id/fragment_length_filter"
+			android:name="de.christinecoenen.code.zapp.utils.view.PillowButtonScrollerFragment"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="@dimen/activity_horizontal_margin"
-			android:max="300"
-			android:visibility="gone"
-			app:layout_constraintBottom_toBottomOf="@+id/label_duration"
+			android:layout_marginTop="8dp"
+			app:key_list_res_id="@array/mediathek_length_keys"
+			app:label_list_res_id="@array/mediathek_length_labels"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@id/barrier_labels_end"
-			app:layout_constraintTop_toTopOf="@+id/label_duration" />
+			app:layout_constraintTop_toBottomOf="@+id/fragment_channel_filter"
+			app:shared_prefs_prefix="SHARED_PREFS_KEY_FILTER_LENGTH_SELECTED" />
 
 		<android.support.constraint.Barrier
 			android:id="@+id/barrier_duration_bottom"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:barrierDirection="bottom"
-			app:constraint_referenced_ids="label_duration,seekbar_duration" />
+			app:constraint_referenced_ids="label_duration,fragment_length_filter" />
 
 		<TextView
 			android:id="@+id/label_channels"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_filter_channel"
-			app:layout_constraintBottom_toBottomOf="@id/channel_scroller"
+			app:layout_constraintBottom_toBottomOf="@id/fragment_channel_filter"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="@id/channel_scroller" />
+			app:layout_constraintTop_toTopOf="@id/fragment_channel_filter" />
 
-		<HorizontalScrollView
-			android:id="@+id/channel_scroller"
+		<fragment
+			android:id="@+id/fragment_channel_filter"
+			android:name="de.christinecoenen.code.zapp.utils.view.PillowButtonScrollerFragment"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="@dimen/activity_horizontal_margin"
-			android:scrollbars="none"
+			app:key_list_res_id="@array/mediathek_channel_keys"
+			app:label_list_res_id="@array/mediathek_channel_keys"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@id/barrier_labels_end"
-			app:layout_constraintTop_toBottomOf="@id/barrier_duration_bottom">
-
-			<LinearLayout
-				android:id="@+id/container_channel_buttons"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:orientation="horizontal" />
-
-		</HorizontalScrollView>
+			app:layout_constraintTop_toTopOf="parent"
+			app:shared_prefs_prefix="SHARED_PREFS_KEY_FILTER_CHANNEL_SELECTED" />
 
 	</android.support.constraint.ConstraintLayout>
 

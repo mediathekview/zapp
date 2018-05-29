@@ -2,7 +2,7 @@
 <resources>
 	<array name="empty" />
 
-	<string-array name="mediathek_channels">
+	<string-array name="mediathek_channel_keys">
 		<item>ARD</item>
 		<item>ZDF</item>
 		<item>BR</item>
@@ -22,6 +22,22 @@
 		<item>SRF</item>
 		<item>PHOENIX</item>
 		<item>SRF.Podcast</item>
+	</string-array>
+
+	<string-array name="mediathek_length_keys">
+		<item>0_6</item>
+		<item>6_15</item>
+		<item>15_35</item>
+		<item>35_65</item>
+		<item>65_1000</item>
+	</string-array>
+
+	<string-array name="mediathek_length_labels">
+		<item>@string/fragment_mediathek_length_label_0</item>
+		<item>@string/fragment_mediathek_length_label_1</item>
+		<item>@string/fragment_mediathek_length_label_2</item>
+		<item>@string/fragment_mediathek_length_label_3</item>
+		<item>@string/fragment_mediathek_length_label_4</item>
 	</string-array>
 
 </resources>

@@ -38,6 +38,11 @@
 
 	<string name="fragment_mediathek_filter_duration">Dauer</string>
 	<string name="fragment_mediathek_filter_channel">Sender</string>
+	<string name="fragment_mediathek_length_label_0">0–6m</string>
+	<string name="fragment_mediathek_length_label_1">6–15m</string>
+	<string name="fragment_mediathek_length_label_2">15–35m</string>
+	<string name="fragment_mediathek_length_label_3">35–65m</string>
+	<string name="fragment_mediathek_length_label_4">65+</string>
 
 	<string name="fragment_mediathek_download_started">Download von \'%s\' gestartet…</string>
 

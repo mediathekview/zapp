@@ -212,6 +212,16 @@ public class MediathekListFragment extends Fragment implements
 		loadItems(0, true);
 	}
 
+	@Override
+	public void onLengthChanged() {
+		setMinLengthFilter();
+		loadItems(0, true);
+	}
+
+	private void setMinLengthFilter() {
+		queryRequest.setMinLength(filter.getMinLength() * 60);
+	}
+
 	private void setChannelFilter() {
 		queryRequest.excludeChannels(filter.getExcludedChannels());
 	}
