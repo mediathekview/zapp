@@ -18,6 +18,10 @@ Zapp gibt dir schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Ferns
 
 ---------------------
 
+## Translations
+
+Zapp wird in Deutsch entwickelt, kann aber über [Transifex](https://www.transifex.com/none-581/zapp-android-app/) in andere Sprachen übersetzt werden. Vorschläge für weitere Sprachen und Helfer beim Übersetzen sind herzlich willkommen!
+
 ## Libraries
 
 Zapp uses a lot of awesome open source libraries:
