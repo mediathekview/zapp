@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.about.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -13,6 +14,7 @@ import de.christinecoenen.code.zapp.R;
 
 public class ChangelogActivity extends AppCompatActivity {
 
+	@NonNull
 	public static Intent getStartIntent(Context context) {
 		return new Intent(context, ChangelogActivity.class);
 	}
@@ -24,13 +26,14 @@ public class ChangelogActivity extends AppCompatActivity {
 
 		if (savedInstanceState == null) {
 			Fragment fragment = new PaperboyChainBuilder(this)
-					.viewType(ViewTypes.HEADER)
-					.buildFragment();
+				.fileRes(R.raw.changelog)
+				.viewType(ViewTypes.HEADER)
+				.buildFragment();
 
 			getSupportFragmentManager()
-					.beginTransaction()
-					.add(R.id.activity_changelog, fragment)
-					.commit();
+				.beginTransaction()
+				.add(R.id.activity_changelog, fragment)
+				.commit();
 		}
 	}
 }
