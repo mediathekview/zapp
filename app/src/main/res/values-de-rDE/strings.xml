@@ -1,0 +1,98 @@
+<resources>
+	<string name="app_name">Zapp</string>
+
+	<string name="activity_main_tab_live">Live</string>
+	<string name="activity_main_tab_mediathek">Mediathek</string>
+
+	<string name="activity_about_title">Über Zapp</string>
+	<string name="activity_about_summary">Zapp gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.</string>
+
+	<string name="activity_changelog_title">Changelog</string>
+
+	<string name="activity_faq_title">FAQ</string>
+
+	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
+
+	<string name="activity_settings_title">Einstellungen</string>
+	<string name="activity_channel_selection_title">Sender anordnen</string>
+	<string name="activity_channel_selection_subtitle">Ziehe an den grauen Balken</string>
+
+	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
+
+	<!-- mediathek -->
+	<string name="fragment_mediathek_no_results">keine Sendungen gefunden</string>
+	<string name="fragment_mediathek_title">Sendungsdetails</string>
+	<string name="fragment_mediathek_time">Eingestellt</string>
+	<string name="fragment_mediathek_channel">Sender</string>
+	<string name="fragment_mediathek_duration">Dauer</string>
+	<string name="fragment_mediathek_website">Website</string>
+	<string name="fragment_mediathek_download">Download</string>
+	<string name="fragment_mediathek_batch_subtitle">UT</string>
+	<string name="fragment_mediathek_qualities_title">Qualitäten</string>
+	<string name="fragment_mediathek_qualities_low">Niedrig</string>
+	<string name="fragment_mediathek_qualities_medium">Mittel</string>
+	<string name="fragment_mediathek_qualities_high">Hoch</string>
+	<string name="fragment_mediathek_download_started">Download von \'%s\' gestartet…</string>
+
+	<!-- error messages -->
+	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
+
+	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
+	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
+	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
+	<string name="error_stream_not_in_wifi">Das Abspielen über Mobilverbindungen wurde in den Einstellungen deaktiviert.</string>
+	<string name="error_no_app_for_link">Keine App zum Öffnen von Links gefunden.</string>
+
+	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
+	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
+	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
+	<string name="error_mediathek_no_download_manager">Fehler: Download-Manager nicht verfügbar.</string>
+	<string name="error_mediathek_invalid_url">Fehler: Download-URL ist invalide.</string>
+
+
+	<!-- menus & buttons -->
+	<string name="action_cancel">Abbrechen</string>
+	<string name="action_share">Teilen</string>
+	<string name="action_continue">Weiter</string>
+	<string name="action_enable_subtitles">Untertitel aktivieren</string>
+	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
+
+	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
+
+	<string name="menu_category_shows">Sendungen</string>
+	<string name="menu_category_settings">Einstellungen</string>
+	<string name="menu_refresh">Aktualisieren</string>
+	<string name="menu_about">Über</string>
+	<string name="menu_settings">Einstellungen</string>
+
+
+	<!-- paperboy changelog -->
+	<string name="paperboy_section_name">Abschnitt</string>
+	<string name="paperboy_item_title">Titel</string>
+	<string name="paperboy_item_glyph">\u2022</string>
+	<string name="paperboy_item_type_features">Neuerungen</string>
+	<string name="paperboy_item_type_bugs">Fehler</string>
+	<string name="paperboy_item_type_improvements">Verbesserungen</string>
+	<string name="paperboy_item_type_feature">Neuerung</string>
+	<string name="paperboy_item_type_bug">Fehler</string>
+	<string name="paperboy_item_type_improvement">Verbesserung</string>
+
+	<!-- preferences -->
+	<string name="pref_header_video">Videos</string>
+	<string name="pref_header_channels">Sender</string>
+
+	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
+	<string name="pref_detail_landscape_summary_on">Sperrt die App im Querformat, solange ein Video läuft</string>
+	<string name="pref_detail_landscape_summary_off">Querformat oder Portrait-Modus werden von deinen Systemeinstellungen bestimmt</string>
+
+	<string name="pref_wifi_only_title">Nur über W-Lan streamen</string>
+	<string name="pref_wifi_only_summary_on">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
+	<string name="pref_wifi_only_summary_off">Videos spielen unabhängig von der Verbindungsart ab und können dein Mobilfunk-Volumen belasten</string>
+
+	<string name="pref_channel_selection_title">Sender anordnen</string>
+
+	<string name="pref_shortcuts_title">Sender-Shortcuts</string>
+	<string name="pref_shortcuts_summary_not_supported">Unterstützt ab Android 7.1</string>
+	<string name="pref_shortcuts_summary_limit">Es können maximal 4 Shortcuts gespeichert werden</string>
+	<string name="pref_shortcuts_too_many">Es können maximal 4 Shortcuts gespeichert werden.</string>
+</resources>
