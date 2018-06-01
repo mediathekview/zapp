@@ -1,7 +1,7 @@
-package de.christinecoenen.code.zapp.app.livestream.api.model;
+package de.christinecoenen.code.zapp.app.livestream.api.model
 
 
-public enum Channel {
+enum class Channel constructor(private val id: String) {
 	DAS_ERSTE("das_erste"),
 	BR_NORD("br_nord"),
 	BR_SUED("br_sued"),
@@ -38,23 +38,15 @@ public enum Channel {
 	PARLAMENTSFERNSEHEN_1("parlamentsfernsehen_1"),
 	PARLAMENTSFERNSEHEN_2("parlamentsfernsehen_2");
 
-	public static Channel getById(String id) {
-		for (Channel channel : Channel.values()) {
-			if (channel.id.equals(id)) {
-				return channel;
-			}
+	override fun toString(): String {
+		return id
+	}
+
+	companion object {
+		@JvmStatic
+		fun getById(id: String): Channel {
+			return Channel.values().find { channel -> channel.id == id }
+				?: throw IllegalArgumentException()
 		}
-		throw new IllegalArgumentException();
-	}
-
-	private final String id;
-
-	Channel(String id) {
-		this.id = id;
-	}
-
-	@Override
-	public String toString() {
-		return id;
 	}
 }
