@@ -18,9 +18,9 @@ public class Show {
 
 	public LiveShow toLiveShow() {
 		LiveShow liveShow = new LiveShow();
-		liveShow.setTitle(title);
-		liveShow.setSubtitle(subtitle);
-		liveShow.setDescription(description);
+		liveShow.setTitle(title == null ? "" : title);
+		liveShow.setSubtitle(subtitle == null ? "" : subtitle);
+		liveShow.setDescription(description == null ? "" : description);
 
 		if (startTime != null && endTime != null) {
 			liveShow.setStartTime(formatter.parseDateTime(startTime));
