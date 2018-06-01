@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.api.ProgramGuideRequest;
+import de.christinecoenen.code.zapp.app.livestream.api.model.Channel;
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import timber.log.Timber;
@@ -201,9 +202,7 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private void loadProgramGuide() {
 		progressBarView.setEnabled(true);
 		progressBarView.setIndeterminate(true);
-		currentShowInfoRequest = new ProgramGuideRequest()
-			.setChannelId(currentChannel.getId())
-			.setListener(programGuideListener)
+		currentShowInfoRequest = new ProgramGuideRequest(Channel.getById(currentChannel.getId()), programGuideListener)
 			.execute();
 	}
 
