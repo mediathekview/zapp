@@ -102,7 +102,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	private final ChannelDetailAdapter.OnItemChangedListener onItemChangedListener =
 		new ChannelDetailAdapter.OnItemChangedListener() {
 			@Override
-			public void OnItemSelected(ChannelModel channel) {
+			public void onItemSelected(ChannelModel channel) {
 				currentChannel = channel;
 				setTitle(channel.getName());
 				setColor(channel.getColor());
