@@ -46,6 +46,6 @@ internal class ChannelDetailAdapter(fragmentManager: FragmentManager,
 	}
 
 	internal interface OnItemChangedListener {
-		fun onItemSelected(model: ChannelModel)
+		fun onItemSelected(channelModel: ChannelModel)
 	}
 }

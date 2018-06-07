@@ -40,12 +40,12 @@ class StreamPageFragment : Fragment() {
 	override fun onStop() {
 		super.onStop()
 		// don't use onPause to support multiwindow feature
-		view!!.visibility = View.VISIBLE
+		view?.visibility = View.VISIBLE
 		errorText.visibility = View.GONE
 	}
 
 	fun onHide() {
-		view!!.visibility = View.VISIBLE
+		view?.visibility = View.VISIBLE
 		errorText.visibility = View.GONE
 	}
 
@@ -54,25 +54,25 @@ class StreamPageFragment : Fragment() {
 	}
 
 	fun onVideoError(message: String) {
-		view!!.visibility = View.VISIBLE
+		view?.visibility = View.VISIBLE
 		errorText.visibility = View.VISIBLE
 		errorText.text = message
 	}
 
 	private fun fadeOutLogo() {
-		if (view!!.visibility == View.VISIBLE) {
+		if (view?.visibility == View.VISIBLE) {
 			val fadeOutAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
 			fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
 				override fun onAnimationStart(animation: Animation) {}
 
 				override fun onAnimationEnd(animation: Animation) {
-					view!!.visibility = View.GONE
+					view?.visibility = View.GONE
 				}
 
 				override fun onAnimationRepeat(animation: Animation) {}
 			})
 
-			view!!.startAnimation(fadeOutAnimation)
+			view?.startAnimation(fadeOutAnimation)
 		}
 	}
 

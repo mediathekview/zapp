@@ -64,7 +64,7 @@ class ChannelListFragment : Fragment(), ChannelListAdapter.Listener {
 	}
 
 	override fun onItemClick(channel: ChannelModel) {
-		val intent = ChannelDetailActivity.getStartIntent(context, channel.id)
+		val intent = ChannelDetailActivity.getStartIntent(context!!, channel.id)
 		startActivity(intent)
 	}
 
