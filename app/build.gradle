@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion 27
-	buildToolsVersion '27.0.3'
+	compileSdkVersion 28
+	buildToolsVersion '28.0.2'
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 19
-		targetSdkVersion 27
+		targetSdkVersion 28
 		versionCode 26
 		versionName "1.11.0"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -40,7 +40,9 @@ dependencies {
 	// tests
 	testImplementation 'junit:junit:4.12'
 	androidTestImplementation 'com.android.support:support-annotations:27.1.1'
-	androidTestImplementation 'com.android.support.test:runner:1.0.2'
+	androidTestImplementation 'com.android.support.test:runner:1.0.2', {
+		exclude group: 'com.android.support', module: 'animated-vector-drawable'
+	}
 	androidTestImplementation 'com.android.support.test:rules:1.0.2'
 	androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1', {
 		exclude group: 'com.android.support', module: 'support-annotations'
@@ -54,10 +56,10 @@ dependencies {
 	androidTestImplementation 'com.android.support.test.espresso:espresso-accessibility:3.0.2'
 
 	// support
-	implementation 'com.android.support:appcompat-v7:27.1.1'
-	implementation 'com.android.support:support-v4:27.1.1'
-	implementation 'com.android.support:design:27.1.1'
-	implementation 'com.android.support:cardview-v7:27.1.1'
+	implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
+	implementation 'com.android.support:support-v4:28.0.0-rc02'
+	implementation 'com.android.support:design:28.0.0-rc02'
+	implementation 'com.android.support:cardview-v7:28.0.0-rc02'
 
 	// helper
 	implementation 'com.google.code.gson:gson:2.8.2'
