@@ -82,12 +82,10 @@
 	<string name="pref_header_channels">Sender</string>
 
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
-	<string name="pref_detail_landscape_summary_on">Sperrt die App im Querformat, solange ein Video läuft</string>
-	<string name="pref_detail_landscape_summary_off">Querformat oder Portrait-Modus werden von deinen Systemeinstellungen bestimmt</string>
+	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
 
-	<string name="pref_wifi_only_title">Nur über W-Lan streamen</string>
-	<string name="pref_wifi_only_summary_on">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
-	<string name="pref_wifi_only_summary_off">Videos spielen unabhängig von der Verbindungsart ab und können dein Mobilfunk-Volumen belasten</string>
+	<string name="pref_wifi_only_title">Nur über WLAN streamen</string>
+	<string name="pref_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
 
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 

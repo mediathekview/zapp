@@ -6,15 +6,13 @@
 		<CheckBoxPreference
 			android:defaultValue="true"
 			android:key="pref_detail_landscape"
-			android:summaryOff="@string/pref_detail_landscape_summary_off"
-			android:summaryOn="@string/pref_detail_landscape_summary_on"
+			android:summary="@string/pref_detail_landscape_summary"
 			android:title="@string/pref_detail_landscape_title" />
 
 		<CheckBoxPreference
 			android:defaultValue="true"
 			android:key="pref_wifi_only"
-			android:summaryOff="@string/pref_wifi_only_summary_off"
-			android:summaryOn="@string/pref_wifi_only_summary_on"
+			android:summary="@string/pref_wifi_only_summary"
 			android:title="@string/pref_wifi_only_title" />
 
 	</PreferenceCategory>
