@@ -1,5 +1,14 @@
 [
 	{
+		"name": "1.11.1",
+		"items": [
+			{
+				"type": "B",
+				"title": "Streams von ARD repariert (danke an jw243)."
+			}
+		]
+	},
+	{
 		"name": "1.11.0",
 		"items": [
 			{
