@@ -5,18 +5,21 @@ lang_map = af_ZA: af-rZA, am_ET: am-rET, ar_AE: ar-rAE, ar_BH: ar-rBH, ar_DZ: ar
 [zapp-android-app.stringsxml]
 file_filter = app/src/main/res/values-<lang>/strings.xml
 source_file = app/src/main/res/values/strings.xml
+trans.de_DE = app/src/main/res/values/strings.xml
 source_lang = de
 type = ANDROID
 
 [zapp-android-app.faqmd]
 file_filter = app/src/main/res/raw-<lang>/faq.md
 source_file = app/src/main/res/raw/faq.md
+trans.de_DE = app/src/main/res/raw/faq.md
 source_lang = de
 type = GITHUBMARKDOWN
 
 [zapp-android-app.changelogjson]
 file_filter = app/src/main/res/raw-<lang>/changelog.json
 source_file = app/src/main/res/raw/changelog.json
+trans.de_DE = app/src/main/res/raw/changelog.json
 source_lang = de
 type = KEYVALUEJSON
 
