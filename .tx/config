@@ -26,12 +26,14 @@ type = KEYVALUEJSON
 [zapp-android-app.shortdescription]
 file_filter = app/src/main/play/<lang>/listing/shortdescription
 source_file = app/src/main/play/de-DE/listing/shortdescription
+trans.de_DE = app/src/main/play/de-DE/listing/shortdescription
 source_lang = de
 type = TXT
 
 [zapp-android-app.fulldescription]
 file_filter = app/src/main/play/<lang>/listing/fulldescription
 source_file = app/src/main/play/de-DE/listing/fulldescription
+trans.de_DE = app/src/main/play/de-DE/listing/fulldescription
 source_lang = de
 type = HTML
 
