@@ -80,7 +80,7 @@
   {
 	"id": "deutsche_welle_plus",
 	"name": "Deutsche Welle+",
-	"stream_url": "http://dwstream5-lh.akamaihd.net/i/dwstream5_live@124540/master.m3u8",
+	"stream_url": "https://dwstream52-lh.akamaihd.net/i/dwstream52_live@500528/index_1_av-p.m3u8",
 	"logo_name": "channel_logo_deutsche_welle",
 	"subtitle": "Deutsch+",
 	"color": "#012D5B"

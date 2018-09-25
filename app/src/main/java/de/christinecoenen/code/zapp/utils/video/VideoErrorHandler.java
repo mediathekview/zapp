@@ -61,6 +61,8 @@ public class VideoErrorHandler extends Player.DefaultEventListener implements Me
 	public void onLoadError(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded, IOException error, boolean wasCanceled) {
 		// TODO: test with invalid stream url
 		if (!wasCanceled) {
+			Timber.e(error, "exo player onLoadError");
+
 			if (error instanceof HttpDataSource.HttpDataSourceException) {
 				listener.onVideoError(R.string.error_stream_io);
 			} else {
