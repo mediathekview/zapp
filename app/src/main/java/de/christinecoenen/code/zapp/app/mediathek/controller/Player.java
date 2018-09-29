@@ -36,7 +36,7 @@ public class Player {
 	private final SimpleExoPlayer player;
 	private final VideoErrorHandler videoErrorHandler;
 	private final VideoBufferingHandler bufferingHandler;
-	private final MappingTrackSelector trackSelector;
+	private final DefaultTrackSelector trackSelector;
 	private final boolean hasSubtitles;
 	private final int subtitleRendererIndex;
 	private final SharedPreferences preferences;
@@ -164,7 +164,7 @@ public class Player {
 
 	private void enableSubtitles(boolean enabled) {
 		if (subtitleRendererIndex != -1) {
-			trackSelector.setRendererDisabled(subtitleRendererIndex, !enabled);
+			trackSelector.setParameters(trackSelector.buildUponParameters().setRendererDisabled(subtitleRendererIndex, !enabled));
 		}
 		isShowingSubtitles = enabled;
 

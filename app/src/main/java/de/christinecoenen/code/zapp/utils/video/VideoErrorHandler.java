@@ -1,8 +1,11 @@
 package de.christinecoenen.code.zapp.utils.video;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
@@ -42,23 +45,41 @@ public class VideoErrorHandler extends Player.DefaultEventListener implements Me
 		listener.onVideoError(errorMessageResourceId);
 	}
 
+	public void onWrongNetworkError() {
+		listener.onVideoError(R.string.error_stream_not_in_wifi);
+	}
+
+	public void onWrongNetworkErrorInvalid() {
+		listener.onVideoErrorInvalid();
+	}
+
 	@Override
-	public void onLoadStarted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs) {
+	public void onMediaPeriodCreated(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
 
 	}
 
 	@Override
-	public void onLoadCompleted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
+	public void onMediaPeriodReleased(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
 
 	}
 
 	@Override
-	public void onLoadCanceled(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
+	public void onLoadStarted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
 
 	}
 
 	@Override
-	public void onLoadError(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded, IOException error, boolean wasCanceled) {
+	public void onLoadCompleted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+
+	}
+
+	@Override
+	public void onLoadCanceled(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+
+	}
+
+	@Override
+	public void onLoadError(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
 		// TODO: test with invalid stream url
 		if (!wasCanceled) {
 			Timber.e(error, "exo player onLoadError");
@@ -72,21 +93,18 @@ public class VideoErrorHandler extends Player.DefaultEventListener implements Me
 	}
 
 	@Override
-	public void onUpstreamDiscarded(int trackType, long mediaStartTimeMs, long mediaEndTimeMs) {
+	public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
 
 	}
 
 	@Override
-	public void onDownstreamFormatChanged(int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaTimeMs) {
+	public void onUpstreamDiscarded(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
 
 	}
 
-	public void onWrongNetworkError() {
-		listener.onVideoError(R.string.error_stream_not_in_wifi);
-	}
+	@Override
+	public void onDownstreamFormatChanged(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
 
-	public void onWrongNetworkErrorInvalid() {
-		listener.onVideoErrorInvalid();
 	}
 
 	public interface IVideoErrorListener {
