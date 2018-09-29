@@ -1,8 +1,8 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import de.christinecoenen.code.zapp.model.ChannelModel;

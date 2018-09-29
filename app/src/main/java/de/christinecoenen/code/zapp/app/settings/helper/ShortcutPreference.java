@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.Toast;

@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.api;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import de.christinecoenen.code.zapp.app.livestream.api.model.Channel;
 import de.christinecoenen.code.zapp.app.livestream.api.model.ShowResponse;

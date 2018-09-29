@@ -3,8 +3,8 @@ package de.christinecoenen.code.zapp.utils.system;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 public class PermissionHelper {
 

@@ -4,9 +4,6 @@ buildscript {
 	repositories {
 		google()
 		jcenter()
-
-		// for butterknive:
-		mavenCentral()
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:3.2.0'
@@ -23,6 +20,9 @@ allprojects {
 
 		// for MarkdownView
 		maven { url "https://jitpack.io" }
+
+		// for butterknive snapshot version:
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 	}
 }
 
