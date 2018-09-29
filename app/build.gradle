@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 28
-	buildToolsVersion '28.0.2'
+	buildToolsVersion '28.0.3'
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
@@ -34,12 +34,17 @@ android {
 	}
 }
 
+configurations {
+	cleanedAnnotations
+	compile.exclude group: 'org.jetbrains' , module:'annotations'
+}
+
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
 	// tests
 	testImplementation 'junit:junit:4.12'
-	androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+	androidTestImplementation 'com.android.support:support-annotations:28.0.0'
 	androidTestImplementation 'com.android.support.test:runner:1.0.2', {
 		exclude group: 'com.android.support', module: 'animated-vector-drawable'
 	}
@@ -56,20 +61,20 @@ dependencies {
 	androidTestImplementation 'com.android.support.test.espresso:espresso-accessibility:3.0.2'
 
 	// support
-	implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
-	implementation 'com.android.support:support-v4:28.0.0-rc02'
-	implementation 'com.android.support:design:28.0.0-rc02'
-	implementation 'com.android.support:cardview-v7:28.0.0-rc02'
+	implementation 'com.android.support:appcompat-v7:28.0.0'
+	implementation 'com.android.support:support-v4:28.0.0'
+	implementation 'com.android.support:design:28.0.0'
+	implementation 'com.android.support:cardview-v7:28.0.0'
 
 	// helper
-	implementation 'com.google.code.gson:gson:2.8.2'
+	implementation 'com.google.code.gson:gson:2.8.5'
 	implementation 'commons-io:commons-io:2.6'
 
 	// changelog
 	implementation 'com.github.porokoro.paperboy:paperboy:3.0.0'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.5.4'
+	implementation 'com.github.woxthebox:draglistview:1.6.2'
 
 	// markdown
 	implementation 'com.github.fiskurgit:MarkdownView:1.1.0'
@@ -91,10 +96,10 @@ dependencies {
 	releaseImplementation 'ch.acra:acra:4.11'
 
 	// timber logging
-	implementation 'com.jakewharton.timber:timber:4.7.0'
+	implementation 'com.jakewharton.timber:timber:4.7.1'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.9.9'
+	implementation 'joda-time:joda-time:2.10'
 
 	// about libraries view
 	implementation('com.mikepenz:aboutlibraries:6.0.0@aar') {
