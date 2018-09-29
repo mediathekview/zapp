@@ -1,7 +1,7 @@
 ![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
 
 1. [About](#about)
-2. [FAQ](app/src/main/res/raw/faq.markdown)
+2. [FAQ](app/src/main/res/raw/faq.md)
 3. [Libraries Example](#libraries)
 
 ## About
