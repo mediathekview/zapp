@@ -377,8 +377,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		progressView.setVisibility(View.VISIBLE);
 
 		Uri videoUri = Uri.parse(currentChannel.getStreamUrl());
-		MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory)
-			.createMediaSource(videoUri, playHandler, videoErrorHandler);
+		MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(videoUri);
+		videoSource.addEventListener(playHandler, videoErrorHandler);
 		player.prepare(videoSource);
 		player.setPlayWhenReady(true);
 	}

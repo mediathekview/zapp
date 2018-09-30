@@ -93,7 +93,7 @@ dependencies {
 	implementation 'joda-time:joda-time:2.10'
 
 	// about libraries view
-	implementation('com.mikepenz:aboutlibraries:6.0.0@aar') {
+	implementation('com.mikepenz:aboutlibraries:6.2.0@aar') {
 		transitive = true
 	}
 }

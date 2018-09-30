@@ -171,8 +171,6 @@ public class MediathekDetailFragment extends Fragment {
 		try {
 			// create request for android download manager
 			request = new DownloadManager.Request(uri);
-		} catch (Exception e) {
-			request = null;
 		} finally {
 			if (request == null) {
 				Toast.makeText(getContext(), R.string.error_mediathek_invalid_url, Toast.LENGTH_LONG).show();
