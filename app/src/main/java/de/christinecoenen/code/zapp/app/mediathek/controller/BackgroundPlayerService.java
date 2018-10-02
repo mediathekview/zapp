@@ -96,8 +96,7 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager.setOngoing(false);
 		playerNotificationManager.setPlayer(player.getExoPlayer());
 		playerNotificationManager.setNotificationListener(this);
-		// TODO: make icon bigger (see design guidelines)
-		playerNotificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
+		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
 	}
 
 	private void handleActionStop() {
