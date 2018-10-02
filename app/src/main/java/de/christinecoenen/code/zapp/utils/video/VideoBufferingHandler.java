@@ -29,6 +29,9 @@ public class VideoBufferingHandler extends Player.DefaultEventListener {
 		if (playWhenReady && playbackState == Player.STATE_READY) {
 			Timber.d("media player rendering start");
 			listener.onBufferingEnded();
+		} else if (playbackState == Player.STATE_ENDED) {
+			Timber.d("media video ended");
+			listener.onVideoEnded();
 		}
 	}
 
@@ -36,5 +39,7 @@ public class VideoBufferingHandler extends Player.DefaultEventListener {
 		void onBufferingStarted();
 
 		void onBufferingEnded();
+
+		void onVideoEnded();
 	}
 }

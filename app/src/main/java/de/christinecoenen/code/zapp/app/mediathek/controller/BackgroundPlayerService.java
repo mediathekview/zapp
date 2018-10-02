@@ -6,8 +6,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
 
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
+
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
@@ -18,7 +22,8 @@ import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import timber.log.Timber;
 
 public class BackgroundPlayerService extends IntentService implements
-	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener, VideoBufferingHandler.IVideoBufferingListener, VideoErrorHandler.IVideoErrorListener {
+	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener,
+	VideoBufferingHandler.IVideoBufferingListener, VideoErrorHandler.IVideoErrorListener {
 
 	private static final String ACTION_START = "de.christinecoenen.code.zapp.app.mediathek.controller.action.START";
 	private static final String ACTION_STOP = "de.christinecoenen.code.zapp.app.mediathek.controller.action.STOP";
@@ -28,8 +33,9 @@ public class BackgroundPlayerService extends IntentService implements
 	private Player player;
 	private PlayerNotificationManager playerNotificationManager;
 	private MediathekShow show;
+	private PowerManager.WakeLock wakeLock;
+	private WifiManager.WifiLock wifiLock;
 
-	// TODO: hold and release wakelocks
 	public BackgroundPlayerService() {
 		super("BackgroundPlayerService");
 	}
@@ -45,6 +51,21 @@ public class BackgroundPlayerService extends IntentService implements
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
 		intent.setAction(ACTION_STOP);
 		context.startService(intent);
+	}
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+
+		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+		if (powerManager != null) {
+			wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Zapp::BackgroundPlayerService");
+		}
+
+		WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+		if (wifiManager != null) {
+			wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "Zapp::BackgroundPlayerService");
+		}
 	}
 
 	@Override
@@ -64,6 +85,13 @@ public class BackgroundPlayerService extends IntentService implements
 			playerNotificationManager.setPlayer(null);
 			player.destroy();
 			player = null;
+		}
+
+		if (wakeLock.isHeld()) {
+			wakeLock.release();
+		}
+		if (wifiLock.isHeld()) {
+			wifiLock.release();
 		}
 
 		super.onDestroy();
@@ -97,6 +125,9 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager.setPlayer(player.getExoPlayer());
 		playerNotificationManager.setNotificationListener(this);
 		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
+
+		wakeLock.acquire(TimeUnit.MINUTES.toMillis(120));
+		wifiLock.acquire();
 	}
 
 	private void handleActionStop() {
@@ -145,6 +176,11 @@ public class BackgroundPlayerService extends IntentService implements
 	@Override
 	public void onBufferingEnded() {
 
+	}
+
+	@Override
+	public void onVideoEnded() {
+		handleActionStop();
 	}
 
 	@Override

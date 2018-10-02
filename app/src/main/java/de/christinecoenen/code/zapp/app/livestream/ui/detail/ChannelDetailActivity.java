@@ -314,6 +314,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	@Override
+	public void onVideoEnded() {
+
+	}
+
+	@Override
 	protected int getViewId() {
 		return R.layout.activity_channel_detail;
 	}

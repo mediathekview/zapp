@@ -253,6 +253,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		loadingIndicator.setVisibility(View.INVISIBLE);
 	}
 
+	@Override
+	public void onVideoEnded() {
+
+	}
+
 	@OnClick(R.id.btn_caption_disable)
 	public void onDisableCaptionsClick() {
 		player.disableSubtitles();
