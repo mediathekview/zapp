@@ -36,7 +36,7 @@
 			android:id="@id/exo_pause"
 			style="@style/ExoMediaButton.Pause"
 			tools:ignore="ContentDescription"
-			tools:visibility="gone"/>
+			tools:visibility="gone" />
 
 		<ImageButton
 			android:id="@id/exo_ffwd"
@@ -60,6 +60,7 @@
 		<ImageButton
 			android:id="@+id/btn_background"
 			style="@style/ExoMediaButton"
+			android:contentDescription="@string/action_play_in_background"
 			android:src="@drawable/ic_headset_white_24dp" />
 
 	</LinearLayout>
