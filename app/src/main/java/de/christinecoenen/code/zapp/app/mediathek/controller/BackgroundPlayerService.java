@@ -125,6 +125,7 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager.setPlayer(player.getExoPlayer());
 		playerNotificationManager.setNotificationListener(this);
 		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
+		playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimaryDark));
 
 		wakeLock.acquire(TimeUnit.MINUTES.toMillis(120));
 		wifiLock.acquire();
