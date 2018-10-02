@@ -112,9 +112,9 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public PendingIntent createCurrentContentIntent(com.google.android.exoplayer2.Player player) {
-		// TODO: use activity on stack if present
 		// TODO: pass current video time
 		Intent intent = MediathekPlayerActivity.getStartIntent(BackgroundPlayerService.this, show);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		return PendingIntent.getActivity(BackgroundPlayerService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
