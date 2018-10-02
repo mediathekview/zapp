@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.mediathek.controller.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.mediathek.controller.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
@@ -264,12 +265,19 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		updateSubtitleButtons();
 	}
 
+	@OnClick(R.id.btn_background)
+	public void onBackgroundClick() {
+		BackgroundPlayerService.startActionStart(this, show);
+		finish();
+	}
+
 	private void pauseActivity() {
 		player.pause();
 	}
 
 	private void resumeActivity() {
 		hideError();
+		BackgroundPlayerService.startActionStop(this);
 		player.resume();
 	}
 

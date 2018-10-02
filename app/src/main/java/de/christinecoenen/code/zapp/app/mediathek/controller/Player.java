@@ -49,9 +49,6 @@ public class Player {
 				  VideoErrorHandler.IVideoErrorListener errorListener,
 				  VideoBufferingHandler.IVideoBufferingListener bufferingListener) {
 
-		networkConnectionHelper = new NetworkConnectionHelper(context);
-		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
-
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context,
 			Util.getUserAgent(context, context.getString(R.string.app_name)), bandwidthMeter);
@@ -83,6 +80,13 @@ public class Player {
 		}
 
 		subtitleRendererIndex = getRendererIndex(C.TRACK_TYPE_TEXT);
+
+		networkConnectionHelper = new NetworkConnectionHelper(context);
+		networkConnectionHelper.startListenForNetworkChanges(this::onNetworkConnectionChanged);
+	}
+
+	SimpleExoPlayer getExoPlayer() {
+		return player;
 	}
 
 	public void setView(PlayerView videoView) {
