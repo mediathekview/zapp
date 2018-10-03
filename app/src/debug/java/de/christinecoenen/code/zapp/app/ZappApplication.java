@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app;
 
 import android.app.Application;
 
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import timber.log.Timber;
 
 
@@ -12,6 +13,8 @@ public class ZappApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		Timber.plant(new Timber.DebugTree());
+
+		NotificationHelper.createBackgroundPlaybackChannel(this);
 	}
 
 }

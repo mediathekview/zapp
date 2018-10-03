@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekPlayerActivity;
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import timber.log.Timber;
@@ -118,9 +119,10 @@ public class BackgroundPlayerService extends IntentService implements
 		// TODO: seek to last position
 		player.resume();
 
-		// TODO: set correct channel id
-		// TODO: set correct notification id
-		playerNotificationManager = new PlayerNotificationManager(this, null, 500, this);
+		playerNotificationManager = new PlayerNotificationManager(this,
+			NotificationHelper.BACKGROUND_PLAYBACK_CHANNEL_ID,
+			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
+			this);
 		playerNotificationManager.setOngoing(false);
 		playerNotificationManager.setPlayer(player.getExoPlayer());
 		playerNotificationManager.setNotificationListener(this);
