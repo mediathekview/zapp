@@ -67,7 +67,7 @@ dependencies {
 	implementation 'com.github.woxthebox:draglistview:1.6.2'
 
 	// markdown
-	implementation 'com.github.fiskurgit:MarkdownView:1.1.0'
+	implementation "ru.noties:markwon:2.0.0"
 
 	// butterknive:
 	// https://github.com/JakeWharton/butterknife/issues/1270

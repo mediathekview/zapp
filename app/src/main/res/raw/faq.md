@@ -1,12 +1,4 @@
-- [Die Videos laufen nicht – was soll ich tun?](#video-problems)
-- [Warum sehe für einige Sender keine Programminformationen?](#missing-info)
-- [Warum fehlen einige Sender wie RTL oder Pro7?](#missing-channel)
-- [Warum fehlen Sendungen in der Mediathek?](#missing-show)
-- [Warum werden in der Mediathek Sendungen doppelt angezeigt?](#doubled-show)
-- [Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?](#subtitle-problems)
-
-<a name="video-problems"></a>
-### Die Videos laufen nicht – was soll ich tun?
+## Die Videos laufen nicht – was soll ich tun?
 
 Wenn die Video-Streams auf Android nicht abspielbar sind, kann das mehrere Gründe haben:
 
@@ -17,31 +9,26 @@ Wenn die Video-Streams auf Android nicht abspielbar sind, kann das mehrere Grün
 - Vielleicht unterstützt dein Gerät den Video-Codec nicht. Du kannst den Stream in einem anderen Videoplayer starten, indem du den Menü-Button drückst, nachdem du einen Sender ausgewählt hast. Klicke auf "Teilen" und öffne den Stream mit Google Video Player. Wenn Google Video Player den Stream auch nicht abspielen kann, wird das Videoformat ziemlich sicher nicht von deinem Gerät unterstützt.
 
 
-<a name="missing-info"></a>
-### Warum sehe für einige Sender keine Programminformationen?
+## Warum sehe für einige Sender keine Programminformationen?
 
 Die meisten Sender haben keine öffentliche API, um Sendungsinformationen abfragen zu können. Deswegen versucht Zapp die Webseiten der Sender nach den gerade laufenden Sendungen zu durchsuchen. Dieser Ansatz ist nicht besonders zuverlässig und kann schnell kaputt gehen, wenn eine Webseite geändert oder aktualisiert wird.
 
 
-<a name="missing-channel"></a>
-### Warum fehlen einige Sender wie RTL oder Pro7?
+## Warum fehlen einige Sender wie RTL oder Pro7?
 
 Zapp streamt nur öffentlich-rechtliche Sender. Sender wie RTL und Pro7 gehören privaten Firmen und dürfen ohne Bezahlung nicht gestreamt werden.
 
 
-<a name="missing-show"></a>
-### Warum fehlen Sendungen in der Mediathek?
+## Warum fehlen Sendungen in der Mediathek?
 
 Zapp darf freundlicherweise die Mediathek-API von [MediathekViewWeb](https://mediathekviewweb.de/) benutzen. Die meisten Sender haben allerdings keine öffentliche API, um Sendungsinformationen abfragen zu können. Daher kann es passieren, dass Sender oder einzelne Sendungen fehlen oder Sendungsinformationen auch einmal unvollständig sind.
 
 
-<a name="doubled-show"></a>
-### Warum werden in der Mediathek Sendungen doppelt angezeigt?
+## Warum werden in der Mediathek Sendungen doppelt angezeigt?
 
 Es kommt öfter vor, dass die gleiche Sendung in den Mediatheken verschiedener Sender hochgeladen wird. Da Zapp alle verfügbaren Sendungen anzeigt, sieht es dann manchmal so aus, als würden Sendungen doppelt angezeigt.
 
 
-<a name="subtitle-problems"></a>
-### Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?
+## Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?
 
 Manchmal werden Untertitel von den Mediatheken in einem unerwarteten Format ausgeliefert, sodass Zapp sie nicht darstellen kann. Leider gibt es keinen Weg, diese Fehler vorher zu erkennen. Oft reicht es aber schon aus, ein bisschen zu warten, bis die Untertitel fertig geladen haben.
