@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
@@ -207,7 +208,8 @@ public class BackgroundPlayerService extends IntentService implements
 	@Override
 	public void onVideoError(int messageResourceId) {
 		Timber.w("video playback error: %s", getString(messageResourceId));
-		// TODO: display video error to user
+		Toast.makeText(this, messageResourceId, Toast.LENGTH_LONG).show();
+		handleActionStop();
 	}
 
 	@Override
