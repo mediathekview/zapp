@@ -7,17 +7,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -110,7 +111,7 @@ public class MediathekDetailFragment extends Fragment {
 
 	@OnClick(R.id.btn_play)
 	protected void onPlayClick() {
-		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show, 0));
+		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
 	}
 
 	@OnClick(R.id.btn_website)

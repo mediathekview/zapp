@@ -355,8 +355,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private void resumeActivity() {
-		BackgroundPlayerService.startActionStop(this);
-
 		programInfoView.resume();
 		if (isPlaying) {
 			play();

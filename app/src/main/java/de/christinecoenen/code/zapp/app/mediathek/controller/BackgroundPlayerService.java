@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.wifi.WifiManager;
+import android.os.IBinder;
 import android.os.PowerManager;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
@@ -16,57 +16,51 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekPlayerActivity;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
-import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
-import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
-import timber.log.Timber;
 
+// TODO: move to app wide controller package
 public class BackgroundPlayerService extends IntentService implements
-	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener,
-	VideoBufferingHandler.IVideoBufferingListener, VideoErrorHandler.IVideoErrorListener {
+	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener {
 
-	private static final String ACTION_START = "de.christinecoenen.code.zapp.app.mediathek.controller.action.START";
-	private static final String ACTION_STOP = "de.christinecoenen.code.zapp.app.mediathek.controller.action.STOP";
+	private static final String ACTION_START_IN_BACKGROUND = "de.christinecoenen.code.zapp.app.mediathek.controller.action.START_IN_BACKGROUND";
 	private static final String ACTION_NOTIFICATION_CLICKED = "de.christinecoenen.code.zapp.app.mediathek.controller.action.NOTIFICATION_CLICKED";
 
-	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.app.mediathek.controller.extra.SHOW";
-	private static final String EXTRA_MILLIS = "de.christinecoenen.code.zapp.app.mediathek.controller.extra.MILLIS";
+	private final Binder binder = new Binder();
 
-	private Player player;
+	private TestPlayer player;
 	private PlayerNotificationManager playerNotificationManager;
-	private MediathekShow show;
 	private PowerManager.WakeLock wakeLock;
 	private WifiManager.WifiLock wifiLock;
+	private Intent foregroundActivityIntent;
 
 	public BackgroundPlayerService() {
 		super("BackgroundPlayerService");
 	}
 
-	public static void startActionStart(Context context, MediathekShow show, long millis) {
+	private static void startInBackground(Context context) {
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
-		intent.setAction(ACTION_START);
-		intent.putExtra(EXTRA_SHOW, show);
-		intent.putExtra(EXTRA_MILLIS, millis);
+		intent.setAction(ACTION_START_IN_BACKGROUND);
 		context.startService(intent);
 	}
 
-	public static void startActionStop(Context context) {
-		Intent intent = new Intent(context, BackgroundPlayerService.class);
-		intent.setAction(ACTION_STOP);
-		context.startService(intent);
-	}
-
-	public static Intent getNotificationClickedIntent(Context context) {
+	private static Intent getNotificationClickedIntent(Context context) {
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
 		intent.setAction(ACTION_NOTIFICATION_CLICKED);
 		return intent;
 	}
 
+	/**
+	 * This service is only running when
+	 * 1. an UI element is currently bound and not in paused state OR
+	 * 2. the playback is running in background
+	 * <p>
+	 * So is is save to aquire locks and release them in {@link #onDestroy()}
+	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		player = new TestPlayer(this);
 
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
 		if (powerManager != null) {
@@ -77,6 +71,16 @@ public class BackgroundPlayerService extends IntentService implements
 		if (wifiManager != null) {
 			wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "Zapp::BackgroundPlayerService");
 		}
+
+		// TODO: is it save to hold locks here?
+		wakeLock.acquire(TimeUnit.MINUTES.toMillis(120));
+		wifiLock.acquire();
+	}
+
+	@Nullable
+	@Override
+	public IBinder onBind(Intent intent) {
+		return binder;
 	}
 
 	@Override
@@ -92,8 +96,9 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public void onDestroy() {
+		movePlaybackToForeground();
+
 		if (player != null) {
-			playerNotificationManager.setPlayer(null);
 			player.destroy();
 			player = null;
 		}
@@ -111,28 +116,46 @@ public class BackgroundPlayerService extends IntentService implements
 	private void handleIntent(Intent intent) {
 		if (intent != null && intent.getAction() != null) {
 			switch (intent.getAction()) {
-				case ACTION_START:
-					final MediathekShow show = (MediathekShow) intent.getSerializableExtra(EXTRA_SHOW);
-					final long millis = intent.getLongExtra(EXTRA_MILLIS, 0);
-					handleActionStart(show, millis);
-					break;
-				case ACTION_STOP:
-					handleActionStop();
-					break;
 				case ACTION_NOTIFICATION_CLICKED:
 					handleNotificationClicked();
 					break;
+				case ACTION_START_IN_BACKGROUND:
+					handleStartInBackground();
+					break;
+				default:
+					throw new UnsupportedOperationException("Action not supported: " + intent.getAction());
 			}
 		}
 	}
 
-	private void handleActionStart(MediathekShow show, long millis) {
-		this.show = show;
+	/**
+	 * @see Binder#movePlaybackToBackground(Intent foregroundActivityIntent)
+	 */
+	private void movePlaybackToBackground(Intent foregroundActivityIntent) {
+		this.foregroundActivityIntent = foregroundActivityIntent;
 
-		player = new Player(this, show, this, this);
-		player.setMillis(millis);
-		player.resume();
+		// start long running task
+		BackgroundPlayerService.startInBackground(this);
+	}
 
+	/**
+	 * @see Binder#movePlaybackToForeground()
+	 */
+	public void movePlaybackToForeground() {
+		stopForeground(true);
+		stopSelf();
+
+		if (playerNotificationManager != null) {
+			playerNotificationManager.setPlayer(null);
+		}
+	}
+
+	/**
+	 * As soon as somebody starts this service as background player, we create the
+	 * player notification. When created this notification will move the service to
+	 * foreground to avoid being destroyed by the system.
+	 */
+	private void handleStartInBackground() {
 		playerNotificationManager = new PlayerNotificationManager(this,
 			NotificationHelper.BACKGROUND_PLAYBACK_CHANNEL_ID,
 			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
@@ -142,25 +165,17 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager.setNotificationListener(this);
 		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
 		playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimaryDark));
-
-		wakeLock.acquire(TimeUnit.MINUTES.toMillis(120));
-		wifiLock.acquire();
-	}
-
-	private void handleActionStop() {
-		stopForeground(true);
-		stopSelf();
 	}
 
 	private void handleNotificationClicked() {
-		Intent intent = MediathekPlayerActivity.getStartIntent(BackgroundPlayerService.this, show, player.getMillis());
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
+		foregroundActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(foregroundActivityIntent);
 	}
 
 	@Override
 	public String getCurrentContentTitle(com.google.android.exoplayer2.Player player) {
-		return show.getTitle();
+		// TODO: get title of current player show
+		return "Title";
 	}
 
 	@Override
@@ -172,7 +187,8 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public String getCurrentContentText(com.google.android.exoplayer2.Player player) {
-		return show.getTopic();
+		// TODO: get topic of current player show
+		return "Topic";
 	}
 
 	@Override
@@ -187,33 +203,36 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public void onNotificationCancelled(int notificationId) {
-		handleActionStop();
+		movePlaybackToForeground();
 	}
 
-	@Override
-	public void onBufferingStarted() {
+	public class Binder extends android.os.Binder {
 
-	}
+		/**
+		 * @return Player instance that will live as long as this service is up and running.
+		 */
+		public TestPlayer getPlayer() {
+			return player;
+		}
 
-	@Override
-	public void onBufferingEnded() {
+		/**
+		 * Displays a player notification and starts keeping this service alive
+		 * in background. Once called the service will resume running until {@link #movePlaybackToForeground()}
+		 * is called or the notification is dismissed.
+		 *
+		 * @param foregroundActivityIntent intent to restart the calling activity once
+		 */
+		public void movePlaybackToBackground(Intent foregroundActivityIntent) {
+			BackgroundPlayerService.this.movePlaybackToBackground(foregroundActivityIntent);
+		}
 
-	}
-
-	@Override
-	public void onVideoEnded() {
-		handleActionStop();
-	}
-
-	@Override
-	public void onVideoError(int messageResourceId) {
-		Timber.w("video playback error: %s", getString(messageResourceId));
-		Toast.makeText(this, messageResourceId, Toast.LENGTH_LONG).show();
-		handleActionStop();
-	}
-
-	@Override
-	public void onVideoErrorInvalid() {
-
+		/**
+		 * Call this once the playback is visible to the user. This will allow this service to
+		 * be destroyed as soon as no ui component is bound any more.
+		 * This will dismiss the playback notification.
+		 */
+		public void movePlaybackToForeground() {
+			BackgroundPlayerService.this.movePlaybackToForeground();
+		}
 	}
 }

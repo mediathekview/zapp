@@ -1,13 +1,14 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,12 +20,14 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.controller.BackgroundPlayerService;
-import de.christinecoenen.code.zapp.app.mediathek.controller.Player;
+import de.christinecoenen.code.zapp.app.mediathek.controller.TestPlayer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
@@ -39,14 +42,12 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	VideoBufferingHandler.IVideoBufferingListener {
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
-	private static final String EXTRA_MILLIS = "de.christinecoenen.code.zapp.EXTRA_MILLIS";
 	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
 
-	public static Intent getStartIntent(Context context, MediathekShow show, long millis) {
+	public static Intent getStartIntent(Context context, MediathekShow show) {
 		Intent intent = new Intent(context, MediathekPlayerActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.putExtra(EXTRA_SHOW, show);
-		intent.putExtra(EXTRA_MILLIS, millis);
 		return intent;
 	}
 
@@ -73,7 +74,30 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected ProgressBar loadingIndicator;
 
 	private MediathekShow show;
-	private Player player;
+	private TestPlayer player;
+	private BackgroundPlayerService.Binder binder;
+
+	private ServiceConnection backgroundPlayerServiceConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder service) {
+			binder = (BackgroundPlayerService.Binder) service;
+			player = binder.getPlayer();
+			player.setView(videoView);
+
+			// TODO: restore player position
+			player.load(show.getVideoUrl());
+			player.resume();
+
+			binder.movePlaybackToForeground();
+
+			updateSubtitleButtons();
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			player.pause();
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +122,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			getSupportActionBar().setSubtitle(show.getTitle());
 		}
 
-		long millis = getIntent().getLongExtra(EXTRA_MILLIS, 0);
-		player = new Player(this, show, this, this);
-		player.setView(videoView);
-		player.setMillis(millis);
-		updateSubtitleButtons();
-
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
 	}
@@ -111,6 +129,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		// TODO: this does not work any more
 		outState.putLong(ARG_VIDEO_MILLIS, player.getMillis());
 	}
 
@@ -158,12 +177,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		if (MultiWindowHelper.isInsideMultiWindow(this)) {
 			pauseActivity();
 		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		player.destroy();
 	}
 
 	@Override
@@ -236,6 +249,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		}
 	}
 
+	// TODO: get handler to work again
 	@Override
 	public void onVideoError(int messageResourceId) {
 		showError(messageResourceId);
@@ -263,35 +277,36 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	@OnClick(R.id.btn_caption_disable)
 	public void onDisableCaptionsClick() {
-		player.disableSubtitles();
+		//player.disableSubtitles();
 		updateSubtitleButtons();
 	}
 
 	@OnClick(R.id.btn_caption_enable)
 	public void onEnableCaptionsClick() {
-		player.enableSubtitles();
+		//player.enableSubtitles();
 		updateSubtitleButtons();
 	}
 
 	@OnClick(R.id.btn_background)
 	public void onBackgroundClick() {
-		BackgroundPlayerService.startActionStart(this, show, player.getMillis());
+		binder.movePlaybackToBackground(getIntent());
 		finish();
 	}
 
 	private void pauseActivity() {
-		player.pause();
+		unbindService(backgroundPlayerServiceConnection);
 	}
 
 	private void resumeActivity() {
 		hideError();
-		BackgroundPlayerService.startActionStop(this);
-		player.resume();
+
+		Intent intent = new Intent(this, BackgroundPlayerService.class);
+		bindService(intent, backgroundPlayerServiceConnection, Context.BIND_AUTO_CREATE);
 	}
 
 	private void updateSubtitleButtons() {
-		captionButtonEnable.setVisibility(player.hasSubtitles() && !player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
-		captionButtonDisable.setVisibility(player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
+		//captionButtonEnable.setVisibility(player.hasSubtitles() && !player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
+		//captionButtonDisable.setVisibility(player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
 	}
 
 	private void showError(int messageResId) {
