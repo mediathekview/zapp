@@ -28,8 +28,10 @@ public class BackgroundPlayerService extends IntentService implements
 
 	private static final String ACTION_START = "de.christinecoenen.code.zapp.app.mediathek.controller.action.START";
 	private static final String ACTION_STOP = "de.christinecoenen.code.zapp.app.mediathek.controller.action.STOP";
+	private static final String ACTION_NOTIFICATION_CLICKED = "de.christinecoenen.code.zapp.app.mediathek.controller.action.NOTIFICATION_CLICKED";
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.app.mediathek.controller.extra.SHOW";
+	private static final String EXTRA_MILLIS = "de.christinecoenen.code.zapp.app.mediathek.controller.extra.MILLIS";
 
 	private Player player;
 	private PlayerNotificationManager playerNotificationManager;
@@ -41,10 +43,11 @@ public class BackgroundPlayerService extends IntentService implements
 		super("BackgroundPlayerService");
 	}
 
-	public static void startActionStart(Context context, MediathekShow show) {
+	public static void startActionStart(Context context, MediathekShow show, long millis) {
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
 		intent.setAction(ACTION_START);
 		intent.putExtra(EXTRA_SHOW, show);
+		intent.putExtra(EXTRA_MILLIS, millis);
 		context.startService(intent);
 	}
 
@@ -52,6 +55,12 @@ public class BackgroundPlayerService extends IntentService implements
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
 		intent.setAction(ACTION_STOP);
 		context.startService(intent);
+	}
+
+	public static Intent getNotificationClickedIntent(Context context) {
+		Intent intent = new Intent(context, BackgroundPlayerService.class);
+		intent.setAction(ACTION_NOTIFICATION_CLICKED);
+		return intent;
 	}
 
 	@Override
@@ -103,20 +112,24 @@ public class BackgroundPlayerService extends IntentService implements
 			switch (intent.getAction()) {
 				case ACTION_START:
 					final MediathekShow show = (MediathekShow) intent.getSerializableExtra(EXTRA_SHOW);
-					handleActionStart(show);
+					final long millis = intent.getLongExtra(EXTRA_MILLIS, 0);
+					handleActionStart(show, millis);
 					break;
 				case ACTION_STOP:
 					handleActionStop();
+					break;
+				case ACTION_NOTIFICATION_CLICKED:
+					handleNotificationClicked();
 					break;
 			}
 		}
 	}
 
-	private void handleActionStart(MediathekShow show) {
+	private void handleActionStart(MediathekShow show, long millis) {
 		this.show = show;
 
 		player = new Player(this, show, this, this);
-		// TODO: seek to last position
+		player.setMillis(millis);
 		player.resume();
 
 		playerNotificationManager = new PlayerNotificationManager(this,
@@ -138,6 +151,12 @@ public class BackgroundPlayerService extends IntentService implements
 		stopSelf();
 	}
 
+	private void handleNotificationClicked() {
+		Intent intent = MediathekPlayerActivity.getStartIntent(BackgroundPlayerService.this, show, player.getMillis());
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
+	}
+
 	@Override
 	public String getCurrentContentTitle(com.google.android.exoplayer2.Player player) {
 		return show.getTitle();
@@ -145,10 +164,9 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public PendingIntent createCurrentContentIntent(com.google.android.exoplayer2.Player player) {
-		// TODO: pass current video time
-		Intent intent = MediathekPlayerActivity.getStartIntent(BackgroundPlayerService.this, show);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		return PendingIntent.getActivity(BackgroundPlayerService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		// a notification click will bring us back to this service
+		Intent intent = BackgroundPlayerService.getNotificationClickedIntent(this);
+		return PendingIntent.getService(BackgroundPlayerService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override

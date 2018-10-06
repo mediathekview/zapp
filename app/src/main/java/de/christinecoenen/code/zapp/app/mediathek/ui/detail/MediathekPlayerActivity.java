@@ -39,12 +39,14 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	VideoBufferingHandler.IVideoBufferingListener {
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
+	private static final String EXTRA_MILLIS = "de.christinecoenen.code.zapp.EXTRA_MILLIS";
 	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
 
-	public static Intent getStartIntent(Context context, MediathekShow show) {
+	public static Intent getStartIntent(Context context, MediathekShow show, long millis) {
 		Intent intent = new Intent(context, MediathekPlayerActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.putExtra(EXTRA_SHOW, show);
+		intent.putExtra(EXTRA_MILLIS, millis);
 		return intent;
 	}
 
@@ -96,9 +98,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			getSupportActionBar().setSubtitle(show.getTitle());
 		}
 
-
+		long millis = getIntent().getLongExtra(EXTRA_MILLIS, 0);
 		player = new Player(this, show, this, this);
 		player.setView(videoView);
+		player.setMillis(millis);
 		updateSubtitleButtons();
 
 		videoView.setControllerVisibilityListener(this);
@@ -272,7 +275,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	@OnClick(R.id.btn_background)
 	public void onBackgroundClick() {
-		BackgroundPlayerService.startActionStart(this, show);
+		BackgroundPlayerService.startActionStart(this, show, player.getMillis());
 		finish();
 	}
 

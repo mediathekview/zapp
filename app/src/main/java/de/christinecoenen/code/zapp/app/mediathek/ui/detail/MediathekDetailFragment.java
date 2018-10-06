@@ -110,7 +110,7 @@ public class MediathekDetailFragment extends Fragment {
 
 	@OnClick(R.id.btn_play)
 	protected void onPlayClick() {
-		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
+		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show, 0));
 	}
 
 	@OnClick(R.id.btn_website)
