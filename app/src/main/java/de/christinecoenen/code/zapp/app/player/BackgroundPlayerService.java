@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 
-// TODO: move to app wide controller package
 public class BackgroundPlayerService extends IntentService implements
 	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener {
 
@@ -29,8 +28,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 	private Player player;
 	private PlayerNotificationManager playerNotificationManager;
-	private PowerManager.WakeLock wakeLock;
-	private WifiManager.WifiLock wifiLock;
+	private PlayerWakeLocks playerWakeLocks;
 	private Intent foregroundActivityIntent;
 
 	public BackgroundPlayerService() {
@@ -61,21 +59,10 @@ public class BackgroundPlayerService extends IntentService implements
 		super.onCreate();
 
 		player = new Player(this);
+		playerWakeLocks = new PlayerWakeLocks(this, "Zapp::BackgroundPlayerService");
 
-		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		if (powerManager != null) {
-			wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Zapp::BackgroundPlayerService");
-		}
-
-		WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-		if (wifiManager != null) {
-			wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "Zapp::BackgroundPlayerService");
-		}
-
-		// TODO: move lock handling in helper class
 		// TODO: is it save to hold locks here?
-		wakeLock.acquire(TimeUnit.MINUTES.toMillis(120));
-		wifiLock.acquire();
+		playerWakeLocks.acquire(TimeUnit.MINUTES.toMillis(120));
 	}
 
 	@Nullable
@@ -104,13 +91,7 @@ public class BackgroundPlayerService extends IntentService implements
 			player = null;
 		}
 
-		if (wakeLock.isHeld()) {
-			wakeLock.release();
-		}
-		if (wifiLock.isHeld()) {
-			wifiLock.release();
-		}
-
+		playerWakeLocks.destroy();
 		super.onDestroy();
 	}
 
