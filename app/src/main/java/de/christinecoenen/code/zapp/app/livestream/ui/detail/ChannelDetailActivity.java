@@ -1,18 +1,18 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,25 +20,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
-
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
+import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
+import de.christinecoenen.code.zapp.app.player.Player;
+import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
@@ -47,15 +39,14 @@ import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
-import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
-import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.ColorHelper;
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-public class ChannelDetailActivity extends FullscreenActivity implements
-	VideoErrorHandler.IVideoErrorListener, VideoBufferingHandler.IVideoBufferingListener {
+public class ChannelDetailActivity extends FullscreenActivity {
 
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
@@ -86,16 +77,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	protected int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
-	private final VideoErrorHandler videoErrorHandler = new VideoErrorHandler(this);
-	private final VideoBufferingHandler bufferingHandler = new VideoBufferingHandler(this);
 	private final NetworkConnectionHelper networkConnectionHelper = new NetworkConnectionHelper(this);
-	private SimpleExoPlayer player;
-	private DataSource.Factory dataSourceFactory;
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
-	private boolean isPlaying = false;
 	private Window window;
 	private IChannelList channelList;
+	private Player player;
+	private final CompositeDisposable disposable = new CompositeDisposable();
 
 	private final Runnable playRunnable = this::play;
 
@@ -130,6 +118,28 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 			}
 		};
 
+	private final ServiceConnection backgroundPlayerServiceConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder service) {
+			BackgroundPlayerService.Binder binder = (BackgroundPlayerService.Binder) service;
+			player = binder.getPlayer();
+			player.setView(videoView);
+
+			Disposable bufferingDisposable = player.isBuffering()
+				.subscribe(ChannelDetailActivity.this::onBufferingChanged, Timber::e);
+			Disposable errorDisposable = player.getErrorResourceId()
+				.subscribe(ChannelDetailActivity.this::onVideoError, Timber::e);
+			disposable.addAll(bufferingDisposable, errorDisposable);
+
+			binder.movePlaybackToForeground();
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			player.pause();
+		}
+	};
+
 	public static Intent getStartIntent(Context context, String channelId) {
 		Intent intent = new Intent(context, ChannelDetailActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
@@ -150,25 +160,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 
 		channelList = new SortableJsonChannelList(this);
 
-		// player
-		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-		TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-		dataSourceFactory = new DefaultDataSourceFactory(this,
-			Util.getUserAgent(this, getString(R.string.app_name)), bandwidthMeter);
-		player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-		player.addListener(bufferingHandler);
-		player.addListener(videoErrorHandler);
-
-		videoView.setPlayer(player);
-		videoView.setTouchOverlay(viewPager);
-
 		// pager
 		channelDetailAdapter = new ChannelDetailAdapter(
 			getSupportFragmentManager(), channelList, onItemChangedListener);
 		viewPager.setAdapter(channelDetailAdapter);
 		viewPager.addOnPageChangeListener(onPageChangeListener);
 		viewPager.setOnClickListener(view -> mContentView.performClick());
+		videoView.setTouchOverlay(viewPager);
 
 		parseIntent(getIntent());
 
@@ -179,7 +177,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		// called when coming back from picture in picture mode
-		isPlaying = false;
 		parseIntent(intent);
 	}
 
@@ -226,11 +223,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
-		player.removeListener(bufferingHandler);
-		player.removeListener(videoErrorHandler);
-		player.release();
-
 		networkConnectionHelper.endListenForNetworkChanges();
 	}
 
@@ -282,9 +274,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		return handled || super.onKeyUp(keyCode, event);
 	}
 
-	@Override
-	public void onVideoError(int messageResourceId) {
-		player.stop();
+	private void onVideoError(Integer messageResourceId) {
+		if (messageResourceId == null) {
+			return;
+		}
+
 		progressView.setVisibility(View.GONE);
 
 		if (channelDetailAdapter.getCurrentFragment() != null) {
@@ -292,29 +286,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		}
 	}
 
-	@Override
-	public void onVideoErrorInvalid() {
-
-	}
-
-	@Override
-	public void onBufferingStarted() {
-		if (player.getBufferedPercentage() == 0) {
+	private void onBufferingChanged(boolean isBuffering) {
+		if (isBuffering) {
 			progressView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	@Override
-	public void onBufferingEnded() {
-		if (player.getBufferedPercentage() > 0 && progressView.getVisibility() == View.VISIBLE) {
-			progressView.setVisibility(View.GONE);
+		} else {
+			progressView.setVisibility(View.INVISIBLE);
 			channelDetailAdapter.getCurrentFragment().onVideoStart();
 		}
-	}
-
-	@Override
-	public void onVideoEnded() {
-
 	}
 
 	@Override
@@ -329,12 +307,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		return false;
 	}
 
+	// TODO: reimplement network connection changer
 	private void onNetworkConnectionChanged() {
-		if (networkConnectionHelper.isVideoPlaybackAllowed()) {
+		/*if (networkConnectionHelper.isVideoPlaybackAllowed()) {
 			play();
 		} else {
 			onVideoError(R.string.error_stream_not_in_wifi);
-		}
+		}*/
 	}
 
 	private void parseIntent(Intent intent) {
@@ -349,19 +328,22 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 	}
 
 	private void pauseActivity() {
-		programInfoView.pause();
-		player.stop();
+		disposable.clear();
+		unbindService(backgroundPlayerServiceConnection);
 	}
 
 	private void resumeActivity() {
 		programInfoView.resume();
-		if (isPlaying) {
-			play();
-		}
+
+		Intent intent = new Intent(this, BackgroundPlayerService.class);
+		bindService(intent, backgroundPlayerServiceConnection, Context.BIND_AUTO_CREATE);
 	}
 
 	private void playDelayed() {
-		player.setPlayWhenReady(false);
+		if (player != null) {
+			player.pause();
+		}
+
 		progressView.setVisibility(View.VISIBLE);
 		playHandler.removeCallbacks(playRunnable);
 		playHandler.postDelayed(playRunnable, playStreamDelayMillis);
@@ -378,14 +360,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements
 		}
 
 		Timber.d("play: %s", currentChannel.getName());
-		isPlaying = true;
-		progressView.setVisibility(View.VISIBLE);
-
-		Uri videoUri = Uri.parse(currentChannel.getStreamUrl());
-		MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(videoUri);
-		videoSource.addEventListener(playHandler, videoErrorHandler);
-		player.prepare(videoSource);
-		player.setPlayWhenReady(true);
+		player.load(VideoInfo.fromChannel(currentChannel));
+		player.resume();
 	}
 
 	private boolean prevChannel() {

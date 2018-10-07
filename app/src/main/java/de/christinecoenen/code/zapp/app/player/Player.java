@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -19,6 +20,8 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import org.jetbrains.annotations.NotNull;
 
 import de.christinecoenen.code.zapp.R;
 import io.reactivex.Observable;
@@ -29,7 +32,7 @@ public class Player {
 	private final DefaultDataSourceFactory dataSourceFactory;
 	private final PlayerEventHandler playerEventHandler;
 	private VideoInfo currentVideoInfo;
-	private MediaSessionCompat mediaSession;
+	private final MediaSessionCompat mediaSession;
 
 	// TODO: implement subtitle support
 	// TODO: implement network connection checker
@@ -69,9 +72,8 @@ public class Player {
 
 		currentVideoInfo = videoInfo;
 		Uri videoUri = Uri.parse(videoInfo.getUrl());
-		MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-			.createMediaSource(videoUri);
-		player.stop();
+		MediaSource videoSource = buildMediaSource(videoUri);
+		player.stop(true);
 		player.prepare(videoSource);
 	}
 
@@ -126,5 +128,22 @@ public class Player {
 	void destroy() {
 		player.release();
 		mediaSession.release();
+	}
+
+	@NotNull
+	private MediaSource buildMediaSource(Uri uri) {
+		int type = Util.inferContentType(uri);
+		switch (type) {
+			case C.TYPE_HLS:
+				return new HlsMediaSource.Factory(dataSourceFactory)
+					.createMediaSource(uri);
+			case C.TYPE_OTHER:
+				return new ExtractorMediaSource.Factory(dataSourceFactory)
+					.createMediaSource(uri);
+			case C.TYPE_DASH:
+			case C.TYPE_SS:
+			default:
+				throw new IllegalStateException("Unsupported type: " + type);
+		}
 	}
 }

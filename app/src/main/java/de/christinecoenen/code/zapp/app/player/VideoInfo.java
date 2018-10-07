@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class VideoInfo {
 
@@ -13,7 +14,15 @@ public class VideoInfo {
 		videoInfo.url = show.getVideoUrl();
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
-		return  videoInfo;
+		return videoInfo;
+	}
+
+	public static VideoInfo fromChannel(ChannelModel channel) {
+		VideoInfo videoInfo = new VideoInfo();
+		videoInfo.url = channel.getStreamUrl();
+		videoInfo.title = channel.getName();
+		videoInfo.subtitle = channel.getSubtitle();
+		return videoInfo;
 	}
 
 	@NotNull

@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.player;
 
+import android.view.Surface;
+
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
@@ -8,6 +10,7 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
 import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
@@ -17,8 +20,8 @@ import timber.log.Timber;
  */
 class PlayerEventHandler implements AnalyticsListener {
 
-	private BehaviorSubject<Boolean> isBufferingSource = BehaviorSubject.create();
-	private BehaviorSubject<Integer> errorResourceIdSource = BehaviorSubject.create();
+	private final BehaviorSubject<Boolean> isBufferingSource = BehaviorSubject.create();
+	private final BehaviorSubject<Integer> errorResourceIdSource = BehaviorSubject.create();
 
 	BehaviorSubject<Boolean> isBuffering() {
 		return isBufferingSource;
@@ -29,8 +32,17 @@ class PlayerEventHandler implements AnalyticsListener {
 	}
 
 	@Override
+	public void onRenderedFirstFrame(EventTime eventTime, @Nullable Surface surface) {
+		Timber.d("onRenderedFirstFrame");
+		// this is called when the video is really fully loaded
+		// TODO: when does the loading begin?
+	}
+
+	@Override
 	public void onPlayerStateChanged(EventTime eventTime, boolean playWhenReady, int playbackState) {
-		boolean isBuffering = playWhenReady && playbackState == Player.STATE_BUFFERING;
+		// TODO: this reports videos as not buffering when it is
+		boolean isBuffering = playbackState == Player.STATE_BUFFERING;
+		Timber.d("isBuffering: %s", isBuffering);
 		isBufferingSource.onNext(isBuffering);
 	}
 
