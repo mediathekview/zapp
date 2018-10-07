@@ -23,12 +23,10 @@ public class Player {
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
-	private MediaSource videoSource;
-	private String currentUrl;
+	private VideoInfo currentVideoInfo;
 
 	// TODO: implement subtitle support
 	// TODO: implement network connection checker
-	// TODO: set title / subtitle for background playback notification
 	public Player(Context context) {
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		dataSourceFactory = new DefaultDataSourceFactory(context,
@@ -43,14 +41,14 @@ public class Player {
 		videoView.setPlayer(player);
 	}
 
-	public void load(String url) {
-		if (url.equals(currentUrl)) {
+	public void load(VideoInfo videoInfo) {
+		if (videoInfo.equals(currentVideoInfo)) {
 			return;
 		}
 
-		currentUrl = url;
-		Uri videoUri = Uri.parse(currentUrl);
-		videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+		currentVideoInfo = videoInfo;
+		Uri videoUri = Uri.parse(videoInfo.getUrl());
+		MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
 			.createMediaSource(videoUri);
 		player.stop();
 		player.prepare(videoSource);
@@ -88,7 +86,11 @@ public class Player {
 		return player;
 	}
 
-	public void destroy() {
+	VideoInfo getCurrentVideoInfo() {
+		return currentVideoInfo;
+	}
+
+	void destroy() {
 		player.release();
 	}
 }

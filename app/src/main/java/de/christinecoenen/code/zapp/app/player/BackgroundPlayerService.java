@@ -72,6 +72,7 @@ public class BackgroundPlayerService extends IntentService implements
 			wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "Zapp::BackgroundPlayerService");
 		}
 
+		// TODO: move lock handling in helper class
 		// TODO: is it save to hold locks here?
 		wakeLock.acquire(TimeUnit.MINUTES.toMillis(120));
 		wifiLock.acquire();
@@ -174,8 +175,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public String getCurrentContentTitle(com.google.android.exoplayer2.Player player) {
-		// TODO: get title of current player show
-		return "Title";
+		return this.player.getCurrentVideoInfo().getTitle();
 	}
 
 	@Override
@@ -187,8 +187,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public String getCurrentContentText(com.google.android.exoplayer2.Player player) {
-		// TODO: get topic of current player show
-		return "Topic";
+		return this.player.getCurrentVideoInfo().getSubtitle();
 	}
 
 	@Override

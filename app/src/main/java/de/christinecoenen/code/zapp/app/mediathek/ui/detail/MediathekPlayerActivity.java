@@ -29,6 +29,7 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
@@ -85,7 +86,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			player.setView(videoView);
 
 			// TODO: restore player position
-			player.load(show.getVideoUrl());
+			player.load(VideoInfo.fromShow(show));
 			player.resume();
 
 			binder.movePlaybackToForeground();
