@@ -93,6 +93,9 @@ dependencies {
 	// joda time
 	implementation 'joda-time:joda-time:2.10'
 
+	// rxjava
+	implementation "io.reactivex.rxjava2:rxjava:2.2.2"
+
 	// about libraries view
 	implementation('com.mikepenz:aboutlibraries:6.2.0@aar') {
 		transitive = true

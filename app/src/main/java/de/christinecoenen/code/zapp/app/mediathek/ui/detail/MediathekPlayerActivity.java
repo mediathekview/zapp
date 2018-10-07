@@ -35,12 +35,13 @@ import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements
 	PlayerControlView.VisibilityListener,
-	VideoErrorHandler.IVideoErrorListener,
-	VideoBufferingHandler.IVideoBufferingListener {
+	VideoErrorHandler.IVideoErrorListener {
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
 	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
@@ -74,6 +75,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@BindView(R.id.progress)
 	protected ProgressBar loadingIndicator;
 
+	private final CompositeDisposable disposable = new CompositeDisposable();
 	private MediathekShow show;
 	private Player player;
 	private BackgroundPlayerService.Binder binder;
@@ -88,6 +90,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			// TODO: restore player position
 			player.load(VideoInfo.fromShow(show));
 			player.resume();
+
+			Disposable bufferingDisposable = player.isBuffering()
+				.subscribe(MediathekPlayerActivity.this::onBufferingChanged, Timber::e);
+			disposable.add(bufferingDisposable);
 
 			binder.movePlaybackToForeground();
 
@@ -250,7 +256,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		}
 	}
 
-	// TODO: get handler to work again
+	// TODO: get error handler to work again
 	@Override
 	public void onVideoError(int messageResourceId) {
 		showError(messageResourceId);
@@ -261,19 +267,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		hideError();
 	}
 
-	@Override
-	public void onBufferingStarted() {
-		loadingIndicator.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void onBufferingEnded() {
-		loadingIndicator.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	public void onVideoEnded() {
-
+	private void onBufferingChanged(boolean isBuffering) {
+		loadingIndicator.setVisibility(isBuffering ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	@OnClick(R.id.btn_caption_disable)
@@ -295,6 +290,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void pauseActivity() {
+		disposable.clear();
 		unbindService(backgroundPlayerServiceConnection);
 	}
 

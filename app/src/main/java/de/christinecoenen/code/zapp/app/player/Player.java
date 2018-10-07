@@ -21,11 +21,13 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
+import io.reactivex.Observable;
 
 public class Player {
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
+	private final PlayerEventHandler playerEventHandler;
 	private VideoInfo currentVideoInfo;
 	private MediaSessionCompat mediaSession;
 
@@ -51,6 +53,9 @@ public class Player {
 			.setContentType(C.CONTENT_TYPE_MOVIE)
 			.build();
 		player.setAudioAttributes(audioAttributes, true);
+
+		playerEventHandler = new PlayerEventHandler();
+		player.addAnalyticsListener(playerEventHandler);
 	}
 
 	public void setView(PlayerView videoView) {
@@ -98,6 +103,10 @@ public class Player {
 		return player.getCurrentPosition();
 	}
 
+	public Observable<Boolean> isBuffering() {
+		return playerEventHandler.isBuffering();
+	}
+
 	SimpleExoPlayer getExoPlayer() {
 		return player;
 	}
@@ -112,5 +121,6 @@ public class Player {
 
 	void destroy() {
 		player.release();
+		mediaSession.release();
 	}
 }
