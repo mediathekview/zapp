@@ -131,6 +131,8 @@ public class ChannelDetailActivity extends FullscreenActivity {
 				.subscribe(ChannelDetailActivity.this::onVideoError, Timber::e);
 			disposable.addAll(bufferingDisposable, errorDisposable);
 
+			onItemChangedListener.OnItemSelected(currentChannel);
+
 			binder.movePlaybackToForeground();
 		}
 
