@@ -80,7 +80,7 @@
 			android:label="@string/fragment_mediathek_title" />
 
 		<service
-			android:name=".app.mediathek.controller.BackgroundPlayerService"
+			android:name=".app.player.BackgroundPlayerService"
 			android:exported="false" />
 
 		<receiver android:name=".app.mediathek.controller.DownloadReceiver">

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller;
+package de.christinecoenen.code.zapp.app.player;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -27,7 +27,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 	private final Binder binder = new Binder();
 
-	private TestPlayer player;
+	private Player player;
 	private PlayerNotificationManager playerNotificationManager;
 	private PowerManager.WakeLock wakeLock;
 	private WifiManager.WifiLock wifiLock;
@@ -60,7 +60,7 @@ public class BackgroundPlayerService extends IntentService implements
 	public void onCreate() {
 		super.onCreate();
 
-		player = new TestPlayer(this);
+		player = new Player(this);
 
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
 		if (powerManager != null) {
@@ -211,7 +211,7 @@ public class BackgroundPlayerService extends IntentService implements
 		/**
 		 * @return Player instance that will live as long as this service is up and running.
 		 */
-		public TestPlayer getPlayer() {
+		public Player getPlayer() {
 			return player;
 		}
 

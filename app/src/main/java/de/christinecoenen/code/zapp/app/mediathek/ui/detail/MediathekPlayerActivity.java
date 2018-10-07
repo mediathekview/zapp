@@ -26,8 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.controller.BackgroundPlayerService;
-import de.christinecoenen.code.zapp.app.mediathek.controller.TestPlayer;
+import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
+import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
@@ -74,7 +74,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected ProgressBar loadingIndicator;
 
 	private MediathekShow show;
-	private TestPlayer player;
+	private Player player;
 	private BackgroundPlayerService.Binder binder;
 
 	private ServiceConnection backgroundPlayerServiceConnection = new ServiceConnection() {

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller;
+package de.christinecoenen.code.zapp.app.player;
 
 
 import android.content.Context;
@@ -19,18 +19,17 @@ import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
 
-public class TestPlayer {
+public class Player {
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
 	private MediaSource videoSource;
 	private String currentUrl;
 
-	// TODO: move to app wide controller package
 	// TODO: implement subtitle support
 	// TODO: implement network connection checker
 	// TODO: set title / subtitle for background playback notification
-	public TestPlayer(Context context) {
+	public Player(Context context) {
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 		dataSourceFactory = new DefaultDataSourceFactory(context,
 			Util.getUserAgent(context, context.getString(R.string.app_name)), bandwidthMeter);

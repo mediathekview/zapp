@@ -30,6 +30,7 @@ import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
 import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 
+// TODO: delete
 public class Player {
 
 	private final SimpleExoPlayer player;
