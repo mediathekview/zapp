@@ -2,12 +2,13 @@ package de.christinecoenen.code.zapp.app.player;
 
 
 import android.content.Context;
-import android.media.session.MediaSession;
 import android.net.Uri;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -16,7 +17,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -32,18 +32,25 @@ public class Player {
 	// TODO: implement subtitle support
 	// TODO: implement network connection checker
 	public Player(Context context) {
-		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-		dataSourceFactory = new DefaultDataSourceFactory(context,
-			Util.getUserAgent(context, context.getString(R.string.app_name)), bandwidthMeter);
-		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+		String userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
+		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
+		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
 		DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
 		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 
+		// media session setup
 		mediaSession = new MediaSessionCompat(context, context.getPackageName());
 		MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
-		mediaSessionConnector.setPlayer(player, null, null);
+		mediaSessionConnector.setPlayer(player, null);
 		mediaSession.setActive(true);
+
+		// audio focus setup
+		AudioAttributes audioAttributes = new AudioAttributes.Builder()
+			.setUsage(C.USAGE_MEDIA)
+			.setContentType(C.CONTENT_TYPE_MOVIE)
+			.build();
+		player.setAudioAttributes(audioAttributes, true);
 	}
 
 	public void setView(PlayerView videoView) {
@@ -99,7 +106,7 @@ public class Player {
 		return currentVideoInfo;
 	}
 
-	public MediaSessionCompat getMediaSession() {
+	MediaSessionCompat getMediaSession() {
 		return mediaSession;
 	}
 
