@@ -107,6 +107,10 @@ public class Player {
 		return playerEventHandler.isBuffering();
 	}
 
+	public Observable<Integer> getErrorResourceId() {
+		return playerEventHandler.getErrorResourceId();
+	}
+
 	SimpleExoPlayer getExoPlayer() {
 		return player;
 	}

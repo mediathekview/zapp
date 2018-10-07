@@ -40,8 +40,7 @@ import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements
-	PlayerControlView.VisibilityListener,
-	VideoErrorHandler.IVideoErrorListener {
+	PlayerControlView.VisibilityListener {
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
 	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
@@ -93,7 +92,9 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 			Disposable bufferingDisposable = player.isBuffering()
 				.subscribe(MediathekPlayerActivity.this::onBufferingChanged, Timber::e);
-			disposable.add(bufferingDisposable);
+			Disposable errorDisposable = player.getErrorResourceId()
+				.subscribe(MediathekPlayerActivity.this::onVideoError, Timber::e);
+			disposable.addAll(bufferingDisposable, errorDisposable);
 
 			binder.movePlaybackToForeground();
 
@@ -256,15 +257,12 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		}
 	}
 
-	// TODO: get error handler to work again
-	@Override
-	public void onVideoError(int messageResourceId) {
-		showError(messageResourceId);
-	}
-
-	@Override
-	public void onVideoErrorInvalid() {
-		hideError();
+	private void onVideoError(Integer messageResourceId) {
+		if (messageResourceId == null) {
+			hideError();
+		} else {
+			showError(messageResourceId);
+		}
 	}
 
 	private void onBufferingChanged(boolean isBuffering) {
