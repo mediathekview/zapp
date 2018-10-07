@@ -6,9 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.wifi.WifiManager;
 import android.os.IBinder;
-import android.os.PowerManager;
 
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
@@ -147,6 +145,7 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager.setNotificationListener(this);
 		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
 		playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimaryDark));
+		playerNotificationManager.setMediaSessionToken(player.getMediaSession().getSessionToken());
 	}
 
 	private void handleNotificationClicked() {

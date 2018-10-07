@@ -2,10 +2,13 @@ package de.christinecoenen.code.zapp.app.player;
 
 
 import android.content.Context;
+import android.media.session.MediaSession;
 import android.net.Uri;
+import android.support.v4.media.session.MediaSessionCompat;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -24,6 +27,7 @@ public class Player {
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
 	private VideoInfo currentVideoInfo;
+	private MediaSessionCompat mediaSession;
 
 	// TODO: implement subtitle support
 	// TODO: implement network connection checker
@@ -35,6 +39,11 @@ public class Player {
 		DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
 		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+
+		mediaSession = new MediaSessionCompat(context, context.getPackageName());
+		MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
+		mediaSessionConnector.setPlayer(player, null, null);
+		mediaSession.setActive(true);
 	}
 
 	public void setView(PlayerView videoView) {
@@ -88,6 +97,10 @@ public class Player {
 
 	VideoInfo getCurrentVideoInfo() {
 		return currentVideoInfo;
+	}
+
+	public MediaSessionCompat getMediaSession() {
+		return mediaSession;
 	}
 
 	void destroy() {
