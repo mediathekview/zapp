@@ -26,15 +26,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
-import de.christinecoenen.code.zapp.utils.video.VideoBufferingHandler;
-import de.christinecoenen.code.zapp.utils.video.VideoErrorHandler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -162,6 +160,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			resumeActivity();
 		}
 
+		// TODO: move user setting into helper class
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean lockScreen = preferences.getBoolean("pref_detail_landscape", true);
 		if (lockScreen) {
@@ -271,13 +270,13 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	@OnClick(R.id.btn_caption_disable)
 	public void onDisableCaptionsClick() {
-		//player.disableSubtitles();
+		player.disableSubtitles();
 		updateSubtitleButtons();
 	}
 
 	@OnClick(R.id.btn_caption_enable)
 	public void onEnableCaptionsClick() {
-		//player.enableSubtitles();
+		player.enableSubtitles();
 		updateSubtitleButtons();
 	}
 
@@ -300,8 +299,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void updateSubtitleButtons() {
-		//captionButtonEnable.setVisibility(player.hasSubtitles() && !player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
-		//captionButtonDisable.setVisibility(player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
+		captionButtonEnable.setVisibility(player.getCurrentVideoInfo().hasSubtitles() && !player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
+		captionButtonDisable.setVisibility(player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
 	}
 
 	private void showError(int messageResId) {

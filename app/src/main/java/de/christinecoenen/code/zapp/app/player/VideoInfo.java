@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.player;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ public class VideoInfo {
 		videoInfo.url = show.getVideoUrl();
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
+		videoInfo.subtitleUrl = show.getSubtitleUrl();
 		return videoInfo;
 	}
 
@@ -34,6 +36,9 @@ public class VideoInfo {
 	@NotNull
 	private String subtitle = "";
 
+	@Nullable
+	private String subtitleUrl;
+
 	@NotNull
 	public String getUrl() {
 		return url;
@@ -47,6 +52,15 @@ public class VideoInfo {
 	@NotNull
 	public String getSubtitle() {
 		return subtitle;
+	}
+
+	@Nullable
+	public String getSubtitleUrl() {
+		return subtitleUrl;
+	}
+
+	public boolean hasSubtitles() {
+		return subtitleUrl != null;
 	}
 
 	@Override
@@ -65,6 +79,7 @@ public class VideoInfo {
 			"url='" + url + '\'' +
 			", title='" + title + '\'' +
 			", subtitle='" + subtitle + '\'' +
+			", subtitleUrl='" + subtitleUrl + '\'' +
 			'}';
 	}
 }

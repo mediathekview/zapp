@@ -197,6 +197,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 			resumeActivity();
 		}
 
+		// TODO: move user setting into helper class
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean lockScreen = preferences.getBoolean("pref_detail_landscape", true);
 		if (lockScreen) {
