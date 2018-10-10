@@ -53,3 +53,7 @@
 }
 -dontwarn javax.annotation.**
 ## end about libraries
+
+## start exoplayer
+-dontwarn com.google.android.exoplayer2.**
+## end exopayer
