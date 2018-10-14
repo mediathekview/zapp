@@ -4,11 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +28,7 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
@@ -75,9 +74,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private final CompositeDisposable disposable = new CompositeDisposable();
 	private MediathekShow show;
 	private Player player;
+	private SettingsRepository settings;
 	private BackgroundPlayerService.Binder binder;
 
-	private ServiceConnection backgroundPlayerServiceConnection = new ServiceConnection() {
+	private final ServiceConnection backgroundPlayerServiceConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			binder = (BackgroundPlayerService.Binder) service;
@@ -128,6 +128,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			getSupportActionBar().setSubtitle(show.getTitle());
 		}
 
+		settings = new SettingsRepository(this);
+
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
 	}
@@ -160,10 +162,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			resumeActivity();
 		}
 
-		// TODO: move user setting into helper class
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean lockScreen = preferences.getBoolean("pref_detail_landscape", true);
-		if (lockScreen) {
+		if (settings.getLockVideosInLandcapeFormat()) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);

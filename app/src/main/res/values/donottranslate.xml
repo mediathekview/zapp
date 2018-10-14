@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="pref_key_detail_landscape">pref_detail_landscape</string>
+	<string name="pref_key_wifi_only">pref_wifi_only</string>
+	<string name="pref_key_shortcuts">pref_shortcuts</string>
+	<string name="pref_key_enable_subtitles">pref_enable_subtitles</string>
+
+</resources>

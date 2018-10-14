@@ -5,22 +5,24 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
 
 import java.lang.ref.WeakReference;
+
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 
 
 public class NetworkConnectionHelper {
 
 	private final NetworkReceiver networkReceiver = new NetworkReceiver();
 	private final WeakReference<Context> contextReference;
+	private final SettingsRepository settings;
 	private Listener listener;
 
 	public NetworkConnectionHelper(Context context) {
 		contextReference = new WeakReference<>(context);
+		settings = new SettingsRepository(context);
 	}
 
 	public void startListenForNetworkChanges(Listener listener) {
@@ -50,9 +52,7 @@ public class NetworkConnectionHelper {
 			return false;
 		}
 
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean wifiOnly = preferences.getBoolean("pref_wifi_only", true);
-		return !wifiOnly || isConnectedToWifi();
+		return !settings.getWifiOnly() || isConnectedToWifi();
 	}
 
 	private boolean isConnectedToWifi() {

@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +29,7 @@ import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
@@ -77,12 +76,13 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	protected int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
-	private final NetworkConnectionHelper networkConnectionHelper = new NetworkConnectionHelper(this);
+	private NetworkConnectionHelper networkConnectionHelper;
 	private ChannelDetailAdapter channelDetailAdapter;
 	private ChannelModel currentChannel;
 	private Window window;
 	private IChannelList channelList;
 	private Player player;
+	private SettingsRepository settings;
 	private final CompositeDisposable disposable = new CompositeDisposable();
 
 	private final Runnable playRunnable = this::play;
@@ -161,6 +161,8 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		}
 
 		channelList = new SortableJsonChannelList(this);
+		settings = new SettingsRepository(this);
+		networkConnectionHelper = new NetworkConnectionHelper(this);
 
 		// pager
 		channelDetailAdapter = new ChannelDetailAdapter(
@@ -197,10 +199,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 			resumeActivity();
 		}
 
-		// TODO: move user setting into helper class
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean lockScreen = preferences.getBoolean("pref_detail_landscape", true);
-		if (lockScreen) {
+		if (settings.getLockVideosInLandcapeFormat()) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);

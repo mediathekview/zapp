@@ -2,9 +2,7 @@ package de.christinecoenen.code.zapp.app.player;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import com.google.android.exoplayer2.C;
@@ -30,6 +28,7 @@ import com.google.android.exoplayer2.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import io.reactivex.Observable;
 import timber.log.Timber;
 
@@ -40,14 +39,17 @@ public class Player {
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
-	private DefaultTrackSelector trackSelector;
+	private final DefaultTrackSelector trackSelector;
 	private final PlayerEventHandler playerEventHandler;
-	private VideoInfo currentVideoInfo;
 	private final MediaSessionCompat mediaSession;
-	private SharedPreferences preferences;
+	private final SettingsRepository settings;
+
+	private VideoInfo currentVideoInfo;
 
 	// TODO: implement network connection checker
 	public Player(Context context) {
+		settings = new SettingsRepository(context);
+
 		String userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
 		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
@@ -72,10 +74,7 @@ public class Player {
 		player.addAnalyticsListener(playerEventHandler);
 
 		// enable subtitles
-		// TODO: move user setting into helper class
-		preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean showSubtitlesPref = preferences.getBoolean("pref_enable_subtitles", false);
-		enableSubtitles(showSubtitlesPref);
+		enableSubtitles(settings.getEnableSubtitles());
 	}
 
 	public void setView(PlayerView videoView) {
@@ -162,10 +161,7 @@ public class Player {
 	private void enableSubtitles(boolean enabled) {
 		String language = enabled ? SUBTITLE_LANGUAGE_ON : SUBTITLE_LANGUAGE_OFF;
 		trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredTextLanguage(language));
-
-		preferences.edit()
-			.putBoolean("pref_enable_subtitles", enabled)
-			.apply();
+		settings.setEnableSubtitles(enabled);
 	}
 
 	@NotNull
@@ -181,6 +177,7 @@ public class Player {
 			mediaSource = new MergingMediaSource(mediaSource, textMediaSource);
 		}
 
+		// TODO: this causes exo player error when seeking
 		Format emptyTextFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML, C.SELECTION_FLAG_DEFAULT, SUBTITLE_LANGUAGE_OFF);
 		MediaSource emptyTextMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory)
 			.createMediaSource(Uri.EMPTY, emptyTextFormat, 0);

@@ -55,5 +55,5 @@
 ## end about libraries
 
 ## start exoplayer
--dontwarn com.google.android.exoplayer2.**
+-dontwarn com.google.android.exoplayer2.upstream.DataSource
 ## end exopayer

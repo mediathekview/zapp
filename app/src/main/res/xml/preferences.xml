@@ -5,13 +5,13 @@
 
 		<CheckBoxPreference
 			android:defaultValue="true"
-			android:key="pref_detail_landscape"
+			android:key="@string/pref_key_detail_landscape"
 			android:summary="@string/pref_detail_landscape_summary"
 			android:title="@string/pref_detail_landscape_title" />
 
 		<CheckBoxPreference
 			android:defaultValue="true"
-			android:key="pref_wifi_only"
+			android:key="@string/pref_key_wifi_only"
 			android:summary="@string/pref_wifi_only_summary"
 			android:title="@string/pref_wifi_only_title" />
 
@@ -28,7 +28,7 @@
 			android:enabled="false"
 			android:entries="@array/empty"
 			android:entryValues="@array/empty"
-			android:key="pref_shortcuts"
+			android:key="@string/pref_key_shortcuts"
 			android:summary="@string/pref_shortcuts_summary_not_supported"
 			android:title="@string/pref_shortcuts_title" />
 	</PreferenceCategory>
