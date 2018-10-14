@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
+import io.reactivex.disposables.Disposable;
 
 public class BackgroundPlayerService extends IntentService implements
 	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener {
@@ -28,6 +30,7 @@ public class BackgroundPlayerService extends IntentService implements
 	private PlayerNotificationManager playerNotificationManager;
 	private PlayerWakeLocks playerWakeLocks;
 	private Intent foregroundActivityIntent;
+	private Disposable errorMessageDisposable;
 
 	public BackgroundPlayerService() {
 		super("BackgroundPlayerService");
@@ -57,6 +60,8 @@ public class BackgroundPlayerService extends IntentService implements
 		super.onCreate();
 
 		player = new Player(this);
+		errorMessageDisposable = player.getErrorResourceId().subscribe(this::onPlayerError);
+
 		playerWakeLocks = new PlayerWakeLocks(this, "Zapp::BackgroundPlayerService");
 
 		// TODO: is it save to hold locks here?
@@ -89,8 +94,16 @@ public class BackgroundPlayerService extends IntentService implements
 			player = null;
 		}
 
+		errorMessageDisposable.dispose();
 		playerWakeLocks.destroy();
+
 		super.onDestroy();
+	}
+
+	private void onPlayerError(int messageResourceId) {
+		movePlaybackToForeground();
+		// TODO: toast is not visible enough - use notification
+		Toast.makeText(this, messageResourceId, Toast.LENGTH_LONG).show();
 	}
 
 	private void handleIntent(Intent intent) {
