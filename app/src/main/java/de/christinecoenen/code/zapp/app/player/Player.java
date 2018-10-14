@@ -173,13 +173,15 @@ public class Player {
 		if (videoInfo.hasSubtitles()) {
 			Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML, C.SELECTION_FLAG_DEFAULT, SUBTITLE_LANGUAGE_ON);
 			MediaSource textMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory)
+				.setTreatLoadErrorsAsEndOfStream(true)
 				.createMediaSource(Uri.parse(videoInfo.getSubtitleUrl()), textFormat, C.TIME_UNSET);
 			mediaSource = new MergingMediaSource(mediaSource, textMediaSource);
 		}
 
-		// TODO: this causes exo player error when seeking
+		// empty subtitle source to switch to
 		Format emptyTextFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML, C.SELECTION_FLAG_DEFAULT, SUBTITLE_LANGUAGE_OFF);
 		MediaSource emptyTextMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory)
+			.setTreatLoadErrorsAsEndOfStream(true)
 			.createMediaSource(Uri.EMPTY, emptyTextFormat, 0);
 		mediaSource = new MergingMediaSource(mediaSource, emptyTextMediaSource);
 
