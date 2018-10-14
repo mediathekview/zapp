@@ -71,8 +71,8 @@ dependencies {
 
 	// butterknive:
 	// https://github.com/JakeWharton/butterknife/issues/1270
-	implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
+	implementation 'com.jakewharton:butterknife:9.0.0-rc1'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
 
 	// exo player
 	implementation 'com.google.android.exoplayer:exoplayer-core:2.9.0'
