@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.player;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import com.google.android.exoplayer2.C;
@@ -21,7 +22,10 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
@@ -29,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
 import timber.log.Timber;
 
@@ -43,19 +48,23 @@ public class Player {
 	private final PlayerEventHandler playerEventHandler;
 	private final MediaSessionCompat mediaSession;
 	private final SettingsRepository settings;
+	private final NetworkConnectionHelper networkConnectionHelper;
+	private final Handler playerHandler;
 
 	private VideoInfo currentVideoInfo;
 
-	// TODO: implement network connection checker
 	public Player(Context context) {
 		settings = new SettingsRepository(context);
+		networkConnectionHelper = new NetworkConnectionHelper(context);
 
 		String userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
-		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
+		TransferListener transferListener = new OnlyWifiTransferListener();
+		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, transferListener);
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
 		trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
 		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+		playerHandler = new Handler(player.getApplicationLooper());
 
 		// media session setup
 		mediaSession = new MediaSessionCompat(context, context.getPackageName());
@@ -71,10 +80,12 @@ public class Player {
 		player.setAudioAttributes(audioAttributes, true);
 
 		playerEventHandler = new PlayerEventHandler();
-		player.addAnalyticsListener(playerEventHandler);
 
 		// enable subtitles
 		enableSubtitles(settings.getEnableSubtitles());
+
+		// set listeners
+		networkConnectionHelper.startListenForNetworkChanges(this::stopIfVideoPlaybackNotAllowed);
 	}
 
 	public void setView(PlayerView videoView) {
@@ -89,6 +100,8 @@ public class Player {
 		currentVideoInfo = videoInfo;
 		MediaSource videoSource = getMediaSource(videoInfo);
 		player.stop(true);
+
+		player.addAnalyticsListener(playerEventHandler);
 		player.prepare(videoSource);
 	}
 
@@ -154,6 +167,8 @@ public class Player {
 	}
 
 	void destroy() {
+		networkConnectionHelper.endListenForNetworkChanges();
+		player.removeAnalyticsListener(playerEventHandler);
 		player.release();
 		mediaSession.release();
 	}
@@ -202,6 +217,33 @@ public class Player {
 			case C.TYPE_SS:
 			default:
 				throw new IllegalStateException("Unsupported type: " + type);
+		}
+	}
+
+	private void stopIfVideoPlaybackNotAllowed() {
+		if (!networkConnectionHelper.isVideoPlaybackAllowed()) {
+			playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
+			player.removeAnalyticsListener(playerEventHandler);
+			player.stop();
+		}
+	}
+
+	private class OnlyWifiTransferListener implements TransferListener {
+		@Override
+		public void onTransferInitializing(DataSource source, DataSpec dataSpec, boolean isNetwork) {
+			playerHandler.post(Player.this::stopIfVideoPlaybackNotAllowed);
+		}
+
+		@Override
+		public void onTransferStart(DataSource source, DataSpec dataSpec, boolean isNetwork) {
+		}
+
+		@Override
+		public void onBytesTransferred(DataSource source, DataSpec dataSpec, boolean isNetwork, int bytesTransferred) {
+		}
+
+		@Override
+		public void onTransferEnd(DataSource source, DataSpec dataSpec, boolean isNetwork) {
 		}
 	}
 }
