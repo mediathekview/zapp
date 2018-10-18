@@ -317,9 +317,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 
 	private void resumeActivity() {
 		programInfoView.resume();
-
-		Intent intent = new Intent(this, BackgroundPlayerService.class);
-		bindService(intent, backgroundPlayerServiceConnection, Context.BIND_AUTO_CREATE);
+		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection, getIntent());
 	}
 
 	private void playDelayed() {

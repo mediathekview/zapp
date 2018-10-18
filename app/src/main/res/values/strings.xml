@@ -49,6 +49,8 @@
 	<string name="error_mediathek_no_download_manager">Fehler: Download-Manager nicht verfügbar.</string>
 	<string name="error_mediathek_invalid_url">Fehler: Download-URL ist invalide.</string>
 
+	<string name="error_prefixed_message">Fehler: %s</string>
+
 
 	<!-- menus & buttons -->
 	<string name="action_cancel">Abbrechen</string>

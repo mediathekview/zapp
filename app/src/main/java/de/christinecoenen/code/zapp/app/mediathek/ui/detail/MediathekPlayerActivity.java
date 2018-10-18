@@ -281,7 +281,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	@OnClick(R.id.btn_background)
 	public void onBackgroundClick() {
-		binder.movePlaybackToBackground(getIntent());
+		binder.movePlaybackToBackground();
 		finish();
 	}
 
@@ -292,9 +292,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private void resumeActivity() {
 		hideError();
-
-		Intent intent = new Intent(this, BackgroundPlayerService.class);
-		bindService(intent, backgroundPlayerServiceConnection, Context.BIND_AUTO_CREATE);
+		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection, getIntent());
 	}
 
 	private void updateSubtitleButtons() {
