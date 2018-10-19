@@ -369,9 +369,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		toolbar.setBackgroundColor(color);
 
 		int colorDarker = ColorHelper.darker(color, 0.075f);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			window.setStatusBarColor(colorDarker);
-		}
+		window.setStatusBarColor(colorDarker);
 
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
 		mControlsView.setBackgroundColor(colorAlpha);

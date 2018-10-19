@@ -27,13 +27,11 @@ public class ShortcutPreference extends MultiSelectListPreference implements Pre
 	private Context context;
 	private IChannelList channelList;
 
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	public ShortcutPreference(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(context);
