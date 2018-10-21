@@ -22,6 +22,7 @@ class PlayerEventHandler implements AnalyticsListener {
 
 	private final BehaviorSubject<Boolean> isBufferingSource = BehaviorSubject.create();
 	private final BehaviorSubject<Integer> errorResourceIdSource = BehaviorSubject.create();
+	private final BehaviorSubject<Boolean> shouldHoldWakelockSource = BehaviorSubject.create();
 
 	BehaviorSubject<Boolean> isBuffering() {
 		return isBufferingSource;
@@ -29,6 +30,14 @@ class PlayerEventHandler implements AnalyticsListener {
 
 	BehaviorSubject<Integer> getErrorResourceId() {
 		return errorResourceIdSource;
+	}
+
+	/**
+	 * @return emits true when the player is playing or buffering and false
+	 * if it is idle, paused or stopped
+	 */
+	BehaviorSubject<Boolean> getShouldHoldWakelock() {
+		return shouldHoldWakelockSource;
 	}
 
 	@Override
@@ -44,6 +53,10 @@ class PlayerEventHandler implements AnalyticsListener {
 		boolean isBuffering = playbackState == Player.STATE_BUFFERING;
 		Timber.d("isBuffering: %s", isBuffering);
 		isBufferingSource.onNext(isBuffering);
+
+		boolean shouldHoldWakelock = playWhenReady &&
+			(playbackState == Player.STATE_BUFFERING || playbackState == Player.STATE_READY);
+		shouldHoldWakelockSource.onNext(shouldHoldWakelock);
 	}
 
 	@Override

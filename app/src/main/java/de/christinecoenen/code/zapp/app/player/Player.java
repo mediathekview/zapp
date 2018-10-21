@@ -35,6 +35,8 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class Player {
@@ -50,6 +52,8 @@ public class Player {
 	private final SettingsRepository settings;
 	private final NetworkConnectionHelper networkConnectionHelper;
 	private final Handler playerHandler;
+	private final PlayerWakeLocks playerWakeLocks;
+	private final CompositeDisposable disposables = new CompositeDisposable();
 
 	private VideoInfo currentVideoInfo;
 
@@ -83,6 +87,14 @@ public class Player {
 
 		// enable subtitles
 		enableSubtitles(settings.getEnableSubtitles());
+
+		// wakelocks
+		playerWakeLocks = new PlayerWakeLocks(context, "Zapp::Player");
+		Disposable wakelockDisposable = playerEventHandler
+			.getShouldHoldWakelock()
+			.distinctUntilChanged()
+			.subscribe(this::shouldHoldWakelockChanged);
+		disposables.add(wakelockDisposable);
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(this::stopIfVideoPlaybackNotAllowed);
@@ -142,7 +154,7 @@ public class Player {
 	}
 
 	public Observable<Boolean> isBuffering() {
-		return playerEventHandler.isBuffering();
+		return playerEventHandler.isBuffering().distinctUntilChanged();
 	}
 
 	public boolean isShowingSubtitles() {
@@ -151,7 +163,7 @@ public class Player {
 	}
 
 	public Observable<Integer> getErrorResourceId() {
-		return playerEventHandler.getErrorResourceId();
+		return playerEventHandler.getErrorResourceId().distinctUntilChanged();
 	}
 
 	public VideoInfo getCurrentVideoInfo() {
@@ -167,6 +179,8 @@ public class Player {
 	}
 
 	void destroy() {
+		playerWakeLocks.destroy();
+		disposables.clear();
 		networkConnectionHelper.endListenForNetworkChanges();
 		player.removeAnalyticsListener(playerEventHandler);
 		player.release();
@@ -225,6 +239,14 @@ public class Player {
 			playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
 			player.removeAnalyticsListener(playerEventHandler);
 			player.stop();
+		}
+	}
+
+	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {
+		if (shouldHoldWakelock) {
+			playerWakeLocks.acquire(PlayerWakeLocks.MAX_WAKELOCK_DURATION);
+		} else {
+			playerWakeLocks.release();
 		}
 	}
 

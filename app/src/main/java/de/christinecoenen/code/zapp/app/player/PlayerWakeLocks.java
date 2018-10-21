@@ -5,8 +5,11 @@ import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 class PlayerWakeLocks {
+
+	static final long MAX_WAKELOCK_DURATION = TimeUnit.MINUTES.toMillis(120);
 
 	private PowerManager.WakeLock wakeLock;
 	private WifiManager.WifiLock wifiLock;
@@ -30,7 +33,7 @@ class PlayerWakeLocks {
 		wifiLock = null;
 	}
 
-	private void release() {
+	void release() {
 		if (wakeLock.isHeld()) {
 			wakeLock.release();
 		}

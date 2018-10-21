@@ -13,7 +13,6 @@ import android.os.IBinder;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -32,7 +31,6 @@ public class BackgroundPlayerService extends IntentService implements
 
 	private Player player;
 	private PlayerNotificationManager playerNotificationManager;
-	private PlayerWakeLocks playerWakeLocks;
 	private Intent foregroundActivityIntent;
 	private Disposable errorMessageDisposable;
 	private boolean isPlaybackInBackground = false;
@@ -81,11 +79,6 @@ public class BackgroundPlayerService extends IntentService implements
 
 		player = new Player(this);
 		errorMessageDisposable = player.getErrorResourceId().subscribe(this::onPlayerError);
-
-		playerWakeLocks = new PlayerWakeLocks(this, "Zapp::BackgroundPlayerService");
-
-		// TODO: is it save to hold locks here?
-		playerWakeLocks.acquire(TimeUnit.MINUTES.toMillis(120));
 	}
 
 	@Nullable
@@ -116,7 +109,6 @@ public class BackgroundPlayerService extends IntentService implements
 		}
 
 		errorMessageDisposable.dispose();
-		playerWakeLocks.destroy();
 
 		super.onDestroy();
 	}
