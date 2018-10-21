@@ -49,6 +49,8 @@
 	<string name="error_mediathek_no_download_manager">Error: No download manager available. </string>
 	<string name="error_mediathek_invalid_url">Error: Download url is invalid.</string>
 
+	<string name="error_prefixed_message">Error: %s</string>
+
 
 	<!-- menus & buttons -->
 	<string name="action_cancel">Cancel</string>
@@ -56,6 +58,7 @@
 	<string name="action_continue">Continue</string>
 	<string name="action_enable_subtitles">Activate subtitle</string>
 	<string name="action_disable_subtitles">Deactivate subtitle</string>
+	<string name="action_play_in_background">Play in background</string>
 
 	<string name="search_query_hint_mediathek">Search media center…</string>
 
@@ -93,4 +96,7 @@
 	<string name="pref_shortcuts_summary_not_supported">Supported for Android 7.1 and up</string>
 	<string name="pref_shortcuts_summary_limit">Maximum 4 shortcuts can be saved</string>
 	<string name="pref_shortcuts_too_many">Maximum 4 shortcuts can be saved.</string>
+
+	<!-- notifications -->
+	<string name="notification_channel_name_background_playback">Background player</string>
 </resources>

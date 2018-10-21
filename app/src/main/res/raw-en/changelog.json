@@ -1,5 +1,18 @@
 [
 	{
+		"name": "1.11.2",
+		"items": [
+			{
+				"type": "B",
+				"title": "Streams von DW+ repariert (danke an jw243)."
+			},
+			{
+				"type": "B",
+				"title": "Wiedergabefehler in Android P behoben."
+			}
+		]
+	},
+	{
 		"name": "1.11.1",
 		"items": [
 			{
