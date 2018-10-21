@@ -1,5 +1,34 @@
 [
 	{
+		"name": "2.0.0",
+		"items": [
+			{
+				"type": "F",
+				"title": "Hintergrund-Playback von Mediathek-Videos."
+			},
+			{
+				"type": "F",
+				"title": "Automatisches pausieren, wenn eine andere App Ton abspielt oder ein Anruf eingeht."
+			},
+			{
+				"type": "F",
+				"title": "Lockscreen-Widget."
+			},
+			{
+				"type": "B",
+				"title": "Playback startet nicht mehr automatisch, wenn das Gerät aus ist und sich mit einem WLAN wieder verbindet."
+			},
+			{
+				"type": "I",
+				"title": "Ladebalken wird nur noch angezeigt, wenn das Video tatsächlich stockt."
+			},
+			{
+				"type": "I",
+				"title": "Kleinste unterstützte Android-Version auf 5.0 Lollipop angehoben."
+			}
+		]
+	},
+	{
 		"name": "1.11.2",
 		"items": [
 			{

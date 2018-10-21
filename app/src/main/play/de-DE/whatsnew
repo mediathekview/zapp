@@ -1,2 +1,6 @@
-* Wiedergabefehler in Android P behoben.
-* Streams von DW+ repariert (danke an jw243).
+* Hintergrund-Playback von Mediathek-Videos.
+* Automatisches pausieren, wenn eine andere App Ton abspielt oder ein Anruf eingeht.
+* Lockscreen-Widget.
+* Playback startet nicht mehr automatisch, wenn das Gerät aus ist und sich mit einem WLAN wieder verbindet.
+* Ladebalken wird nur noch angezeigt, wenn das Video tatsächlich stockt.
+* Kleinste unterstützte Android-Version auf 5.0 Lollipop angehoben.
