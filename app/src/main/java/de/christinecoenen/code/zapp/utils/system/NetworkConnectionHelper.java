@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 
@@ -64,7 +65,7 @@ public class NetworkConnectionHelper {
 		ConnectivityManager connectionManager = (ConnectivityManager)
 			context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		NetworkInfo activeInfo = connectionManager.getActiveNetworkInfo();
+		NetworkInfo activeInfo = Objects.requireNonNull(connectionManager).getActiveNetworkInfo();
 		return activeInfo != null &&
 			activeInfo.isConnected() &&
 			activeInfo.getType() == ConnectivityManager.TYPE_WIFI;

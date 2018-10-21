@@ -2,10 +2,8 @@ package de.christinecoenen.code.zapp.app.settings.helper;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
-import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.Toast;
