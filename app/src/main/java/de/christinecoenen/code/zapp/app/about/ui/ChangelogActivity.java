@@ -3,18 +3,27 @@ package de.christinecoenen.code.zapp.app.about.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import android.widget.TextView;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.porokoro.paperboy.ViewTypes;
-import com.github.porokoro.paperboy.builders.PaperboyChainBuilder;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
+import ru.noties.markwon.Markwon;
+import timber.log.Timber;
 
 public class ChangelogActivity extends AppCompatActivity {
 
-	@NonNull
+	@BindView(R.id.txt_changelog)
+	protected TextView changelogText;
+
+
 	public static Intent getStartIntent(Context context) {
 		return new Intent(context, ChangelogActivity.class);
 	}
@@ -22,18 +31,15 @@ public class ChangelogActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_changelog);
+		ButterKnife.bind(this, this);
 
-		if (savedInstanceState == null) {
-			Fragment fragment = new PaperboyChainBuilder(this)
-				.fileRes(R.raw.changelog)
-				.viewType(ViewTypes.HEADER)
-				.buildFragment();
-
-			getSupportFragmentManager()
-				.beginTransaction()
-				.add(R.id.activity_changelog, fragment)
-				.commit();
+		try (InputStream inputStream = getResources().openRawResource(R.raw.changelog)) {
+			String markdown = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+			Markwon.setMarkdown(changelogText, markdown);
+		} catch (IOException e) {
+			Timber.e(e);
 		}
 	}
 }

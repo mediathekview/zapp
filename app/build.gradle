@@ -60,9 +60,6 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.5'
 	implementation 'commons-io:commons-io:2.6'
 
-	// changelog
-	implementation 'com.github.porokoro.paperboy:paperboy:3.0.0'
-
 	// sortable list
 	implementation 'com.github.woxthebox:draglistview:1.6.2'
 
