@@ -2,7 +2,8 @@
 
 1. [About](#about)
 2. [FAQ](app/src/main/res/raw/faq.md)
-3. [Libraries Example](#libraries)
+3. [Changelog](app/src/main/res/raw/changelog.md)
+4. [Libraries Example](#libraries)
 
 ## About
 
