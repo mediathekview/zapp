@@ -29,8 +29,7 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
-import org.jetbrains.annotations.NotNull;
-
+import androidx.annotation.NonNull;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
@@ -193,7 +192,7 @@ public class Player {
 		settings.setEnableSubtitles(enabled);
 	}
 
-	@NotNull
+	@NonNull
 	private MediaSource getMediaSource(VideoInfo videoInfo) {
 		Uri uri = Uri.parse(videoInfo.getUrl());
 		MediaSource mediaSource = getMediaSourceWithoutSubtitles(uri);
@@ -217,7 +216,7 @@ public class Player {
 		return mediaSource;
 	}
 
-	@NotNull
+	@NonNull
 	private MediaSource getMediaSourceWithoutSubtitles(Uri uri) {
 		int type = Util.inferContentType(uri);
 		switch (type) {

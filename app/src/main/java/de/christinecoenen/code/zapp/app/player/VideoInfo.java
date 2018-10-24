@@ -1,10 +1,9 @@
 package de.christinecoenen.code.zapp.app.player;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
@@ -27,29 +26,29 @@ public class VideoInfo {
 		return videoInfo;
 	}
 
-	@NotNull
+	@NonNull
 	private String url = "";
 
-	@NotNull
+	@NonNull
 	private String title = "";
 
-	@NotNull
+	@NonNull
 	private String subtitle = "";
 
 	@Nullable
 	private String subtitleUrl;
 
-	@NotNull
+	@NonNull
 	public String getUrl() {
 		return url;
 	}
 
-	@NotNull
+	@NonNull
 	public String getTitle() {
 		return title;
 	}
 
-	@NotNull
+	@NonNull
 	public String getSubtitle() {
 		return subtitle;
 	}
