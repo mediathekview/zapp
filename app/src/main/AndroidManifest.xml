@@ -23,6 +23,11 @@
 		android:theme="@style/AppTheme"
 		android:usesCleartextTraffic="true"
 		tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+
+		<meta-data
+			android:name="com.samsung.android.icon_container.has_icon_container"
+			android:value="true" />
+
 		<activity
 			android:name=".app.livestream.ui.detail.ChannelDetailActivity"
 			android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation"
