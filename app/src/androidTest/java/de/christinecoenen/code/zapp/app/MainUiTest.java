@@ -2,21 +2,21 @@ package de.christinecoenen.code.zapp.app;
 
 
 import android.content.pm.ActivityInfo;
-import androidx.test.espresso.accessibility.AccessibilityChecks;
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.DrawerMatchers;
-import androidx.test.espresso.contrib.NavigationViewActions;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.espresso.accessibility.AccessibilityChecks;
+import androidx.test.espresso.contrib.DrawerActions;
+import androidx.test.espresso.contrib.DrawerMatchers;
+import androidx.test.espresso.contrib.NavigationViewActions;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 import de.christinecoenen.code.zapp.R;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -92,7 +92,7 @@ public class MainUiTest {
 		Thread.sleep(500);
 
 		// try to refresh
-		openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+		openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
 		Thread.sleep(200);
 		onView(withText(R.string.menu_refresh))
 			.check(matches(isDisplayed()))

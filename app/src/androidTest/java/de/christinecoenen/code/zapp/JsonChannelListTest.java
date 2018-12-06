@@ -1,9 +1,5 @@
 package de.christinecoenen.code.zapp;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
-import androidx.test.runner.AndroidJUnit4;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +10,9 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.SmallTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.JsonChannelList;
@@ -33,7 +32,7 @@ public class JsonChannelListTest {
 
 	@Before
 	public void setup() {
-		channelList = new JsonChannelList(InstrumentationRegistry.getTargetContext());
+		channelList = new JsonChannelList(InstrumentationRegistry.getInstrumentation().getTargetContext());
 	}
 
 	@Test
@@ -67,9 +66,10 @@ public class JsonChannelListTest {
 	/**
 	 * Pings a HTTP URL. This effectively sends a HEAD request and returns <code>true</code> if the response code is in
 	 * the 200-399 range.
-	 * @param url The HTTP URL to be pinged.
+	 *
+	 * @param url     The HTTP URL to be pinged.
 	 * @param timeout The timeout in millis for both the connection timeout and the response read timeout. Note that
-	 * the total timeout is effectively two times the given timeout.
+	 *                the total timeout is effectively two times the given timeout.
 	 * @return <code>true</code> if the given HTTP URL has returned response code 200-399 on a HEAD request within the
 	 * given timeout, otherwise <code>false</code>.
 	 * @see "http://stackoverflow.com/a/3584332/3012757"
