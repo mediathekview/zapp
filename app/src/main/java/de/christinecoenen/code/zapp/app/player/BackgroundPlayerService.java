@@ -100,6 +100,12 @@ public class BackgroundPlayerService extends IntentService implements
 	}
 
 	@Override
+	public void onTaskRemoved(Intent rootIntent) {
+		super.onTaskRemoved(rootIntent);
+		onDestroy();
+	}
+
+	@Override
 	public void onDestroy() {
 		movePlaybackToForeground();
 
