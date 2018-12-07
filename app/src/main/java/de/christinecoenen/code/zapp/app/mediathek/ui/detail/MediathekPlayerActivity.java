@@ -207,6 +207,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			case R.id.menu_share:
 				IntentHelper.openUrl(this, show.getVideoUrl());
 				return true;
+			case R.id.menu_play_in_background:
+				binder.movePlaybackToBackground();
+				finish();
+				return true;
 			case android.R.id.home:
 				finish();
 				return true;
@@ -279,12 +283,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	public void onEnableCaptionsClick() {
 		player.enableSubtitles();
 		updateSubtitleButtons();
-	}
-
-	@OnClick(R.id.btn_background)
-	public void onBackgroundClick() {
-		binder.movePlaybackToBackground();
-		finish();
 	}
 
 	private void pauseActivity() {

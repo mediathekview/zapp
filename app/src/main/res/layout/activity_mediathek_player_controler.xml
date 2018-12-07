@@ -57,12 +57,6 @@
 			android:src="@drawable/ic_closed_caption_white_24dp"
 			android:visibility="gone" />
 
-		<ImageButton
-			android:id="@+id/btn_background"
-			style="@style/ExoMediaButton"
-			android:contentDescription="@string/action_play_in_background"
-			android:src="@drawable/ic_headset_white_24dp" />
-
 	</LinearLayout>
 
 	<LinearLayout

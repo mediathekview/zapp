@@ -8,4 +8,10 @@
 		android:title="@string/action_share"
 		app:showAsAction="ifRoom" />
 
+	<item
+		android:id="@+id/menu_play_in_background"
+		android:icon="@drawable/ic_headset_white_24dp"
+		android:title="@string/action_play_in_background"
+		app:showAsAction="never" />
+
 </menu>
