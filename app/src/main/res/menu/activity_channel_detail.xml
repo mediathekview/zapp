@@ -9,8 +9,9 @@
 		app:showAsAction="never"/>
 
 	<item
-		android:id="@+id/menu_settings"
-		android:title="@string/menu_settings"
-		app:showAsAction="never"/>
+		android:id="@+id/menu_play_in_background"
+		android:icon="@drawable/ic_headset_white_24dp"
+		android:title="@string/action_play_in_background"
+		app:showAsAction="never" />
 
 </menu>

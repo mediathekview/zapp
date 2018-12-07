@@ -29,7 +29,6 @@ import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
-import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
@@ -79,6 +78,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private Window window;
 	private IChannelList channelList;
 	private Player player;
+	private BackgroundPlayerService.Binder binder;
 	private SettingsRepository settings;
 	private final CompositeDisposable disposable = new CompositeDisposable();
 
@@ -118,7 +118,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private final ServiceConnection backgroundPlayerServiceConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
-			BackgroundPlayerService.Binder binder = (BackgroundPlayerService.Binder) service;
+			binder = (BackgroundPlayerService.Binder) service;
 			player = binder.getPlayer();
 			player.setView(videoView);
 
@@ -236,9 +236,9 @@ public class ChannelDetailActivity extends FullscreenActivity {
 			case R.id.menu_share:
 				startActivity(currentChannel.getVideoShareIntent());
 				return true;
-			case R.id.menu_settings:
-				Intent settingsIntent = SettingsActivity.getStartIntent(this);
-				startActivity(settingsIntent);
+			case R.id.menu_play_in_background:
+				binder.movePlaybackToBackground();
+				finish();
 				return true;
 			case android.R.id.home:
 				finish();
@@ -333,6 +333,9 @@ public class ChannelDetailActivity extends FullscreenActivity {
 		if (currentChannel == null) {
 			return;
 		}
+
+		Intent currentIntent = ChannelDetailActivity.getStartIntent(this, currentChannel.getId());
+		binder.updateForegroundActivityIntent(currentIntent);
 
 		Timber.d("play: %s", currentChannel.getName());
 		player.load(VideoInfo.fromChannel(currentChannel));

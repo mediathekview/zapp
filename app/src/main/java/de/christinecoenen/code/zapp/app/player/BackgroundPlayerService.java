@@ -240,6 +240,18 @@ public class BackgroundPlayerService extends IntentService implements
 		}
 
 		/**
+		 * Changes the intent passed during binding.
+		 * Call this if playback information has changed and is now
+		 * represented by another activity intent.
+		 *
+		 * @param intent used to bring the calling activity to front
+		 *               after finishing background playback
+		 */
+		public void updateForegroundActivityIntent(Intent intent) {
+			foregroundActivityIntent = intent;
+		}
+
+		/**
 		 * Displays a player notification and starts keeping this service alive
 		 * in background. Once called the service will resume running until {@link #movePlaybackToForeground()}
 		 * is called or the notification is dismissed.
