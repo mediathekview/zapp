@@ -324,7 +324,6 @@ public class ChannelDetailActivity extends FullscreenActivity {
 			player.pause();
 		}
 
-		progressView.setVisibility(View.VISIBLE);
 		playHandler.removeCallbacks(playRunnable);
 		playHandler.postDelayed(playRunnable, playStreamDelayMillis);
 	}
