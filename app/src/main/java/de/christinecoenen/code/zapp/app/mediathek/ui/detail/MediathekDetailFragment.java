@@ -55,8 +55,14 @@ public class MediathekDetailFragment extends Fragment {
 	@BindView(R.id.text_show_subtitle)
 	protected TextView subtitleView;
 
+	@BindView(R.id.view_qualities)
+	protected View qualitiesView;
+
 	@BindView(R.id.quality_row_high)
 	protected View qualityRowHigh;
+
+	@BindView(R.id.quality_row_medium)
+	protected View qualityRowMedium;
 
 	@BindView(R.id.quality_row_low)
 	protected View qualityRowLow;
@@ -102,9 +108,14 @@ public class MediathekDetailFragment extends Fragment {
 		durationView.setText(show.getFormattedDuration());
 		subtitleView.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		qualityRowHigh.setVisibility(show.hasQualityHd() ? View.VISIBLE : View.GONE);
-		qualityRowLow.setVisibility(show.hasQualityLow() ? View.VISIBLE : View.GONE);
-		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+		if (show.hasAnyDownload()) {
+			qualityRowHigh.setVisibility(show.hasDownloadQualityHd() ? View.VISIBLE : View.GONE);
+			qualityRowMedium.setVisibility(show.hasDownloadQualityMedium() ? View.VISIBLE : View.GONE);
+			qualityRowLow.setVisibility(show.hasDownloadQualityLow() ? View.VISIBLE : View.GONE);
+			qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+		} else {
+			qualitiesView.setVisibility(View.GONE);
+		}
 
 		return view;
 	}
