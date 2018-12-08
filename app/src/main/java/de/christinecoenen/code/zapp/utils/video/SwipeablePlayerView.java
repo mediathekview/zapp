@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import androidx.annotation.Nullable;
 import de.christinecoenen.code.zapp.R;
 
 
@@ -69,6 +71,12 @@ public class SwipeablePlayerView extends PlayerView {
 			toggleControls();
 		}
 		return super.performClick();
+	}
+
+	@Override
+	public void setPlayer(@Nullable Player player) {
+		super.setPlayer(player);
+		player.addListener(new ScreenDimmingVideoEventListener(this));
 	}
 
 	private void init(Context context) {
