@@ -41,7 +41,6 @@
 	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
 	<string name="error_stream_not_in_wifi">Das Abspielen über Mobilverbindungen wurde in den Einstellungen deaktiviert.</string>
-	<string name="error_no_app_for_link">Keine App zum Öffnen von Links gefunden.</string>
 
 	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
 	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
@@ -56,6 +55,7 @@
 	<string name="action_cancel">Abbrechen</string>
 	<string name="action_share">Teilen</string>
 	<string name="action_continue">Weiter</string>
+	<string name="action_open">Öffnen</string>
 	<string name="action_enable_subtitles">Untertitel aktivieren</string>
 	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>

@@ -119,7 +119,7 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	private boolean onContextMenuItemClicked(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 			case R.id.menu_share:
-				startActivity(longClickChannel.getVideoShareIntent());
+				startActivity(Intent.createChooser(longClickChannel.getVideoShareIntent(), getString(R.string.action_share)));
 				return true;
 		}
 		return false;

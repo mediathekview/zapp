@@ -168,7 +168,7 @@ public class MediathekDetailFragment extends Fragment {
 	private void share(String url) {
 		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
 		videoIntent.setDataAndType(Uri.parse(url), "video/*");
-		startActivity(videoIntent);
+		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
 	}
 
 	private void download(String url, String downloadFileName) {

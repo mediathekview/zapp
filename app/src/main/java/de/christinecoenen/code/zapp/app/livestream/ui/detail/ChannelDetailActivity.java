@@ -234,7 +234,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
-				startActivity(currentChannel.getVideoShareIntent());
+				startActivity(Intent.createChooser(currentChannel.getVideoShareIntent(), getString(R.string.action_share)));
 				return true;
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();

@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import de.christinecoenen.code.zapp.utils.system.IntentHelper;
+
 
 public class DownloadReceiver extends BroadcastReceiver {
 
@@ -13,9 +15,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 
 		if (DownloadManager.ACTION_NOTIFICATION_CLICKED.equals(action)) {
-			Intent downloadManagerIntent = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
-			downloadManagerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(downloadManagerIntent);
+			IntentHelper.openDownloadManager(context);
 		}
 	}
 }
