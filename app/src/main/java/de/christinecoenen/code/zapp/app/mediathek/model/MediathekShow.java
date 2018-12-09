@@ -188,11 +188,16 @@ public class MediathekShow implements Serializable {
 		this.videoUrlHd = videoUrlHd;
 	}
 
-	public boolean hasAnyDownload() {
-		return hasDownloadQualityHd() ||
-			hasDownloadQualityMedium() ||
-			hasDownloadQualityLow() ||
-			hasSubtitle();
+	public boolean hasStreamingQualityHd() {
+		return isValidStreamingUrl(videoUrlHd);
+	}
+
+	public boolean hasStreamingQualityMedium() {
+		return isValidStreamingUrl(videoUrlLow);
+	}
+
+	public boolean hasStreamingQualityLow() {
+		return isValidStreamingUrl(videoUrlLow);
 	}
 
 	public boolean hasDownloadQualityHd() {
@@ -235,6 +240,10 @@ public class MediathekShow implements Serializable {
 		String extension = FilenameUtils.getExtension(videoUrl);
 		String fileName = title.replace("/", "-");
 		return fileName + "." + extension;
+	}
+
+	private boolean isValidStreamingUrl(String url) {
+		return !TextUtils.isEmpty(url);
 	}
 
 	private boolean isValidDownloadUrl(String url) {

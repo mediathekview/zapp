@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,9 +56,6 @@ public class MediathekDetailFragment extends Fragment {
 	@BindView(R.id.text_show_subtitle)
 	protected TextView subtitleView;
 
-	@BindView(R.id.view_qualities)
-	protected View qualitiesView;
-
 	@BindView(R.id.quality_row_high)
 	protected View qualityRowHigh;
 
@@ -69,6 +67,15 @@ public class MediathekDetailFragment extends Fragment {
 
 	@BindView(R.id.quality_row_subtitle)
 	protected View qualityRowSubtitle;
+
+	@BindView(R.id.btn_download_high)
+	protected ImageButton downloadButtonHigh;
+
+	@BindView(R.id.btn_download_medium)
+	protected ImageButton downloadButtonMedium;
+
+	@BindView(R.id.btn_download_low)
+	protected ImageButton downloadButtonLow;
 
 
 	private MediathekShow show;
@@ -108,14 +115,14 @@ public class MediathekDetailFragment extends Fragment {
 		durationView.setText(show.getFormattedDuration());
 		subtitleView.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		if (show.hasAnyDownload()) {
-			qualityRowHigh.setVisibility(show.hasDownloadQualityHd() ? View.VISIBLE : View.GONE);
-			qualityRowMedium.setVisibility(show.hasDownloadQualityMedium() ? View.VISIBLE : View.GONE);
-			qualityRowLow.setVisibility(show.hasDownloadQualityLow() ? View.VISIBLE : View.GONE);
-			qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
-		} else {
-			qualitiesView.setVisibility(View.GONE);
-		}
+		qualityRowHigh.setVisibility(show.hasStreamingQualityHd() ? View.VISIBLE : View.GONE);
+		qualityRowMedium.setVisibility(show.hasStreamingQualityMedium() ? View.VISIBLE : View.GONE);
+		qualityRowLow.setVisibility(show.hasStreamingQualityLow() ? View.VISIBLE : View.GONE);
+		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+
+		downloadButtonHigh.setVisibility(show.hasDownloadQualityHd() ? View.VISIBLE : View.GONE);
+		downloadButtonMedium.setVisibility(show.hasDownloadQualityMedium() ? View.VISIBLE : View.GONE);
+		downloadButtonLow.setVisibility(show.hasDownloadQualityLow() ? View.VISIBLE : View.GONE);
 
 		return view;
 	}
