@@ -41,7 +41,6 @@
 	<string name="error_stream_io">The video could not be loaded. Maybe you have no internet connection or this video is not available in your country.</string>
 	<string name="error_stream_unsupported">The video is broken or the format is not supported.</string>
 	<string name="error_stream_not_in_wifi">Playback over mobile connections has been disabled in the settings.</string>
-	<string name="error_no_app_for_link">No app found to open links.</string>
 
 	<string name="error_mediathek_info_not_available">An error occurred while loading the media center. Please check your internet connection.</string>
 	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
