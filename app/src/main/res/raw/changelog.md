@@ -1,3 +1,12 @@
+## 2.1.0
+* Hintergrund-Playback von Streaming-Videos.
+* Changelog im Markdown-Format.
+* Verbesserte Icon-Darstellung auf Samsung-Geräten.
+* Zapp beendet sich sauber, wenn es im Taskmanager beendet wird.
+* Downloadmöglichkeit ausgeblendet, wenn das Video nur als Stream zur Verfügung steht.
+* Dem Gerät erlaubt, in den Ruhezustand zu gehen, sobald der Player nicht mehr läuft.
+* Abstürze beim Teilen von Videos und Streams behoben.
+
 ## 2.0.0
 * Hintergrund-Playback von Mediathek-Videos.
 * Automatisches pausieren, wenn eine andere App Ton abspielt oder ein Anruf eingeht.
