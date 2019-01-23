@@ -329,7 +329,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	}
 
 	private void play() {
-		if (currentChannel == null) {
+		if (currentChannel == null || binder == null) {
 			return;
 		}
 
