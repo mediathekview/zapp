@@ -194,12 +194,12 @@ public class MediathekDetailFragment extends Fragment {
 			if (request == null) {
 				Toast.makeText(getContext(), R.string.error_mediathek_invalid_url, Toast.LENGTH_LONG).show();
 			} else {
-				enqueDownload(request, downloadFileName);
+				enqueueDownload(request, downloadFileName);
 			}
 		}
 	}
 
-	private void enqueDownload(DownloadManager.Request request, String downloadFileName) {
+	private void enqueueDownload(DownloadManager.Request request, String downloadFileName) {
 		// setting title and directory of request
 		request.setTitle(show.getTitle());
 		request.allowScanningByMediaScanner();
