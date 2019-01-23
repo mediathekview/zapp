@@ -193,7 +193,7 @@ public class MediathekShow implements Serializable {
 	}
 
 	public boolean hasStreamingQualityMedium() {
-		return isValidStreamingUrl(videoUrlLow);
+		return isValidStreamingUrl(videoUrl);
 	}
 
 	public boolean hasStreamingQualityLow() {
@@ -205,7 +205,7 @@ public class MediathekShow implements Serializable {
 	}
 
 	public boolean hasDownloadQualityMedium() {
-		return isValidDownloadUrl(videoUrlLow);
+		return isValidDownloadUrl(videoUrl);
 	}
 
 	public boolean hasDownloadQualityLow() {
