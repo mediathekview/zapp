@@ -32,10 +32,6 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
-
-	useLibrary 'android.test.runner'
-	useLibrary 'android.test.base'
-	useLibrary 'android.test.mock'
 }
 
 configurations {
@@ -73,9 +69,8 @@ dependencies {
 	implementation "ru.noties:markwon:2.0.0"
 
 	// butterknive:
-	// https://github.com/JakeWharton/butterknife/issues/1270
-	implementation 'com.jakewharton:butterknife:9.0.0-rc2'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
+	implementation 'com.jakewharton:butterknife:10.0.0'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
 	// exo player
 	implementation 'com.google.android.exoplayer:exoplayer-core:2.9.0'
