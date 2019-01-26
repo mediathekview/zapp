@@ -1,3 +1,6 @@
+## 2.1.1
+* Diverse Abstürze behoben
+
 ## 2.1.0
 * Hintergrund-Playback von Streaming-Videos.
 * Changelog im Markdown-Format.
