@@ -86,11 +86,11 @@ public class SwipeablePlayerView extends PlayerView {
 
 		volumeIndicator = new SwipeIndicatorView(context);
 		volumeIndicator.setIconResId(R.drawable.ic_volume_up_white_24dp);
-		addView(volumeIndicator, new LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
+		addView(volumeIndicator, new LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END));
 
 		brightnessIndicator = new SwipeIndicatorView(context);
 		brightnessIndicator.setIconResId(R.drawable.ic_brightness_6_white_24dp);
-		addView(brightnessIndicator, new LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END));
+		addView(brightnessIndicator, new LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
 
 		listener = new WipingControlGestureListener();
 		gestureDetector = new GestureDetector(context.getApplicationContext(), listener);
@@ -170,10 +170,10 @@ public class SwipeablePlayerView extends PlayerView {
 			float yPercent = 1 - (e2.getY() / getHeight());
 
 			if (e2.getX() < INDICATOR_WIDTH) {
-				adjustVolume(yPercent);
+				adjustBrightness(yPercent);
 				return true;
 			} else if (e2.getX() > getWidth() - INDICATOR_WIDTH) {
-				adjustBrightness(yPercent);
+				adjustVolume(yPercent);
 				return true;
 			} else {
 				endScroll();

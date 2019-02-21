@@ -1,3 +1,6 @@
+## Next release
+* Lautstärke- und Helligkeitsregler getauscht.
+
 ## 2.1.1
 * Diverse Abstürze behoben
 
