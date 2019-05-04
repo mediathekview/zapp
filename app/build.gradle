@@ -20,15 +20,10 @@ android {
 	buildTypes {
 		debug {
 			shrinkResources false
-			minifyEnabled true
-			useProguard false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			signingConfig signingConfigs.debug
 		}
 		release {
 			shrinkResources true
 			minifyEnabled true
-			useProguard true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
