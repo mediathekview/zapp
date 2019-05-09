@@ -10,12 +10,13 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.IBinder;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 import java.util.Objects;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import io.reactivex.disposables.Disposable;
@@ -24,7 +25,6 @@ public class BackgroundPlayerService extends IntentService implements
 	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener {
 
 	private static final String ACTION_START_IN_BACKGROUND = "de.christinecoenen.code.zapp.app.mediathek.controller.action.START_IN_BACKGROUND";
-	private static final String ACTION_NOTIFICATION_CLICKED = "de.christinecoenen.code.zapp.app.mediathek.controller.action.NOTIFICATION_CLICKED";
 	private static final String EXTRA_FOREGROUND_INTENT = "EXTRA_FOREGROUND_INTENT";
 
 	private final Binder binder = new Binder();
@@ -58,12 +58,6 @@ public class BackgroundPlayerService extends IntentService implements
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
 		intent.setAction(ACTION_START_IN_BACKGROUND);
 		context.startService(intent);
-	}
-
-	private static Intent getNotificationClickedIntent(Context context) {
-		Intent intent = new Intent(context, BackgroundPlayerService.class);
-		intent.setAction(ACTION_NOTIFICATION_CLICKED);
-		return intent;
 	}
 
 	/**
@@ -146,15 +140,10 @@ public class BackgroundPlayerService extends IntentService implements
 
 	private void handleIntent(Intent intent) {
 		if (intent != null && intent.getAction() != null) {
-			switch (intent.getAction()) {
-				case ACTION_NOTIFICATION_CLICKED:
-					handleNotificationClicked();
-					break;
-				case ACTION_START_IN_BACKGROUND:
-					handleStartInBackground();
-					break;
-				default:
-					throw new UnsupportedOperationException("Action not supported: " + intent.getAction());
+			if (ACTION_START_IN_BACKGROUND.equals(intent.getAction())) {
+				handleStartInBackground();
+			} else {
+				throw new UnsupportedOperationException("Action not supported: " + intent.getAction());
 			}
 		}
 	}
@@ -200,10 +189,6 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager.setMediaSessionToken(player.getMediaSession().getSessionToken());
 	}
 
-	private void handleNotificationClicked() {
-		startActivity(foregroundActivityIntent);
-	}
-
 	@Override
 	public String getCurrentContentTitle(com.google.android.exoplayer2.Player player) {
 		return this.player.getCurrentVideoInfo().getTitle();
@@ -211,9 +196,8 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public PendingIntent createCurrentContentIntent(com.google.android.exoplayer2.Player player) {
-		// a notification click will bring us back to this service
-		Intent intent = BackgroundPlayerService.getNotificationClickedIntent(this);
-		return PendingIntent.getService(BackgroundPlayerService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		// a notification click will bring us back to the activity that launched it
+		return PendingIntent.getActivity(this, 0, foregroundActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override
