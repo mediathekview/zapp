@@ -34,4 +34,14 @@ public class SettingsRepository {
 			.putBoolean(context.getString(R.string.pref_key_enable_subtitles), enabled)
 			.apply();
 	}
+
+	public boolean getIsPlayerZoomed() {
+		return preferences.getBoolean(context.getString(R.string.pref_key_player_zoomed), false);
+	}
+
+	public void setIsPlayerZoomed(boolean enabled) {
+		preferences.edit()
+			.putBoolean(context.getString(R.string.pref_key_player_zoomed), enabled)
+			.apply();
+	}
 }

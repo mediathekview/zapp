@@ -68,6 +68,10 @@
 	<string name="menu_about">Über</string>
 	<string name="menu_settings">Einstellungen</string>
 
+	<!-- player -->
+	<string name="player_zoom_state_cropped">Gezoomt</string>
+	<string name="player_zoom_state_boxed">Original</string>
+
 
 	<!-- paperboy changelog -->
 	<string name="paperboy_section_name">Abschnitt</string>
