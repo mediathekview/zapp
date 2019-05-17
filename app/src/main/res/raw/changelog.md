@@ -1,3 +1,6 @@
+## 2.2.1
+* Absturz beim Starten des Hintergrund-Playbacks behoben.
+
 ## 2.2.0
 * Lautstärke- und Helligkeitsregler getauscht.
 * Streams von ARD repariert (danke an protvis74).

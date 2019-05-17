@@ -8,6 +8,7 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import timber.log.Timber;
 
 @ReportsCrashes(mailTo = "code.coenen@gmail.com",
@@ -23,6 +24,8 @@ public class ZappApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		Timber.plant(new Timber.DebugTree());
+
+		NotificationHelper.createBackgroundPlaybackChannel(this);
 	}
 
 	@Override

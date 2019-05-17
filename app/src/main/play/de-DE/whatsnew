@@ -1,6 +1,1 @@
-* Lautstärke- und Helligkeitsregler getauscht.
-* Streams von ARD repariert (danke an protvis74).
-* Background-Playback auf Android P repariert.
-* Navigation-Bar überlappt keine UI-Elemente mehr.
-* Pinch-to-Zoom auf nicht 16:9-Geräten eingebaut.
-* Absturz bei Klick auf die Notification behoben.
+* Absturz beim Starten des Hintergrund-Playbacks behoben.
