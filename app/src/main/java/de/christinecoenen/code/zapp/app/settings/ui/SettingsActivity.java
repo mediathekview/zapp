@@ -24,7 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 
 		// display the fragment as the main content.
-		getFragmentManager().beginTransaction()
+		getSupportFragmentManager().beginTransaction()
 			.replace(android.R.id.content, SettingsFragment.newInstance())
 			.commit();
 	}
