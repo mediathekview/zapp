@@ -1,3 +1,7 @@
+## 2.2.2
+* Absturz beim Laden der verändereten Senderliste behoben.
+* Einstellungsbildschirm aktualisiert.
+
 ## 2.2.1
 * Absturz beim Starten des Hintergrund-Playbacks behoben.
 
