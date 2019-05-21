@@ -20,7 +20,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 	 * Use this factory method to create a new instance of
 	 * this fragment.
 	 */
-	public static SettingsFragment newInstance() {
+	static SettingsFragment newInstance() {
 		return new SettingsFragment();
 	}
 
@@ -31,17 +31,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.preferences);
 
 		shortcutPreference = (ShortcutPreference) getPreferenceScreen()
 			.findPreference(PREF_SHORTCUTS);
-	}
-
-	@Override
-	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-
 	}
 
 	@Override
