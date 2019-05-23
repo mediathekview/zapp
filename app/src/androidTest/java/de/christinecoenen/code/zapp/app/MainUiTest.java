@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.app;
 
 
-import android.content.pm.ActivityInfo;
+/*import android.content.pm.ActivityInfo;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -30,9 +30,9 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;*/
 
-@RunWith(AndroidJUnit4.class)
+/*@RunWith(AndroidJUnit4.class)
 public class MainUiTest {
 
 	@Rule
@@ -43,7 +43,7 @@ public class MainUiTest {
 		AccessibilityChecks.enable()
 			.setRunChecksFromRootView(true)
 			.setThrowExceptionForErrors(false);
-	}
+	}*/
 
 	/**
 	 * Basic ui test that calls every screen and asserts nothing
@@ -52,7 +52,7 @@ public class MainUiTest {
 	 * <p>
 	 * Also, this test will output acessibility errors to logcat.
 	 */
-	@Test
+	/*@Test
 	public void mainUiTest() throws InterruptedException {
 		// open menu
 		onView(withId(R.id.layout_drawer))
@@ -165,4 +165,4 @@ public class MainUiTest {
 		onView(withText(R.string.pref_channel_selection_title))
 			.perform(click());
 	}
-}
+}*/

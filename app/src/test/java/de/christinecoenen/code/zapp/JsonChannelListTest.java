@@ -1,8 +1,11 @@
 package de.christinecoenen.code.zapp;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,29 +13,26 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.SmallTest;
-import androidx.test.platform.app.InstrumentationRegistry;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.JsonChannelList;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Make sure to run this after adding a new channel.
  */
-@RunWith(AndroidJUnit4.class)
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class JsonChannelListTest {
 
 	private IChannelList channelList;
 
 	@Before
 	public void setup() {
-		channelList = new JsonChannelList(InstrumentationRegistry.getInstrumentation().getTargetContext());
+		channelList = new JsonChannelList(ApplicationProvider.getApplicationContext());
 	}
 
 	@Test
@@ -55,8 +55,8 @@ public class JsonChannelListTest {
 			assertFalse(id + " id is not taken", ids.contains(id));
 			assertNotNull(id + " name is not null", channel.getName());
 			assertNotNull(id + " stream url is not null", channel.getStreamUrl());
-			assertFalse(id + " has a color set", channel.getColor() == 0);
-			assertFalse(id + " has a drawable id set", channel.getDrawableId() == 0);
+			assertNotEquals(id + " has a color set", 0, channel.getColor());
+			assertNotEquals(id + " has a drawable id set", 0, channel.getDrawableId());
 			assertTrue(id + " stream is reachable", pingURL(channel.getStreamUrl(), 2000));
 
 			ids.add(id);
@@ -87,4 +87,5 @@ public class JsonChannelListTest {
 			return false;
 		}
 	}
+
 }
