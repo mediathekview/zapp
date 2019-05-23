@@ -1,12 +1,7 @@
 package de.christinecoenen.code.zapp.app;
 
 
-/*import android.content.pm.ActivityInfo;
-
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import android.content.pm.ActivityInfo;
 
 import androidx.test.espresso.accessibility.AccessibilityChecks;
 import androidx.test.espresso.contrib.DrawerActions;
@@ -15,6 +10,12 @@ import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import de.christinecoenen.code.zapp.R;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -30,9 +31,9 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;*/
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-/*@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4.class)
 public class MainUiTest {
 
 	@Rule
@@ -43,7 +44,7 @@ public class MainUiTest {
 		AccessibilityChecks.enable()
 			.setRunChecksFromRootView(true)
 			.setThrowExceptionForErrors(false);
-	}*/
+	}
 
 	/**
 	 * Basic ui test that calls every screen and asserts nothing
@@ -52,7 +53,7 @@ public class MainUiTest {
 	 * <p>
 	 * Also, this test will output acessibility errors to logcat.
 	 */
-	/*@Test
+	@Test
 	public void mainUiTest() throws InterruptedException {
 		// open menu
 		onView(withId(R.id.layout_drawer))
@@ -141,6 +142,8 @@ public class MainUiTest {
 		onView(withId(R.id.list))
 			.perform(swipeRight());
 
+		Thread.sleep(200);
+
 		// select a channel
 		onView(withId(R.id.gridview_channels))
 			.perform(actionOnItemAtPosition(0, click()));
@@ -165,4 +168,4 @@ public class MainUiTest {
 		onView(withText(R.string.pref_channel_selection_title))
 			.perform(click());
 	}
-}*/
+}
