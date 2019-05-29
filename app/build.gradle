@@ -56,6 +56,9 @@ dependencies {
 	testImplementation 'androidx.test:core:1.1.0'
 	testImplementation 'org.robolectric:robolectric:4.2'
 
+	debugImplementation 'androidx.fragment:fragment-testing:1.1.0-alpha09'
+
+
 	// support
 	implementation 'androidx.appcompat:appcompat:1.0.2'
 	implementation 'androidx.legacy:legacy-support-v4:1.0.0'
