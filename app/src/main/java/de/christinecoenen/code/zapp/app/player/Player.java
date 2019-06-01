@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
@@ -29,7 +31,6 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
-import androidx.annotation.NonNull;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
@@ -116,6 +117,14 @@ public class Player {
 		player.prepare(videoSource);
 	}
 
+	public void recreate() {
+		VideoInfo oldVideoInfo = currentVideoInfo;
+		long oldPosition = getMillis();
+		currentVideoInfo = null;
+		load(oldVideoInfo);
+		setMillis(oldPosition);
+	}
+
 	public void pause() {
 		player.setPlayWhenReady(false);
 	}
@@ -162,7 +171,10 @@ public class Player {
 	}
 
 	public Observable<Integer> getErrorResourceId() {
-		return playerEventHandler.getErrorResourceId().distinctUntilChanged();
+		return Observable.combineLatest(
+			playerEventHandler.getErrorResourceId(),
+			playerEventHandler.isIdle(),
+			(errorResourceId, isIdle) -> isIdle ? errorResourceId : -1);
 	}
 
 	public VideoInfo getCurrentVideoInfo() {
@@ -235,9 +247,9 @@ public class Player {
 
 	private void stopIfVideoPlaybackNotAllowed() {
 		if (!networkConnectionHelper.isVideoPlaybackAllowed()) {
+			player.stop();
 			playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
 			player.removeAnalyticsListener(playerEventHandler);
-			player.stop();
 		}
 	}
 

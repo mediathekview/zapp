@@ -265,7 +265,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	}
 
 	private void onVideoError(Integer messageResourceId) {
-		if (messageResourceId == null) {
+		if (messageResourceId == null || messageResourceId == -1) {
 			return;
 		}
 
