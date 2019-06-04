@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
+
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
@@ -280,7 +281,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private void onBufferingChanged(boolean isBuffering) {
 		if (isBuffering) {
 			progressView.setVisibility(View.VISIBLE);
-		} else {
+		} else if (!player.isIdle()) {
 			progressView.setVisibility(View.INVISIBLE);
 			channelDetailAdapter.getCurrentFragment().onVideoStart();
 		}
