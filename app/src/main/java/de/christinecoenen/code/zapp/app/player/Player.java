@@ -109,6 +109,8 @@ public class Player {
 			return;
 		}
 
+		playerEventHandler.getErrorResourceId().onNext(-1);
+
 		currentVideoInfo = videoInfo;
 		MediaSource videoSource = getMediaSource(videoInfo);
 		player.stop(true);
@@ -163,6 +165,10 @@ public class Player {
 
 	public Observable<Boolean> isBuffering() {
 		return playerEventHandler.isBuffering().distinctUntilChanged();
+	}
+
+	public boolean isIdle() {
+		return player.getPlaybackState() == com.google.android.exoplayer2.Player.STATE_IDLE;
 	}
 
 	public boolean isShowingSubtitles() {
