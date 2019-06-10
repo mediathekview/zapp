@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ public class StreamPageFragment extends Fragment {
 	protected TextView errorText;
 
 	private View rootView;
+	private Listener listener;
 
 	public static StreamPageFragment newInstance(ChannelModel channelModel) {
 		StreamPageFragment fragment = new StreamPageFragment();
@@ -54,6 +56,8 @@ public class StreamPageFragment extends Fragment {
 			logoView.setContentDescription(channel.getName());
 			errorText.setBackgroundColor(channel.getColor());
 
+			errorText.setOnClickListener(view -> onErrorViewClick());
+
 			if (channel.getSubtitle() != null) {
 				subtitleText.setText(channel.getSubtitle());
 			}
@@ -62,6 +66,23 @@ public class StreamPageFragment extends Fragment {
 		}
 
 		return rootView;
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+
+		if (context instanceof Listener) {
+			listener = (Listener) context;
+		} else {
+			throw new RuntimeException("Activity must implement StreamPageFragment.Listener.");
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		listener = null;
 	}
 
 	@Override
@@ -87,6 +108,11 @@ public class StreamPageFragment extends Fragment {
 		errorText.setText(message);
 	}
 
+	private void onErrorViewClick() {
+		listener.onErrorViewClicked();
+		onHide();
+	}
+
 	private void fadeOutLogo() {
 		if (rootView.getVisibility() == View.VISIBLE) {
 			Animation fadeOutAnimation = AnimationUtils.
@@ -108,5 +134,9 @@ public class StreamPageFragment extends Fragment {
 
 			rootView.startAnimation(fadeOutAnimation);
 		}
+	}
+
+	public interface Listener {
+		void onErrorViewClicked();
 	}
 }

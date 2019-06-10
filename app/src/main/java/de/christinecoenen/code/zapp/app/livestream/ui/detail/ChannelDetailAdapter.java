@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -12,12 +13,12 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 
 	private final IChannelList channelList;
-	private final OnItemChangedListener listener;
+	private final Listener listener;
 	private StreamPageFragment currentFragment;
 
 	ChannelDetailAdapter(FragmentManager fragmentManager, IChannelList channelList,
-								OnItemChangedListener listener) {
-		super(fragmentManager);
+								Listener listener) {
+		super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		this.channelList = channelList;
 		this.listener = listener;
 	}
@@ -30,6 +31,7 @@ class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 		return channelList.get(index);
 	}
 
+	@NonNull
 	@Override
 	public Fragment getItem(int position) {
 		ChannelModel channelModel = channelList.get(position);
@@ -47,7 +49,7 @@ class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 	}
 
 	@Override
-	public void setPrimaryItem(ViewGroup container, int position, Object object) {
+	public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 		if (currentFragment != object) {
 			if (currentFragment != null) {
 				// tell old fragment it's no longer visible
@@ -55,13 +57,13 @@ class ChannelDetailAdapter extends FragmentStatePagerAdapter {
 			}
 
 			currentFragment = ((StreamPageFragment) object);
-			listener.OnItemSelected(channelList.get(position));
+			listener.onItemSelected(channelList.get(position));
 		}
 
 		super.setPrimaryItem(container, position, object);
 	}
 
-	interface OnItemChangedListener {
-		void OnItemSelected(ChannelModel model);
+	interface Listener {
+		void onItemSelected(ChannelModel model);
 	}
 }
