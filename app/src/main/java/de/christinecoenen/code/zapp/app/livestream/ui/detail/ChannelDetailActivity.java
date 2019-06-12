@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -212,9 +213,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (MultiWindowHelper.isInsideMultiWindow(this)) {
-			pauseActivity();
-		}
+		pauseActivity();
 	}
 
 	@Override
@@ -240,6 +239,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();
 				finish();
+				return true;
+			case R.id.menu_pip:
+				// TODO: hide menu for older android versions
+				// TODO: make text translatable
+				// TODO: change menu icon
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					enterPictureInPictureMode();
+				}
 				return true;
 			case android.R.id.home:
 				finish();
@@ -318,7 +325,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 
 	private void pauseActivity() {
 		disposable.clear();
-		unbindService(backgroundPlayerServiceConnection);
+		try {
+			unbindService(backgroundPlayerServiceConnection);
+		} catch (IllegalArgumentException e) {
+
+		}
 	}
 
 	private void resumeActivity() {

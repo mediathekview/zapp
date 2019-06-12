@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.KeyEvent;
@@ -88,6 +89,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 			player.load(VideoInfo.fromShow(show));
 			if (player.getMillis() == 0) {
+				// TODO: this value is wrong when returning from PIP activity
 				player.setMillis(lastPlayerMillis);
 			}
 			player.resume();
@@ -116,21 +118,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_mediathek_player);
 		ButterKnife.bind(this);
 
-		// set to show
-		//noinspection ConstantConditions
-		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
-		if (show == null) {
-			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
-
 		setSupportActionBar(toolbar);
-		if (getSupportActionBar() != null) {
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			setTitle(show.getTopic());
-			getSupportActionBar().setSubtitle(show.getTitle());
-		}
+
+		// set to show
+		parseIntent(getIntent());
 
 		settings = new SettingsRepository(this);
 
@@ -138,6 +129,13 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		videoView.requestFocus();
 
 		errorView.setOnClickListener(this::onErrorViewClick);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		// called when coming back from picture in picture mode
+		parseIntent(intent);
 	}
 
 	private void onErrorViewClick(View view) {
@@ -190,9 +188,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (MultiWindowHelper.isInsideMultiWindow(this)) {
-			pauseActivity();
-		}
+		pauseActivity();
 	}
 
 	@Override
@@ -218,6 +214,15 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();
 				finish();
+				return true;
+			case R.id.menu_pip:
+				// TODO: hide menu for older android versions
+				// TODO: make text translatable
+				// TODO: change menu icon
+				// TODO: check for PIP support
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					enterPictureInPictureMode();
+				}
 				return true;
 			case android.R.id.home:
 				finish();
@@ -296,7 +301,27 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private void pauseActivity() {
 		lastPlayerMillis = getPlayerMillisSafe();
 		disposable.clear();
-		unbindService(backgroundPlayerServiceConnection);
+		try {
+			unbindService(backgroundPlayerServiceConnection);
+		} catch (IllegalArgumentException e) {
+
+		}
+	}
+
+	private void parseIntent(Intent intent) {
+		//noinspection ConstantConditions
+		show = (MediathekShow) intent.getExtras().getSerializable(EXTRA_SHOW);
+		if (show == null) {
+			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			setTitle(show.getTopic());
+			getSupportActionBar().setSubtitle(show.getTitle());
+		}
 	}
 
 	private void resumeActivity() {

@@ -14,4 +14,10 @@
 		android:title="@string/action_play_in_background"
 		app:showAsAction="never" />
 
+	<item
+		android:id="@+id/menu_pip"
+		android:icon="@drawable/ic_headset_white_24dp"
+		android:title="PIP"
+		app:showAsAction="never" />
+
 </menu>
