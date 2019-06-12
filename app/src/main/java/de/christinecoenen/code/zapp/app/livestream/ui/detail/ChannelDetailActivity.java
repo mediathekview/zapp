@@ -227,6 +227,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_channel_detail, menu);
+
+		if (!MultiWindowHelper.supportsPictureInPictureMode(this)) {
+			menu.removeItem(R.id.menu_pip);
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -241,7 +246,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 				finish();
 				return true;
 			case R.id.menu_pip:
-				// TODO: hide menu for older android versions
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					enterPictureInPictureMode();
 				}

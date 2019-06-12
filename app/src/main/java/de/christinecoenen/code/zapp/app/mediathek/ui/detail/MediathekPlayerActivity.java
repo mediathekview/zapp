@@ -202,6 +202,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_mediathek_player, menu);
+
+		if (!MultiWindowHelper.supportsPictureInPictureMode(this)) {
+			menu.removeItem(R.id.menu_pip);
+		}
+
 		return true;
 	}
 
@@ -216,8 +221,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				finish();
 				return true;
 			case R.id.menu_pip:
-				// TODO: hide menu for older android versions
-				// TODO: check for PIP support
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					enterPictureInPictureMode();
 				}
