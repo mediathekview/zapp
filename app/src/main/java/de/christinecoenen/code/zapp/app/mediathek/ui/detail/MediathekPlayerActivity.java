@@ -217,8 +217,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 				return true;
 			case R.id.menu_pip:
 				// TODO: hide menu for older android versions
-				// TODO: make text translatable
-				// TODO: change menu icon
 				// TODO: check for PIP support
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					enterPictureInPictureMode();

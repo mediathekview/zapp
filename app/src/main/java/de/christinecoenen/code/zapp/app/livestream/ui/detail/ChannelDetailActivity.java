@@ -242,8 +242,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 				return true;
 			case R.id.menu_pip:
 				// TODO: hide menu for older android versions
-				// TODO: make text translatable
-				// TODO: change menu icon
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					enterPictureInPictureMode();
 				}
