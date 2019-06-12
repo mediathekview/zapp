@@ -136,6 +136,13 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
+
+		errorView.setOnClickListener(this::onErrorViewClick);
+	}
+
+	private void onErrorViewClick(View view) {
+		hideError();
+		player.recreate();
 	}
 
 	@Override
@@ -263,7 +270,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void onVideoError(Integer messageResourceId) {
-		if (messageResourceId == null) {
+		if (messageResourceId == null || messageResourceId == -1) {
 			hideError();
 		} else {
 			showError(messageResourceId);

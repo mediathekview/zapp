@@ -18,11 +18,16 @@ import timber.log.Timber;
 class PlayerEventHandler implements AnalyticsListener {
 
 	private final BehaviorSubject<Boolean> isBufferingSource = BehaviorSubject.create();
+	private final BehaviorSubject<Boolean> isIdleSource = BehaviorSubject.create();
 	private final BehaviorSubject<Integer> errorResourceIdSource = BehaviorSubject.create();
 	private final BehaviorSubject<Boolean> shouldHoldWakelockSource = BehaviorSubject.create();
 
 	BehaviorSubject<Boolean> isBuffering() {
 		return isBufferingSource;
+	}
+
+	BehaviorSubject<Boolean> isIdle() {
+		return isIdleSource;
 	}
 
 	BehaviorSubject<Integer> getErrorResourceId() {
@@ -41,6 +46,9 @@ class PlayerEventHandler implements AnalyticsListener {
 	public void onPlayerStateChanged(EventTime eventTime, boolean playWhenReady, int playbackState) {
 		boolean isBuffering = playbackState == Player.STATE_BUFFERING;
 		isBufferingSource.onNext(isBuffering);
+
+		boolean isReady = playbackState == Player.STATE_IDLE;
+		isIdleSource.onNext(isReady);
 
 		boolean shouldHoldWakelock = playWhenReady &&
 			(playbackState == Player.STATE_BUFFERING || playbackState == Player.STATE_READY);

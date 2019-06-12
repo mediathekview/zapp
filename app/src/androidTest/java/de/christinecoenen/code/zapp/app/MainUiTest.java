@@ -3,11 +3,6 @@ package de.christinecoenen.code.zapp.app;
 
 import android.content.pm.ActivityInfo;
 
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import androidx.test.espresso.accessibility.AccessibilityChecks;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.DrawerMatchers;
@@ -15,6 +10,12 @@ import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import de.christinecoenen.code.zapp.R;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -140,6 +141,8 @@ public class MainUiTest {
 		// change to live tab
 		onView(withId(R.id.list))
 			.perform(swipeRight());
+
+		Thread.sleep(200);
 
 		// select a channel
 		onView(withId(R.id.gridview_channels))
