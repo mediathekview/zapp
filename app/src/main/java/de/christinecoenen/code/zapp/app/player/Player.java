@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -83,7 +84,7 @@ public class Player {
 			.build();
 		player.setAudioAttributes(audioAttributes, true);
 
-		playerEventHandler = new PlayerEventHandler();
+		playerEventHandler = new PlayerEventHandler(trackSelector);
 
 		// enable subtitles
 		enableSubtitles(settings.getEnableSubtitles());
@@ -174,6 +175,10 @@ public class Player {
 	public boolean isShowingSubtitles() {
 		Timber.d(trackSelector.getParameters().preferredTextLanguage);
 		return !SUBTITLE_LANGUAGE_OFF.equals(trackSelector.getParameters().preferredTextLanguage);
+	}
+
+	private void setVideoQuality(TrackSelector trackSelector, Integer qualityBitrate) {
+
 	}
 
 	public Observable<Integer> getErrorResourceId() {
