@@ -220,7 +220,7 @@
   {
 	"id": "parlamentsfernsehen_1",
 	"name": "Parlaments\u00adfern\u00adsehen Kanal 1",
-	"stream_url": "http://c13014-l-hls.u.core.cdn.streamfarm.net/1000153copo/hk1.m3u8",
+	"stream_url": "https://cldf-hlsgw.r53.cdn.tv1.eu/1000153copo/hk1.m3u8",
 	"logo_name": "channel_logo_parlamentsfernsehen",
 	"subtitle": "Kanal 1",
 	"color": "#000000"
@@ -228,7 +228,7 @@
   {
 	"id": "parlamentsfernsehen_2",
 	"name": "Parlaments\u00adfern\u00adsehen Kanal 2",
-	"stream_url": "http://c13014-l-hls.u.core.cdn.streamfarm.net/1000153copo/hk2.m3u8",
+	"stream_url": "https://cldf-hlsgw.r53.cdn.tv1.eu/1000153copo/hk2.m3u8",
 	"logo_name": "channel_logo_parlamentsfernsehen",
 	"subtitle": "Kanal 2",
 	"color": "#000000"
