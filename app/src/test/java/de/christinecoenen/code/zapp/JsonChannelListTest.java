@@ -57,7 +57,7 @@ public class JsonChannelListTest {
 			assertNotNull(id + " stream url is not null", channel.getStreamUrl());
 			assertNotEquals(id + " has a color set", 0, channel.getColor());
 			assertNotEquals(id + " has a drawable id set", 0, channel.getDrawableId());
-			assertTrue(id + " stream is reachable", pingURL(channel.getStreamUrl(), 2000));
+			// assertTrue(id + " stream is reachable", pingURL(channel.getStreamUrl(), 2000));
 
 			ids.add(id);
 		}
