@@ -28,4 +28,4 @@ cache:
     - $HOME/.android/build-cache
 
 script:
-  - ./gradlew build test
+  - ./gradlew build test -Pci

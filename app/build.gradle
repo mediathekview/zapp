@@ -39,6 +39,11 @@ android {
 					events 'passed', 'skipped', 'failed', 'standardError'
 					exceptionFormat 'full'
 				}
+
+				if (project.hasProperty('ci')) {
+					// tests that should *not* run on ci machines:
+					exclude '**/JsonChannelListConnectionTest*'
+				}
 			}
 		}
 	}
