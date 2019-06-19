@@ -1,11 +1,4 @@
-----
-**Abstürze in Version 2.2.1**
-
-Version 2.2.1 enthält einen bekannten Fehler, der die App zum Abstürzen bringt, wenn die Sender nicht in der Standard-Reihenfolge angeordnet sind (https://github.com/cemrich/zapp/issues/152).
-
-Der Fehler ist in Version 2.2.2 behoben. Die Version sollte bald in F-Droid auftauchen oder kann unter https://github.com/cemrich/zapp/releases/tag/v2.2.2 heruntergeladen werden.
-
-----
+[![Build Status](https://travis-ci.com/cemrich/zapp.svg?branch=master)](https://travis-ci.com/cemrich/zapp)
 
 ![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
 
