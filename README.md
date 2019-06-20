@@ -2,16 +2,18 @@
 
 ![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
 
-1. [About](#about)
+1. [Über](#über)
 2. [FAQ](app/src/main/res/raw/faq.md)
 3. [Changelog](app/src/main/res/raw/changelog.md)
-4. [Libraries Example](#libraries)
+4. [Bibliotheken](#bibliotheken)
+
+---------------------
 
 ## Über
 
 Zapp gibt dir schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.
 
-**Achtung:** Wenn du Zapp außerhalb deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
+**Achtung:** Wenn du Zapp außerhalb Deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
 
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
