@@ -180,7 +180,7 @@ public class Player {
 		if (mappedTrackInfo != null) {
 			int rendererIndex = getVideoRendererIndex(trackSelector);
 			Pair<AlertDialog, TrackSelectionView> dialogPair =
-				TrackSelectionView.getDialog(activity, "Video Qualität", trackSelector, rendererIndex);
+				TrackSelectionView.getDialog(activity, activity.getString(R.string.video_quality), trackSelector, rendererIndex);
 			dialogPair.first.show();
 		}
 	}
