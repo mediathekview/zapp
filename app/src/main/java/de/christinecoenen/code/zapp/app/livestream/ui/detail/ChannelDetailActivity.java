@@ -19,7 +19,6 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
-
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
@@ -234,6 +233,10 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_video_quality:
+				//Todo: create a popup dialog with available bitrates from the tracks
+				player.showQualitySettingsDialog(this);
+				return true;
 			case R.id.menu_share:
 				startActivity(Intent.createChooser(currentChannel.getVideoShareIntent(), getString(R.string.action_share)));
 				return true;

@@ -1,12 +1,13 @@
 package de.christinecoenen.code.zapp.app.player;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.media.session.MediaSessionCompat;
-
-import androidx.annotation.NonNull;
+import android.util.Pair;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -18,13 +19,15 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.TrackSelectionView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -32,6 +35,7 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
+import androidx.annotation.NonNull;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
@@ -42,19 +46,19 @@ import timber.log.Timber;
 
 public class Player {
 
-	private final static String SUBTITLE_LANGUAGE_ON = "deu";
+	private final static String SUBTITLE_LANGUAGE_ON  = "deu";
 	private final static String SUBTITLE_LANGUAGE_OFF = "none";
 
-	private final SimpleExoPlayer player;
+	private final SimpleExoPlayer          player;
 	private final DefaultDataSourceFactory dataSourceFactory;
-	private final DefaultTrackSelector trackSelector;
-	private final PlayerEventHandler playerEventHandler;
-	private final MediaSessionCompat mediaSession;
-	private final SettingsRepository settings;
-	private final NetworkConnectionHelper networkConnectionHelper;
-	private final Handler playerHandler;
-	private final PlayerWakeLocks playerWakeLocks;
-	private final CompositeDisposable disposables = new CompositeDisposable();
+	private final DefaultTrackSelector     trackSelector;
+	private final PlayerEventHandler       playerEventHandler;
+	private final MediaSessionCompat       mediaSession;
+	private final SettingsRepository       settings;
+	private final NetworkConnectionHelper  networkConnectionHelper;
+	private final Handler                  playerHandler;
+	private final PlayerWakeLocks          playerWakeLocks;
+	private final CompositeDisposable      disposables = new CompositeDisposable();
 
 	private VideoInfo currentVideoInfo;
 
@@ -177,9 +181,41 @@ public class Player {
 		return !SUBTITLE_LANGUAGE_OFF.equals(trackSelector.getParameters().preferredTextLanguage);
 	}
 
-	private void setVideoQuality(TrackSelector trackSelector, Integer qualityBitrate) {
-
+	public void showQualitySettingsDialog(Activity activity) {
+		MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+		if (mappedTrackInfo != null) {
+			int rendererIndex = getVideoRendererIndex(trackSelector);
+			Pair<AlertDialog, TrackSelectionView> dialogPair =
+				TrackSelectionView.getDialog(activity, "Video Qualität", trackSelector, rendererIndex);
+			dialogPair.first.show();
+		}
 	}
+
+	private int getVideoRendererIndex(DefaultTrackSelector trackSelector) {
+		int videoRendererIndex = 0;
+		MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+		if (mappedTrackInfo != null) {
+			for (int i = 0; i < mappedTrackInfo.getRendererCount(); i++) {
+				TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
+				if (trackGroups.length != 0 && player.getRendererType(i) == C.TRACK_TYPE_VIDEO) {
+					videoRendererIndex = i;
+				}
+			}
+		}
+		return videoRendererIndex;
+	}
+
+//	private TrackGroupArray sortVideoTrackGroupArray(DefaultTrackSelector trackSelector) {
+//		MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+//		if (mappedTrackInfo != null) {
+//			for (int i = 0; i < mappedTrackInfo.getRendererCount(); i++) {
+//				TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
+//				if (trackGroups.length != 0 && player.getRendererType(i) == C.TRACK_TYPE_VIDEO) {
+//
+//				}
+//			}
+//		}
+//	}
 
 	public Observable<Integer> getErrorResourceId() {
 		return Observable.combineLatest(
