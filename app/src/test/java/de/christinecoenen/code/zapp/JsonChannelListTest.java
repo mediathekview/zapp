@@ -7,9 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,35 +54,8 @@ public class JsonChannelListTest {
 			assertNotNull(id + " stream url is not null", channel.getStreamUrl());
 			assertNotEquals(id + " has a color set", 0, channel.getColor());
 			assertNotEquals(id + " has a drawable id set", 0, channel.getDrawableId());
-			assertTrue(id + " stream is reachable", pingURL(channel.getStreamUrl(), 2000));
 
 			ids.add(id);
 		}
 	}
-
-	/**
-	 * Pings a HTTP URL. This effectively sends a HEAD request and returns <code>true</code> if the response code is in
-	 * the 200-399 range.
-	 *
-	 * @param url     The HTTP URL to be pinged.
-	 * @param timeout The timeout in millis for both the connection timeout and the response read timeout. Note that
-	 *                the total timeout is effectively two times the given timeout.
-	 * @return <code>true</code> if the given HTTP URL has returned response code 200-399 on a HEAD request within the
-	 * given timeout, otherwise <code>false</code>.
-	 * @see "http://stackoverflow.com/a/3584332/3012757"
-	 */
-	private static boolean pingURL(String url, int timeout) {
-		try {
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-			connection.setConnectTimeout(timeout);
-			connection.setReadTimeout(timeout);
-			connection.setRequestMethod("GET");
-			int responseCode = connection.getResponseCode();
-			return (200 <= responseCode && responseCode <= 399);
-		} catch (IOException exception) {
-			exception.printStackTrace();
-			return false;
-		}
-	}
-
 }
