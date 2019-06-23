@@ -71,6 +71,8 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>
 	<string name="player_zoom_state_boxed">Original</string>
+	<string name="video_quality">Qualität</string>
+	<string name="video_format_fallback">(Ersatz)</string>
 
 
 	<!-- paperboy changelog -->
@@ -103,5 +105,4 @@
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>
-	<string name="video_quality">Qualität</string>
 </resources>

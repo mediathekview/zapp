@@ -38,8 +38,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-import java.util.ArrayList;
-
 public class Player {
 
 	private final static String SUBTITLE_LANGUAGE_ON = "deu";
@@ -178,12 +176,12 @@ public class Player {
 	}
 
 	public void showQualitySettingsDialog(Activity activity) {
-		overrideVideoTrackGroup(trackSelector);
 		MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
 		if (mappedTrackInfo != null) {
 			int rendererIndex = getVideoRendererIndex(trackSelector);
 			Pair<AlertDialog, TrackSelectionView> dialogPair =
 				TrackSelectionView.getDialog(activity, activity.getString(R.string.video_quality), trackSelector, rendererIndex);
+			dialogPair.second.setTrackNameProvider(new CustomTrackNameProvider(activity.getResources()));
 			dialogPair.first.show();
 		}
 	}
@@ -200,51 +198,6 @@ public class Player {
 			}
 		}
 		return videoRendererIndex;
-	}
-
-	private void overrideVideoTrackGroup (DefaultTrackSelector trackSelector) {
-		int videoRendererIndex = getVideoRendererIndex(trackSelector);
-		TrackGroup sortedVideoTrackGroup = getSortedVideoTrackGroup(getSortedFormatArrayList(trackSelector));
-		TrackGroupArray sortedVideoTrackgroupArray = new TrackGroupArray(sortedVideoTrackGroup);
-		DefaultTrackSelector.ParametersBuilder builder = trackSelector.getParameters().buildUpon();
-
-	}
-
-	private TrackGroup getSortedVideoTrackGroup(@NonNull ArrayList<Format> formatList) {
-		Format [] formats = new Format[formatList.size()];
-		for (int i = 0; i < formatList.size(); i++) {
-			formats[i] = formatList.get(i);
-		}
-		return new TrackGroup(formats);
-	}
-
-	private ArrayList<Format> getSortedFormatArrayList(DefaultTrackSelector trackSelector)  {
-		ArrayList<Format> formatArrayList = new ArrayList<>();
-		Format tempFormat = null;
-		MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
-		if (mappedTrackInfo != null) {
-			for (int trackGroups = 0; trackGroups < mappedTrackInfo.getRendererCount(); trackGroups++) {
-				TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(trackGroups);
-				if (trackGroupArray.length != 0 && player.getRendererType(trackGroups) == C.TRACK_TYPE_VIDEO) {
-					//Trackgroup Array für videos auslesen
-					for (int j = 0; j < trackGroupArray.length; j++) {
-						TrackGroup trackGroup = trackGroupArray.get(j);
-						for (int k = 0; k < trackGroup.length; k++) {
-							Format format = trackGroup.getFormat(k);
-							if (tempFormat == null) {
-								tempFormat = format;
-							} else {
-								if (tempFormat.bitrate != format.bitrate) {
-									formatArrayList.add(format);
-									tempFormat = format;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return formatArrayList;
 	}
 
 	public Observable<Integer> getErrorResourceId() {
