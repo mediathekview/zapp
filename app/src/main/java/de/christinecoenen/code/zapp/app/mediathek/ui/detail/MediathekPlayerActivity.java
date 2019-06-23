@@ -15,15 +15,12 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.exoplayer2.ui.PlayerControlView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
@@ -212,6 +209,9 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_video_quality:
+				player.showQualitySettingsDialog(this);
+				return true;
 			case R.id.menu_share:
 				IntentHelper.openUrl(this, show.getVideoUrl());
 				return true;
