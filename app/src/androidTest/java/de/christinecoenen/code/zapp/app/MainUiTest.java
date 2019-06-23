@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app;
 
 import android.content.pm.ActivityInfo;
 
-import androidx.test.espresso.accessibility.AccessibilityChecks;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.DrawerMatchers;
 import androidx.test.espresso.contrib.NavigationViewActions;
@@ -11,7 +10,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,19 +37,10 @@ public class MainUiTest {
 	@Rule
 	public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-	@BeforeClass
-	public static void enableAccessibilityChecks() {
-		AccessibilityChecks.enable()
-			.setRunChecksFromRootView(true)
-			.setThrowExceptionForErrors(false);
-	}
-
 	/**
 	 * Basic ui test that calls every screen and asserts nothing
 	 * is crashing very badly. Run this when you are unsure if your
 	 * changes broke something.
-	 * <p>
-	 * Also, this test will output acessibility errors to logcat.
 	 */
 	@Test
 	public void mainUiTest() throws InterruptedException {
