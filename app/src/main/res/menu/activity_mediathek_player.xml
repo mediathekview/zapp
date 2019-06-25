@@ -5,6 +5,7 @@
 	<item
 		android:id="@+id/menu_video_quality"
 		android:icon="@drawable/ic_settings_white_24dp"
+		android:visible="false"
 		android:title="@string/video_quality"
 		app:showAsAction="ifRoom"/>
 
