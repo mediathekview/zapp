@@ -10,16 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
+import android.view.*;
 import android.widget.ProgressBar;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
-
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
@@ -234,6 +228,9 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_video_quality:
+				player.showQualitySettingsDialog(this);
+				return true;
 			case R.id.menu_share:
 				startActivity(Intent.createChooser(currentChannel.getVideoShareIntent(), getString(R.string.action_share)));
 				return true;
