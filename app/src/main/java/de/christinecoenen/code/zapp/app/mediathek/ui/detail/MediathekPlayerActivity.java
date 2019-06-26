@@ -97,6 +97,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			binder.movePlaybackToForeground();
 
 			updateSubtitleButtons();
+
+			if (MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this)) {
+				onPictureInPictureModeChanged(true);
+			}
 		}
 
 		@Override
@@ -176,7 +180,12 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
-		videoView.setUseController(!isInPictureInPictureMode);
+		if (isInPictureInPictureMode) {
+			videoView.setUseController(false);
+			videoView.hideControls();
+		} else {
+			videoView.setUseController(true);
+		}
 	}
 
 	@Override

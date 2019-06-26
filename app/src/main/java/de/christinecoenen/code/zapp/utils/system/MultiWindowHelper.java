@@ -24,6 +24,18 @@ public class MultiWindowHelper {
 
 	/**
 	 * This function can be used with any API level and will return
+	 * true if the activity is currently in pip mode.
+	 *
+	 * @param activity to get access to pip api
+	 * @return true if activity is currently displayed in picture in picture mode
+	 */
+	@TargetApi(24)
+	public static boolean isInPictureInPictureMode(Activity activity) {
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInPictureInPictureMode();
+	}
+
+	/**
+	 * This function can be used with any API level and will return
 	 * false if the picture in picture feature is not supported.
 	 *
 	 * @return true if the current device does support picture in picture mode
