@@ -44,6 +44,8 @@ public class Player {
 	private final static String SUBTITLE_LANGUAGE_ON = "deu";
 	private final static String SUBTITLE_LANGUAGE_OFF = "none";
 
+	private final static IPlaybackPositionRepository playbackPositionRepository = new MemoryPlaybackPositionRepository();
+
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
 	private final DefaultTrackSelector trackSelector;
@@ -117,6 +119,11 @@ public class Player {
 
 		player.addAnalyticsListener(playerEventHandler);
 		player.prepare(videoSource);
+
+		if (videoInfo.hasDuration()) {
+			long positionMillis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo);
+			setMillis(positionMillis);
+		}
 	}
 
 	public void recreate() {
@@ -155,14 +162,6 @@ public class Player {
 		enableSubtitles(false);
 	}
 
-	public void setMillis(long millis) {
-		player.seekTo(millis);
-	}
-
-	public long getMillis() {
-		return player.getCurrentPosition();
-	}
-
 	public Observable<Boolean> isBuffering() {
 		return playerEventHandler.isBuffering().distinctUntilChanged();
 	}
@@ -196,12 +195,22 @@ public class Player {
 	}
 
 	void destroy() {
+		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
+
 		playerWakeLocks.destroy();
 		disposables.clear();
 		networkConnectionHelper.endListenForNetworkChanges();
 		player.removeAnalyticsListener(playerEventHandler);
 		player.release();
 		mediaSession.release();
+	}
+
+	private void setMillis(long millis) {
+		player.seekTo(millis);
+	}
+
+	private long getMillis() {
+		return player.getCurrentPosition();
 	}
 
 	private void enableSubtitles(boolean enabled) {

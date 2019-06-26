@@ -42,7 +42,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	PlayerControlView.VisibilityListener {
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
-	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
 
 	public static Intent getStartIntent(Context context, MediathekShow show) {
 		Intent intent = new Intent(context, MediathekPlayerActivity.class);
@@ -76,7 +75,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private final CompositeDisposable disposable = new CompositeDisposable();
 	private MediathekShow show;
 	private Player player;
-	private long lastPlayerMillis;
 	private SettingsRepository settings;
 	private BackgroundPlayerService.Binder binder;
 
@@ -88,10 +86,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			player.setView(videoView);
 
 			player.load(VideoInfo.fromShow(show));
-			if (player.getMillis() == 0) {
-				// TODO: this value is wrong when returning from PIP activity
-				player.setMillis(lastPlayerMillis);
-			}
 			player.resume();
 
 			Disposable bufferingDisposable = player.isBuffering()
@@ -141,18 +135,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private void onErrorViewClick(View view) {
 		hideError();
 		player.recreate();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putLong(ARG_VIDEO_MILLIS, getPlayerMillisSafe());
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		lastPlayerMillis = savedInstanceState.getLong(ARG_VIDEO_MILLIS);
 	}
 
 	@Override
@@ -298,7 +280,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void pauseActivity() {
-		lastPlayerMillis = getPlayerMillisSafe();
 		disposable.clear();
 		try {
 			unbindService(backgroundPlayerServiceConnection);
@@ -368,9 +349,5 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-	}
-
-	private long getPlayerMillisSafe() {
-		return player == null ? 0 : player.getMillis();
 	}
 }
