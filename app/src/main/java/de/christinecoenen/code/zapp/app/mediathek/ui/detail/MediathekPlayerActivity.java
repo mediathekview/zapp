@@ -194,9 +194,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
-		if (isInPictureInPictureMode) {
-			videoView.hideControls();
-		}
+		videoView.setUseController(!isInPictureInPictureMode);
 	}
 
 	@Override
