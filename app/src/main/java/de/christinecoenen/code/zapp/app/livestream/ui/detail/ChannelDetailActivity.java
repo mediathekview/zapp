@@ -226,6 +226,16 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		invalidateOptionsMenu();
+		MenuItem qualityMenuItem = menu.findItem(R.id.menu_video_quality);
+		if (qualityMenuItem != null && player != null) {
+			qualityMenuItem.setVisible(player.isVideoQualityChoiceAvailable());
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_video_quality:

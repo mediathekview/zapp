@@ -200,6 +200,24 @@ public class Player {
 		return videoRendererIndex;
 	}
 
+	public boolean isVideoQualityChoiceAvailable() {
+		if (trackSelector != null) {
+			MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+			if (mappedTrackInfo != null) {
+				for (int i = 0; i < mappedTrackInfo.getRendererCount(); i++) {
+					TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
+					if (trackGroups.length != 0 && player.getRendererType(i) == C.TRACK_TYPE_VIDEO) {
+						TrackGroup trackGroup = trackGroups.get(getVideoRendererIndex(trackSelector));
+						if (trackGroup.length > 1) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public Observable<Integer> getErrorResourceId() {
 		return Observable.combineLatest(
 			playerEventHandler.getErrorResourceId(),
