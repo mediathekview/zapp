@@ -111,6 +111,10 @@ public class Player {
 			return;
 		}
 
+		if (currentVideoInfo != null) {
+			saveCurrentPlaybackPosition();
+		}
+
 		playerEventHandler.getErrorResourceId().onNext(-1);
 
 		currentVideoInfo = videoInfo;
@@ -195,7 +199,7 @@ public class Player {
 	}
 
 	void destroy() {
-		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
+		saveCurrentPlaybackPosition();
 
 		playerWakeLocks.destroy();
 		disposables.clear();
@@ -217,6 +221,10 @@ public class Player {
 		String language = enabled ? SUBTITLE_LANGUAGE_ON : SUBTITLE_LANGUAGE_OFF;
 		trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredTextLanguage(language));
 		settings.setEnableSubtitles(enabled);
+	}
+
+	private void saveCurrentPlaybackPosition() {
+		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
 	}
 
 	@NonNull
