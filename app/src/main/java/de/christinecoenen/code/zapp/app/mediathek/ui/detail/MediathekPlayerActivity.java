@@ -98,9 +98,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 			updateSubtitleButtons();
 
-			if (MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this)) {
-				onPictureInPictureModeChanged(true);
-			}
+			boolean isInPipMode = MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this);
+			onPictureInPictureModeChanged(isInPipMode);
 		}
 
 		@Override
@@ -185,6 +184,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			videoView.hideControls();
 		} else {
 			videoView.setUseController(true);
+			videoView.showControls();
 		}
 	}
 
