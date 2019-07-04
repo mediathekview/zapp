@@ -82,6 +82,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			binder = (BackgroundPlayerService.Binder) service;
+			binder.setForegroundActivityIntent(getIntent());
 			player = binder.getPlayer();
 			player.setView(videoView);
 
@@ -315,7 +316,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private void resumeActivity() {
 		hideError();
-		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection, getIntent());
+		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection);
 	}
 
 	private void updateSubtitleButtons() {

@@ -121,6 +121,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			binder = (BackgroundPlayerService.Binder) service;
+			binder.setForegroundActivityIntent(getIntent());
 			player = binder.getPlayer();
 			player.setView(videoView);
 
@@ -336,7 +337,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 
 	private void resumeActivity() {
 		programInfoView.resume();
-		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection, getIntent());
+		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection);
 	}
 
 	private void playDelayed() {
@@ -354,7 +355,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		}
 
 		Intent currentIntent = ChannelDetailActivity.getStartIntent(this, currentChannel.getId());
-		binder.updateForegroundActivityIntent(currentIntent);
+		binder.setForegroundActivityIntent(currentIntent);
 
 		Timber.d("play: %s", currentChannel.getName());
 		player.load(VideoInfo.fromChannel(currentChannel));
