@@ -92,7 +92,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		// workaround to avoid SSLHandshakeException on Android 7 devices
 		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
 		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-			.tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2)
+			.tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
 			.build();
 
 		OkHttpClient client = new OkHttpClient.Builder()
