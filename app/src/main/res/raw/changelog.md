@@ -1,5 +1,17 @@
-## Next release
+## 2.2.2
+* Absturz beim Laden der verändereten Senderliste behoben.
+* Einstellungsbildschirm aktualisiert.
+
+## 2.2.1
+* Absturz beim Starten des Hintergrund-Playbacks behoben.
+
+## 2.2.0
 * Lautstärke- und Helligkeitsregler getauscht.
+* Streams von ARD repariert (danke an protvis74).
+* Background-Playback auf Android P repariert.
+* Navigation-Bar überlappt keine UI-Elemente mehr.
+* Pinch-to-Zoom auf nicht 16:9-Geräten eingebaut.
+* Absturz bei Klick auf die Notification behoben.
 
 ## 2.1.1
 * Diverse Abstürze behoben

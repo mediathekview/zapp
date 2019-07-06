@@ -113,7 +113,11 @@ public class BackgroundPlayerService extends IntentService implements
 		super.onDestroy();
 	}
 
-	private void onPlayerError(int messageResourceId) {
+	private void onPlayerError(Integer messageResourceId) {
+		if (messageResourceId == null || messageResourceId == -1) {
+			return;
+		}
+
 		boolean wasPlayingInBackground = isPlaybackInBackground;
 		movePlaybackToForeground();
 

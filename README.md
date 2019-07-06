@@ -1,15 +1,19 @@
+[![Build Status](https://travis-ci.com/cemrich/zapp.svg?branch=master)](https://travis-ci.com/cemrich/zapp)
+
 ![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
 
-1. [About](#about)
+1. [Über](#über)
 2. [FAQ](app/src/main/res/raw/faq.md)
 3. [Changelog](app/src/main/res/raw/changelog.md)
-4. [Libraries Example](#libraries)
+4. [Bibliotheken](#bibliotheken)
 
-## About
+---------------------
+
+## Über
 
 Zapp gibt dir schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.
 
-**Achtung:** Wenn du Zapp außerhalb deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
+**Achtung:** Wenn du Zapp außerhalb Deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
 
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
@@ -19,17 +23,16 @@ Zapp gibt dir schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Ferns
 
 ---------------------
 
-## Translations
+## Übersetzungen
 
 Zapp wird in Deutsch entwickelt, kann aber über [Transifex](https://www.transifex.com/none-581/zapp-android-app/) in andere Sprachen übersetzt werden. Vorschläge für weitere Sprachen und Helfer beim Übersetzen sind herzlich willkommen!
 
-## Libraries
+## Bibliotheken
 
 Zapp uses a lot of awesome open source libraries:
 - [JUnit](http://junit.org/junit4/) to test things out
 - [Gson](https://github.com/google/gson) to parse the list of channels
 - [Commons IO](https://commons.apache.org/proper/commons-io/) for a sane way to handle files on Android
-- [Paperboy](https://github.com/porokoro/paperboy) to easily display a nice looking changelog
 - [DragListView](https://github.com/woxblom/DragListView) to let you reorder the channel list intuitively
 - [Butterknive](https://jakewharton.github.io/butterknife/) to avoid writing a lot of boilerplate code
 - [exo player](https://google.github.io/ExoPlayer/) the better video player

@@ -22,17 +22,17 @@ class PreferenceHelper {
 		preferences = context.getSharedPreferences(SHARED_PEFERENCES_NAME, Context.MODE_PRIVATE);
 	}
 
-	void saveList(String key, List list) {
+	void saveList(String key, List<String> list) {
 		SharedPreferences.Editor editor = preferences.edit();
 		String jsonList = gson.toJson(list);
 		editor.putString(key, jsonList);
 		editor.apply();
 	}
 
-	<T> List<T> loadList(String key) {
+	List<String> loadList(String key) {
 		if (preferences.contains(key)) {
 			String jsonList = preferences.getString(key, null);
-			Type listType = new TypeToken<ArrayList<T>>(){}.getType();
+			Type listType = new TypeToken<ArrayList<String>>(){}.getType();
 			return gson.fromJson(jsonList, listType);
 		} else {
 			return null;

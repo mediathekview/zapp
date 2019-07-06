@@ -2,7 +2,8 @@ package de.christinecoenen.code.zapp.app.settings.ui;
 
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+
+import androidx.preference.PreferenceFragmentCompat;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference;
@@ -11,7 +12,7 @@ import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
 	private static final String PREF_SHORTCUTS = "pref_shortcuts";
 
@@ -19,7 +20,7 @@ public class SettingsFragment extends PreferenceFragment {
 	 * Use this factory method to create a new instance of
 	 * this fragment.
 	 */
-	public static SettingsFragment newInstance() {
+	static SettingsFragment newInstance() {
 		return new SettingsFragment();
 	}
 
@@ -30,8 +31,7 @@ public class SettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.preferences);
 
 		shortcutPreference = (ShortcutPreference) getPreferenceScreen()

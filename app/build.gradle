@@ -8,13 +8,16 @@ android {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 21
 		targetSdkVersion 28
-		versionCode 31
-		versionName "2.1.1"
+		versionCode 34
+		versionName "2.2.2"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_8
 		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	packagingOptions {
+		exclude 'META-INF/library-core_release.kotlin_module'
 	}
 
 	buildTypes {
@@ -25,6 +28,23 @@ android {
 			shrinkResources true
 			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+	testOptions {
+		unitTests {
+			includeAndroidResources = true
+			all {
+				testLogging {
+					events 'passed', 'skipped', 'failed', 'standardError'
+					exceptionFormat 'full'
+				}
+
+				if (project.hasProperty('ci')) {
+					// tests that should *not* run on ci machines:
+					exclude '**/JsonChannelListConnectionTest*'
+				}
+			}
 		}
 	}
 }
@@ -38,35 +58,42 @@ dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
 	// tests
-	androidTestImplementation 'androidx.test:core:1.1.0'
-	androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-	androidTestImplementation 'androidx.test:runner:1.1.1'
-	androidTestImplementation 'androidx.test:rules:1.1.1'
-	androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.1'
-	androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-	androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.1.1'
+	debugImplementation 'androidx.test:core:1.2.0'
+	debugImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+
+	// device tests
+	androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+	androidTestImplementation 'androidx.test:runner:1.2.0'
+	androidTestImplementation 'androidx.test:rules:1.2.0'
+	androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+	androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+
+	// unit tests
+	testImplementation 'androidx.test.ext:junit:1.1.1'
+	testImplementation 'org.robolectric:robolectric:4.3'
 
 	// support
 	implementation 'androidx.appcompat:appcompat:1.0.2'
 	implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 	implementation 'com.google.android.material:material:1.0.0'
 	implementation 'androidx.cardview:cardview:1.0.0'
-	implementation 'androidx.annotation:annotation:1.0.1'
+	implementation 'androidx.annotation:annotation:1.1.0'
 	implementation 'androidx.recyclerview:recyclerview:1.0.0'
+	implementation 'androidx.preference:preference:1.0.0'
 
 	// helper
 	implementation 'com.google.code.gson:gson:2.8.5'
 	implementation 'commons-io:commons-io:2.6'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.6.3'
+	implementation 'com.github.woxthebox:draglistview:1.6.4'
 
 	// markdown
-	implementation 'ru.noties:markwon:2.0.1'
+	implementation 'ru.noties:markwon:2.0.2'
 
 	// butterknive:
-	implementation 'com.jakewharton:butterknife:10.0.0'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+	implementation 'com.jakewharton:butterknife:10.1.0'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
 	// exo player
 	implementation 'com.google.android.exoplayer:exoplayer-core:2.9.2'
@@ -75,8 +102,8 @@ dependencies {
 	implementation 'com.google.android.exoplayer:extension-mediasession:2.9.2'
 
 	// retrofit rest client
-	implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-	implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
 	// ACRA crash reporting
 	releaseImplementation 'ch.acra:acra:4.11'
@@ -85,11 +112,11 @@ dependencies {
 	implementation 'com.jakewharton.timber:timber:4.7.1'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.10.1'
+	implementation 'joda-time:joda-time:2.10.2'
 
 	// rxjava
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+	implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
 
 	// about libraries view
-	implementation 'com.mikepenz:aboutlibraries:6.2.1'
+	implementation 'com.mikepenz:aboutlibraries:7.0.0'
 }

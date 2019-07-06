@@ -2,11 +2,12 @@ package de.christinecoenen.code.zapp.app.settings.helper;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.preference.MultiSelectListPreference;
-import android.preference.Preference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.Toast;
+
+import androidx.preference.MultiSelectListPreference;
+import androidx.preference.Preference;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,27 +47,21 @@ public class ShortcutPreference extends MultiSelectListPreference implements Pre
 	}
 
 	@Override
-	protected void onDialogClosed(boolean positiveResult) {
-		super.onDialogClosed(positiveResult);
-
-		if (positiveResult) {
-			setSummaryToSelectedChannels();
-		}
-	}
-
-	@Override
 	public boolean onPreferenceChange(Preference preference, Object selectedValues) {
 		@SuppressWarnings("unchecked")
 		Set<String> selectedIds = (Set<String>) selectedValues;
 
-		if (saveShortcuts(selectedIds)) {
-			// all shortcuts could be saved
-			return true;
-		} else {
+		boolean success = saveShortcuts(selectedIds);
+
+		if (!success) {
+			// shortcuts could not be saved
 			Toast.makeText(context, R.string.pref_shortcuts_too_many, Toast.LENGTH_LONG).show();
-			loadValuesFromShortcuts();
-			return false;
 		}
+
+		loadValuesFromShortcuts();
+		setSummaryToSelectedChannels();
+
+		return success;
 	}
 
 	private void init(Context context) {

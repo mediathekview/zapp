@@ -6,6 +6,7 @@
 
 	<string name="activity_about_title">Über Zapp</string>
 	<string name="activity_about_summary">Zapp gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.</string>
+	<string name="activity_about_feedback_mail_subject">Zapp Feedback</string>
 
 	<string name="activity_changelog_title">Changelog</string>
 
@@ -56,6 +57,7 @@
 	<string name="action_share">Teilen</string>
 	<string name="action_continue">Weiter</string>
 	<string name="action_open">Öffnen</string>
+	<string name="action_send_mail">Mail senden</string>
 	<string name="action_enable_subtitles">Untertitel aktivieren</string>
 	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
@@ -67,6 +69,7 @@
 	<string name="menu_refresh">Aktualisieren</string>
 	<string name="menu_about">Über</string>
 	<string name="menu_settings">Einstellungen</string>
+	<string name="menu_feedback">Feedback</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>

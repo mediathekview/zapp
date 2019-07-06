@@ -30,6 +30,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
+import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
@@ -91,11 +92,12 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		// workaround to avoid SSLHandshakeException on Android 7 devices
 		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
 		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-			.tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2)
+			.tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
 			.build();
 
 		OkHttpClient client = new OkHttpClient.Builder()
 			.connectionSpecs(Collections.singletonList(spec))
+			.addInterceptor(new UserAgentInterceptor())
 			.build();
 
 		Retrofit retrofit = new Retrofit.Builder()
@@ -143,13 +145,13 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_mediathek_list, menu);
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
 				onRefresh();
@@ -216,7 +218,6 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 			this.replaceItems = replaceItems;
 		}
 
-		@SuppressWarnings("ConstantConditions")
 		@Override
 		public void onResponse(@NonNull Call<MediathekAnswer> call, @NonNull Response<MediathekAnswer> response) {
 			adapter.setLoading(false);

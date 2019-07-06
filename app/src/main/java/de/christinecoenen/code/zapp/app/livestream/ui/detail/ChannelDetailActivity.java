@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
+
 import butterknife.BindDrawable;
 import butterknife.BindInt;
 import butterknife.BindView;
@@ -42,7 +43,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-public class ChannelDetailActivity extends FullscreenActivity {
+public class ChannelDetailActivity extends FullscreenActivity implements StreamPageFragment.Listener {
 
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
@@ -84,10 +85,10 @@ public class ChannelDetailActivity extends FullscreenActivity {
 
 	private final Runnable playRunnable = this::play;
 
-	private final ChannelDetailAdapter.OnItemChangedListener onItemChangedListener =
-		new ChannelDetailAdapter.OnItemChangedListener() {
+	private final ChannelDetailAdapter.Listener channelDetailListener =
+		new ChannelDetailAdapter.Listener() {
 			@Override
-			public void OnItemSelected(ChannelModel channel) {
+			public void onItemSelected(ChannelModel channel) {
 				currentChannel = channel;
 				setTitle(channel.getName());
 				setColor(channel.getColor());
@@ -128,7 +129,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 				.subscribe(ChannelDetailActivity.this::onVideoError, Timber::e);
 			disposable.addAll(bufferingDisposable, errorDisposable);
 
-			onItemChangedListener.OnItemSelected(currentChannel);
+			channelDetailListener.onItemSelected(currentChannel);
 
 			binder.movePlaybackToForeground();
 		}
@@ -162,7 +163,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 
 		// pager
 		channelDetailAdapter = new ChannelDetailAdapter(
-			getSupportFragmentManager(), channelList, onItemChangedListener);
+			getSupportFragmentManager(), channelList, channelDetailListener);
 		viewPager.setAdapter(channelDetailAdapter);
 		viewPager.addOnPageChangeListener(onPageChangeListener);
 		viewPager.setOnClickListener(view -> mContentView.performClick());
@@ -265,7 +266,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	}
 
 	private void onVideoError(Integer messageResourceId) {
-		if (messageResourceId == null) {
+		if (messageResourceId == null || messageResourceId == -1) {
 			return;
 		}
 
@@ -280,7 +281,7 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	private void onBufferingChanged(boolean isBuffering) {
 		if (isBuffering) {
 			progressView.setVisibility(View.VISIBLE);
-		} else {
+		} else if (!player.isIdle()) {
 			progressView.setVisibility(View.INVISIBLE);
 			channelDetailAdapter.getCurrentFragment().onVideoStart();
 		}
@@ -296,6 +297,12 @@ public class ChannelDetailActivity extends FullscreenActivity {
 	public boolean onPagerTouch() {
 		delayHide();
 		return false;
+	}
+
+	@Override
+	public void onErrorViewClicked() {
+		player.recreate();
+		player.resume();
 	}
 
 	private void parseIntent(Intent intent) {
