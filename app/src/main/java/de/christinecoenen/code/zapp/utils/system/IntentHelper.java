@@ -43,4 +43,23 @@ public class IntentHelper {
 			context.startActivity(Intent.createChooser(downloadManagerIntent, context.getString(R.string.action_open)));
 		}
 	}
+
+	/**
+	 * Opens the default mail app. If no app is found that can handle
+	 * this intent, a a system chooser is shown.
+	 *
+	 * @param context
+	 * @param mail    receiver mail address
+	 * @param subject mail subject line
+	 */
+	public static void sendMail(Context context, String mail, String subject) {
+		Intent feedbackIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + mail));
+		feedbackIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+
+		try {
+			context.startActivity(feedbackIntent);
+		} catch (ActivityNotFoundException e) {
+			context.startActivity(Intent.createChooser(feedbackIntent, context.getString(R.string.action_send_mail)));
+		}
+	}
 }
