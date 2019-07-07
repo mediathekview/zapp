@@ -54,12 +54,11 @@ public class SettingsRepository {
 	}
 
 	public int prefValueToUiMode(String prefSetting) {
-		// TODO: don't use hardcoded values
 		switch (prefSetting) {
-			case "1":
+			case "light":
 				// light
 				return AppCompatDelegate.MODE_NIGHT_NO;
-			case "2":
+			case "dark":
 				// dark
 				return AppCompatDelegate.MODE_NIGHT_YES;
 			default:
