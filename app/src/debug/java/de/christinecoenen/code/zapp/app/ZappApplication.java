@@ -2,6 +2,9 @@ package de.christinecoenen.code.zapp.app;
 
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import timber.log.Timber;
 
@@ -15,6 +18,9 @@ public class ZappApplication extends Application {
 		Timber.plant(new Timber.DebugTree());
 
 		NotificationHelper.createBackgroundPlaybackChannel(this);
+
+		SettingsRepository settingsRepository = new SettingsRepository(this);
+		AppCompatDelegate.setDefaultNightMode(settingsRepository.getUiMode());
 	}
 
 }

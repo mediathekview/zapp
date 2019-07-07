@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<PreferenceCategory android:title="Aussehen">
+
+		<ListPreference
+			android:defaultValue="0"
+			android:entries="@array/pref_ui_mode_names"
+			android:entryValues="@array/pref_ui_mode_values"
+			android:key="@string/pref_key_ui_mode"
+			android:summary="%s"
+			android:title="Design" />
+
+	</PreferenceCategory>
+
 	<PreferenceCategory android:title="@string/pref_header_video">
 
 		<CheckBoxPreference
