@@ -5,7 +5,6 @@
 	android:layout_height="110dp"
 	android:gravity="bottom"
 	android:orientation="vertical"
-	android:theme="@style/ThemeOverlay.AppCompat.Dark"
 	tools:ignore="RtlSymmetry">
 
 	<ImageView
