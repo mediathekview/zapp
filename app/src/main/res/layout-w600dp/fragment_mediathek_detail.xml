@@ -8,9 +8,9 @@
 		android:layout_height="wrap_content"
 		android:baselineAligned="false"
 		android:orientation="horizontal"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingTop="@dimen/activity_vertical_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
 		tools:context=".app.mediathek.ui.detail.MediathekDetailFragment">
 
 		<LinearLayout
@@ -29,10 +29,10 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
-					android:paddingBottom="70dp"
-					android:paddingEnd="@dimen/activity_horizontal_margin"
 					android:paddingStart="@dimen/activity_horizontal_margin"
-					android:paddingTop="@dimen/activity_vertical_margin">
+					android:paddingTop="@dimen/activity_vertical_margin"
+					android:paddingEnd="@dimen/activity_horizontal_margin"
+					android:paddingBottom="70dp">
 
 					<include layout="@layout/fragment_mediathek_detail_titles_and_description" />
 
@@ -43,8 +43,8 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="end|bottom"
-					android:layout_marginBottom="8dp"
 					android:layout_marginEnd="8dp"
+					android:layout_marginBottom="8dp"
 					android:contentDescription="@string/exo_controls_play_description"
 					android:src="@drawable/ic_play_arrow_white_24dp" />
 
@@ -52,8 +52,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom|start"
-					android:layout_marginBottom="@dimen/activity_vertical_margin"
 					android:layout_marginStart="@dimen/activity_vertical_margin"
+					android:layout_marginBottom="@dimen/activity_vertical_margin"
 					android:orientation="horizontal">
 
 					<TextView
@@ -62,10 +62,10 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:background="@color/colorAccent"
-						android:paddingEnd="4dp"
 						android:paddingStart="4dp"
+						android:paddingEnd="4dp"
 						android:text="@string/fragment_mediathek_batch_subtitle"
-						android:textColor="@android:color/white" />
+						android:textColor="@android:color/primary_text_dark" />
 
 				</LinearLayout>
 
@@ -94,13 +94,15 @@
 					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/fragment_mediathek_duration" />
+					android:text="@string/fragment_mediathek_duration"
+					android:textColor="@color/text_alwayslight_secondary" />
 
 				<TextView
 					android:id="@+id/text_show_duration"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:textColor="@color/text_alwayslight_primary"
 					tools:text="120 min" />
 
 				<TextView
@@ -108,13 +110,15 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="@dimen/activity_vertical_margin"
-					android:text="@string/fragment_mediathek_channel" />
+					android:text="@string/fragment_mediathek_channel"
+					android:textColor="@color/text_alwayslight_secondary" />
 
 				<TextView
 					android:id="@+id/text_show_channel"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:textColor="@color/text_alwayslight_primary"
 					tools:text="ARTE.DE" />
 
 				<TextView
@@ -122,13 +126,15 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="@dimen/activity_vertical_margin"
-					android:text="@string/fragment_mediathek_time" />
+					android:text="@string/fragment_mediathek_time"
+					android:textColor="@color/text_alwayslight_secondary" />
 
 				<TextView
 					android:id="@+id/text_show_time"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:textColor="@color/text_alwayslight_primary"
 					tools:text="vor 2 Tagen" />
 
 			</LinearLayout>

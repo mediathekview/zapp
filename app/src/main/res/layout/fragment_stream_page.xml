@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_gravity="center"
-	android:background="@android:color/white"
+	android:background="?android:attr/colorBackground"
 	tools:ignore="Overdraw">
 
 	<LinearLayout
