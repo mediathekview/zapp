@@ -57,7 +57,7 @@
 	<string name="action_share">Share</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
-	<string name="action_send_mail">Send mail</string>
+	<string name="action_send_mail">Send e-mail</string>
 	<string name="action_enable_subtitles">Activate subtitle</string>
 	<string name="action_disable_subtitles">Deactivate subtitle</string>
 	<string name="action_play_in_background">Play in background</string>
@@ -103,6 +103,10 @@
 	<string name="pref_shortcuts_summary_not_supported">Supported for Android 7.1 and up</string>
 	<string name="pref_shortcuts_summary_limit">Maximum 4 shortcuts can be saved</string>
 	<string name="pref_shortcuts_too_many">Maximum 4 shortcuts can be saved.</string>
+
+	<string name="pref_ui_mode_default">System default</string>
+	<string name="pref_ui_mode_light">Always light</string>
+	<string name="pref_ui_mode_dark">Always dark</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>
