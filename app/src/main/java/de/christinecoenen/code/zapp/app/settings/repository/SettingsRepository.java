@@ -24,8 +24,12 @@ public class SettingsRepository {
 		return preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true);
 	}
 
-	public boolean getWifiOnly() {
-		return preferences.getBoolean(context.getString(R.string.pref_key_wifi_only), true);
+	public boolean getStreamOverWifiOnly() {
+		return preferences.getBoolean(context.getString(R.string.pref_key_stream_wifi_only), true);
+	}
+
+	public boolean getDownloadOverWifiOnly() {
+		return preferences.getBoolean(context.getString(R.string.pref_key_download_wifi_only), true);
 	}
 
 	public boolean getEnableSubtitles() {

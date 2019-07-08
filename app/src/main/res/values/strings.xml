@@ -48,6 +48,7 @@
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
 	<string name="error_mediathek_no_download_manager">Fehler: Download-Manager nicht verfügbar.</string>
 	<string name="error_mediathek_invalid_url">Fehler: Download-URL ist invalide.</string>
+	<string name="error_mediathek_download_over_wifi_only">Download nur über WLAN erlaubt.</string>
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 
@@ -94,8 +95,11 @@
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
 
-	<string name="pref_wifi_only_title">Nur über WLAN streamen</string>
-	<string name="pref_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
+	<string name="pref_stream_wifi_only_title">Nur über WLAN streamen</string>
+	<string name="pref_stream_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
+
+	<string name="pref_download_wifi_only_title">Nur über WLAN herunter laden</string>
+	<string name="pref_download_wifi_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät im Mobilfunknetz befindet</string>
 
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 

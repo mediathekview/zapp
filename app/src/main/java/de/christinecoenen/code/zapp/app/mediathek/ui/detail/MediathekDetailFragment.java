@@ -4,6 +4,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,17 +15,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
 import timber.log.Timber;
@@ -79,6 +83,7 @@ public class MediathekDetailFragment extends Fragment {
 
 
 	private MediathekShow show;
+	private SettingsRepository settingsRepository;
 
 
 	public MediathekDetailFragment() {
@@ -91,6 +96,18 @@ public class MediathekDetailFragment extends Fragment {
 		args.putSerializable(ARG_SHOW, show);
 		fragment.setArguments(args);
 		return fragment;
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		settingsRepository = new SettingsRepository(context);
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		settingsRepository = null;
 	}
 
 	@Override
@@ -204,14 +221,22 @@ public class MediathekDetailFragment extends Fragment {
 		request.setTitle(show.getTitle());
 		request.allowScanningByMediaScanner();
 		request.setVisibleInDownloadsUi(true);
+		request.setAllowedOverMetered(!settingsRepository.getDownloadOverWifiOnly());
 		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
 		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
 
 		// enqueue download
 		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-		if (downloadManager == null) {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		if (downloadManager == null || connectivityManager == null) {
 			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
+		} else if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
+			Snackbar snackbar = Snackbar
+				.make(Objects.requireNonNull(getView()), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
+			snackbar.setAction(R.string.activity_settings_title, v -> startActivity(SettingsActivity.getStartIntent(getContext())));
+			snackbar.show();
 		} else {
 			long downloadId = downloadManager.enqueue(request);
 
