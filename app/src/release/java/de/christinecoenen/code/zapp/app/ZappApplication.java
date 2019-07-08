@@ -14,7 +14,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import timber.log.Timber;
 
-@ReportsCrashes(mailTo = R.string.support_mail,
+@ReportsCrashes(mailTo = "code.coenen@gmail.com",
 	mode = ReportingInteractionMode.DIALOG,
 	resDialogText = R.string.error_app_crash,
 	resDialogTitle = R.string.app_name,
