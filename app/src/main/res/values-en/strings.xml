@@ -48,6 +48,7 @@
 	<string name="error_mediathek_called_without_show">Error: No show handed over.</string>
 	<string name="error_mediathek_no_download_manager">Error: No download manager available. </string>
 	<string name="error_mediathek_invalid_url">Error: Download url is invalid.</string>
+	<string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
 
 	<string name="error_prefixed_message">Error: %s</string>
 
@@ -95,7 +96,10 @@
 	<string name="pref_detail_landscape_summary">Locks the app in landscape mode as long as a video is playing</string>
 
 	<string name="pref_stream_wifi_only_title">Stream over Wifi only</string>
-	<string name="pref_stream_wifi_only_summary">Videos wont play back when your device has a mobile connection</string>
+	<string name="pref_stream_wifi_only_summary">Videos won\'t play back when your device has a mobile connection</string>
+
+	<string name="pref_download_wifi_only_title">Download over Wifi only</string>
+	<string name="pref_download_wifi_only_summary">Videos won\'t download when your device has a mobile connection</string>
 
 	<string name="pref_channel_selection_title">Channel order</string>
 
