@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.app.livestream.api.model;
 
 
+import androidx.annotation.NonNull;
+
 public enum Channel {
 	DAS_ERSTE("das_erste"),
 	BR_NORD("br_nord"),
@@ -53,6 +55,7 @@ public enum Channel {
 		this.id = id;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return id;

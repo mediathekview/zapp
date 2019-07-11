@@ -164,6 +164,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 			subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 		}
 
+		@NonNull
 		@Override
 		public String toString() {
 			return super.toString() + " '" + title.getText() + "'";

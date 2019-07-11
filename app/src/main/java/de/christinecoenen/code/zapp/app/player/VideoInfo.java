@@ -72,6 +72,7 @@ public class VideoInfo {
 			Objects.equals(subtitle, videoInfo.subtitle);
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "VideoInfo{" +

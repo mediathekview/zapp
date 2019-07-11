@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request;
 
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,7 @@ class Query implements Serializable {
 		query = queryString;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "Query{" +

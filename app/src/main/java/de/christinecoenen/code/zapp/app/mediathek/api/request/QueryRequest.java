@@ -3,6 +3,8 @@ package de.christinecoenen.code.zapp.app.mediathek.api.request;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class QueryRequest implements Serializable {
 		return this;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "QueryRequest{" +
