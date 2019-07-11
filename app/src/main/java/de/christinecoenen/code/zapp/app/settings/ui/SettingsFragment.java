@@ -18,7 +18,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends PreferenceFragmentCompat {
+class SettingsFragment extends PreferenceFragmentCompat {
 
 	private static final String PREF_SHORTCUTS = "pref_shortcuts";
 	private static final String PREF_UI_MODE = "pref_ui_mode";
