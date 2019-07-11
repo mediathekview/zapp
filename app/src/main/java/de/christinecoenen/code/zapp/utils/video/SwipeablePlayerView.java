@@ -71,6 +71,10 @@ public class SwipeablePlayerView extends PlayerView implements View.OnTouchListe
 		controlView.hide();
 	}
 
+	public void showControls() {
+		controlView.show();
+	}
+
 	@Override
 	public boolean performClick() {
 		if (getUseController()) {

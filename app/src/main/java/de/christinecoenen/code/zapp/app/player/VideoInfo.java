@@ -15,6 +15,7 @@ public class VideoInfo {
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
 		videoInfo.subtitleUrl = show.getSubtitleUrl();
+		videoInfo.hasDuration = true;
 		return videoInfo;
 	}
 
@@ -23,6 +24,7 @@ public class VideoInfo {
 		videoInfo.url = channel.getStreamUrl();
 		videoInfo.title = channel.getName();
 		videoInfo.subtitle = channel.getSubtitle();
+		videoInfo.hasDuration = false;
 		return videoInfo;
 	}
 
@@ -37,6 +39,8 @@ public class VideoInfo {
 
 	@Nullable
 	private String subtitleUrl;
+
+	private boolean hasDuration = false;
 
 	@NonNull
 	public String getUrl() {
@@ -62,6 +66,10 @@ public class VideoInfo {
 		return subtitleUrl != null;
 	}
 
+	public boolean hasDuration() {
+		return hasDuration;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -69,7 +77,8 @@ public class VideoInfo {
 		VideoInfo videoInfo = (VideoInfo) o;
 		return Objects.equals(url, videoInfo.url) &&
 			Objects.equals(title, videoInfo.title) &&
-			Objects.equals(subtitle, videoInfo.subtitle);
+			Objects.equals(subtitle, videoInfo.subtitle) &&
+			hasDuration == videoInfo.hasDuration;
 	}
 
 	@NonNull
@@ -80,6 +89,7 @@ public class VideoInfo {
 			", title='" + title + '\'' +
 			", subtitle='" + subtitle + '\'' +
 			", subtitleUrl='" + subtitleUrl + '\'' +
+			", hasDuration=" + hasDuration +
 			'}';
 	}
 }

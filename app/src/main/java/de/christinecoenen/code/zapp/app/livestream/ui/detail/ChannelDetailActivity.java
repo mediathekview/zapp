@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -120,6 +121,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			binder = (BackgroundPlayerService.Binder) service;
+			binder.setForegroundActivityIntent(getIntent());
 			player = binder.getPlayer();
 			player.setView(videoView);
 
@@ -212,9 +214,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (MultiWindowHelper.isInsideMultiWindow(this)) {
-			pauseActivity();
-		}
+		pauseActivity();
 	}
 
 	@Override
@@ -228,6 +228,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_channel_detail, menu);
+
+		if (!MultiWindowHelper.supportsPictureInPictureMode(this)) {
+			menu.removeItem(R.id.menu_pip);
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -240,6 +245,11 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();
 				finish();
+				return true;
+			case R.id.menu_pip:
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					enterPictureInPictureMode();
+				}
 				return true;
 			case android.R.id.home:
 				finish();
@@ -318,12 +328,16 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 
 	private void pauseActivity() {
 		disposable.clear();
-		unbindService(backgroundPlayerServiceConnection);
+		try {
+			unbindService(backgroundPlayerServiceConnection);
+		} catch (IllegalArgumentException e) {
+
+		}
 	}
 
 	private void resumeActivity() {
 		programInfoView.resume();
-		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection, getIntent());
+		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection);
 	}
 
 	private void playDelayed() {
@@ -341,7 +355,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		}
 
 		Intent currentIntent = ChannelDetailActivity.getStartIntent(this, currentChannel.getId());
-		binder.updateForegroundActivityIntent(currentIntent);
+		binder.setForegroundActivityIntent(currentIntent);
 
 		Timber.d("play: %s", currentChannel.getName());
 		player.load(VideoInfo.fromChannel(currentChannel));
