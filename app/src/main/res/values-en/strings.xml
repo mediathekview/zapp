@@ -5,7 +5,7 @@
 	<string name="activity_main_tab_mediathek">Media center</string>
 
 	<string name="activity_about_title">About Zapp</string>
-	<string name="activity_about_summary">Zapp gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live. Zapp makes it easy to quickly switch between channels.</string>
+	<string name="activity_about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
 	<string name="activity_about_feedback_mail_subject">Zapp Feedback</string>
 
 	<string name="activity_changelog_title">Changelog</string>
@@ -62,7 +62,7 @@
 	<string name="action_enable_subtitles">Activate subtitle</string>
 	<string name="action_disable_subtitles">Deactivate subtitle</string>
 	<string name="action_play_in_background">Play in background</string>
-	<string name="action_start_picture_in_picture">Picture in picture</string>
+	<string name="action_start_picture_in_picture">Picture in picture (beta)</string>
 
 	<string name="search_query_hint_mediathek">Search media center…</string>
 

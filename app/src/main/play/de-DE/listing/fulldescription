@@ -1,7 +1,5 @@
 <div>
-	<p>
-		Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.
-	</p>
+	<p>Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</p>
 
 	<b>Features</b>
 	<ul>
@@ -17,6 +15,5 @@
 		<li>Teilen-Funktion für Live- und Mediathek-Videos</li>
 		<li>Hintergrund-Playback</li>
 	</ul>
-
-	<b>Achtung:</b> Wenn du Zapp außerhalb deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
+<b>Achtung:</b> Wenn du Zapp außerhalb deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
 </div>
