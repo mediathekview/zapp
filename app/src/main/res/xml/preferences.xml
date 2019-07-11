@@ -41,6 +41,7 @@
 			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 		</Preference>
 
+		<!--suppress AndroidElementNotAllowed -->
 		<de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 			android:defaultValue="@array/empty"
 			android:enabled="false"
