@@ -76,18 +76,6 @@
 	<string name="player_zoom_state_cropped">Zoomed</string>
 	<string name="player_zoom_state_boxed">Original</string>
 
-
-	<!-- paperboy changelog -->
-	<string name="paperboy_section_name">Section</string>
-	<string name="paperboy_item_title">Title</string>
-	<string name="paperboy_item_glyph">\u2022</string>
-	<string name="paperboy_item_type_features">Features</string>
-	<string name="paperboy_item_type_bugs">Bugs</string>
-	<string name="paperboy_item_type_improvements">Improvements</string>
-	<string name="paperboy_item_type_feature">Features</string>
-	<string name="paperboy_item_type_bug">Bugs</string>
-	<string name="paperboy_item_type_improvement">Improvements</string>
-
 	<!-- preferences -->
 	<string name="pref_header_video">Videos</string>
 	<string name="pref_header_channels">Channels</string>
