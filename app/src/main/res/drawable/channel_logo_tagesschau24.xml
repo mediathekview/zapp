@@ -1,4 +1,7 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt" android:width="200dp" android:height="48dp" android:viewportWidth="301.1875" android:viewportHeight="72">
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:width="200dp" android:height="48dp" android:viewportWidth="301.1875" android:viewportHeight="72"
+	tools:keep="@drawable/channel_logo_tagesschau24">
     <path android:pathData="M266.188 0c-19.33 0-35 15.67-35 35s15.67 35 35 35 35-15.67 35-35-15.67-35-35-35zm0 7c15.464 0 28 12.536 28 28s-12.536 28-28 28-28-12.536-28-28 12.536-28 28-28z">
         <aapt:attr name="android:fillColor">
             <gradient android:endColor="#00001a4b" android:endX="250" android:endY="0" android:startColor="#001a4b" android:startX="220" android:startY="35" android:type="linear"/>
