@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	private class MainPageAdapter extends FragmentPagerAdapter {
 
 		MainPageAdapter(FragmentManager fragmentManager) {
-			super(fragmentManager);
+			super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		}
 
 		@Override
