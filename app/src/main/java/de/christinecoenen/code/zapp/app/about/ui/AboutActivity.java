@@ -55,6 +55,7 @@ public class AboutActivity extends LibsActivity {
 
 		Intent intent = new LibsBuilder()
 			.withActivityTitle(getString(R.string.activity_about_title))
+			.withAboutDescription(getString(R.string.aboutLibraries_description_text))
 			.withActivityTheme(theme)
 			.withActivityStyle(style)
 			.withFields(R.string.class.getFields())
