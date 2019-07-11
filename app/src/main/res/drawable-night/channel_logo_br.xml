@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
-		android:width="505dp"
-		android:height="474.80399dp"
+		android:width="200dp"
+		android:height="190dp"
 		android:viewportWidth="505"
 		android:viewportHeight="474.80399"
 		tools:ignore="UnusedResources">
