@@ -1,4 +1,5 @@
 ## 3.0.0
+* Zapp ist Teil von MediathekView!
 * Bild-in-Bild-Funktion (Beta)
 * Nachtmodus
 * Downloads nur im W-Lan erlauben
