@@ -17,6 +17,8 @@ public class SettingsRepository {
 	public SettingsRepository(Context context) {
 		this.context = context.getApplicationContext();
 
+		// TODO: migrate "pref_key_stream_wifi_only" bool to "pref_key_stream_quality_cellular" enum
+
 		preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
 	}
 
@@ -24,8 +26,13 @@ public class SettingsRepository {
 		return preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true);
 	}
 
-	public boolean getStreamOverWifiOnly() {
-		return preferences.getBoolean(context.getString(R.string.pref_key_stream_wifi_only), true);
+	public StreamQuality getCellularStreamQuality() {
+		String quality = preferences.getString(context.getString(R.string.pref_key_stream_quality_cellular), null);
+		if (quality == null) {
+			return StreamQuality.DISABLED;
+		} else {
+			return StreamQuality.valueOf(quality.toUpperCase());
+		}
 	}
 
 	public boolean getDownloadOverWifiOnly() {

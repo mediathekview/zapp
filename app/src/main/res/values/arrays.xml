@@ -13,4 +13,19 @@
 		<item>@string/pref_ui_mode_light</item>
 		<item>@string/pref_ui_mode_dark</item>
 	</string-array>
+
+
+	<string-array name="pref_stream_quality_cellular_values">
+		<item>disabled</item>
+		<item>lowest</item>
+		<item>medium</item>
+		<item>highest</item>
+	</string-array>
+
+	<string-array name="pref_stream_quality_cellular_names">
+		<item>@string/stream_quality_cellular_disabled</item>
+		<item>@string/stream_quality_cellular_lowest</item>
+		<item>@string/stream_quality_cellular_medium</item>
+		<item>@string/stream_quality_cellular_highest</item>
+	</string-array>
 </resources>

@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.app.settings.repository.StreamQuality;
 
 
 public class NetworkConnectionHelper {
@@ -53,7 +54,7 @@ public class NetworkConnectionHelper {
 			return false;
 		}
 
-		return !settings.getStreamOverWifiOnly() || isConnectedToWifi();
+		return settings.getCellularStreamQuality() != StreamQuality.DISABLED || isConnectedToWifi();
 	}
 
 	private boolean isConnectedToWifi() {
