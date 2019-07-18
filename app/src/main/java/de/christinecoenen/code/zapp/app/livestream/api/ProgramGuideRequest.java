@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import de.christinecoenen.code.zapp.app.livestream.api.model.Channel;
 import de.christinecoenen.code.zapp.app.livestream.api.model.ShowResponse;
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
+import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,8 +17,13 @@ import timber.log.Timber;
 
 public class ProgramGuideRequest implements Callback<ShowResponse> {
 
+	private final static OkHttpClient client = new OkHttpClient.Builder()
+		.addInterceptor(new UserAgentInterceptor())
+		.build();
+
 	private final static ProgramInfoService service = new Retrofit.Builder()
 		.baseUrl("https://zappbackend.herokuapp.com/v1/")
+		.client(client)
 		.addConverterFactory(GsonConverterFactory.create())
 		.build()
 		.create(ProgramInfoService.class);
@@ -78,11 +85,9 @@ public class ProgramGuideRequest implements Callback<ShowResponse> {
 
 	@Override
 	public void onResponse(@NonNull Call<ShowResponse> call, @NonNull Response<ShowResponse> response) {
-		//noinspection ConstantConditions
 		if (response.body() == null || !response.body().isSuccess()) {
 			listener.onRequestError();
 		} else {
-			//noinspection ConstantConditions
 			LiveShow liveShow = response.body().getShow().toLiveShow();
 			Cache.getInstance().save(channelId, liveShow);
 			listener.onRequestSuccess(liveShow);

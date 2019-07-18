@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.app.livestream.api.model;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "unused", "CanBeFinal"})
@@ -16,6 +18,7 @@ public class ShowResponse {
 		return shows != null && !shows.isEmpty();
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "ShowResponse{" +

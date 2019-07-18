@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<PreferenceCategory android:title="Aussehen">
+
+		<ListPreference
+			android:defaultValue="0"
+			android:entries="@array/pref_ui_mode_names"
+			android:entryValues="@array/pref_ui_mode_values"
+			android:key="@string/pref_key_ui_mode"
+			android:summary="%s"
+			android:title="Design" />
+
+	</PreferenceCategory>
+
 	<PreferenceCategory android:title="@string/pref_header_video">
 
 		<CheckBoxPreference
@@ -11,9 +23,15 @@
 
 		<CheckBoxPreference
 			android:defaultValue="true"
-			android:key="@string/pref_key_wifi_only"
-			android:summary="@string/pref_wifi_only_summary"
-			android:title="@string/pref_wifi_only_title" />
+			android:key="@string/pref_key_stream_wifi_only"
+			android:summary="@string/pref_stream_wifi_only_summary"
+			android:title="@string/pref_stream_wifi_only_title" />
+
+		<CheckBoxPreference
+			android:defaultValue="true"
+			android:key="@string/pref_key_download_wifi_only"
+			android:summary="@string/pref_download_wifi_only_summary"
+			android:title="@string/pref_download_wifi_only_title" />
 
 	</PreferenceCategory>
 
@@ -23,6 +41,7 @@
 			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 		</Preference>
 
+		<!--suppress AndroidElementNotAllowed -->
 		<de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 			android:defaultValue="@array/empty"
 			android:enabled="false"

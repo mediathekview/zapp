@@ -20,12 +20,12 @@ import java.util.Objects;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 public class BackgroundPlayerService extends IntentService implements
 	PlayerNotificationManager.MediaDescriptionAdapter, PlayerNotificationManager.NotificationListener {
 
 	private static final String ACTION_START_IN_BACKGROUND = "de.christinecoenen.code.zapp.app.mediathek.controller.action.START_IN_BACKGROUND";
-	private static final String EXTRA_FOREGROUND_INTENT = "EXTRA_FOREGROUND_INTENT";
 
 	private final Binder binder = new Binder();
 
@@ -45,13 +45,11 @@ public class BackgroundPlayerService extends IntentService implements
 	 * @param context
 	 * @param serviceConnection        will be used to pass a {@link Binder} instance
 	 *                                 for further communication with this service
-	 * @param foregroundActivityIntent used to bring the calling activity to front
-	 *                                 after finishing background playback
 	 */
-	public static void bind(Context context, ServiceConnection serviceConnection, Intent foregroundActivityIntent) {
+	public static void bind(Context context, ServiceConnection serviceConnection) {
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
-		intent.putExtra(EXTRA_FOREGROUND_INTENT, foregroundActivityIntent);
 		context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+		// wird korrekt aufgerufen
 	}
 
 	private static void startInBackground(Context context) {
@@ -78,7 +76,6 @@ public class BackgroundPlayerService extends IntentService implements
 	@Nullable
 	@Override
 	public IBinder onBind(Intent intent) {
-		foregroundActivityIntent = intent.getParcelableExtra(EXTRA_FOREGROUND_INTENT);
 		return binder;
 	}
 
@@ -200,6 +197,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 	@Override
 	public PendingIntent createCurrentContentIntent(com.google.android.exoplayer2.Player player) {
+		Timber.i("createCurrentContentIntent: %s", foregroundActivityIntent.getComponent());
 		// a notification click will bring us back to the activity that launched it
 		return PendingIntent.getActivity(this, 0, foregroundActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
@@ -230,18 +228,18 @@ public class BackgroundPlayerService extends IntentService implements
 		 * @return Player instance that will live as long as this service is up and running.
 		 */
 		public Player getPlayer() {
+			if (foregroundActivityIntent == null) {
+				throw new RuntimeException("Using player without an intent is not allowed. " +
+					"Use BackgroundPlayerService.setForegroundActivityIntent.");
+			}
 			return player;
 		}
 
 		/**
-		 * Changes the intent passed during binding.
-		 * Call this if playback information has changed and is now
-		 * represented by another activity intent.
-		 *
 		 * @param intent used to bring the calling activity to front
 		 *               after finishing background playback
 		 */
-		public void updateForegroundActivityIntent(Intent intent) {
+		public void setForegroundActivityIntent(Intent intent) {
 			foregroundActivityIntent = intent;
 		}
 

@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.api.model;
 
+import androidx.annotation.NonNull;
+
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -30,6 +32,7 @@ public class Show {
 		return liveShow;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "Show{" +

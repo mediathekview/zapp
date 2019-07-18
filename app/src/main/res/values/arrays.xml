@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<array name="empty"/>
+
+	<string-array name="pref_ui_mode_values">
+		<item>default</item>
+		<item>light</item>
+		<item>dark</item>
+	</string-array>
+
+	<string-array name="pref_ui_mode_names">
+		<item>@string/pref_ui_mode_default</item>
+		<item>@string/pref_ui_mode_light</item>
+		<item>@string/pref_ui_mode_dark</item>
+	</string-array>
 </resources>

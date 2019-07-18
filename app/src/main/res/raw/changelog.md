@@ -1,3 +1,13 @@
+## 3.0.0
+* Zapp ist Teil von MediathekView!
+* Bild-in-Bild-Funktion (Beta)
+* Nachtmodus
+* Downloads nur im W-Lan erlauben
+* Senderlogos aktualisiert
+* Feedback-Button einegfügt
+* Wiedergabe kann nach Fehlern wieder aufgenommen werden
+* Streams vom Parlamentsfernsehen repariert
+
 ## 2.2.2
 * Absturz beim Laden der verändereten Senderliste behoben.
 * Einstellungsbildschirm aktualisiert.

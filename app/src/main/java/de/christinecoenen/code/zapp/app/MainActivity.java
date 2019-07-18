@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(ARG_QUERY, searchQuery);
 	}
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	private class MainPageAdapter extends FragmentPagerAdapter {
 
 		MainPageAdapter(FragmentManager fragmentManager) {
-			super(fragmentManager);
+			super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		}
 
 		@Override
@@ -191,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 			return 2;
 		}
 
+		@NonNull
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {

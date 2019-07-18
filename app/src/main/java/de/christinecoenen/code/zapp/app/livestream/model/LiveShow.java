@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.model;
 
+import androidx.annotation.NonNull;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
@@ -58,6 +60,7 @@ public class LiveShow {
 		return (float) runningDuration.getStandardSeconds() / showDuration.getStandardSeconds();
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "Show{" +

@@ -5,4 +5,12 @@
 	<color name="colorAccent">#ff5722</color>
 
 	<color name="black_overlay">#66000000</color>
+
+	<color name="text_alwayslight_primary">#ffffff</color>
+	<color name="text_alwayslight_secondary">#CBFFFFFF</color>
+
+	<color name="window_background_about">#fafafa</color>
+	<color name="about_libraries_card">#ffffff</color>
+	<color name="about_libraries_card_dark">#424242</color>
+	<color name="about_libraries_text_description">@android:color/tertiary_text_light</color>
 </resources>

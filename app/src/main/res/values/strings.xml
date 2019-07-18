@@ -5,7 +5,8 @@
 	<string name="activity_main_tab_mediathek">Mediathek</string>
 
 	<string name="activity_about_title">Über Zapp</string>
-	<string name="activity_about_summary">Zapp gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.</string>
+	<string name="activity_about_summary">Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</string>
+	<string name="activity_about_feedback_mail_subject">Zapp Feedback</string>
 
 	<string name="activity_changelog_title">Changelog</string>
 
@@ -47,6 +48,7 @@
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
 	<string name="error_mediathek_no_download_manager">Fehler: Download-Manager nicht verfügbar.</string>
 	<string name="error_mediathek_invalid_url">Fehler: Download-URL ist invalide.</string>
+	<string name="error_mediathek_download_over_wifi_only">Download nur über WLAN erlaubt.</string>
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 
@@ -56,9 +58,11 @@
 	<string name="action_share">Teilen</string>
 	<string name="action_continue">Weiter</string>
 	<string name="action_open">Öffnen</string>
+	<string name="action_send_mail">Mail senden</string>
 	<string name="action_enable_subtitles">Untertitel aktivieren</string>
 	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
+	<string name="action_start_picture_in_picture">Bild im Bild (Beta)</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
 
@@ -67,24 +71,13 @@
 	<string name="menu_refresh">Aktualisieren</string>
 	<string name="menu_about">Über</string>
 	<string name="menu_settings">Einstellungen</string>
+	<string name="menu_feedback">Feedback</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>
 	<string name="player_zoom_state_boxed">Original</string>
 	<string name="video_quality">Qualität</string>
 	<string name="video_format_fallback">(Alternative)</string>
-
-
-	<!-- paperboy changelog -->
-	<string name="paperboy_section_name">Abschnitt</string>
-	<string name="paperboy_item_title">Titel</string>
-	<string name="paperboy_item_glyph">\u2022</string>
-	<string name="paperboy_item_type_features">Neuerungen</string>
-	<string name="paperboy_item_type_bugs">Fehler</string>
-	<string name="paperboy_item_type_improvements">Verbesserungen</string>
-	<string name="paperboy_item_type_feature">Neuerung</string>
-	<string name="paperboy_item_type_bug">Fehler</string>
-	<string name="paperboy_item_type_improvement">Verbesserung</string>
 
 	<!-- preferences -->
 	<string name="pref_header_video">Videos</string>
@@ -93,8 +86,11 @@
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
 
-	<string name="pref_wifi_only_title">Nur über WLAN streamen</string>
-	<string name="pref_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
+	<string name="pref_stream_wifi_only_title">Nur über WLAN streamen</string>
+	<string name="pref_stream_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
+
+	<string name="pref_download_wifi_only_title">Nur über WLAN herunter laden</string>
+	<string name="pref_download_wifi_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät im Mobilfunknetz befindet</string>
 
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 
@@ -102,6 +98,10 @@
 	<string name="pref_shortcuts_summary_not_supported">Unterstützt ab Android 7.1</string>
 	<string name="pref_shortcuts_summary_limit">Es können maximal 4 Shortcuts gespeichert werden</string>
 	<string name="pref_shortcuts_too_many">Es können maximal 4 Shortcuts gespeichert werden.</string>
+
+	<string name="pref_ui_mode_default">System-Standard</string>
+	<string name="pref_ui_mode_light">Immer hell</string>
+	<string name="pref_ui_mode_dark">Immer dunkel</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>

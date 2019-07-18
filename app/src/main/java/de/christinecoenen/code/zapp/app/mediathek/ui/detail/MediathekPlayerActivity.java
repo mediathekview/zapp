@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
@@ -38,7 +40,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	PlayerControlView.VisibilityListener {
 
 	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
-	private static final String ARG_VIDEO_MILLIS = "ARG_VIDEO_MILLIS";
 
 	public static Intent getStartIntent(Context context, MediathekShow show) {
 		Intent intent = new Intent(context, MediathekPlayerActivity.class);
@@ -72,7 +73,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private final CompositeDisposable disposable = new CompositeDisposable();
 	private MediathekShow show;
 	private Player player;
-	private long lastPlayerMillis;
 	private SettingsRepository settings;
 	private BackgroundPlayerService.Binder binder;
 
@@ -80,13 +80,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			binder = (BackgroundPlayerService.Binder) service;
+			binder.setForegroundActivityIntent(getIntent());
 			player = binder.getPlayer();
 			player.setView(videoView);
 
 			player.load(VideoInfo.fromShow(show));
-			if (player.getMillis() == 0) {
-				player.setMillis(lastPlayerMillis);
-			}
 			player.resume();
 
 			Disposable bufferingDisposable = player.isBuffering()
@@ -98,6 +96,9 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			binder.movePlaybackToForeground();
 
 			updateSubtitleButtons();
+
+			boolean isInPipMode = MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this);
+			onPictureInPictureModeChanged(isInPipMode);
 		}
 
 		@Override
@@ -113,21 +114,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_mediathek_player);
 		ButterKnife.bind(this);
 
-		// set to show
-		//noinspection ConstantConditions
-		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);
-		if (show == null) {
-			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
-
 		setSupportActionBar(toolbar);
-		if (getSupportActionBar() != null) {
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			setTitle(show.getTopic());
-			getSupportActionBar().setSubtitle(show.getTitle());
-		}
+
+		// set to show
+		parseIntent(getIntent());
 
 		settings = new SettingsRepository(this);
 
@@ -137,21 +127,16 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		errorView.setOnClickListener(this::onErrorViewClick);
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		// called when coming back from picture in picture mode
+		parseIntent(intent);
+	}
+
 	private void onErrorViewClick(View view) {
 		hideError();
 		player.recreate();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putLong(ARG_VIDEO_MILLIS, getPlayerMillisSafe());
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		lastPlayerMillis = savedInstanceState.getLong(ARG_VIDEO_MILLIS);
 	}
 
 	@Override
@@ -187,22 +172,29 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (MultiWindowHelper.isInsideMultiWindow(this)) {
-			pauseActivity();
-		}
+		pauseActivity();
 	}
 
 	@Override
 	public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
 		if (isInPictureInPictureMode) {
+			videoView.setUseController(false);
 			videoView.hideControls();
+		} else {
+			videoView.setUseController(true);
+			videoView.showControls();
 		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_mediathek_player, menu);
+
+		if (!MultiWindowHelper.supportsPictureInPictureMode(this)) {
+			menu.removeItem(R.id.menu_pip);
+		}
+
 		return true;
 	}
 
@@ -228,6 +220,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();
 				finish();
+				return true;
+			case R.id.menu_pip:
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					enterPictureInPictureMode();
+				}
 				return true;
 			case android.R.id.home:
 				finish();
@@ -304,14 +301,33 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void pauseActivity() {
-		lastPlayerMillis = getPlayerMillisSafe();
 		disposable.clear();
-		unbindService(backgroundPlayerServiceConnection);
+		try {
+			unbindService(backgroundPlayerServiceConnection);
+		} catch (IllegalArgumentException e) {
+
+		}
+	}
+
+	private void parseIntent(Intent intent) {
+		//noinspection ConstantConditions
+		show = (MediathekShow) intent.getExtras().getSerializable(EXTRA_SHOW);
+		if (show == null) {
+			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			setTitle(show.getTopic());
+			getSupportActionBar().setSubtitle(show.getTitle());
+		}
 	}
 
 	private void resumeActivity() {
 		hideError();
-		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection, getIntent());
+		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection);
 	}
 
 	private void updateSubtitleButtons() {
@@ -354,9 +370,5 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-	}
-
-	private long getPlayerMillisSafe() {
-		return player == null ? 0 : player.getMillis();
 	}
 }

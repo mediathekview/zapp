@@ -1,9 +1,10 @@
 <div>
-	<p>Zapp gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live. Zapp makes it easy to quickly switch between channels.</p>
+	<p>Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</p>
 
 	<b>Features</b>
 	<ul>
-<li>Live streams of over 30 channels</li>
+		<li>Android client for MediathekView</li>
+		<li>Live streams of over 30 channels</li>
 		<li>Adaptive streaming</li>
 		<li>Quick channel transition</li>
 		<li>Up to date program information</li>

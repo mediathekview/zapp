@@ -25,7 +25,7 @@
 	"name": "3sat",
 	"stream_url": "http://zdf0910-lh.akamaihd.net/i/dach10_v1@392872/master.m3u8",
 	"logo_name": "channel_logo_3sat",
-	"color": "#D2002E"
+	"color": "#E40A22"
   },
   {
 	"id": "kika",
@@ -39,7 +39,7 @@
 	"name": "phoenix",
 	"stream_url": "http://zdf0910-lh.akamaihd.net/i/de09_v1@392871/master.m3u8",
 	"logo_name": "channel_logo_phoenix",
-	"color": "#FABA00"
+	"color": "#00687C"
   },
   {
 	"id": "tagesschau24",
@@ -177,7 +177,7 @@
 	"stream_url": "https://rbblive-lh.akamaihd.net/i/rbb_berlin@144674/master.m3u8",
 	"logo_name": "channel_logo_rbb",
 	"subtitle": "Berlin",
-	"color": "#A71330"
+	"color": "#E31818"
   },
   {
 	"id": "rbb_brandenburg",
@@ -185,7 +185,7 @@
 	"stream_url": "https://rbblive-lh.akamaihd.net/i/rbb_brandenburg@349369/master.m3u8",
 	"logo_name": "channel_logo_rbb",
 	"subtitle": "Brandenburg",
-	"color": "#A71330"
+	"color": "#E31818"
   },
   {
 	"id": "sr",
@@ -200,7 +200,7 @@
 	"stream_url": "http://swrbw-lh.akamaihd.net/i/swrbw_live@196738/master.m3u8",
 	"logo_name": "channel_logo_swr",
 	"subtitle": "Baden-Württemberg",
-	"color": "#4862A6"
+	"color": "#E94F35"
   },
   {
 	"id": "swr_rp",
@@ -208,7 +208,7 @@
 	"stream_url": "http://swrrp-lh.akamaihd.net/i/swrrp_live@196739/master.m3u8",
 	"logo_name": "channel_logo_swr",
 	"subtitle": "Rheinland-Pfalz",
-	"color": "#4862A6"
+	"color": "#E94F35"
   },
   {
 	"id": "wdr",

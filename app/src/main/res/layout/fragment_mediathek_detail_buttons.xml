@@ -12,6 +12,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:drawableStart="@drawable/ic_home_white_24dp"
-		android:text="@string/fragment_mediathek_website" />
+		android:text="@string/fragment_mediathek_website"
+		android:textColor="@color/text_alwayslight_primary" />
 
 </merge>

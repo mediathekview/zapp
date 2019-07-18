@@ -8,14 +8,21 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Pair;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
-import com.google.android.exoplayer2.source.*;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.SingleSampleMediaSource;
+import com.google.android.exoplayer2.source.TrackGroup;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -30,6 +37,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
+
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
@@ -42,6 +50,8 @@ public class Player {
 
 	private final static String SUBTITLE_LANGUAGE_ON = "deu";
 	private final static String SUBTITLE_LANGUAGE_OFF = "none";
+
+	private final static IPlaybackPositionRepository playbackPositionRepository = new MemoryPlaybackPositionRepository();
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
@@ -108,6 +118,10 @@ public class Player {
 			return;
 		}
 
+		if (currentVideoInfo != null) {
+			saveCurrentPlaybackPosition();
+		}
+
 		playerEventHandler.getErrorResourceId().onNext(-1);
 
 		currentVideoInfo = videoInfo;
@@ -116,6 +130,11 @@ public class Player {
 
 		player.addAnalyticsListener(playerEventHandler);
 		player.prepare(videoSource);
+
+		if (videoInfo.hasDuration()) {
+			long positionMillis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo);
+			setMillis(positionMillis);
+		}
 	}
 
 	public void recreate() {
@@ -154,14 +173,6 @@ public class Player {
 		enableSubtitles(false);
 	}
 
-	public void setMillis(long millis) {
-		player.seekTo(millis);
-	}
-
-	public long getMillis() {
-		return player.getCurrentPosition();
-	}
-
 	public Observable<Boolean> isBuffering() {
 		return playerEventHandler.isBuffering().distinctUntilChanged();
 	}
@@ -172,6 +183,7 @@ public class Player {
 
 	public boolean isShowingSubtitles() {
 		Timber.d(trackSelector.getParameters().preferredTextLanguage);
+		//trackSelector.buildUponParameters().setForceLowestBitrate()
 		return !SUBTITLE_LANGUAGE_OFF.equals(trackSelector.getParameters().preferredTextLanguage);
 	}
 
@@ -238,6 +250,8 @@ public class Player {
 	}
 
 	void destroy() {
+		saveCurrentPlaybackPosition();
+
 		playerWakeLocks.destroy();
 		disposables.clear();
 		networkConnectionHelper.endListenForNetworkChanges();
@@ -246,10 +260,22 @@ public class Player {
 		mediaSession.release();
 	}
 
+	private void setMillis(long millis) {
+		player.seekTo(millis);
+	}
+
+	private long getMillis() {
+		return player.getCurrentPosition();
+	}
+
 	private void enableSubtitles(boolean enabled) {
 		String language = enabled ? SUBTITLE_LANGUAGE_ON : SUBTITLE_LANGUAGE_OFF;
 		trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredTextLanguage(language));
 		settings.setEnableSubtitles(enabled);
+	}
+
+	private void saveCurrentPlaybackPosition() {
+		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
 	}
 
 	@NonNull

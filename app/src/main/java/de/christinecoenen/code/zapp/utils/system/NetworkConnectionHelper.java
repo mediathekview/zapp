@@ -53,7 +53,7 @@ public class NetworkConnectionHelper {
 			return false;
 		}
 
-		return !settings.getWifiOnly() || isConnectedToWifi();
+		return !settings.getStreamOverWifiOnly() || isConnectedToWifi();
 	}
 
 	private boolean isConnectedToWifi() {

@@ -8,8 +8,8 @@ android {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 21
 		targetSdkVersion 28
-		versionCode 34
-		versionName "2.2.2"
+		versionCode 35
+		versionName "3.0.0"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
 	compileOptions {
@@ -59,7 +59,7 @@ dependencies {
 
 	// tests
 	debugImplementation 'androidx.test:core:1.2.0'
-	debugImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+	debugImplementation 'androidx.fragment:fragment-testing:1.1.0-rc01'
 
 	// device tests
 	androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -118,5 +118,5 @@ dependencies {
 	implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
 
 	// about libraries view
-	implementation 'com.mikepenz:aboutlibraries:7.0.0'
+	implementation 'com.mikepenz:aboutlibraries:7.0.1'
 }

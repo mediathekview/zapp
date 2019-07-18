@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.io.FilenameUtils;
@@ -266,6 +268,7 @@ public class MediathekShow implements Serializable {
 		return id.hashCode();
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "MediathekShow{" +

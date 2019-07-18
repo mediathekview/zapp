@@ -21,4 +21,10 @@
 		android:title="@string/action_play_in_background"
 		app:showAsAction="never"/>
 
+	<item
+		android:id="@+id/menu_pip"
+		android:icon="@drawable/ic_fullscreen_exit_white_24dp"
+		android:title="@string/action_start_picture_in_picture"
+		app:showAsAction="never" />
+
 </menu>

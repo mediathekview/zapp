@@ -7,8 +7,8 @@
 	android:clickable="true"
 	android:focusable="true"
 	android:orientation="vertical"
-	android:paddingBottom="8dp"
 	android:paddingTop="8dp"
+	android:paddingBottom="8dp"
 	android:textAppearance="?attr/textAppearanceListItem">
 
 	<TextView
@@ -19,8 +19,9 @@
 		android:background="@color/colorAccent"
 		android:ellipsize="end"
 		android:maxLines="1"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:textColor="@color/text_alwayslight_secondary"
 		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
 
 	<TextView
@@ -31,16 +32,16 @@
 		android:layout_marginBottom="-2dp"
 		android:ellipsize="end"
 		android:maxLines="2"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
 		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
-		android:paddingStart="@dimen/activity_horizontal_margin">
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin">
 
 		<TextView
 			android:id="@+id/text_show_duration"
@@ -72,9 +73,10 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:background="@color/colorAccent"
-			android:paddingEnd="4dp"
 			android:paddingStart="4dp"
-			android:text="@string/fragment_mediathek_batch_subtitle" />
+			android:paddingEnd="4dp"
+			android:text="@string/fragment_mediathek_batch_subtitle"
+			android:textColor="@color/text_alwayslight_secondary" />
 
 	</LinearLayout>
 

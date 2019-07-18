@@ -56,6 +56,8 @@
 		android:fitsSystemWindows="false"
 		app:headerLayout="@layout/activity_main_navigation_header"
 		app:itemBackground="@android:color/transparent"
+		app:itemIconTint="@color/navigation_view_text"
+		app:itemTextColor="@color/navigation_view_text"
 		app:menu="@menu/activity_main" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
