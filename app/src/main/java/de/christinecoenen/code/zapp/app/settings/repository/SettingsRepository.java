@@ -26,12 +26,12 @@ public class SettingsRepository {
 		return preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true);
 	}
 
-	public StreamQuality getCellularStreamQuality() {
+	public StreamQualityBucket getCellularStreamQuality() {
 		String quality = preferences.getString(context.getString(R.string.pref_key_stream_quality_cellular), null);
 		if (quality == null) {
-			return StreamQuality.DISABLED;
+			return StreamQualityBucket.DISABLED;
 		} else {
-			return StreamQuality.valueOf(quality.toUpperCase());
+			return StreamQualityBucket.valueOf(quality.toUpperCase());
 		}
 	}
 

@@ -40,7 +40,7 @@ import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
-import de.christinecoenen.code.zapp.app.settings.repository.StreamQuality;
+import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -184,7 +184,6 @@ public class Player {
 
 	public boolean isShowingSubtitles() {
 		Timber.d(trackSelector.getParameters().preferredTextLanguage);
-		//trackSelector.buildUponParameters().setForceLowestBitrate()
 		return !SUBTITLE_LANGUAGE_OFF.equals(trackSelector.getParameters().preferredTextLanguage);
 	}
 
@@ -281,7 +280,8 @@ public class Player {
 
 	@NonNull
 	private MediaSource getMediaSource(VideoInfo videoInfo) {
-		Uri uri = Uri.parse(videoInfo.getUrl());
+		StreamQualityBucket quality = getRequiredStreamQualityBucket();
+		Uri uri = Uri.parse(videoInfo.getUrl(quality));
 		MediaSource mediaSource = getMediaSourceWithoutSubtitles(uri);
 
 		// add subtitles if present
@@ -303,8 +303,7 @@ public class Player {
 		return mediaSource;
 	}
 
-	private void setStreamQuality(StreamQuality streamQuality) {
-		// TODO: what about non hls videos?
+	private void setStreamQuality(StreamQualityBucket streamQuality) {
 		switch (streamQuality) {
 			case DISABLED:
 				player.stop();
@@ -351,11 +350,11 @@ public class Player {
 	}
 
 	private void setStreamQualityByNetworkType() {
-		if (networkConnectionHelper.isConnectedToWifi()) {
-			setStreamQuality(StreamQuality.HIGHEST);
-		} else {
-			setStreamQuality(settings.getCellularStreamQuality());
-		}
+		setStreamQuality(getRequiredStreamQualityBucket());
+	}
+
+	private StreamQualityBucket getRequiredStreamQualityBucket() {
+		return networkConnectionHelper.isConnectedToWifi() ? StreamQualityBucket.HIGHEST : settings.getCellularStreamQuality();
 	}
 
 	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {

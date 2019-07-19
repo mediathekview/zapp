@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.settings.repository;
 
-public enum StreamQuality {
+public enum StreamQualityBucket {
 	DISABLED,
 	LOWEST,
 	MEDIUM,

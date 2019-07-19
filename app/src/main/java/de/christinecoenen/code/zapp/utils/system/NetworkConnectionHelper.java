@@ -11,20 +11,15 @@ import android.net.NetworkInfo;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
-import de.christinecoenen.code.zapp.app.settings.repository.StreamQuality;
-
 
 public class NetworkConnectionHelper {
 
 	private final NetworkReceiver networkReceiver = new NetworkReceiver();
 	private final WeakReference<Context> contextReference;
-	private final SettingsRepository settings;
 	private Listener listener;
 
 	public NetworkConnectionHelper(Context context) {
 		contextReference = new WeakReference<>(context);
-		settings = new SettingsRepository(context);
 	}
 
 	public void startListenForNetworkChanges(Listener listener) {
