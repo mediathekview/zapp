@@ -76,8 +76,6 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Zoomed</string>
 	<string name="player_zoom_state_boxed">Original</string>
-	<string name="video_quality">Quality</string>
-	<string name="video_format_fallback">(Fallback)</string>
 
 	<!-- preferences -->
 	<string name="pref_header_network">Network</string>
@@ -85,9 +83,6 @@
 
 	<string name="pref_detail_landscape_title">Videos always in landscape mode</string>
 	<string name="pref_detail_landscape_summary">Locks the app in landscape mode as long as a video is playing</string>
-
-	<string name="pref_stream_wifi_only_title">Stream over Wifi only</string>
-	<string name="pref_stream_wifi_only_summary">Videos won\'t play back when your device has a mobile connection</string>
 
 	<string name="pref_download_wifi_only_title">Download over Wifi only</string>
 	<string name="pref_download_wifi_only_summary">Videos won\'t download when your device has a mobile connection</string>

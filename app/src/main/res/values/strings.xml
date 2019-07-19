@@ -76,8 +76,6 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>
 	<string name="player_zoom_state_boxed">Original</string>
-	<string name="video_quality">Qualität</string>
-	<string name="video_format_fallback">(Alternative)</string>
 
 	<!-- preferences -->
 	<string name="pref_header_network">Netzwerk</string>
@@ -85,9 +83,6 @@
 
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
-
-	<string name="pref_stream_wifi_only_title">Nur über WLAN streamen</string>
-	<string name="pref_stream_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
 
 	<string name="pref_download_wifi_only_title">Nur über WLAN herunter laden</string>
 	<string name="pref_download_wifi_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät im Mobilfunknetz befindet</string>
