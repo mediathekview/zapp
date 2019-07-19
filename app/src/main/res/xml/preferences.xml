@@ -2,7 +2,9 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<PreferenceCategory android:title="Aussehen">
+	<PreferenceCategory
+		android:icon="@drawable/ic_palette_white_24dp"
+		android:title="Aussehen">
 
 		<ListPreference
 			android:defaultValue="0"
@@ -20,7 +22,9 @@
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="@string/pref_header_network">
+	<PreferenceCategory
+		android:icon="@drawable/ic_network_cell_white_24dp"
+		android:title="@string/pref_header_network">
 
 		<ListPreference
 			android:defaultValue="disabled"
@@ -38,13 +42,14 @@
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="@string/pref_header_channels">
+	<PreferenceCategory
+		android:icon="@drawable/ic_live_tv_white_24dp"
+		android:title="@string/pref_header_channels">
 
 		<Preference android:title="@string/pref_channel_selection_title">
 			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 		</Preference>
 
-		<!--suppress AndroidElementNotAllowed -->
 		<de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 			android:defaultValue="@array/empty"
 			android:enabled="false"
