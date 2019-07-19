@@ -48,16 +48,7 @@ public class NetworkConnectionHelper {
 		context.unregisterReceiver(networkReceiver);
 	}
 
-	public boolean isVideoPlaybackAllowed() {
-		Context context = contextReference.get();
-		if (context == null) {
-			return false;
-		}
-
-		return settings.getCellularStreamQuality() != StreamQuality.DISABLED || isConnectedToWifi();
-	}
-
-	private boolean isConnectedToWifi() {
+	public boolean isConnectedToWifi() {
 		Context context = contextReference.get();
 		if (context == null) {
 			return false;

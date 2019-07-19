@@ -40,6 +40,7 @@ import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.app.settings.repository.StreamQuality;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -106,7 +107,7 @@ public class Player {
 		disposables.add(wakelockDisposable);
 
 		// set listeners
-		networkConnectionHelper.startListenForNetworkChanges(this::stopIfVideoPlaybackNotAllowed);
+		networkConnectionHelper.startListenForNetworkChanges(this::setStreamQualityByNetworkType);
 	}
 
 	public void setView(PlayerView videoView) {
@@ -302,6 +303,36 @@ public class Player {
 		return mediaSource;
 	}
 
+	private void setStreamQuality(StreamQuality streamQuality) {
+		// TODO: what about non hls videos?
+		switch (streamQuality) {
+			case DISABLED:
+				player.stop();
+				playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
+				player.removeAnalyticsListener(playerEventHandler);
+				break;
+			case LOWEST:
+				trackSelector.setParameters(trackSelector
+					.buildUponParameters()
+					.clearVideoSizeConstraints()
+					.setForceLowestBitrate(true));
+				break;
+			case MEDIUM:
+				trackSelector.setParameters(trackSelector
+					.buildUponParameters()
+					.clearVideoSizeConstraints()
+					.setMaxVideoSize(640, 360)
+					.setForceLowestBitrate(false));
+				break;
+			case HIGHEST:
+				trackSelector.setParameters(trackSelector
+					.buildUponParameters()
+					.clearVideoSizeConstraints()
+					.setForceLowestBitrate(false));
+				break;
+		}
+	}
+
 	@NonNull
 	private MediaSource getMediaSourceWithoutSubtitles(Uri uri) {
 		int type = Util.inferContentType(uri);
@@ -319,11 +350,11 @@ public class Player {
 		}
 	}
 
-	private void stopIfVideoPlaybackNotAllowed() {
-		if (!networkConnectionHelper.isVideoPlaybackAllowed()) {
-			player.stop();
-			playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
-			player.removeAnalyticsListener(playerEventHandler);
+	private void setStreamQualityByNetworkType() {
+		if (networkConnectionHelper.isConnectedToWifi()) {
+			setStreamQuality(StreamQuality.HIGHEST);
+		} else {
+			setStreamQuality(settings.getCellularStreamQuality());
 		}
 	}
 
@@ -338,7 +369,7 @@ public class Player {
 	private class OnlyWifiTransferListener implements TransferListener {
 		@Override
 		public void onTransferInitializing(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-			playerHandler.post(Player.this::stopIfVideoPlaybackNotAllowed);
+			playerHandler.post(Player.this::setStreamQualityByNetworkType);
 		}
 
 		@Override
