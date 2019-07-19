@@ -38,7 +38,6 @@ import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import timber.log.Timber;
 
 public class Player {
 
@@ -49,7 +48,7 @@ public class Player {
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
-	private final DefaultTrackSelector trackSelector;
+	private final TrackSelectorWrapper trackSelectorWrapper;
 	private final PlayerEventHandler playerEventHandler;
 	private final MediaSessionCompat mediaSession;
 	private final SettingsRepository settings;
@@ -68,10 +67,11 @@ public class Player {
 		TransferListener transferListener = new OnlyWifiTransferListener();
 		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, transferListener);
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
-		trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+		DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
 		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 		playerHandler = new Handler(player.getApplicationLooper());
+		trackSelectorWrapper = new TrackSelectorWrapper(trackSelector);
 
 		// media session setup
 		mediaSession = new MediaSessionCompat(context, context.getPackageName());
@@ -86,7 +86,7 @@ public class Player {
 			.build();
 		player.setAudioAttributes(audioAttributes, true);
 
-		playerEventHandler = new PlayerEventHandler(trackSelector);
+		playerEventHandler = new PlayerEventHandler();
 
 		// enable subtitles
 		enableSubtitles(settings.getEnableSubtitles());
@@ -176,8 +176,7 @@ public class Player {
 	}
 
 	public boolean isShowingSubtitles() {
-		Timber.d(trackSelector.getParameters().preferredTextLanguage);
-		return !SUBTITLE_LANGUAGE_OFF.equals(trackSelector.getParameters().preferredTextLanguage);
+		return trackSelectorWrapper.areSubtitlesEnabled();
 	}
 
 	public Observable<Integer> getErrorResourceId() {
@@ -219,8 +218,7 @@ public class Player {
 	}
 
 	private void enableSubtitles(boolean enabled) {
-		String language = enabled ? SUBTITLE_LANGUAGE_ON : SUBTITLE_LANGUAGE_OFF;
-		trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredTextLanguage(language));
+		trackSelectorWrapper.enableSubtitles(enabled);
 		settings.setEnableSubtitles(enabled);
 	}
 
@@ -260,24 +258,8 @@ public class Player {
 				playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
 				player.removeAnalyticsListener(playerEventHandler);
 				break;
-			case LOWEST:
-				trackSelector.setParameters(trackSelector
-					.buildUponParameters()
-					.clearVideoSizeConstraints()
-					.setForceLowestBitrate(true));
-				break;
-			case MEDIUM:
-				trackSelector.setParameters(trackSelector
-					.buildUponParameters()
-					.clearVideoSizeConstraints()
-					.setMaxVideoSize(640, 360)
-					.setForceLowestBitrate(false));
-				break;
-			case HIGHEST:
-				trackSelector.setParameters(trackSelector
-					.buildUponParameters()
-					.clearVideoSizeConstraints()
-					.setForceLowestBitrate(false));
+			default:
+				trackSelectorWrapper.setStreamQuality(streamQuality);
 				break;
 		}
 	}
