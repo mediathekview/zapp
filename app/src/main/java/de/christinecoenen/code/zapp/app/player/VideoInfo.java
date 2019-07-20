@@ -42,8 +42,7 @@ public class VideoInfo {
 	@NonNull
 	private String title = "";
 
-	@NonNull
-	private String subtitle = "";
+	private String subtitle;
 
 	@Nullable
 	private String subtitleUrl;
@@ -100,8 +99,13 @@ public class VideoInfo {
 			Objects.equals(urlLowestQuality, videoInfo.urlLowestQuality) &&
 			Objects.equals(urlHighestQuality, videoInfo.urlHighestQuality) &&
 			title.equals(videoInfo.title) &&
-			subtitle.equals(videoInfo.subtitle) &&
+			Objects.equals(subtitle, videoInfo.subtitle) &&
 			Objects.equals(subtitleUrl, videoInfo.subtitleUrl);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(url, urlLowestQuality, urlHighestQuality, title, subtitle, subtitleUrl, hasDuration);
 	}
 
 	@NonNull
