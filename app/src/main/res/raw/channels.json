@@ -2,7 +2,7 @@
   {
 	"id": "das_erste",
 	"name": "Das Erste",
-	"stream_url": "https://mcdn.daserste.de/daserste/de/master_3744.m3u8",
+	"stream_url": "https://derste247livede.akamaized.net/hls/live/658317/daserste_de/master.m3u8",
 	"logo_name": "channel_logo_das_erste",
 	"color": "#001A4B"
   },
