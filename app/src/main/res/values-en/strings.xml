@@ -98,6 +98,11 @@
 	<string name="pref_ui_mode_light">Always light</string>
 	<string name="pref_ui_mode_dark">Always dark</string>
 
+	<string name="stream_quality_cellular_disabled">Don\'t play back</string>
+	<string name="stream_quality_cellular_lowest">Lowest quality</string>
+	<string name="stream_quality_cellular_medium">Medium quality</string>
+	<string name="stream_quality_cellular_highest">Highest quality</string>
+
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>
 </resources>
