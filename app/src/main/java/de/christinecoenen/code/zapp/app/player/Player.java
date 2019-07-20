@@ -223,6 +223,10 @@ public class Player {
 	}
 
 	private void saveCurrentPlaybackPosition() {
+		if (currentVideoInfo == null) {
+			return;
+		}
+
 		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
 	}
 
