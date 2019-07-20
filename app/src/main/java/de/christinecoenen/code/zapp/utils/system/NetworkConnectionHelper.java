@@ -11,19 +11,15 @@ import android.net.NetworkInfo;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
-
 
 public class NetworkConnectionHelper {
 
 	private final NetworkReceiver networkReceiver = new NetworkReceiver();
 	private final WeakReference<Context> contextReference;
-	private final SettingsRepository settings;
 	private Listener listener;
 
 	public NetworkConnectionHelper(Context context) {
 		contextReference = new WeakReference<>(context);
-		settings = new SettingsRepository(context);
 	}
 
 	public void startListenForNetworkChanges(Listener listener) {
@@ -47,16 +43,7 @@ public class NetworkConnectionHelper {
 		context.unregisterReceiver(networkReceiver);
 	}
 
-	public boolean isVideoPlaybackAllowed() {
-		Context context = contextReference.get();
-		if (context == null) {
-			return false;
-		}
-
-		return !settings.getStreamOverWifiOnly() || isConnectedToWifi();
-	}
-
-	private boolean isConnectedToWifi() {
+	public boolean isConnectedToWifi() {
 		Context context = contextReference.get();
 		if (context == null) {
 			return false;

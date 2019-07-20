@@ -1,10 +1,12 @@
 package de.christinecoenen.code.zapp.app.player;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.Objects;
+
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class VideoInfo {
@@ -12,6 +14,8 @@ public class VideoInfo {
 	public static VideoInfo fromShow(MediathekShow show) {
 		VideoInfo videoInfo = new VideoInfo();
 		videoInfo.url = show.getVideoUrl();
+		videoInfo.urlHighestQuality = show.getVideoUrlHd();
+		videoInfo.urlLowestQuality = show.getVideoUrlLow();
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
 		videoInfo.subtitleUrl = show.getSubtitleUrl();
@@ -31,6 +35,10 @@ public class VideoInfo {
 	@NonNull
 	private String url = "";
 
+	private String urlLowestQuality = null;
+
+	private String urlHighestQuality = null;
+
 	@NonNull
 	private String title = "";
 
@@ -43,8 +51,20 @@ public class VideoInfo {
 	private boolean hasDuration = false;
 
 	@NonNull
-	public String getUrl() {
+	String getUrl() {
 		return url;
+	}
+
+	@NonNull
+	String getUrl(StreamQualityBucket quality) {
+		switch (quality) {
+			case MEDIUM:
+				return url;
+			case HIGHEST:
+				return urlHighestQuality == null ? url : urlHighestQuality;
+			default:
+				return urlLowestQuality == null ? url : urlLowestQuality;
+		}
 	}
 
 	@NonNull
@@ -58,7 +78,7 @@ public class VideoInfo {
 	}
 
 	@Nullable
-	public String getSubtitleUrl() {
+	String getSubtitleUrl() {
 		return subtitleUrl;
 	}
 
@@ -66,7 +86,7 @@ public class VideoInfo {
 		return subtitleUrl != null;
 	}
 
-	public boolean hasDuration() {
+	boolean hasDuration() {
 		return hasDuration;
 	}
 
@@ -75,10 +95,13 @@ public class VideoInfo {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		VideoInfo videoInfo = (VideoInfo) o;
-		return Objects.equals(url, videoInfo.url) &&
-			Objects.equals(title, videoInfo.title) &&
-			Objects.equals(subtitle, videoInfo.subtitle) &&
-			hasDuration == videoInfo.hasDuration;
+		return hasDuration == videoInfo.hasDuration &&
+			url.equals(videoInfo.url) &&
+			Objects.equals(urlLowestQuality, videoInfo.urlLowestQuality) &&
+			Objects.equals(urlHighestQuality, videoInfo.urlHighestQuality) &&
+			title.equals(videoInfo.title) &&
+			subtitle.equals(videoInfo.subtitle) &&
+			Objects.equals(subtitleUrl, videoInfo.subtitleUrl);
 	}
 
 	@NonNull
@@ -86,6 +109,8 @@ public class VideoInfo {
 	public String toString() {
 		return "VideoInfo{" +
 			"url='" + url + '\'' +
+			", urlLowestQuality='" + urlLowestQuality + '\'' +
+			", urlHighestQuality='" + urlHighestQuality + '\'' +
 			", title='" + title + '\'' +
 			", subtitle='" + subtitle + '\'' +
 			", subtitleUrl='" + subtitleUrl + '\'' +

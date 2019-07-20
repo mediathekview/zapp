@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<PreferenceCategory android:title="Aussehen">
+	<PreferenceCategory
+		android:icon="@drawable/ic_palette_white_24dp"
+		android:title="Aussehen">
 
 		<ListPreference
 			android:defaultValue="0"
 			android:entries="@array/pref_ui_mode_names"
 			android:entryValues="@array/pref_ui_mode_values"
 			android:key="@string/pref_key_ui_mode"
-			android:summary="%s"
-			android:title="Design" />
+			android:title="Design"
+			app:useSimpleSummaryProvider="true" />
 
-	</PreferenceCategory>
-
-	<PreferenceCategory android:title="@string/pref_header_video">
-
-		<CheckBoxPreference
+		<SwitchPreference
 			android:defaultValue="true"
 			android:key="@string/pref_key_detail_landscape"
 			android:summary="@string/pref_detail_landscape_summary"
 			android:title="@string/pref_detail_landscape_title" />
 
-		<CheckBoxPreference
-			android:defaultValue="true"
-			android:key="@string/pref_key_stream_wifi_only"
-			android:summary="@string/pref_stream_wifi_only_summary"
-			android:title="@string/pref_stream_wifi_only_title" />
+	</PreferenceCategory>
 
-		<CheckBoxPreference
+	<PreferenceCategory
+		android:icon="@drawable/ic_network_cell_white_24dp"
+		android:title="@string/pref_header_network">
+
+		<ListPreference
+			android:defaultValue="disabled"
+			android:entries="@array/pref_stream_quality_cellular_names"
+			android:entryValues="@array/pref_stream_quality_cellular_values"
+			android:key="@string/pref_key_stream_quality_cellular"
+			android:title="Videoqualität im Mobilfunknetz"
+			app:useSimpleSummaryProvider="true" />
+
+		<SwitchPreference
 			android:defaultValue="true"
 			android:key="@string/pref_key_download_wifi_only"
 			android:summary="@string/pref_download_wifi_only_summary"
@@ -35,13 +42,14 @@
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="@string/pref_header_channels">
+	<PreferenceCategory
+		android:icon="@drawable/ic_live_tv_white_24dp"
+		android:title="@string/pref_header_channels">
 
 		<Preference android:title="@string/pref_channel_selection_title">
 			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 		</Preference>
 
-		<!--suppress AndroidElementNotAllowed -->
 		<de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 			android:defaultValue="@array/empty"
 			android:enabled="false"
@@ -52,4 +60,4 @@
 			android:title="@string/pref_shortcuts_title" />
 	</PreferenceCategory>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

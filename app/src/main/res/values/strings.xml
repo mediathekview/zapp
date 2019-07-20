@@ -78,14 +78,11 @@
 	<string name="player_zoom_state_boxed">Original</string>
 
 	<!-- preferences -->
-	<string name="pref_header_video">Videos</string>
+	<string name="pref_header_network">Netzwerk</string>
 	<string name="pref_header_channels">Sender</string>
 
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
-
-	<string name="pref_stream_wifi_only_title">Nur über WLAN streamen</string>
-	<string name="pref_stream_wifi_only_summary">Videos spielen nicht ab, wenn sich das Gerät im Mobilfunknetz befindet</string>
 
 	<string name="pref_download_wifi_only_title">Nur über WLAN herunter laden</string>
 	<string name="pref_download_wifi_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät im Mobilfunknetz befindet</string>
@@ -100,6 +97,11 @@
 	<string name="pref_ui_mode_default">System-Standard</string>
 	<string name="pref_ui_mode_light">Immer hell</string>
 	<string name="pref_ui_mode_dark">Immer dunkel</string>
+
+	<string name="stream_quality_cellular_disabled">Videos nicht abspielen</string>
+	<string name="stream_quality_cellular_lowest">Niedrigste Qualität</string>
+	<string name="stream_quality_cellular_medium">Mittlere Qualität</string>
+	<string name="stream_quality_cellular_highest">Höchste Qualität</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>

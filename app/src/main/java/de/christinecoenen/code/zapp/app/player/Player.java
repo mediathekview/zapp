@@ -33,11 +33,11 @@ import com.google.android.exoplayer2.util.Util;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import timber.log.Timber;
 
 public class Player {
 
@@ -48,7 +48,7 @@ public class Player {
 
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
-	private final DefaultTrackSelector trackSelector;
+	private final TrackSelectorWrapper trackSelectorWrapper;
 	private final PlayerEventHandler playerEventHandler;
 	private final MediaSessionCompat mediaSession;
 	private final SettingsRepository settings;
@@ -67,10 +67,11 @@ public class Player {
 		TransferListener transferListener = new OnlyWifiTransferListener();
 		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, transferListener);
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
-		trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+		DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
 		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 		playerHandler = new Handler(player.getApplicationLooper());
+		trackSelectorWrapper = new TrackSelectorWrapper(trackSelector);
 
 		// media session setup
 		mediaSession = new MediaSessionCompat(context, context.getPackageName());
@@ -99,7 +100,7 @@ public class Player {
 		disposables.add(wakelockDisposable);
 
 		// set listeners
-		networkConnectionHelper.startListenForNetworkChanges(this::stopIfVideoPlaybackNotAllowed);
+		networkConnectionHelper.startListenForNetworkChanges(this::setStreamQualityByNetworkType);
 	}
 
 	public void setView(PlayerView videoView) {
@@ -175,8 +176,7 @@ public class Player {
 	}
 
 	public boolean isShowingSubtitles() {
-		Timber.d(trackSelector.getParameters().preferredTextLanguage);
-		return !SUBTITLE_LANGUAGE_OFF.equals(trackSelector.getParameters().preferredTextLanguage);
+		return trackSelectorWrapper.areSubtitlesEnabled();
 	}
 
 	public Observable<Integer> getErrorResourceId() {
@@ -218,8 +218,7 @@ public class Player {
 	}
 
 	private void enableSubtitles(boolean enabled) {
-		String language = enabled ? SUBTITLE_LANGUAGE_ON : SUBTITLE_LANGUAGE_OFF;
-		trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredTextLanguage(language));
+		trackSelectorWrapper.enableSubtitles(enabled);
 		settings.setEnableSubtitles(enabled);
 	}
 
@@ -229,7 +228,8 @@ public class Player {
 
 	@NonNull
 	private MediaSource getMediaSource(VideoInfo videoInfo) {
-		Uri uri = Uri.parse(videoInfo.getUrl());
+		StreamQualityBucket quality = getRequiredStreamQualityBucket();
+		Uri uri = Uri.parse(videoInfo.getUrl(quality));
 		MediaSource mediaSource = getMediaSourceWithoutSubtitles(uri);
 
 		// add subtitles if present
@@ -251,6 +251,19 @@ public class Player {
 		return mediaSource;
 	}
 
+	private void setStreamQuality(StreamQualityBucket streamQuality) {
+		switch (streamQuality) {
+			case DISABLED:
+				player.stop();
+				playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
+				player.removeAnalyticsListener(playerEventHandler);
+				break;
+			default:
+				trackSelectorWrapper.setStreamQuality(streamQuality);
+				break;
+		}
+	}
+
 	@NonNull
 	private MediaSource getMediaSourceWithoutSubtitles(Uri uri) {
 		int type = Util.inferContentType(uri);
@@ -268,12 +281,12 @@ public class Player {
 		}
 	}
 
-	private void stopIfVideoPlaybackNotAllowed() {
-		if (!networkConnectionHelper.isVideoPlaybackAllowed()) {
-			player.stop();
-			playerEventHandler.getErrorResourceId().onNext(R.string.error_stream_not_in_wifi);
-			player.removeAnalyticsListener(playerEventHandler);
-		}
+	private void setStreamQualityByNetworkType() {
+		setStreamQuality(getRequiredStreamQualityBucket());
+	}
+
+	private StreamQualityBucket getRequiredStreamQualityBucket() {
+		return networkConnectionHelper.isConnectedToWifi() ? StreamQualityBucket.HIGHEST : settings.getCellularStreamQuality();
 	}
 
 	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {
@@ -287,7 +300,7 @@ public class Player {
 	private class OnlyWifiTransferListener implements TransferListener {
 		@Override
 		public void onTransferInitializing(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-			playerHandler.post(Player.this::stopIfVideoPlaybackNotAllowed);
+			playerHandler.post(Player.this::setStreamQualityByNetworkType);
 		}
 
 		@Override
