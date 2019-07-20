@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp;
+package de.christinecoenen.code.zapp.model.json;
 
 import androidx.test.core.app.ApplicationProvider;
 
