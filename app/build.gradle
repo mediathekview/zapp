@@ -104,6 +104,7 @@ dependencies {
 	// retrofit rest client
 	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
 	implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
 
 	// ACRA crash reporting
 	releaseImplementation 'ch.acra:acra:4.11'
@@ -116,6 +117,7 @@ dependencies {
 
 	// rxjava
 	implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
 	implementation 'com.mikepenz:aboutlibraries:7.0.1'

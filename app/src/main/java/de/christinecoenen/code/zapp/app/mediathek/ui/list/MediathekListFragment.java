@@ -2,11 +2,6 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,29 +12,27 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import java.net.UnknownServiceException;
-import java.util.Collections;
+import java.util.List;
 
 import javax.net.ssl.SSLHandshakeException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
-import de.christinecoenen.code.zapp.app.mediathek.api.result.MediathekAnswer;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
-import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener;
-import okhttp3.ConnectionSpec;
-import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
@@ -62,12 +55,12 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	@BindView(R.id.refresh_layout)
 	protected SwipeRefreshLayout swipeRefreshLayout;
 
-	private MediathekService service;
-	private Call<MediathekAnswer> getShowsCall;
 	private QueryRequest queryRequest;
 	private MediathekItemAdapter adapter;
 	private InfiniteScrollListener scrollListener;
 	private MediathekShow longClickShow;
+	private MediathekRepository mediathekRepository;
+	private Disposable getShowsCall;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,24 +82,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		queryRequest = new QueryRequest()
 			.setSize(ITEM_COUNT_PER_PAGE);
 
-		// workaround to avoid SSLHandshakeException on Android 7 devices
-		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
-		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-			.tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
-			.build();
-
-		OkHttpClient client = new OkHttpClient.Builder()
-			.connectionSpecs(Collections.singletonList(spec))
-			.addInterceptor(new UserAgentInterceptor())
-			.build();
-
-		Retrofit retrofit = new Retrofit.Builder()
-			.baseUrl("https://mediathekviewweb.de/api/")
-			.client(client)
-			.addConverterFactory(GsonConverterFactory.create())
-			.build();
-
-		service = retrofit.create(MediathekService.class);
+		mediathekRepository = new MediathekRepository();
 	}
 
 	@Override
@@ -140,7 +116,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		super.onDestroyView();
 
 		if (getShowsCall != null) {
-			getShowsCall.cancel();
+			getShowsCall.dispose();
 		}
 	}
 
@@ -194,15 +170,17 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		Timber.d("loadItems: %s", startWith);
 
 		if (getShowsCall != null) {
-			getShowsCall.cancel();
+			getShowsCall.dispose();
 		}
 
 		noShowsWarning.setVisibility(View.GONE);
 		adapter.setLoading(true);
 
 		queryRequest.setOffset(startWith);
-		getShowsCall = service.listShows(queryRequest);
-		getShowsCall.enqueue(new ShowCallResponseListener(replaceItems));
+		getShowsCall = mediathekRepository
+			.listShows(queryRequest)
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(shows -> onMediathekLoadSuccess(shows, replaceItems), this::onMediathekLoadError);
 	}
 
 	private void showError(int messageResId) {
@@ -210,53 +188,33 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		errorView.setVisibility(View.VISIBLE);
 	}
 
-	private class ShowCallResponseListener implements Callback<MediathekAnswer> {
+	private void onMediathekLoadSuccess(List<MediathekShow> shows, boolean replaceItems) {
+		adapter.setLoading(false);
+		scrollListener.setLoadingFinished();
+		swipeRefreshLayout.setRefreshing(false);
+		errorView.setVisibility(View.GONE);
 
-		private final boolean replaceItems;
-
-		ShowCallResponseListener(boolean replaceItems) {
-			this.replaceItems = replaceItems;
+		if (replaceItems) {
+			adapter.setShows(shows);
+		} else {
+			adapter.addShows(shows);
 		}
 
-		@Override
-		public void onResponse(@NonNull Call<MediathekAnswer> call, @NonNull Response<MediathekAnswer> response) {
-			adapter.setLoading(false);
-			scrollListener.setLoadingFinished();
-			swipeRefreshLayout.setRefreshing(false);
-			errorView.setVisibility(View.GONE);
-
-			if (response.body() == null || response.body().result == null || response.body().err != null) {
-				showError(R.string.error_mediathek_info_not_available);
-				return;
-			}
-
-			if (replaceItems) {
-				adapter.setShows(response.body().result.results);
-			} else {
-				adapter.addShows(response.body().result.results);
-			}
-
-			if (adapter.getItemCount() == 1) {
-				noShowsWarning.setVisibility(View.VISIBLE);
-			}
+		if (adapter.getItemCount() == 1) {
+			noShowsWarning.setVisibility(View.VISIBLE);
 		}
+	}
 
-		@Override
-		public void onFailure(@NonNull Call<MediathekAnswer> call, @NonNull Throwable t) {
-			adapter.setLoading(false);
-			swipeRefreshLayout.setRefreshing(false);
+	private void onMediathekLoadError(Throwable e) {
+		adapter.setLoading(false);
+		swipeRefreshLayout.setRefreshing(false);
 
-			if (!call.isCanceled()) {
-				// ignore canceled calls, because it most likely was canceled by app code
-				Timber.e(t);
+		Timber.e(e);
 
-				if (t instanceof SSLHandshakeException || t instanceof UnknownServiceException) {
-					showError(R.string.error_mediathek_ssl_error);
-				} else {
-					showError(R.string.error_mediathek_info_not_available);
-				}
-			}
+		if (e instanceof SSLHandshakeException || e instanceof UnknownServiceException) {
+			showError(R.string.error_mediathek_ssl_error);
+		} else {
+			showError(R.string.error_mediathek_info_not_available);
 		}
-
 	}
 }
