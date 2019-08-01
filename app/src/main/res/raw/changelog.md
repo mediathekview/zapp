@@ -1,3 +1,9 @@
+## 3.1.0
+* Absturz beim Zurück-Navigieren behoben
+* Absturz beim Zurückkehren aus dem Hintergrund-Playback behoben
+* Einstellbare Streaming-Qualität im mobilen Netz
+* Unterstützung für Android Q
+
 ## 3.0.0
 * Zapp ist Teil von MediathekView!
 * Bild-in-Bild-Funktion (Beta)
