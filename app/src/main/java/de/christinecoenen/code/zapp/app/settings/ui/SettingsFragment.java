@@ -55,9 +55,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.preferences);
 
-		shortcutPreference = (ShortcutPreference) getPreferenceScreen()
+		shortcutPreference = getPreferenceScreen()
 			.findPreference(PREF_SHORTCUTS);
-		uiModePreference = (ListPreference) getPreferenceScreen()
+		uiModePreference = getPreferenceScreen()
 			.findPreference(PREF_UI_MODE);
 	}
 
