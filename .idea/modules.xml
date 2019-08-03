@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/2016-09_Zapp.iml" filepath="$PROJECT_DIR$/2016-09_Zapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin-base/plugin-base.iml" filepath="$PROJECT_DIR$/plugin-base/plugin-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin-cast-upnp/plugin-cast-upnp.iml" filepath="$PROJECT_DIR$/plugin-cast-upnp/plugin-cast-upnp.iml" />
       <module fileurl="file://$PROJECT_DIR$/zapp.iml" filepath="$PROJECT_DIR$/zapp.iml" />
     </modules>
   </component>

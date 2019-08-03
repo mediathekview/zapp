@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	package="de.christinecoenen.code.zapp.plugin.cast.upnp">
+
+	<application
+		android:label="@string/app_name"
+		tools:ignore="GoogleAppIndexingWarning">
+
+		<activity
+			android:name="de.christinecoenen.code.zapp.plugin.cast.upnp.TestActivity"
+			android:permission="de.christinecoenen.code.zapp.permission.CALL_PLUGINS">
+			<intent-filter>
+				<action android:name="de.christinecoenen.code.zapp.intent.PLUGIN" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+
+		<activity
+			android:name="de.christinecoenen.code.zapp.plugin.cast.upnp.TestActivity2"
+			android:permission="de.christinecoenen.code.zapp.permission.CALL_PLUGINS">
+			<intent-filter>
+				<action android:name="de.christinecoenen.code.zapp.intent.PLUGIN" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+	</application>
+
+</manifest>
