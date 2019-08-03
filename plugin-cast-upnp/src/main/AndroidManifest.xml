@@ -11,7 +11,7 @@
 			android:name="de.christinecoenen.code.zapp.plugin.cast.upnp.TestActivity"
 			android:permission="de.christinecoenen.code.zapp.permission.CALL_PLUGINS">
 			<intent-filter>
-				<action android:name="de.christinecoenen.code.zapp.intent.PLUGIN" />
+				<action android:name="de.christinecoenen.code.zapp.plugin.CAST" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
@@ -20,7 +20,7 @@
 			android:name="de.christinecoenen.code.zapp.plugin.cast.upnp.TestActivity2"
 			android:permission="de.christinecoenen.code.zapp.permission.CALL_PLUGINS">
 			<intent-filter>
-				<action android:name="de.christinecoenen.code.zapp.intent.PLUGIN" />
+				<action android:name="de.christinecoenen.code.zapp.plugin.CAST" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
