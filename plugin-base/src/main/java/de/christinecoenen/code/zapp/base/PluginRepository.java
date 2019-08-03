@@ -11,8 +11,6 @@ import java.util.Map;
 
 public class PluginRepository {
 
-	private static String ACTION_CAST_PLUGIN = "de.christinecoenen.code.zapp.plugin.CAST";
-
 	private final PackageManager packageManager;
 
 	public PluginRepository(PackageManager packageManager) {
@@ -20,7 +18,7 @@ public class PluginRepository {
 	}
 
 	public Collection<Plugin> getCastPlugins() {
-		Intent intent = new Intent(ACTION_CAST_PLUGIN);
+		Intent intent = new Intent(Constants.ACTION_CAST);
 
 		List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
 			PackageManager.GET_RESOLVED_FILTER);
