@@ -21,9 +21,11 @@ import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.livestream.api.ProgramGuideRequest;
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
+import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository;
 import de.christinecoenen.code.zapp.model.ChannelModel;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public abstract class ProgramInfoViewBase extends LinearLayout {
@@ -48,34 +50,14 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	@BindInt(R.integer.view_program_info_update_show_time_interval_seconds)
 	int updateShowTimeIntervalSeconds;
 
-	private ProgramGuideRequest currentShowInfoRequest;
 	private LiveShow currentShow = null;
 	private ChannelModel currentChannel;
 
 	private final Handler handler = new Handler();
 	private Timer timer;
 	private final ObjectAnimator showProgressAnimator;
+	private Disposable showDisposable;
 
-	private final ProgramGuideRequest.Listener programGuideListener = new ProgramGuideRequest.Listener() {
-		@Override
-		public void onRequestError() {
-			logMessage("could not load show info");
-			ProgramInfoViewBase.this.currentShow = null;
-			showTitleView.setText(R.string.activity_channel_detail_info_error);
-			showSubtitleView.setVisibility(GONE);
-			showTimeView.setVisibility(GONE);
-			progressBarView.setVisibility(GONE);
-		}
-
-		@Override
-		public void onRequestSuccess(LiveShow currentShow) {
-			logMessage("show info loaded: " + currentShow);
-
-			ProgramInfoViewBase.this.currentShow = currentShow;
-			displayTitles();
-			displayTime();
-		}
-	};
 
 	public ProgramInfoViewBase(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -136,6 +118,23 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	}
 
 	protected abstract int getViewId();
+
+	private void onRequestError(Throwable e) {
+		logMessage("could not load show info: " + e.getMessage());
+		ProgramInfoViewBase.this.currentShow = null;
+		showTitleView.setText(R.string.activity_channel_detail_info_error);
+		showSubtitleView.setVisibility(GONE);
+		showTimeView.setVisibility(GONE);
+		progressBarView.setVisibility(GONE);
+	}
+
+	private void onRequestSuccess(LiveShow currentShow) {
+		logMessage("show info loaded: " + currentShow);
+
+		ProgramInfoViewBase.this.currentShow = currentShow;
+		displayTitles();
+		displayTime();
+	}
 
 	private void updateShowInfo() {
 		if (currentShow == null ||
@@ -201,16 +200,16 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 	private void loadProgramGuide() {
 		progressBarView.setEnabled(true);
 		progressBarView.setIndeterminate(true);
-		currentShowInfoRequest = new ProgramGuideRequest()
-			.setChannelId(currentChannel.getId())
-			.setListener(programGuideListener)
-			.execute();
+		showDisposable = ChannelInfoRepository.getInstance()
+			.getShows(currentChannel.getId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::onRequestSuccess, this::onRequestError);
 	}
 
 	private void chancelProgramGuideLoading() {
 		progressBarView.setIndeterminate(false);
-		if (currentShowInfoRequest != null) {
-			currentShowInfoRequest.cancel();
+		if (showDisposable != null) {
+			showDisposable.dispose();
 		}
 	}
 

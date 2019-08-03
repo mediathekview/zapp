@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.livestream.api;
+package de.christinecoenen.code.zapp.app.livestream.repository;
 
 
 import java.util.HashMap;
@@ -9,20 +9,11 @@ import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 import timber.log.Timber;
 
 /**
- * Cache singleton for currently running show on any channel.
+ * Cache for currently running show on any channel.
  */
 class Cache {
 
-	private static Cache instance = null;
-
 	private final Map<Channel, LiveShow> shows = new HashMap<>();
-
-	static Cache getInstance() {
-		if (instance == null) {
-			instance = new Cache();
-		}
-		return instance;
-	}
 
 	public void save(Channel channel, LiveShow show) {
 		this.shows.put(channel, show);
