@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.repository;
 
+import java.util.Map;
+
 import de.christinecoenen.code.zapp.app.livestream.api.ChannelInfoService;
 import de.christinecoenen.code.zapp.app.livestream.api.model.Channel;
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo;
@@ -54,8 +56,9 @@ public class ChannelInfoRepository {
 		return getShows(newChannel);
 	}
 
-	public Single<ChannelInfo> getChannelInfo(String channelId) {
-		return service.getChannelInfo(channelId);
+	public Single<Map<String, ChannelInfo>> getChannelInfoList() {
+		return service.getChannelInfoList()
+			.subscribeOn(Schedulers.io());
 	}
 
 	private Single<LiveShow> getShows(Channel channel) {
