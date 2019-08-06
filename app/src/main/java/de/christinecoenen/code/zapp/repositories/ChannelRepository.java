@@ -2,6 +2,15 @@ package de.christinecoenen.code.zapp.repositories;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo;
@@ -15,13 +24,19 @@ import timber.log.Timber;
 
 public class ChannelRepository {
 
+	private final String CHANNEL_INFOS_FILE_NAME = "channelInfoList.json";
+
+	private final Gson gson = new Gson();
+	private final Context context;
 	private final ISortableChannelList channelList;
 
 	public ChannelRepository(Context context) {
+		this.context = context;
+
 		channelList = new SortableJsonChannelList(context);
 
-		// TODO: on error load from disk
-		Disposable disposable = getChannelInfoList()
+		Disposable disposable = getChannelInfoListFromApi()
+			.onErrorReturn(t -> getChannelInfoListFromDisk())
 			.subscribe(this::onChannelInfoListSuccess, Timber::w);
 	}
 
@@ -30,12 +45,17 @@ public class ChannelRepository {
 	}
 
 	public void deleteCachedChannelInfos() {
-		// TODO: delete channelInfoList from disk
-		// TODO: reload channelList
+		deleteChannelInfoListFromDisk();
+		channelList.reload();
 	}
 
 	private void onChannelInfoListSuccess(Map<String, ChannelInfo> channelInfoList) {
-		// TODO: persist to disk
+		try {
+			writeChannelInfoListToDisk(channelInfoList);
+		} catch (IOException e) {
+			Timber.e(e);
+		}
+
 		applyToChannelList(channelInfoList);
 	}
 
@@ -48,8 +68,29 @@ public class ChannelRepository {
 		}
 	}
 
-	private Single<Map<String, ChannelInfo>> getChannelInfoList() {
+	private Single<Map<String, ChannelInfo>> getChannelInfoListFromApi() {
 		return ChannelInfoRepository.getInstance()
 			.getChannelInfoList();
+	}
+
+	private Map<String, ChannelInfo> getChannelInfoListFromDisk() throws IOException {
+		try (FileInputStream inputStream = context.openFileInput(CHANNEL_INFOS_FILE_NAME)) {
+			String json = IOUtils.toString(inputStream, "UTF-8");
+			inputStream.close();
+			Type type = new TypeToken<Map<String, ChannelInfo>>() {
+			}.getType();
+			return gson.fromJson(json, type);
+		}
+	}
+
+	private void writeChannelInfoListToDisk(Map<String, ChannelInfo> channelInfoList) throws IOException {
+		try (FileOutputStream fileOutputStream = context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE)) {
+			String json = gson.toJson(channelInfoList);
+			IOUtils.write(json, fileOutputStream, "UTF-8");
+		}
+	}
+
+	private void deleteChannelInfoListFromDisk() {
+		context.deleteFile(CHANNEL_INFOS_FILE_NAME);
 	}
 }
