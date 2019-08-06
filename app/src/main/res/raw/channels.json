@@ -197,7 +197,7 @@
   {
 	"id": "swr_bw",
 	"name": "SWR Baden-Württemberg",
-	"stream_url": "http://swrbw-lh.akamaihd.net/i/swrbw_live@196738/master.m3u8",
+	"stream_url": "https://swrbwhls-i.akamaihd.net/hls/live/667638/swrbwd/master.m3u8",
 	"logo_name": "channel_logo_swr",
 	"subtitle": "Baden-Württemberg",
 	"color": "#E94F35"
@@ -205,7 +205,7 @@
   {
 	"id": "swr_rp",
 	"name": "SWR Rheinland-Pfalz",
-	"stream_url": "http://swrrp-lh.akamaihd.net/i/swrrp_live@196739/master.m3u8",
+	"stream_url": "https://swrrphls-i.akamaihd.net/hls/live/667639/swrrpd/master.m3u8",
 	"logo_name": "channel_logo_swr",
 	"subtitle": "Rheinland-Pfalz",
 	"color": "#E94F35"
