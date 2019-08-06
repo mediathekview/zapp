@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -26,6 +27,7 @@ import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
@@ -33,7 +35,6 @@ import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
@@ -160,7 +161,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 
-		channelList = new SortableJsonChannelList(this);
+		channelList = ((ZappApplicationBase) getApplication()).getChannelRepository().getChannelList();
 		settings = new SettingsRepository(this);
 
 		// pager
@@ -237,7 +238,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
 				startActivity(Intent.createChooser(currentChannel.getVideoShareIntent(), getString(R.string.action_share)));

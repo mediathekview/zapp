@@ -1,17 +1,12 @@
 package de.christinecoenen.code.zapp.app;
 
-import android.app.Application;
 import android.content.Context;
-
-import androidx.appcompat.app.AppCompatDelegate;
 
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
-import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import timber.log.Timber;
 
 @ReportsCrashes(mailTo = "code.coenen@gmail.com",
@@ -21,17 +16,11 @@ import timber.log.Timber;
 	resDialogIcon = R.drawable.ic_sad_tv,
 	resDialogPositiveButtonText = R.string.action_continue,
 	resDialogTheme = R.style.ChrashDialog)
-public class ZappApplication extends Application {
+public class ZappApplication extends ZappApplicationBase {
 
 	@Override
-	public void onCreate() {
-		super.onCreate();
+	protected void setUpLogging() {
 		Timber.plant(new Timber.DebugTree());
-
-		NotificationHelper.createBackgroundPlaybackChannel(this);
-
-		SettingsRepository settingsRepository = new SettingsRepository(this);
-		AppCompatDelegate.setDefaultNightMode(settingsRepository.getUiMode());
 	}
 
 	@Override

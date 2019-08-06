@@ -6,6 +6,8 @@ package de.christinecoenen.code.zapp.model;
  */
 public interface ISortableChannelList extends IChannelList {
 
+	void reload();
+
 	/**
 	 * Reloads the current channel order from disk.
 	 * Us this eg. in onResume when another activity
