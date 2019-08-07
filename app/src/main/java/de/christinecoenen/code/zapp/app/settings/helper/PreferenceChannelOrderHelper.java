@@ -18,6 +18,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 public class PreferenceChannelOrderHelper {
 
 	private static final String PREF_KEY_CHANNEL_ORDER = "PREF_KEY_CHANNEL_ORDER";
+	private static final String PREF_KEY_CHANNELS_NOT_VISIBLE = "PREF_KEY_CHANNELS_NOT_VISIBLE";
 
 	private final PreferenceHelper preferenceHelper;
 
@@ -26,16 +27,16 @@ public class PreferenceChannelOrderHelper {
 	}
 
 	public void saveChannelOrder(List<ChannelModel> channels) {
-		List<String> sortedChannelIds = new ArrayList<>(channels.size());
-
-		for (ChannelModel channel : channels) {
-			sortedChannelIds.add(channel.getId());
-		}
-
-		preferenceHelper.saveList(PREF_KEY_CHANNEL_ORDER, sortedChannelIds);
+		saveOrder(channels);
+		saveVisibility(channels);
 	}
 
-	public List<ChannelModel> sortChannelList(List<ChannelModel> channels) {
+	public List<ChannelModel> sortChannelList(List<ChannelModel> channels, boolean removeDisabled) {
+		List<ChannelModel> sortedChannels = loadOrder(channels);
+		return loadVisibility(sortedChannels, removeDisabled);
+	}
+
+	private List<ChannelModel> loadOrder(List<ChannelModel> channels) {
 		List<String> sortedChannelIds = preferenceHelper.loadList(PREF_KEY_CHANNEL_ORDER);
 
 		if (sortedChannelIds == null) {
@@ -64,5 +65,53 @@ public class PreferenceChannelOrderHelper {
 		sortedChannelList.removeAll(Collections.singleton((ChannelModel) null));
 
 		return sortedChannelList;
+	}
+
+	private List<ChannelModel> loadVisibility(List<ChannelModel> channels, boolean removeDisabled) {
+		List<String> disabledChannelIds = preferenceHelper.loadList(PREF_KEY_CHANNELS_NOT_VISIBLE);
+
+		if (disabledChannelIds == null) {
+			// have never been saved before
+			return  channels;
+		}
+
+		if (removeDisabled) {
+			List<ChannelModel> enabledChannels = new ArrayList<>();
+			for (ChannelModel channel : channels) {
+				boolean isDisabled = disabledChannelIds.contains(channel.getId());
+				if (!isDisabled) {
+					enabledChannels.add(channel);
+				}
+			}
+			return enabledChannels;
+		} else {
+			for (ChannelModel channel : channels) {
+				boolean isDisabled = disabledChannelIds.contains(channel.getId());
+				channel.setEnabled(!isDisabled);
+			}
+			return channels;
+		}
+	}
+
+	private void saveOrder(List<ChannelModel> channels) {
+		List<String> sortedChannelIds = new ArrayList<>(channels.size());
+
+		for (ChannelModel channel : channels) {
+			sortedChannelIds.add(channel.getId());
+		}
+
+		preferenceHelper.saveList(PREF_KEY_CHANNEL_ORDER, sortedChannelIds);
+	}
+
+	private void saveVisibility(List<ChannelModel> channels) {
+		List<String> disabledChannelIds = new ArrayList<>();
+
+		for (ChannelModel channel : channels) {
+			if (!channel.isEnabled()) {
+				disabledChannelIds.add(channel.getId());
+			}
+		}
+
+		preferenceHelper.saveList(PREF_KEY_CHANNELS_NOT_VISIBLE, disabledChannelIds);
 	}
 }

@@ -20,6 +20,8 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 	@BindView(R.id.draglist_channel_selection)
 	protected DragListView channelListView;
 
+	private ISortableChannelList channelList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 		}
 
 		// adapter
-		final ISortableChannelList channelList = new SortableJsonChannelList(this);
+		channelList = new SortableJsonChannelList(this);
 		final ChannelSelectionAdapter listAdapter = new ChannelSelectionAdapter(this);
 		listAdapter.setItemList(channelList.getList());
 
@@ -51,5 +53,11 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 				}
 			}
 		});
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		channelList.persistChannelOrder();
 	}
 }

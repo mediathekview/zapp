@@ -15,9 +15,9 @@ import de.christinecoenen.code.zapp.app.settings.helper.PreferenceChannelOrderHe
 
 public class SortableJsonChannelList implements ISortableChannelList {
 
-	private final Context context;
-	private final PreferenceChannelOrderHelper channelOrderHelper;
-	private IChannelList channelList;
+	final Context context;
+	final PreferenceChannelOrderHelper channelOrderHelper;
+	IChannelList channelList;
 
 	public SortableJsonChannelList(Context context) {
 		this.context = context;
@@ -27,7 +27,6 @@ public class SortableJsonChannelList implements ISortableChannelList {
 
 	@Override
 	public void reload() {
-		channelList = new JsonChannelList(context);
 		loadSortingFromDisk();
 	}
 
@@ -72,8 +71,9 @@ public class SortableJsonChannelList implements ISortableChannelList {
 		channelOrderHelper.saveChannelOrder(channelList.getList());
 	}
 
-	private void loadSortingFromDisk() {
-		List<ChannelModel> sortedChannels = channelOrderHelper.sortChannelList(channelList.getList());
+	void loadSortingFromDisk() {
+		List<ChannelModel> listFromDisk = new JsonChannelList(context).getList();
+		List<ChannelModel> sortedChannels = channelOrderHelper.sortChannelList(listFromDisk, false);
 		channelList = new SimpleChannelList(sortedChannels);
 	}
 }
