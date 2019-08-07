@@ -1,3 +1,8 @@
+## 3.2.0
+* Menü wird beim Zurück-Navigieren geschlossen, bevor die App beendet wird (danke an arthur-star)
+* Streams von SWR repariert (danke an deejay73)
+* Stream-Urls können jetzt ohne App-Update aktualisiert werden (danke an bagbag)
+
 ## 3.1.0
 * Absturz beim Zurück-Navigieren behoben
 * Absturz beim Zurückkehren aus dem Hintergrund-Playback behoben
