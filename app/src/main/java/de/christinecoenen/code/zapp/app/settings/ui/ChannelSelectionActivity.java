@@ -1,8 +1,12 @@
 package de.christinecoenen.code.zapp.app.settings.ui;
 
 import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.woxthebox.draglistview.DragListView;
@@ -29,11 +33,6 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_channel_selection);
 		ButterKnife.bind(this);
 
-		ActionBar toolbar = getSupportActionBar();
-		if (toolbar != null) {
-			toolbar.setSubtitle(R.string.activity_channel_selection_subtitle);
-		}
-
 		// adapter
 		channelList = new SortableJsonChannelList(this);
 		final ChannelSelectionAdapter listAdapter = new ChannelSelectionAdapter(this);
@@ -59,5 +58,27 @@ public class ChannelSelectionActivity extends AppCompatActivity {
 	protected void onPause() {
 		super.onPause();
 		channelList.persistChannelOrder();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_channel_selection, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_help:
+				openHelpDialog();
+				return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void openHelpDialog() {
+		DialogFragment newFragment = new ChannelSelectionHelpDialog();
+		newFragment.show(getSupportFragmentManager(), "help");
 	}
 }
