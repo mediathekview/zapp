@@ -15,8 +15,8 @@
 	<string name="activity_channel_detail_info_error">No program information</string>
 
 	<string name="activity_settings_title">Settings</string>
-	<string name="activity_channel_selection_title">Channel order</string>
-	<string name="activity_channel_selection_subtitle">Drag the gray bars</string>
+	<string name="activity_channel_selection_title">Change channel list</string>
+	<string name="activity_channel_selection_help_text">Drag the gray bars to sort the channel list.\n\nClicking toggles a channel on or off.</string>
 
 	<string name="view_program_info_show_time">%1$s–%2$s</string>
 
