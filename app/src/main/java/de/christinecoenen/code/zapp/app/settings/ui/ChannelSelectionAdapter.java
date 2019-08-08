@@ -1,12 +1,13 @@
 package de.christinecoenen.code.zapp.app.settings.ui;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.woxthebox.draglistview.DragItemAdapter;
 
@@ -50,12 +51,17 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 		@BindView(R.id.image_channel_logo) ImageView logoView;
 		@BindView(R.id.text_channel_subtitle) TextView subtitle;
 
+		private ChannelModel channel;
+
 		ViewHolder(final View itemView) {
 			super(itemView, R.id.image_handle, false);
 			ButterKnife.bind(this, itemView);
 		}
 
 		void setChannel(ChannelModel channel) {
+			this.channel = channel;
+
+			setVisibility();
 			logoView.setImageResource(channel.getDrawableId());
 			handleView.setContentDescription(channel.getName());
 
@@ -65,6 +71,21 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 				subtitle.setText(channel.getSubtitle());
 				subtitle.setVisibility(View.VISIBLE);
 			}
+		}
+
+		@Override
+		public void onItemClicked(View view) {
+			channel.toggleIsEnabled();
+			setVisibility();
+		}
+
+		private void setVisibility() {
+			float alpha = channel.isEnabled() ? 1 : 0.25f;
+			logoView.setAlpha(alpha);
+			subtitle.setAlpha(alpha);
+
+			float handleAlpha = channel.isEnabled() ? 1 : 0.5f;
+			handleView.setAlpha(handleAlpha);
 		}
 	}
 }

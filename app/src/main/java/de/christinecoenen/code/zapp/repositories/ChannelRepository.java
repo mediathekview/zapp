@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo;
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
+import de.christinecoenen.code.zapp.model.json.SortableVisibleJsonChannelList;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -33,7 +33,7 @@ public class ChannelRepository {
 	public ChannelRepository(Context context) {
 		this.context = context;
 
-		channelList = new SortableJsonChannelList(context);
+		channelList = new SortableVisibleJsonChannelList(context);
 
 		Disposable disposable = getChannelInfoListFromApi()
 			.onErrorReturn(t -> getChannelInfoListFromDisk())
@@ -41,6 +41,7 @@ public class ChannelRepository {
 	}
 
 	public ISortableChannelList getChannelList() {
+		channelList.reload();
 		return channelList;
 	}
 

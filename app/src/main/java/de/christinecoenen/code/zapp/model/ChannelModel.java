@@ -3,8 +3,6 @@ package de.christinecoenen.code.zapp.model;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
 public class ChannelModel implements Serializable {
@@ -15,6 +13,7 @@ public class ChannelModel implements Serializable {
 	private String streamUrl;
 	private int drawableId;
 	private int color = 0;
+	private boolean isEnabled = true;
 
 	public String getId() {
 		return id;
@@ -64,22 +63,34 @@ public class ChannelModel implements Serializable {
 		this.color = color;
 	}
 
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		isEnabled = enabled;
+	}
+
+	public void toggleIsEnabled() {
+		isEnabled = !isEnabled;
+	}
+
 	public Intent getVideoShareIntent() {
 		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
 		videoIntent.setDataAndType(Uri.parse(streamUrl), "video/*");
 		return videoIntent;
 	}
 
-	@NonNull
 	@Override
 	public String toString() {
 		return "ChannelModel{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", subtitle='" + subtitle + '\'' +
-				", streamUrl='" + streamUrl + '\'' +
-				", drawableId=" + drawableId +
-				", color=" + color +
-				'}';
+			"id='" + id + '\'' +
+			", name='" + name + '\'' +
+			", subtitle='" + subtitle + '\'' +
+			", streamUrl='" + streamUrl + '\'' +
+			", drawableId=" + drawableId +
+			", color=" + color +
+			", isEnabled=" + isEnabled +
+			'}';
 	}
 }

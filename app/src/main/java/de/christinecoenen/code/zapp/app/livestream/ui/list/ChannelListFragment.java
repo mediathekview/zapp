@@ -3,11 +3,6 @@ package de.christinecoenen.code.zapp.app.livestream.ui.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,13 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
+import de.christinecoenen.code.zapp.model.json.SortableVisibleJsonChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 
@@ -51,7 +52,7 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		channelList = new SortableJsonChannelList(getContext());
+		channelList = new SortableVisibleJsonChannelList(getContext());
 		gridAdapter = new ChannelListAdapter(getContext(), channelList, this);
 	}
 

@@ -15,8 +15,8 @@
 	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
 
 	<string name="activity_settings_title">Einstellungen</string>
-	<string name="activity_channel_selection_title">Sender anordnen</string>
-	<string name="activity_channel_selection_subtitle">Ziehe an den grauen Balken</string>
+	<string name="activity_channel_selection_title">Senderliste ändern</string>
+	<string name="activity_channel_selection_help_text">Ziehe an den grauen Balken, um die Sender zu sortieren.\n\nEin Klick blendet einen Sender ein oder aus.</string>
 
 	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
 
