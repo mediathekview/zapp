@@ -29,6 +29,7 @@ public class ChannelRepository {
 	private final Gson gson = new Gson();
 	private final Context context;
 	private final ISortableChannelList channelList;
+	private Map<String, ChannelInfo> channelInfoList;
 
 	public ChannelRepository(Context context) {
 		this.context = context;
@@ -42,6 +43,7 @@ public class ChannelRepository {
 
 	public ISortableChannelList getChannelList() {
 		channelList.reload();
+		applyToChannelList(channelInfoList);
 		return channelList;
 	}
 
@@ -57,6 +59,7 @@ public class ChannelRepository {
 			Timber.e(e);
 		}
 
+		this.channelInfoList = channelInfoList;
 		applyToChannelList(channelInfoList);
 	}
 
