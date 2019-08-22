@@ -9,21 +9,21 @@
   {
 	"id": "zdf",
 	"name": "ZDF",
-	"stream_url": "http://zdf1314-lh.akamaihd.net/i/de14_v1@392878/master.m3u8",
+	"stream_url": "https://zdf-hls-01.akamaized.net/hls/live/2002460/de/high/master.m3u8",
 	"logo_name": "channel_logo_zdf",
 	"color": "#FA7D19"
   },
   {
 	"id": "arte",
 	"name": "ARTE",
-	"stream_url": "http://artelive-lh.akamaihd.net/i/artelive_de@393591/master.m3u8",
+	"stream_url": "https://artelive-lh.akamaihd.net/i/artelive_de@393591/master.m3u8",
 	"logo_name": "channel_logo_arte",
 	"color": "#fa481c"
   },
   {
 	"id": "dreisat",
 	"name": "3sat",
-	"stream_url": "http://zdf0910-lh.akamaihd.net/i/dach10_v1@392872/master.m3u8",
+	"stream_url": "https://zdfhls18-i.akamaihd.net/hls/live/744751/dach/high/master.m3u8",
 	"logo_name": "channel_logo_3sat",
 	"color": "#E40A22"
   },
@@ -37,7 +37,7 @@
   {
 	"id": "phoenix",
 	"name": "phoenix",
-	"stream_url": "http://zdf0910-lh.akamaihd.net/i/de09_v1@392871/master.m3u8",
+	"stream_url": "https://zdfhls19-i.akamaihd.net/hls/live/744752/de/high/master.m3u8",
 	"logo_name": "channel_logo_phoenix",
 	"color": "#00687C"
   },
@@ -58,14 +58,14 @@
   {
 	"id": "zdf_info",
 	"name": "ZDFinfo",
-	"stream_url": "http://zdf1112-lh.akamaihd.net/i/de12_v1@392882/master.m3u8",
+	"stream_url": "https://zdfhls17-i.akamaihd.net/hls/live/744750/de/high/master.m3u8",
 	"logo_name": "channel_logo_zdf_info",
 	"color": "#FA7D19"
   },
   {
 	"id": "zdf_neo",
 	"name": "ZDFneo",
-	"stream_url": "http://zdf1314-lh.akamaihd.net/i/de13_v1@392877/master.m3u8",
+	"stream_url": "https://zdf-hls-02.akamaized.net/hls/live/2002461/de/high/master.m3u8",
 	"logo_name": "channel_logo_zdf_neo",
 	"color": "#000000"
   },
