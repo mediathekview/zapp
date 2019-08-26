@@ -37,7 +37,7 @@ import timber.log.Timber;
 
 public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
 
-	private static final int ITEM_COUNT_PER_PAGE = 10;
+	private static final int ITEM_COUNT_PER_PAGE = 30;
 
 	public static MediathekListFragment getInstance() {
 		return new MediathekListFragment();

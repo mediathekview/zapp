@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSuggestionsProvider;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.utils.system.MenuHelper;
@@ -75,12 +78,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		viewPager.addOnPageChangeListener(this);
 
 		searchView.setOnQueryTextListener(this);
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		searchView.setIconified(false);
 		searchView.setIconifiedByDefault(false);
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
 		navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 
 		onPageSelected(viewPager.getCurrentItem());
+
+		handleIntent(getIntent());
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		handleIntent(intent);
 	}
 
 	@Override
@@ -144,7 +157,26 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	public void onPageScrollStateChanged(int state) {
 	}
 
+	private void handleIntent(Intent intent) {
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			// called by searchView on search commit
+
+			String query = intent.getStringExtra(SearchManager.QUERY);
+
+			searchView.setOnQueryTextListener(null);
+			searchView.clearFocus();
+			searchView.setQuery(query, false);
+			searchView.setOnQueryTextListener(this);
+
+			search(query);
+
+			MediathekSearchSuggestionsProvider.saveQuery(this, query);
+		}
+	}
+
 	private void search(String query) {
+		searchQuery = query;
+
 		Fragment currentFragment = getSupportFragmentManager()
 			.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
 
@@ -187,8 +219,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		this.searchQuery = newText;
-		search(this.searchQuery);
+		search(newText);
 		return true;
 	}
 
