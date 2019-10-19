@@ -240,7 +240,7 @@ public class MediathekShow implements Serializable {
 
 	private String getDownloadFileName(String videoUrl) {
 		String extension = FilenameUtils.getExtension(videoUrl);
-		String fileName = title.replace("/", "-");
+		String fileName = title.replaceAll("[\\\\/:*?\"<>|%]", "-");
 		return fileName + "." + extension;
 	}
 
