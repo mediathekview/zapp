@@ -15,6 +15,11 @@ public class MediathekSearchSuggestionsProvider extends SearchRecentSuggestionsP
 		suggestions.saveRecentQuery(query, null);
 	}
 
+	public static void deleteAllQueries(Context context) {
+		SearchRecentSuggestions suggestions = new SearchRecentSuggestions(context, AUTHORITY, MODE);
+		suggestions.clearHistory();
+	}
+
 	public MediathekSearchSuggestionsProvider() {
 		setupSuggestions(AUTHORITY, MODE);
 	}

@@ -6,9 +6,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.Objects;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference;
@@ -72,6 +75,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 	public void onPause() {
 		super.onPause();
 		shortcutPreference.setOnPreferenceChangeListener(null);
-		uiModePreference.setOnPreferenceChangeListener(uiModeChangeListener);
+		uiModePreference.setOnPreferenceChangeListener(null);
+	}
+
+	@Override
+	public void onDisplayPreferenceDialog(Preference preference) {
+		if (preference instanceof DeleteSearchQueriesPreference) {
+			DialogFragment dialogFragment = DeleteSearchQueriesPreferenceDialog.newInstance(preference.getKey());
+			dialogFragment.setTargetFragment(this, 0);
+			dialogFragment.show(Objects.requireNonNull(getFragmentManager()), null);
+			return;
+		}
+
+		super.onDisplayPreferenceDialog(preference);
 	}
 }
