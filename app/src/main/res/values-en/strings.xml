@@ -80,6 +80,7 @@
 	<!-- preferences -->
 	<string name="pref_header_network">Network</string>
 	<string name="pref_header_channels">Channels</string>
+	<string name="pref_header_data">Data</string>
 
 	<string name="pref_detail_landscape_title">Videos always in landscape mode</string>
 	<string name="pref_detail_landscape_summary">Locks the app in landscape mode as long as a video is playing</string>
@@ -102,6 +103,9 @@
 	<string name="stream_quality_cellular_lowest">Lowest quality</string>
 	<string name="stream_quality_cellular_medium">Medium quality</string>
 	<string name="stream_quality_cellular_highest">Highest quality</string>
+
+	<string name="pref_delete_search_queries_title">Delete search queries</string>
+	<string name="pref_delete_search_queries_dialog_message">Really delete all of your search queries?</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>
