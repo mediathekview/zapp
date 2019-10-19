@@ -32,8 +32,6 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:paddingLeft="-22dp"
-					app:defaultQueryHint="@string/search_query_hint_mediathek"
-					app:searchHintIcon="@null"
 					tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 			</androidx.appcompat.widget.Toolbar>

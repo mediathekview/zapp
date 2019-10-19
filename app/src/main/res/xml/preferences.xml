@@ -60,4 +60,15 @@
 			android:title="@string/pref_shortcuts_title" />
 	</PreferenceCategory>
 
+	<PreferenceCategory
+		android:icon="@drawable/ic_save_white_24dp"
+		android:title="@string/pref_header_data">
+
+		<de.christinecoenen.code.zapp.app.settings.ui.DeleteSearchQueriesPreference
+			android:dialogMessage="@string/pref_delete_search_queries_dialog_message"
+			android:key="@string/pref_key_delete_search_queries"
+			android:title="@string/pref_delete_search_queries_title" />
+
+	</PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

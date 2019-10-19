@@ -20,7 +20,7 @@ public class QueryRequest implements Serializable {
 	@SuppressWarnings("FieldCanBeLocal")
 	private final boolean future = false;
 	private int offset = 0;
-	private int size = 10;
+	private int size = 30;
 
 	public QueryRequest setSimpleSearch(String queryString) {
 		this.queries.clear();
