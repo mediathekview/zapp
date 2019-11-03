@@ -6,6 +6,8 @@
 
 	<color name="black_overlay">#66000000</color>
 
+	<color name="text_alwayslight_primary_disabled">#B8B8B8</color>
+
 	<color name="window_background_about">#303030</color>
 	<color name="about_libraries_text_description">@android:color/primary_text_dark</color>
 </resources>

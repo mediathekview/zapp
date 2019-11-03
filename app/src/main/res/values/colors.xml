@@ -8,6 +8,7 @@
 
 	<color name="text_alwayslight_primary">#ffffff</color>
 	<color name="text_alwayslight_secondary">#CBFFFFFF</color>
+	<color name="text_alwayslight_primary_disabled">#ffffff</color>
 
 	<color name="window_background_about">#fafafa</color>
 	<color name="about_libraries_card">#ffffff</color>

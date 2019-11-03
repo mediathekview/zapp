@@ -137,9 +137,9 @@ public class MediathekDetailFragment extends Fragment {
 		qualityRowLow.setVisibility(show.hasStreamingQualityLow() ? View.VISIBLE : View.GONE);
 		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		downloadButtonHigh.setVisibility(show.hasDownloadQualityHd() ? View.VISIBLE : View.GONE);
-		downloadButtonMedium.setVisibility(show.hasDownloadQualityMedium() ? View.VISIBLE : View.GONE);
-		downloadButtonLow.setVisibility(show.hasDownloadQualityLow() ? View.VISIBLE : View.GONE);
+		downloadButtonHigh.setEnabled(show.hasDownloadQualityHd());
+		downloadButtonMedium.setEnabled(show.hasDownloadQualityMedium());
+		downloadButtonLow.setEnabled(show.hasDownloadQualityLow());
 
 		return view;
 	}
