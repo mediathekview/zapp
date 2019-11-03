@@ -52,6 +52,8 @@
 
 	<string name="error_prefixed_message">Error: %s</string>
 
+	<string name="error_mediathek_some_downloads_not_available">Unfortunately some show qualities are not available for download.</string>
+
 
 	<!-- menus & buttons -->
 	<string name="action_cancel">Cancel</string>

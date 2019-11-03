@@ -81,6 +81,9 @@ public class MediathekDetailFragment extends Fragment {
 	@BindView(R.id.btn_download_low)
 	protected ImageButton downloadButtonLow;
 
+	@BindView(R.id.txt_error_missing_downloads)
+	protected TextView missingDownloadsErrorText;
+
 
 	private MediathekShow show;
 	private SettingsRepository settingsRepository;
@@ -140,6 +143,11 @@ public class MediathekDetailFragment extends Fragment {
 		downloadButtonHigh.setEnabled(show.hasDownloadQualityHd());
 		downloadButtonMedium.setEnabled(show.hasDownloadQualityMedium());
 		downloadButtonLow.setEnabled(show.hasDownloadQualityLow());
+
+		boolean isMissingDownloadsErrorVisible = !show.hasDownloadQualityHd() ||
+			!show.hasDownloadQualityMedium() ||
+			!show.hasDownloadQualityLow();
+		missingDownloadsErrorText.setVisibility(isMissingDownloadsErrorVisible ? View.VISIBLE : View.GONE);
 
 		return view;
 	}

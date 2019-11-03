@@ -52,6 +52,8 @@
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 
+	<string name="error_mediathek_some_downloads_not_available">Einige Sendungensqualitäten können leider nicht herunter geladen werden.</string>
+
 
 	<!-- menus & buttons -->
 	<string name="action_cancel">Abbrechen</string>
