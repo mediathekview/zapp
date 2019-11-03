@@ -59,7 +59,7 @@ dependencies {
 
 	// tests
 	debugImplementation 'androidx.test:core:1.2.0'
-	debugImplementation 'androidx.fragment:fragment-testing:1.1.0-rc01'
+	debugImplementation 'androidx.fragment:fragment-testing:1.1.0'
 
 	// device tests
 	androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -70,30 +70,30 @@ dependencies {
 
 	// unit tests
 	testImplementation 'androidx.test.ext:junit:1.1.1'
-	testImplementation 'org.robolectric:robolectric:4.3'
+	testImplementation 'org.robolectric:robolectric:4.3.1'
 
 	// support
-	implementation 'androidx.appcompat:appcompat:1.0.2'
+	implementation 'androidx.appcompat:appcompat:1.1.0'
 	implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 	implementation 'com.google.android.material:material:1.0.0'
 	implementation 'androidx.cardview:cardview:1.0.0'
 	implementation 'androidx.annotation:annotation:1.1.0'
 	implementation 'androidx.recyclerview:recyclerview:1.0.0'
-	implementation 'androidx.preference:preference:1.1.0-rc01'
+	implementation 'androidx.preference:preference:1.1.0'
 
 	// helper
-	implementation 'com.google.code.gson:gson:2.8.5'
+	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'commons-io:commons-io:2.6'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.6.4'
+	implementation 'com.github.woxthebox:draglistview:1.6.6'
 
 	// markdown
 	implementation 'ru.noties:markwon:2.0.2'
 
 	// butterknive:
-	implementation 'com.jakewharton:butterknife:10.1.0'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+	implementation 'com.jakewharton:butterknife:10.2.0'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 
 	// exo player
 	implementation 'com.google.android.exoplayer:exoplayer-core:2.9.2'
@@ -102,9 +102,9 @@ dependencies {
 	implementation 'com.google.android.exoplayer:extension-mediasession:2.9.2'
 
 	// retrofit rest client
-	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-	implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+	implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+	implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
 
 	// ACRA crash reporting
 	releaseImplementation 'ch.acra:acra:4.11'
@@ -113,12 +113,12 @@ dependencies {
 	implementation 'com.jakewharton.timber:timber:4.7.1'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.10.2'
+	implementation 'joda-time:joda-time:2.10.5'
 
 	// rxjava
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+	implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
 	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
-	implementation 'com.mikepenz:aboutlibraries:7.0.1'
+	implementation 'com.mikepenz:aboutlibraries:7.0.4'
 }
