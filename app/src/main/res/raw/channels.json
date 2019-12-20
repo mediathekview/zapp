@@ -188,6 +188,13 @@
 	"color": "#E31818"
   },
   {
+	"id": "rb",
+	"name": "Radio Bremen",
+	"stream_url": "https://rbfs-lh.akamaihd.net/i/rb_fs@438960/master.m3u8",
+	"logo_name": "channel_logo_rb",
+	"color": "#CC030C"
+  },
+  {
 	"id": "sr",
 	"name": "SR",
 	"stream_url": "http://live2_sr-lh.akamaihd.net/i/sr_universal02@107595/master.m3u8",
