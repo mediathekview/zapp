@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 29
-	buildToolsVersion '29.0.1'
+	buildToolsVersion '29.0.2'
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
@@ -78,7 +78,7 @@ dependencies {
 	implementation 'com.google.android.material:material:1.0.0'
 	implementation 'androidx.cardview:cardview:1.0.0'
 	implementation 'androidx.annotation:annotation:1.1.0'
-	implementation 'androidx.recyclerview:recyclerview:1.0.0'
+	implementation 'androidx.recyclerview:recyclerview:1.1.0'
 	implementation 'androidx.preference:preference:1.1.0'
 
 	// helper
@@ -92,8 +92,8 @@ dependencies {
 	implementation 'ru.noties:markwon:2.0.2'
 
 	// butterknive:
-	implementation 'com.jakewharton:butterknife:10.2.0'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+	implementation 'com.jakewharton:butterknife:10.2.1'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
 	// exo player
 	implementation 'com.google.android.exoplayer:exoplayer-core:2.9.2'
@@ -102,9 +102,9 @@ dependencies {
 	implementation 'com.google.android.exoplayer:extension-mediasession:2.9.2'
 
 	// retrofit rest client
-	implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-	implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+	implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
 
 	// ACRA crash reporting
 	releaseImplementation 'ch.acra:acra:4.11'
@@ -116,9 +116,9 @@ dependencies {
 	implementation 'joda-time:joda-time:2.10.5'
 
 	// rxjava
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
+	implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
 	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
-	implementation 'com.mikepenz:aboutlibraries:7.0.4'
+	implementation 'com.mikepenz:aboutlibraries:7.1.0'
 }
