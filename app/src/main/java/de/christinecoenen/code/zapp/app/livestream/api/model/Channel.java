@@ -17,6 +17,7 @@ public enum Channel {
 	NDR_SCHLESWIG_HOLSTEIN("ndr_sh"),
 	RBB_BERLIN("rbb_berlin"),
 	RBB_BRANDENBURG("rbb_brandenburg"),
+	RB("rb"),
 	SR("sr"),
 	SWR_BADEN_WUERTTEMBERG("swr_bw"),
 	SWR_RHEINLAND_PFALZ("swr_rp"),
