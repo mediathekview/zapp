@@ -13,7 +13,7 @@ import java.util.Objects;
 import de.christinecoenen.code.zapp.R;
 
 
-class ChannelSelectionHelpDialog extends DialogFragment {
+public class ChannelSelectionHelpDialog extends DialogFragment {
 
 	@NonNull
 	@Override
