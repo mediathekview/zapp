@@ -1,3 +1,12 @@
+## 3.3.0
+* Sender können ausgeblendet werden
+* Updatefehler für geänderte Stream-Urls behoben
+* Stream-Urls der ZDF-Sender aktualisiert
+* Letzte Suchanfragen werden als Vorschläge gespeichert
+* Nicht zulässige Zeichen für manche Download-Dateien ausgeschlossen
+* Nicht herunterladbare Sendungen deutlicher markiert
+* Radio Bremen hinzugefügt
+
 ## 3.2.0
 * Menü wird beim Zurück-Navigieren geschlossen, bevor die App beendet wird (danke an arthur-star)
 * Streams von SWR repariert (danke an deejay73)
