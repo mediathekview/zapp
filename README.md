@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/cemrich/zapp.svg?branch=master)](https://travis-ci.com/cemrich/zapp)
+[![Build Status](https://travis-ci.com/mediathekview/zapp.svg?branch=master)](https://travis-ci.com/mediathekview/zapp)
 
 ![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
 
