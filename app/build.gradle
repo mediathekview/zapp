@@ -102,9 +102,9 @@ dependencies {
 	implementation 'com.google.android.exoplayer:extension-mediasession:2.9.2'
 
 	// retrofit rest client
-	implementation 'com.squareup.retrofit2:retrofit:2.7.0'
-	implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
-	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
+	implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+	implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
 
 	// ACRA crash reporting
 	releaseImplementation 'ch.acra:acra:4.11'
@@ -116,7 +116,7 @@ dependencies {
 	implementation 'joda-time:joda-time:2.10.5'
 
 	// rxjava
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
+	implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
 	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
