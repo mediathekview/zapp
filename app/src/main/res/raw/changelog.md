@@ -1,3 +1,6 @@
+## 3.3.1
+* Absturz beim Öffnen eines Live-Streams ohne Internet gefixt
+
 ## 3.3.0
 * Sender können ausgeblendet werden
 * Updatefehler für geänderte Stream-Urls behoben

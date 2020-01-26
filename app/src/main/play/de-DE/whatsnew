@@ -1,7 +1,1 @@
-* Sender können ausgeblendet werden
-* Updatefehler für geänderte Stream-Urls behoben
-* Stream-Urls der ZDF-Sender aktualisiert
-* Letzte Suchanfragen werden als Vorschläge gespeichert
-* Nicht zulässige Zeichen für manche Download-Dateien ausgeschlossen
-* Nicht herunterladbare Sendungen deutlicher markiert
-* Radio Bremen hinzugefügt
+* Absturz beim Öffnen eines Live-Streams ohne Internet gefixt
