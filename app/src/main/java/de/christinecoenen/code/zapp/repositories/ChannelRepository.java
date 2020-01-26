@@ -64,6 +64,10 @@ public class ChannelRepository {
 	}
 
 	private void applyToChannelList(Map<String, ChannelInfo> channelInfoList) {
+		if (channelInfoList == null) {
+			return;
+		}
+
 		for (String channelId : channelInfoList.keySet()) {
 			ChannelModel channel = channelList.get(channelId);
 			if (channel != null) {
