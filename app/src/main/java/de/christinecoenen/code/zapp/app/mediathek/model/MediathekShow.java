@@ -110,7 +110,7 @@ public class MediathekShow implements Serializable {
 		if (timestamp == 0) {
 			return "?";
 		}
-		
+
 		long time = DateTimeZone
 			.forID("Europe/Berlin")
 			.convertLocalToUTC(timestamp * DateUtils.SECOND_IN_MILLIS, false);
@@ -244,7 +244,8 @@ public class MediathekShow implements Serializable {
 
 	private String getDownloadFileName(String videoUrl) {
 		String extension = FilenameUtils.getExtension(videoUrl);
-		String fileName = title.replaceAll("[\\\\/:*?\"<>|%]", "-");
+		String fileName = title.substring(0, 120); // needed for samsung devices
+		fileName = fileName.replaceAll("[\\\\/:*?\"<>|%]", "-");
 		return fileName + "." + extension;
 	}
 
