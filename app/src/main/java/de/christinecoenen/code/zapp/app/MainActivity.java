@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		searchView.setIconified(false);
 		searchView.setIconifiedByDefault(false);
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.clearFocus();
+		searchView.setOnQueryTextFocusChangeListener(this::onSearchQueryTextFocusChangeListener);
 
 		navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 
@@ -210,6 +213,18 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		}
 
 		return false;
+	}
+
+	/*
+	 * To open up the soft keyboard on Android (Fire) TV when focusing the SearchView.
+	 */
+	private void onSearchQueryTextFocusChangeListener(View searchView, boolean hasFocus) {
+		if (hasFocus) {
+			searchView.post(() -> {
+				InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(searchView.findFocus(), InputMethodManager.SHOW_FORCED);
+			});
+		}
 	}
 
 	@Override
