@@ -25,9 +25,9 @@
 		android:layout_gravity="bottom"
 		android:indeterminate="true" />
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/text_error"
-		style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+		style="@style/TextAppearance.AppCompat.Body1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
@@ -50,8 +50,9 @@
 		android:animateLayoutChanges="true"
 		android:fitsSystemWindows="true">
 
-		<androidx.appcompat.widget.Toolbar
+		<com.google.android.material.appbar.MaterialToolbar
 			android:id="@+id/toolbar"
+			style="@style/ToolbarStyle"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
 			android:background="@color/colorPrimary" />

@@ -10,7 +10,8 @@
 		<item name="colorOnSecondary">@android:color/white</item>
 		<item name="colorAccent">@color/colorAccent</item>
 
-		<item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
+		<item name="toolbarStyle">@style/ToolbarStyle</item>
+		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 
 		<item name="colorControlHighlight">#5f000000</item>
 	</style>
@@ -39,6 +40,21 @@
 
 	<style name="AppTheme.About.Dark" parent="AboutLibrariesTheme">
 		<item name="android:windowBackground">@color/window_background_about</item>
+	</style>
+
+	<style name="OverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+		<item name="android:tint">?attr/colorOnPrimary</item>
+	</style>
+
+	<style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+		<item name="colorControlNormal">#ff0000</item>
+	</style>
+
+	<style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+		<item name="android:textColorHint">@color/text_alwayslight_tertiary</item>
+		<item name="android:textColor">?attr/colorOnSurface</item>
+		<item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+		<item name="android:textColorSecondary">?attr/colorOnPrimary</item>
 	</style>
 
 	<style name="ShowProgress" parent="Theme.MaterialComponents.DayNight">

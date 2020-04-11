@@ -31,6 +31,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:paddingLeft="-22dp"
+					android:theme="@style/SearchViewStyle"
 					tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 			</com.google.android.material.appbar.MaterialToolbar>
