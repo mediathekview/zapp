@@ -230,7 +230,7 @@
 	"stream_url": "https://cldf-hlsgw.r53.cdn.tv1.eu/1000153copo/hk1.m3u8",
 	"logo_name": "channel_logo_parlamentsfernsehen",
 	"subtitle": "Kanal 1",
-	"color": "#000000"
+	"color": "#444444"
   },
   {
 	"id": "parlamentsfernsehen_2",
@@ -238,6 +238,6 @@
 	"stream_url": "https://cldf-hlsgw.r53.cdn.tv1.eu/1000153copo/hk2.m3u8",
 	"logo_name": "channel_logo_parlamentsfernsehen",
 	"subtitle": "Kanal 2",
-	"color": "#000000"
+	"color": "#444444"
   }
 ]

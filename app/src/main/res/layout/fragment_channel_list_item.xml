@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="120dp"
@@ -8,7 +8,8 @@
 	android:orientation="horizontal"
 	tools:ignore="Overdraw">
 
-	<LinearLayout android:layout_width="110dp"
+	<androidx.appcompat.widget.LinearLayoutCompat
+		android:layout_width="110dp"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 		android:paddingStart="10dip"
@@ -16,7 +17,7 @@
 		android:paddingEnd="10dip"
 		android:paddingBottom="@dimen/activity_vertical_margin">
 
-		<ImageView
+		<androidx.appcompat.widget.AppCompatImageView
 			android:id="@+id/image_channel_logo"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
@@ -26,21 +27,22 @@
 			tools:ignore="ContentDescription"
 			tools:src="@drawable/channel_logo_das_erste" />
 
-		<TextView
+		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_channel_subtitle"
-			style="@style/TextAppearance.AppCompat.Small"
+			style="@style/TextAppearance.MaterialComponents.Caption"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:gravity="center"
 			tools:text="Very Long Subtitle" />
 
-	</LinearLayout>
+	</androidx.appcompat.widget.LinearLayoutCompat>
 
 	<de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewOverview
 		android:id="@+id/program_info"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingEnd="@dimen/activity_horizontal_margin" />
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		tools:ignore="RtlSymmetry" />
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -7,14 +7,14 @@
 	android:background="?android:attr/colorBackground"
 	tools:ignore="Overdraw">
 
-	<LinearLayout
+	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:layout_gravity="center"
 		android:orientation="vertical"
 		android:padding="80dip">
 
-		<ImageView
+		<androidx.appcompat.widget.AppCompatImageView
 			android:id="@+id/image_channel_logo"
 			android:layout_width="wrap_content"
 			android:layout_height="0dip"
@@ -26,9 +26,9 @@
 			android:src="@drawable/channel_logo_rbb"
 			tools:ignore="ContentDescription" />
 
-		<TextView
+		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_channel_subtitle"
-			style="@style/Base.TextAppearance.AppCompat.Medium"
+			style="@style/TextAppearance.MaterialComponents.Subtitle1"
 			android:layout_width="wrap_content"
 			android:layout_height="0dip"
 			android:layout_gravity="center"
@@ -37,11 +37,11 @@
 			android:gravity="center|top"
 			tools:text="Some Channel Subtitle" />
 
-	</LinearLayout>
+	</androidx.appcompat.widget.LinearLayoutCompat>
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/text_error"
-		style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+		style="@style/TextAppearance.AppCompat.Body1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"

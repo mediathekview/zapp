@@ -3,30 +3,30 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/text_show_title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:ellipsize="end"
 		android:maxLines="2"
-		style="@style/TextAppearance.AppCompat.Title"
+		style="@style/TextAppearance.MaterialComponents.Headline6"
 		tools:text="Very very long and complicated show title"/>
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/text_show_subtitle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="@dimen/view_program_info_subtitle_margin_bottom"
 		android:ellipsize="end"
 		android:maxLines="1"
-		style="@style/TextAppearance.AppCompat.Subhead"
+		style="@style/TextAppearance.MaterialComponents.Subtitle1"
 		tools:text="Show subtitle"/>
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/text_show_time"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		style="@style/TextAppearance.AppCompat.Small"
+		style="@style/TextAppearance.MaterialComponents.Body2"
 		tools:text="20:15 – 20:45 Uhr"/>
 
 	<ProgressBar
