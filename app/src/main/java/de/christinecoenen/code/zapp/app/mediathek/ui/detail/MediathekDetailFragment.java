@@ -11,13 +11,13 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -73,13 +73,13 @@ public class MediathekDetailFragment extends Fragment {
 	protected View qualityRowSubtitle;
 
 	@BindView(R.id.btn_download_high)
-	protected ImageButton downloadButtonHigh;
+	protected MaterialButton downloadButtonHigh;
 
 	@BindView(R.id.btn_download_medium)
-	protected ImageButton downloadButtonMedium;
+	protected MaterialButton downloadButtonMedium;
 
 	@BindView(R.id.btn_download_low)
-	protected ImageButton downloadButtonLow;
+	protected MaterialButton downloadButtonLow;
 
 	@BindView(R.id.txt_error_missing_downloads)
 	protected TextView missingDownloadsErrorText;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -11,57 +11,58 @@
 	android:paddingBottom="8dp"
 	android:textAppearance="?attr/textAppearanceListItem">
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/topic"
-		style="@style/TextAppearance.AppCompat.Subhead.Inverse"
+		style="@style/TextAppearance.MaterialComponents.Body1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:background="@color/colorAccent"
+		android:layout_marginBottom="2dp"
+		android:background="?attr/colorSecondary"
 		android:ellipsize="end"
 		android:maxLines="1"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
-		android:textColor="@color/text_alwayslight_secondary"
+		android:textColor="?attr/colorOnSecondary"
 		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
-		style="@style/TextAppearance.AppCompat.Title"
+		style="@style/TextAppearance.MaterialComponents.Headline6"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="-2dp"
+		android:layout_marginBottom="2dp"
 		android:ellipsize="end"
 		android:maxLines="2"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
 		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
 
-	<LinearLayout
+	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin">
 
-		<TextView
+		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_show_duration"
-			style="@style/TextAppearance.AppCompat.Small"
+			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			tools:text="58:59 Minuten" />
 
-		<TextView
+		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_show_channel"
-			style="@style/TextAppearance.AppCompat.Small"
+			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			tools:text="ZDF-tivi" />
 
-		<TextView
+		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_show_time"
-			style="@style/TextAppearance.AppCompat.Small"
+			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -69,15 +70,15 @@
 
 		<TextView
 			android:id="@+id/text_show_subtitle"
-			style="@style/TextAppearance.AppCompat.Small.Inverse"
+			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="@color/colorAccent"
+			android:background="?attr/colorSecondary"
 			android:paddingStart="4dp"
 			android:paddingEnd="4dp"
 			android:text="@string/fragment_mediathek_batch_subtitle"
-			android:textColor="@color/text_alwayslight_secondary" />
+			android:textColor="?attr/colorOnSecondary" />
 
-	</LinearLayout>
+	</androidx.appcompat.widget.LinearLayoutCompat>
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

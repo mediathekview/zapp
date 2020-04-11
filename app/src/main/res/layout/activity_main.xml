@@ -24,8 +24,7 @@
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="?attr/actionBarSize"
-				android:animateLayoutChanges="true"
-				style="@style/Widget.MaterialComponents.Toolbar.Primary">
+				android:animateLayoutChanges="true">
 
 				<androidx.appcompat.widget.SearchView
 					android:id="@+id/search"
