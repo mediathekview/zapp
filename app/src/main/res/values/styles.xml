@@ -42,6 +42,11 @@
 		<item name="android:windowBackground">@color/window_background_about</item>
 	</style>
 
+	<style name="ColorlessOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+		<item name="iconTint">?android:textColorTertiary</item>
+		<item name="android:textColor">?android:textColorTertiary</item>
+	</style>
+
 	<style name="OverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
 		<item name="android:tint">?attr/colorOnPrimary</item>
 	</style>
@@ -94,7 +99,7 @@
 		<item name="android:visibility">gone</item>
 	</style>
 
-	<style name="MediathekDetailQualityButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+	<style name="MediathekDetailQualityButton" parent="ColorlessOutlinedButton">
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_marginBottom">-4dp</item>

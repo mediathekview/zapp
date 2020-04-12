@@ -119,6 +119,6 @@
 		android:paddingTop="8dp"
 		android:text="@string/error_mediathek_some_downloads_not_available"
 		app:drawableStartCompat="@drawable/ic_warning_white_24dp"
-		app:drawableTint="?android:attr/textColorPrimary" />
+		app:drawableTint="?android:attr/textColorTertiary" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
