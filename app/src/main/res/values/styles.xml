@@ -12,6 +12,8 @@
 		<item name="colorSurface">@color/colorSurface</item>
 		<item name="android:colorBackground">@color/colorBackground</item>
 
+		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
+
 		<item name="navigationViewStyle">@style/CustomNavigationViewStyle</item>
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
 		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
@@ -36,6 +38,10 @@
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+	</style>
+
+	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+		<item name="android:colorBackground">@color/colorSurface</item>
 	</style>
 
 	<style name="CustomNavigationViewStyle" parent="Widget.Design.NavigationView">
