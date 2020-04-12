@@ -46,7 +46,6 @@
 
 		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_show_duration"
-			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -54,7 +53,6 @@
 
 		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_show_channel"
-			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -62,7 +60,6 @@
 
 		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/text_show_time"
-			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -70,7 +67,6 @@
 
 		<TextView
 			android:id="@+id/text_show_subtitle"
-			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:background="?attr/colorSecondary"

@@ -26,7 +26,6 @@
 		android:id="@+id/text_show_time"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		style="@style/TextAppearance.MaterialComponents.Body2"
 		tools:text="20:15 – 20:45 Uhr"/>
 
 	<ProgressBar
