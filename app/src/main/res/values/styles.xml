@@ -12,6 +12,7 @@
 		<item name="colorSurface">@color/colorSurface</item>
 		<item name="android:colorBackground">@color/colorBackground</item>
 
+		<item name="navigationViewStyle">@style/CustomNavigationViewStyle</item>
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
 		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 		<item name="aboutLibrariesStyle">@style/CustomAboutLibrariesStyle</item>
@@ -37,6 +38,10 @@
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
 	</style>
 
+	<style name="CustomNavigationViewStyle" parent="Widget.Design.NavigationView">
+		<item name="itemBackground">@android:color/transparent</item>
+		<item name="selectableItemBackground">@android:color/transparent</item>
+	</style>
 
 	<style name="CustomAboutLibrariesStyle" parent="AboutLibrariesStyle">
 		<item name="aboutLibrariesWindowBackground">?colorSurface</item>
