@@ -13,7 +13,7 @@
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
 		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 
-		<item name="colorControlHighlight">#5f000000</item>
+		<item name="android:textAllCaps">false</item>
 	</style>
 
 	<style name="FullscreenTheme" parent="AppTheme">
@@ -32,14 +32,6 @@
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
-	</style>
-
-	<style name="AppTheme.About.Light" parent="AboutLibrariesTheme.Light.DarkToolbar">
-		<item name="android:windowBackground">@color/window_background_about</item>
-	</style>
-
-	<style name="AppTheme.About.Dark" parent="AboutLibrariesTheme">
-		<item name="android:windowBackground">@color/window_background_about</item>
 	</style>
 
 	<style name="ColorlessOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">

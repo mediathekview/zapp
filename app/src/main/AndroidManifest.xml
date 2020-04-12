@@ -81,7 +81,8 @@
 			android:label="@string/activity_settings_title" />
 		<activity
 			android:name=".app.about.ui.AboutActivity"
-			android:label="@string/activity_about_title" />
+			android:label="@string/activity_about_title"
+			android:theme="@style/AppTheme.NoActionBar" />
 		<activity
 			android:name=".app.about.ui.FaqActivity"
 			android:label="@string/activity_faq_title"

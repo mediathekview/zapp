@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 
 android {
 	compileSdkVersion 29
@@ -120,5 +121,5 @@ dependencies {
 	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
-	implementation 'com.mikepenz:aboutlibraries:7.1.0'
+	implementation 'com.mikepenz:aboutlibraries:8.1.0'
 }
