@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.utils.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
@@ -35,6 +36,7 @@ public class ClickableViewPager extends ViewPager {
 		});
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		gestureDetector.onTouchEvent(event);

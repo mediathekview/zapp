@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -190,6 +191,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		}
 	}
 
+	@SuppressLint("SourceLockedOrientationActivity")
 	@Override
 	protected void onResume() {
 		super.onResume();

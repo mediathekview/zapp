@@ -18,7 +18,7 @@ public class ChannelSelectionHelpDialog extends DialogFragment {
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-		return new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+		return new AlertDialog.Builder(requireActivity())
 			.setTitle(R.string.activity_channel_selection_title)
 			.setMessage(R.string.activity_channel_selection_help_text)
 			.setPositiveButton(android.R.string.ok, null)

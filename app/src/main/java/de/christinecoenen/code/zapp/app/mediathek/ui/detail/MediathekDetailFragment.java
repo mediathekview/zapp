@@ -242,7 +242,7 @@ public class MediathekDetailFragment extends Fragment {
 			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
 		} else if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
 			Snackbar snackbar = Snackbar
-				.make(Objects.requireNonNull(getView()), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
+				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.activity_settings_title, v -> startActivity(SettingsActivity.getStartIntent(getContext())));
 			snackbar.show();
 		} else {
@@ -250,7 +250,7 @@ public class MediathekDetailFragment extends Fragment {
 
 			String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
 			Snackbar snackbar = Snackbar
-				.make(Objects.requireNonNull(getView()), infoString, Snackbar.LENGTH_LONG);
+				.make(requireView(), infoString, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.action_cancel, v -> downloadManager.remove(downloadId));
 			snackbar.show();
 		}

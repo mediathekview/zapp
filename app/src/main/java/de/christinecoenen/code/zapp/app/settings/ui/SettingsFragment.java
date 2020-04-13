@@ -83,7 +83,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		if (preference instanceof DeleteSearchQueriesPreference) {
 			DialogFragment dialogFragment = DeleteSearchQueriesPreferenceDialog.newInstance(preference.getKey());
 			dialogFragment.setTargetFragment(this, 0);
-			dialogFragment.show(Objects.requireNonNull(getFragmentManager()), null);
+			dialogFragment.show(Objects.requireNonNull(getParentFragmentManager()), null);
 			return;
 		}
 

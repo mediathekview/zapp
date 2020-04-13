@@ -11,5 +11,4 @@
 	<color name="text_alwayslight_primary">#ffffff</color>
 	<color name="text_alwayslight_secondary">#CBFFFFFF</color>
 	<color name="text_alwayslight_tertiary">#ACFFFFFF</color>
-	<color name="text_alwayslight_primary_disabled">#ffffff</color>
 </resources>
