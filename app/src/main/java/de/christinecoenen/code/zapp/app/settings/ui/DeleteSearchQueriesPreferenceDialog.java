@@ -7,6 +7,7 @@ import androidx.preference.PreferenceDialogFragmentCompat;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSuggestionsProvider;
 
 
+@SuppressWarnings({"WeakerAccess", "RedundantSuppression"})
 public class DeleteSearchQueriesPreferenceDialog extends PreferenceDialogFragmentCompat {
 
 	static DeleteSearchQueriesPreferenceDialog newInstance(String key) {

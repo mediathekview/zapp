@@ -295,7 +295,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		disposable.clear();
 		try {
 			unbindService(backgroundPlayerServiceConnection);
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException ignored) {
 
 		}
 	}

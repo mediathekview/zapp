@@ -24,7 +24,7 @@ public class AboutActivity extends LibsActivity {
 
 	private final LibsConfiguration.LibsListener buttonListener = new LibsListenerImpl() {
 		@Override
-		public void onIconClicked(View v) {
+		public void onIconClicked(@NonNull View v) {
 			IntentHelper.openUrl(AboutActivity.this, getString(R.string.app_website_url));
 		}
 

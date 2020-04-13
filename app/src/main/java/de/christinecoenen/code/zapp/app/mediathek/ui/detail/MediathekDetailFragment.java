@@ -20,8 +20,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -159,7 +157,7 @@ public class MediathekDetailFragment extends Fragment {
 
 	@OnClick(R.id.btn_website)
 	protected void onWebsiteClick() {
-		IntentHelper.openUrl(getContext(), show.getWebsiteUrl());
+		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
 	}
 
 	@OnClick(R.id.btn_download_high)

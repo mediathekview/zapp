@@ -11,7 +11,7 @@ public class PermissionHelper {
 	private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
 
 	public static boolean writeExternalStorageAllowed(Fragment fragment) {
-		if (ActivityCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+		if (ActivityCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 			fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
 			return false;
 		} else {

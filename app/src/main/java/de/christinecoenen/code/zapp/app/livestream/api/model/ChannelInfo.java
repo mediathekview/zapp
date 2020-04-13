@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.app.livestream.api.model;
 
 
+import androidx.annotation.NonNull;
+
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class ChannelInfo {
 
@@ -10,6 +12,7 @@ public class ChannelInfo {
 		return streamUrl;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return "ChannelInfoResponse{" +

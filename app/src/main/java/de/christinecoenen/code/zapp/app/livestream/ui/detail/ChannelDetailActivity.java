@@ -333,7 +333,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		disposable.clear();
 		try {
 			unbindService(backgroundPlayerServiceConnection);
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException ignored) {
 
 		}
 	}

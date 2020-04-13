@@ -8,11 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Objects;
-
 import de.christinecoenen.code.zapp.R;
 
 
+@SuppressWarnings({"WeakerAccess", "RedundantSuppression"})
 public class ChannelSelectionHelpDialog extends DialogFragment {
 
 	@NonNull

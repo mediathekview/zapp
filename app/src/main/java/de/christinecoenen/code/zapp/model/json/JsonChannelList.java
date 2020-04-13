@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class JsonChannelList implements IChannelList {
 	 */
 	private String getJsonString() {
 		try (InputStream inputStream = context.getResources().openRawResource(R.raw.channels)) {
-			return IOUtils.toString(inputStream, "UTF-8");
+			return IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			// we know, this file is bundled with the app,
 			// so this should never happen
