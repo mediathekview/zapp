@@ -244,8 +244,16 @@ public class MediathekShow implements Serializable {
 
 	private String getDownloadFileName(String videoUrl) {
 		String extension = FilenameUtils.getExtension(videoUrl);
-		String fileName = title.substring(0, 120); // needed for samsung devices
+
+		// needed for samsung devices
+		int maxFileNameLength = 120;
+		String fileName = title.length() <= maxFileNameLength ?
+			title : title.substring(0, maxFileNameLength);
+
+		// replace characters that may crash download manager
 		fileName = fileName.replaceAll("[\\\\/:*?\"<>|%]", "-");
+		fileName = fileName.replaceAll("\\.\\.\\.", "…");
+
 		return fileName + "." + extension;
 	}
 
