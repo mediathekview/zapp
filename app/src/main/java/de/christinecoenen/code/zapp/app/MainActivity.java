@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	 * To open up the soft keyboard on Android (Fire) TV when focusing the SearchView.
 	 */
 	private void onSearchQueryTextFocusChangeListener(View searchView, boolean hasFocus) {
-		if (hasFocus) {
+		if (hasFocus && !searchView.isInTouchMode()) {
 			searchView.post(() -> {
 				InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.showSoftInput(searchView.findFocus(), InputMethodManager.SHOW_FORCED);
