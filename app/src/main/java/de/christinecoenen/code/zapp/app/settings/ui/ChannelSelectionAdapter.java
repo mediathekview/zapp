@@ -45,7 +45,7 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 		return mItemList.get(position).getId().hashCode();
 	}
 
-	class ViewHolder extends DragItemAdapter.ViewHolder {
+	static class ViewHolder extends DragItemAdapter.ViewHolder {
 
 		@BindView(R.id.image_handle) ImageView handleView;
 		@BindView(R.id.image_channel_logo) ImageView logoView;

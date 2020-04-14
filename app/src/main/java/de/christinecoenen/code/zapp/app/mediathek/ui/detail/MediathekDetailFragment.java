@@ -11,16 +11,14 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,13 +71,13 @@ public class MediathekDetailFragment extends Fragment {
 	protected View qualityRowSubtitle;
 
 	@BindView(R.id.btn_download_high)
-	protected ImageButton downloadButtonHigh;
+	protected MaterialButton downloadButtonHigh;
 
 	@BindView(R.id.btn_download_medium)
-	protected ImageButton downloadButtonMedium;
+	protected MaterialButton downloadButtonMedium;
 
 	@BindView(R.id.btn_download_low)
-	protected ImageButton downloadButtonLow;
+	protected MaterialButton downloadButtonLow;
 
 	@BindView(R.id.txt_error_missing_downloads)
 	protected TextView missingDownloadsErrorText;
@@ -159,7 +157,7 @@ public class MediathekDetailFragment extends Fragment {
 
 	@OnClick(R.id.btn_website)
 	protected void onWebsiteClick() {
-		IntentHelper.openUrl(getContext(), show.getWebsiteUrl());
+		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
 	}
 
 	@OnClick(R.id.btn_download_high)
@@ -242,7 +240,7 @@ public class MediathekDetailFragment extends Fragment {
 			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
 		} else if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
 			Snackbar snackbar = Snackbar
-				.make(Objects.requireNonNull(getView()), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
+				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.activity_settings_title, v -> startActivity(SettingsActivity.getStartIntent(getContext())));
 			snackbar.show();
 		} else {
@@ -250,7 +248,7 @@ public class MediathekDetailFragment extends Fragment {
 
 			String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
 			Snackbar snackbar = Snackbar
-				.make(Objects.requireNonNull(getView()), infoString, Snackbar.LENGTH_LONG);
+				.make(requireView(), infoString, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.action_cancel, v -> downloadManager.remove(downloadId));
 			snackbar.show();
 		}

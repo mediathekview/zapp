@@ -295,7 +295,7 @@ public class Player {
 
 	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {
 		if (shouldHoldWakelock) {
-			playerWakeLocks.acquire(PlayerWakeLocks.MAX_WAKELOCK_DURATION);
+			playerWakeLocks.acquire();
 		} else {
 			playerWakeLocks.release();
 		}

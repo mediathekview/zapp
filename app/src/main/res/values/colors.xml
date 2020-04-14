@@ -3,15 +3,12 @@
 	<color name="colorPrimary">#e1007a</color>
 	<color name="colorPrimaryDark">#b00050</color>
 	<color name="colorAccent">#ff5722</color>
+	<color name="colorSurface">#ffffff</color>
+	<color name="colorBackground">#fafafa</color>
 
 	<color name="black_overlay">#66000000</color>
 
 	<color name="text_alwayslight_primary">#ffffff</color>
 	<color name="text_alwayslight_secondary">#CBFFFFFF</color>
-	<color name="text_alwayslight_primary_disabled">#ffffff</color>
-
-	<color name="window_background_about">#fafafa</color>
-	<color name="about_libraries_card">#ffffff</color>
-	<color name="about_libraries_card_dark">#424242</color>
-	<color name="about_libraries_text_description">@android:color/tertiary_text_light</color>
+	<color name="text_alwayslight_tertiary">#ACFFFFFF</color>
 </resources>

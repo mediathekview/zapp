@@ -21,6 +21,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings({"WeakerAccess", "RedundantSuppression"})
 public class SettingsFragment extends PreferenceFragmentCompat {
 
 	private static final String PREF_SHORTCUTS = "pref_shortcuts";
@@ -83,7 +84,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		if (preference instanceof DeleteSearchQueriesPreference) {
 			DialogFragment dialogFragment = DeleteSearchQueriesPreferenceDialog.newInstance(preference.getKey());
 			dialogFragment.setTargetFragment(this, 0);
-			dialogFragment.show(Objects.requireNonNull(getFragmentManager()), null);
+			dialogFragment.show(Objects.requireNonNull(getParentFragmentManager()), null);
 			return;
 		}
 

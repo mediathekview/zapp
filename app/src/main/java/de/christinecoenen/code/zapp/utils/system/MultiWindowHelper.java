@@ -40,6 +40,7 @@ public class MultiWindowHelper {
 	 *
 	 * @return true if the current device does support picture in picture mode
 	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean supportsPictureInPictureMode(Context context) {
 		PackageManager packageManager = context.getApplicationContext().getPackageManager();
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&

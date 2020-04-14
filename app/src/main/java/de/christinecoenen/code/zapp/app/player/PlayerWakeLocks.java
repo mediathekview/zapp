@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit;
 
 class PlayerWakeLocks {
 
-	static final long MAX_WAKELOCK_DURATION = TimeUnit.MINUTES.toMillis(120);
+	private static final long MAX_WAKELOCK_DURATION = TimeUnit.MINUTES.toMillis(120);
 
 	private PowerManager.WakeLock wakeLock;
 	private WifiManager.WifiLock wifiLock;
 
-	PlayerWakeLocks(Context context, String tag) {
+	PlayerWakeLocks(Context context, @SuppressWarnings("SameParameterValue") String tag) {
 		PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 		wakeLock = Objects.requireNonNull(powerManager).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
 
@@ -22,8 +22,8 @@ class PlayerWakeLocks {
 		wifiLock = Objects.requireNonNull(wifiManager).createWifiLock(WifiManager.WIFI_MODE_FULL, tag);
 	}
 
-	void acquire(long millis) {
-		wakeLock.acquire(millis);
+	void acquire() {
+		wakeLock.acquire(MAX_WAKELOCK_DURATION);
 		wifiLock.acquire();
 	}
 

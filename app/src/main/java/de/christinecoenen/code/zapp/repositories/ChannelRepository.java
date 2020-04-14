@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.repositories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo;
@@ -19,7 +21,6 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.ISortableChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableVisibleJsonChannelList;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class ChannelRepository {
@@ -30,13 +31,14 @@ public class ChannelRepository {
 	private final Context context;
 	private final ISortableChannelList channelList;
 	private Map<String, ChannelInfo> channelInfoList;
-
+	@SuppressLint("CheckResult")
 	public ChannelRepository(Context context) {
 		this.context = context;
 
 		channelList = new SortableVisibleJsonChannelList(context);
 
-		Disposable disposable = getChannelInfoListFromApi()
+		//noinspection ResultOfMethodCallIgnored
+		getChannelInfoListFromApi()
 			.onErrorReturn(t -> getChannelInfoListFromDisk())
 			.subscribe(this::onChannelInfoListSuccess, Timber::w);
 	}
@@ -83,7 +85,7 @@ public class ChannelRepository {
 
 	private Map<String, ChannelInfo> getChannelInfoListFromDisk() throws IOException {
 		try (FileInputStream inputStream = context.openFileInput(CHANNEL_INFOS_FILE_NAME)) {
-			String json = IOUtils.toString(inputStream, "UTF-8");
+			String json = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 			inputStream.close();
 			Type type = new TypeToken<Map<String, ChannelInfo>>() {
 			}.getType();
@@ -94,7 +96,7 @@ public class ChannelRepository {
 	private void writeChannelInfoListToDisk(Map<String, ChannelInfo> channelInfoList) throws IOException {
 		try (FileOutputStream fileOutputStream = context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE)) {
 			String json = gson.toJson(channelInfoList);
-			IOUtils.write(json, fileOutputStream, "UTF-8");
+			IOUtils.write(json, fileOutputStream, StandardCharsets.UTF_8);
 		}
 	}
 

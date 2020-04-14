@@ -53,7 +53,7 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 		super.onCreate(savedInstanceState);
 
 		channelList = new SortableVisibleJsonChannelList(getContext());
-		gridAdapter = new ChannelListAdapter(getContext(), channelList, this);
+		gridAdapter = new ChannelListAdapter(requireContext(), channelList, this);
 	}
 
 	@Override

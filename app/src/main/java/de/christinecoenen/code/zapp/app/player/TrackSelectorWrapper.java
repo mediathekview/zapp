@@ -5,7 +5,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import timber.log.Timber;
 
-public class TrackSelectorWrapper {
+class TrackSelectorWrapper {
 
 	private final static String SUBTITLE_LANGUAGE_ON = "deu";
 	private final static String SUBTITLE_LANGUAGE_OFF = "none";

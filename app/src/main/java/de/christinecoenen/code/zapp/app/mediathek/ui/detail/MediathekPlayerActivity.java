@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -149,6 +150,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		}
 	}
 
+	@SuppressLint("SourceLockedOrientationActivity")
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -293,7 +295,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		disposable.clear();
 		try {
 			unbindService(backgroundPlayerServiceConnection);
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException ignored) {
 
 		}
 	}

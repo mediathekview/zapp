@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 
 android {
 	compileSdkVersion 29
@@ -73,6 +74,7 @@ dependencies {
 	testImplementation 'org.robolectric:robolectric:4.3.1'
 
 	// support
+	implementation 'androidx.fragment:fragment:1.2.4'
 	implementation 'androidx.appcompat:appcompat:1.1.0'
 	implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 	implementation 'com.google.android.material:material:1.1.0'
@@ -120,5 +122,5 @@ dependencies {
 	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
-	implementation 'com.mikepenz:aboutlibraries:7.1.0'
+	implementation 'com.mikepenz:aboutlibraries:8.1.0'
 }
