@@ -74,6 +74,7 @@ dependencies {
 	testImplementation 'org.robolectric:robolectric:4.3.1'
 
 	// support
+	implementation 'androidx.fragment:fragment:1.2.4'
 	implementation 'androidx.appcompat:appcompat:1.1.0'
 	implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 	implementation 'com.google.android.material:material:1.1.0'
