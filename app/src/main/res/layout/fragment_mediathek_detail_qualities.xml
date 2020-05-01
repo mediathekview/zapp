@@ -3,7 +3,6 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/view_qualities"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
@@ -17,7 +16,7 @@
 		android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
 	<LinearLayout
-		android:id="@+id/quality_row_high"
+		android:id="@+id/row_high"
 		style="@style/MediathekDetailQualityRow">
 
 		<com.google.android.material.textview.MaterialTextView
@@ -29,13 +28,13 @@
 			tools:text="13,74 MB" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_share_high"
+			android:id="@+id/share_button_high"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_share_white_24dp" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_download_high"
+			android:id="@+id/download_button_high"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_file_download_white_24dp" />
@@ -43,7 +42,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-		android:id="@+id/quality_row_medium"
+		android:id="@+id/row_medium"
 		style="@style/MediathekDetailQualityRow">
 
 		<com.google.android.material.textview.MaterialTextView
@@ -55,13 +54,13 @@
 			tools:text="10 MB" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_share_medium"
+			android:id="@+id/share_button_medium"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_share_white_24dp" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_download_medium"
+			android:id="@+id/download_button_medium"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_file_download_white_24dp" />
@@ -69,7 +68,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-		android:id="@+id/quality_row_low"
+		android:id="@+id/row_low"
 		style="@style/MediathekDetailQualityRow">
 
 		<com.google.android.material.textview.MaterialTextView
@@ -81,13 +80,13 @@
 			tools:text="6,3 MB" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_share_low"
+			android:id="@+id/share_button_low"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_share_white_24dp" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_download_low"
+			android:id="@+id/download_button_low"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_file_download_white_24dp" />
@@ -95,7 +94,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-		android:id="@+id/quality_row_subtitle"
+		android:id="@+id/row_subtitle"
 		style="@style/MediathekDetailQualityRow">
 
 		<com.google.android.material.textview.MaterialTextView
@@ -104,7 +103,7 @@
 			android:text="@string/fragment_mediathek_batch_subtitle" />
 
 		<com.google.android.material.button.MaterialButton
-			android:id="@+id/btn_download_subtitle"
+			android:id="@+id/download_button_subtitle"
 			style="@style/MediathekDetailQualityButton"
 			android:contentDescription="@string/fragment_mediathek_download"
 			app:icon="@drawable/ic_file_download_white_24dp" />
@@ -112,7 +111,7 @@
 	</LinearLayout>
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/txt_error_missing_downloads"
+		android:id="@+id/error"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:drawablePadding="@dimen/activity_horizontal_margin"

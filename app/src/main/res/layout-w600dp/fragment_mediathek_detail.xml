@@ -6,17 +6,16 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginVertical="@dimen/activity_vertical_margin"
 		android:baselineAligned="false"
 		android:orientation="horizontal"
 		android:paddingStart="@dimen/activity_horizontal_margin"
-		android:paddingTop="@dimen/activity_vertical_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
 		tools:context=".app.mediathek.ui.detail.MediathekDetailFragment">
 
 		<LinearLayout
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_margin="4dp"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			android:layout_weight="3"
 			android:orientation="vertical">
@@ -28,39 +27,26 @@
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:paddingStart="@dimen/activity_horizontal_margin"
-					android:paddingTop="@dimen/activity_vertical_margin"
-					android:paddingEnd="@dimen/activity_horizontal_margin"
-					android:paddingBottom="70dp">
-
-					<include layout="@layout/fragment_mediathek_detail_titles_and_description" />
-
-				</LinearLayout>
-
-				<com.google.android.material.floatingactionbutton.FloatingActionButton
-					android:id="@+id/btn_play"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="end|bottom"
-					android:layout_marginEnd="8dp"
-					android:layout_marginBottom="8dp"
-					android:contentDescription="@string/exo_controls_play_description"
-					android:src="@drawable/ic_play_arrow_white_24dp" />
-
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
 					android:layout_gravity="bottom|start"
-					android:layout_marginStart="@dimen/activity_vertical_margin"
-					android:layout_marginBottom="@dimen/activity_vertical_margin"
-					android:orientation="horizontal">
+					android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+					android:layout_marginVertical="@dimen/activity_vertical_margin"
+					android:orientation="vertical"
+					android:paddingBottom="24dp">
+
+					<include
+						android:id="@+id/texts"
+						layout="@layout/fragment_mediathek_detail_titles_and_description"
+						android:paddingStart="@dimen/activity_horizontal_margin"
+						android:paddingTop="@dimen/activity_vertical_margin"
+						android:paddingEnd="@dimen/activity_horizontal_margin"
+						android:paddingBottom="70dp" />
 
 					<TextView
-						android:id="@+id/text_show_subtitle"
+						android:id="@+id/subtitle"
 						style="@style/TextAppearance.AppCompat.Small"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
+						android:layout_marginTop="@dimen/activity_vertical_margin"
 						android:background="@color/colorAccent"
 						android:paddingStart="4dp"
 						android:paddingEnd="4dp"
@@ -71,7 +57,20 @@
 
 			</com.google.android.material.card.MaterialCardView>
 
-			<include layout="@layout/fragment_mediathek_detail_qualities" />
+			<com.google.android.material.floatingactionbutton.FloatingActionButton
+				android:id="@+id/play"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="end|bottom"
+				android:layout_marginTop="-32dp"
+				android:layout_marginEnd="@dimen/activity_horizontal_margin"
+				android:layout_marginBottom="-16dp"
+				android:contentDescription="@string/exo_controls_play_description"
+				android:src="@drawable/ic_play_arrow_white_24dp" />
+
+			<include
+				android:id="@+id/qualities"
+				layout="@layout/fragment_mediathek_detail_qualities" />
 
 		</LinearLayout>
 
@@ -84,7 +83,7 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_margin="4dp"
+				android:layout_marginBottom="@dimen/activity_vertical_margin"
 				android:background="@color/colorPrimary"
 				android:baselineAligned="false"
 				android:orientation="vertical"
@@ -98,7 +97,7 @@
 					android:textColor="@color/text_alwayslight_secondary" />
 
 				<TextView
-					android:id="@+id/text_show_duration"
+					android:id="@+id/duration"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -114,7 +113,7 @@
 					android:textColor="@color/text_alwayslight_secondary" />
 
 				<TextView
-					android:id="@+id/text_show_channel"
+					android:id="@+id/channel"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -130,7 +129,7 @@
 					android:textColor="@color/text_alwayslight_secondary" />
 
 				<TextView
-					android:id="@+id/text_show_time"
+					android:id="@+id/time"
 					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -139,7 +138,9 @@
 
 			</LinearLayout>
 
-			<include layout="@layout/fragment_mediathek_detail_buttons" />
+			<include
+				android:id="@+id/buttons"
+				layout="@layout/fragment_mediathek_detail_buttons" />
 
 		</LinearLayout>
 

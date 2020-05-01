@@ -11,22 +11,18 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
+import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
 import timber.log.Timber;
@@ -37,52 +33,6 @@ public class MediathekDetailFragment extends Fragment {
 	private static final String ARG_SHOW = "ARG_SHOW";
 
 
-	@BindView(R.id.text_show_topic)
-	protected TextView topicView;
-
-	@BindView(R.id.text_show_title)
-	protected TextView titleView;
-
-	@BindView(R.id.text_show_description)
-	protected TextView descriptionView;
-
-	@BindView(R.id.text_show_time)
-	protected TextView timeView;
-
-	@BindView(R.id.text_show_channel)
-	protected TextView channelView;
-
-	@BindView(R.id.text_show_duration)
-	protected TextView durationView;
-
-	@BindView(R.id.text_show_subtitle)
-	protected TextView subtitleView;
-
-	@BindView(R.id.quality_row_high)
-	protected View qualityRowHigh;
-
-	@BindView(R.id.quality_row_medium)
-	protected View qualityRowMedium;
-
-	@BindView(R.id.quality_row_low)
-	protected View qualityRowLow;
-
-	@BindView(R.id.quality_row_subtitle)
-	protected View qualityRowSubtitle;
-
-	@BindView(R.id.btn_download_high)
-	protected MaterialButton downloadButtonHigh;
-
-	@BindView(R.id.btn_download_medium)
-	protected MaterialButton downloadButtonMedium;
-
-	@BindView(R.id.btn_download_low)
-	protected MaterialButton downloadButtonLow;
-
-	@BindView(R.id.txt_error_missing_downloads)
-	protected TextView missingDownloadsErrorText;
-
-
 	private MediathekShow show;
 	private SettingsRepository settingsRepository;
 
@@ -91,7 +41,7 @@ public class MediathekDetailFragment extends Fragment {
 		// Required empty public constructor
 	}
 
-	public static MediathekDetailFragment getInstance(MediathekShow show) {
+	static MediathekDetailFragment getInstance(MediathekShow show) {
 		MediathekDetailFragment fragment = new MediathekDetailFragment();
 		Bundle args = new Bundle();
 		args.putSerializable(ARG_SHOW, show);
@@ -121,77 +71,79 @@ public class MediathekDetailFragment extends Fragment {
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_mediathek_detail, container, false);
-		ButterKnife.bind(this, view);
+		FragmentMediathekDetailBinding binding = FragmentMediathekDetailBinding.inflate(inflater, container, false);
 
-		topicView.setText(show.getTopic());
-		titleView.setText(show.getTitle());
-		descriptionView.setText(show.getDescription());
+		binding.texts.topic.setText(show.getTopic());
+		binding.texts.title.setText(show.getTitle());
+		binding.texts.description.setText(show.getDescription());
 
-		timeView.setText(show.getFormattedTimestamp());
-		channelView.setText(show.getChannel());
-		durationView.setText(show.getFormattedDuration());
-		subtitleView.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+		binding.time.setText(show.getFormattedTimestamp());
+		binding.channel.setText(show.getChannel());
+		binding.duration.setText(show.getFormattedDuration());
+		binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		qualityRowHigh.setVisibility(show.hasStreamingQualityHd() ? View.VISIBLE : View.GONE);
-		qualityRowMedium.setVisibility(show.hasStreamingQualityMedium() ? View.VISIBLE : View.GONE);
-		qualityRowLow.setVisibility(show.hasStreamingQualityLow() ? View.VISIBLE : View.GONE);
-		qualityRowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+		binding.qualities.rowHigh.setVisibility(show.hasStreamingQualityHd() ? View.VISIBLE : View.GONE);
+		binding.qualities.rowMedium.setVisibility(show.hasStreamingQualityMedium() ? View.VISIBLE : View.GONE);
+		binding.qualities.rowLow.setVisibility(show.hasStreamingQualityLow() ? View.VISIBLE : View.GONE);
+		binding.qualities.rowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		downloadButtonHigh.setEnabled(show.hasDownloadQualityHd());
-		downloadButtonMedium.setEnabled(show.hasDownloadQualityMedium());
-		downloadButtonLow.setEnabled(show.hasDownloadQualityLow());
+		binding.qualities.downloadButtonHigh.setEnabled(show.hasDownloadQualityHd());
+		binding.qualities.downloadButtonMedium.setEnabled(show.hasDownloadQualityMedium());
+		binding.qualities.downloadButtonLow.setEnabled(show.hasDownloadQualityLow());
 
 		boolean isMissingDownloadsErrorVisible = !show.hasDownloadQualityHd() ||
 			!show.hasDownloadQualityMedium() ||
 			!show.hasDownloadQualityLow();
-		missingDownloadsErrorText.setVisibility(isMissingDownloadsErrorVisible ? View.VISIBLE : View.GONE);
+		binding.qualities.error.setVisibility(isMissingDownloadsErrorVisible ? View.VISIBLE : View.GONE);
 
-		return view;
+		binding.play.setOnClickListener(this::onPlayClick);
+		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
+
+		binding.qualities.downloadButtonHigh.setOnClickListener(this::onDownloadHighClick);
+		binding.qualities.downloadButtonMedium.setOnClickListener(this::onDownloadMediumClick);
+		binding.qualities.downloadButtonLow.setOnClickListener(this::onDownloadLowClick);
+		binding.qualities.downloadButtonSubtitle.setOnClickListener(this::onDownloadSubtitleClick);
+
+		binding.qualities.shareButtonHigh.setOnClickListener(this::onShareHighClick);
+		binding.qualities.shareButtonMedium.setOnClickListener(this::onShareMediumClick);
+		binding.qualities.shareButtonLow.setOnClickListener(this::onShareLowClick);
+
+		return binding.getRoot();
 	}
 
-	@OnClick(R.id.btn_play)
-	protected void onPlayClick() {
+	private void onPlayClick(View view) {
 		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
 	}
 
-	@OnClick(R.id.btn_website)
-	protected void onWebsiteClick() {
+	private void onWebsiteClick(View view) {
 		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
 	}
 
-	@OnClick(R.id.btn_download_high)
-	protected void onDownloadHighClick() {
+	private void onDownloadHighClick(View view) {
 		download(show.getVideoUrlHd(), show.getDownloadFileNameHd());
 	}
 
-	@OnClick(R.id.btn_download_medium)
-	protected void onDownloadMediumClick() {
+	private void onDownloadMediumClick(View view) {
 		download(show.getVideoUrl(), show.getDownloadFileName());
 	}
 
-	@OnClick(R.id.btn_download_low)
-	protected void onDownloadLowClick() {
+	private void onDownloadLowClick(View view) {
 		download(show.getVideoUrlLow(), show.getDownloadFileNameLow());
 	}
 
-	@OnClick(R.id.btn_download_subtitle)
-	protected void onDownloadSubtitleClick() {
+	private void onDownloadSubtitleClick(View view) {
 		download(show.getSubtitleUrl(), show.getDownloadFileNameSubtitle());
 	}
 
-	@OnClick(R.id.btn_share_high)
-	protected void onShareHighClick() {
+	private void onShareHighClick(View view) {
 		share(show.getVideoUrlHd());
 	}
 
-	@OnClick(R.id.btn_share_medium)
-	protected void onShareMediumClick() {
+	private void onShareMediumClick(View view) {
 		share(show.getVideoUrl());
 	}
 
-	@OnClick(R.id.btn_share_low)
-	protected void onShareLowClick() {
+	private void onShareLowClick(View view) {
 		share(show.getVideoUrlLow());
 	}
 
