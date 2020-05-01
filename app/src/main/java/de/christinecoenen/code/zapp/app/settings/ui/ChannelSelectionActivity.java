@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.woxthebox.draglistview.DragListView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionBinding;
 import de.christinecoenen.code.zapp.model.ISortableChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
@@ -21,17 +20,16 @@ import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener;
 
 public class ChannelSelectionActivity extends AppCompatActivity {
 
-	@BindView(R.id.draglist_channel_selection)
-	protected DragListView channelListView;
-
 	private ISortableChannelList channelList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_channel_selection);
-		ButterKnife.bind(this);
+		ActivityChannelSelectionBinding binding = ActivityChannelSelectionBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+
+		DragListView channelListView = binding.draglistChannelSelection;
 
 		// adapter
 		channelList = new SortableJsonChannelList(this);

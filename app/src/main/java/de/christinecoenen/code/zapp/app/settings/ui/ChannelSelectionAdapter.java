@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.woxthebox.draglistview.DragItemAdapter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionItemBinding;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
 
@@ -29,8 +28,8 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 	@NonNull
 	@Override
 	public ChannelSelectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.activity_channel_selection_item, parent, false);
-		return new ViewHolder(view);
+		ActivityChannelSelectionItemBinding binding = ActivityChannelSelectionItemBinding.inflate(inflater, parent, false);
+		return new ViewHolder(binding);
 	}
 
 	@Override
@@ -47,15 +46,18 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 
 	static class ViewHolder extends DragItemAdapter.ViewHolder {
 
-		@BindView(R.id.image_handle) ImageView handleView;
-		@BindView(R.id.image_channel_logo) ImageView logoView;
-		@BindView(R.id.text_channel_subtitle) TextView subtitle;
+		private ImageView handleView;
+		private ImageView logoView;
+		private TextView subtitle;
 
 		private ChannelModel channel;
 
-		ViewHolder(final View itemView) {
-			super(itemView, R.id.image_handle, false);
-			ButterKnife.bind(this, itemView);
+		ViewHolder(final ActivityChannelSelectionItemBinding binding) {
+			super(binding.getRoot(), R.id.image_handle, false);
+
+			handleView = binding.imageHandle;
+			logoView = binding.imageChannelLogo;
+			subtitle = binding.textChannelSubtitle;
 		}
 
 		void setChannel(ChannelModel channel) {
