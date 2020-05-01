@@ -1,3 +1,11 @@
+# 3.4.0
+* Stream von ARD repariert
+* Unbekannte Veröffentlichungsdaten markiert
+* Falscher Download-Dateiname auf Samsung-Geräten behoben
+* Fehlende Tastatur auf FireTV eingeblendet
+* App-Theme auf Material-Components umgestellt
+* Absturz beim Download behoben, wenn "..." im Dateinamen vorkommt
+
 ## 3.3.1
 * Absturz beim Öffnen eines Live-Streams ohne Internet gefixt
 
