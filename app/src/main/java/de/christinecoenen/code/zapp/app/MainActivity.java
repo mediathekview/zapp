@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -21,17 +20,15 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSuggestionsProvider;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
+import de.christinecoenen.code.zapp.databinding.ActivityMainBinding;
 import de.christinecoenen.code.zapp.utils.system.MenuHelper;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener {
@@ -40,23 +37,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	private static final int PAGE_CHANNEL_LIST = 0;
 	private static final int PAGE_MEDIATHEK_LIST = 1;
 
-	@BindView(R.id.app_bar)
-	protected AppBarLayout appBarLayout;
-
-	@BindView(R.id.toolbar)
-	protected Toolbar toolbar;
-
-	@BindView(R.id.view_pager)
-	protected ViewPager viewPager;
-
-	@BindView(R.id.search)
-	protected SearchView searchView;
-
-	@BindView(R.id.nav_view)
-	protected NavigationView navigationView;
-
-	@BindView(R.id.layout_drawer)
-	protected DrawerLayout drawerLayout;
+	private ViewPager viewPager;
+	private SearchView searchView;
+	private NavigationView navigationView;
+	private DrawerLayout drawerLayout;
 
 	private String searchQuery;
 
@@ -66,10 +50,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-		setContentView(R.layout.activity_main);
-		ButterKnife.bind(this);
+		ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
-		setSupportActionBar(toolbar);
+		viewPager = binding.viewPager;
+		searchView = binding.search;
+		navigationView = binding.navView;
+		drawerLayout = binding.layoutDrawer;
+
+		setSupportActionBar(binding.toolbar);
 
 		ActionBar actionbar = getSupportActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(true);
