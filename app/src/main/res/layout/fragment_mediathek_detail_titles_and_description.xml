@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
 	tools:showIn="@layout/fragment_mediathek_detail">
 
 	<TextView
-		android:id="@+id/text_show_topic"
+		android:id="@+id/topic"
 		style="@style/Base.TextAppearance.AppCompat.Medium"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
 		tools:text="Some show topic" />
 
 	<TextView
-		android:id="@+id/text_show_title"
+		android:id="@+id/title"
 		style="@style/Base.TextAppearance.AppCompat.Headline"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -23,10 +24,10 @@
 		tools:text="Some show title" />
 
 	<TextView
-		android:id="@+id/text_show_description"
+		android:id="@+id/description"
 		style="@style/Base.TextAppearance.AppCompat.Body1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		tools:text="Some show desciption" />
 
-</merge>
+</androidx.appcompat.widget.LinearLayoutCompat>

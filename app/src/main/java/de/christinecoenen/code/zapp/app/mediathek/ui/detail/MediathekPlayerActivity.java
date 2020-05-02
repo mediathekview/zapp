@@ -19,19 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.databinding.ActivityMediathekPlayerBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
@@ -52,26 +49,13 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 
-	@BindView(R.id.fullscreen_content)
-	protected View fullscreenContent;
+	private View fullscreenContent;
+	private SwipeablePlayerView videoView;
+	private TextView errorView;
+	private ProgressBar loadingIndicator;
+	private ImageButton captionButtonEnable;
+	private ImageButton captionButtonDisable;
 
-	@BindView(R.id.toolbar)
-	protected Toolbar toolbar;
-
-	@BindView(R.id.video)
-	protected SwipeablePlayerView videoView;
-
-	@BindView(R.id.btn_caption_enable)
-	protected ImageButton captionButtonEnable;
-
-	@BindView(R.id.btn_caption_disable)
-	protected ImageButton captionButtonDisable;
-
-	@BindView(R.id.text_error)
-	protected TextView errorView;
-
-	@BindView(R.id.progress)
-	protected ProgressBar loadingIndicator;
 
 	private final CompositeDisposable disposable = new CompositeDisposable();
 	private MediathekShow show;
@@ -114,10 +98,17 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_mediathek_player);
-		ButterKnife.bind(this);
+		ActivityMediathekPlayerBinding binding = ActivityMediathekPlayerBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
-		setSupportActionBar(toolbar);
+		fullscreenContent = binding.fullscreenContent;
+		videoView = binding.video;
+		errorView = binding.error;
+		loadingIndicator = binding.progress;
+		captionButtonEnable = binding.getRoot().findViewById(R.id.btn_caption_enable);
+		captionButtonDisable = binding.getRoot().findViewById(R.id.btn_caption_disable);
+
+		setSupportActionBar(binding.toolbar);
 
 		// set to show
 		parseIntent(getIntent());
@@ -128,6 +119,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		videoView.requestFocus();
 
 		errorView.setOnClickListener(this::onErrorViewClick);
+		captionButtonDisable.setOnClickListener(this::onDisableCaptionsClick);
+		captionButtonEnable.setOnClickListener(this::onEnableCaptionsClick);
 	}
 
 	@Override
@@ -279,14 +272,12 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		loadingIndicator.setVisibility(isBuffering ? View.VISIBLE : View.INVISIBLE);
 	}
 
-	@OnClick(R.id.btn_caption_disable)
-	public void onDisableCaptionsClick() {
+	private void onDisableCaptionsClick(View view) {
 		player.disableSubtitles();
 		updateSubtitleButtons();
 	}
 
-	@OnClick(R.id.btn_caption_enable)
-	public void onEnableCaptionsClick() {
+	private void onEnableCaptionsClick(View view) {
 		player.enableSubtitles();
 		updateSubtitleButtons();
 	}

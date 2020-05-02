@@ -60,7 +60,7 @@ public class MainUiTest {
 			.perform(actionOnItemAtPosition(19, click()));
 
 		// press play in detail view
-		onView(withId(R.id.btn_play))
+		onView(withId(R.id.play))
 			.check(matches(isDisplayed()))
 			.perform(click());
 

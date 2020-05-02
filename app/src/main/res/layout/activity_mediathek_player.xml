@@ -26,7 +26,7 @@
 		android:indeterminate="true" />
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/text_error"
+		android:id="@+id/error"
 		style="@style/TextAppearance.AppCompat.Body1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

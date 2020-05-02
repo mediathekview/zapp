@@ -13,13 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindInt;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository;
@@ -30,25 +28,13 @@ import timber.log.Timber;
 
 public abstract class ProgramInfoViewBase extends LinearLayout {
 
-	protected
-	@BindView(R.id.text_show_title)
-	TextView showTitleView;
-	protected
-	@BindView(R.id.text_show_subtitle)
-	TextView showSubtitleView;
-	protected
-	@BindView(R.id.text_show_time)
-	TextView showTimeView;
-	protected
-	@BindView(R.id.progressbar_show_progress)
-	ProgressBar progressBarView;
+	private final TextView showTitleView;
+	private final TextView showSubtitleView;
+	private final TextView showTimeView;
+	private final ProgressBar progressBarView;
 
-	protected
-	@BindInt(R.integer.view_program_info_update_show_info_interval_seconds)
-	int updateShowInfoIntervalSeconds;
-	protected
-	@BindInt(R.integer.view_program_info_update_show_time_interval_seconds)
-	int updateShowTimeIntervalSeconds;
+	private final int updateShowInfoIntervalSeconds;
+	private final int updateShowTimeIntervalSeconds;
 
 	private LiveShow currentShow = null;
 	private ChannelModel currentChannel;
@@ -67,10 +53,15 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		LayoutInflater inflater = (LayoutInflater) context
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		//noinspection ConstantConditions
-		inflater.inflate(getViewId(), this, true);
+		Objects.requireNonNull(inflater).inflate(getViewId(), this, true);
 
-		ButterKnife.bind(this, this);
+		showTitleView = getRootView().findViewById(R.id.text_show_title);
+		showSubtitleView = getRootView().findViewById(R.id.text_show_subtitle);
+		showTimeView = getRootView().findViewById(R.id.text_show_time);
+		progressBarView = getRootView().findViewById(R.id.progressbar_show_progress);
+
+		updateShowInfoIntervalSeconds = getResources().getInteger(R.integer.view_program_info_update_show_info_interval_seconds);
+		updateShowTimeIntervalSeconds = getResources().getInteger(R.integer.view_program_info_update_show_time_interval_seconds);
 
 		showProgressAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(context,
 			R.animator.view_program_info_show_progress);

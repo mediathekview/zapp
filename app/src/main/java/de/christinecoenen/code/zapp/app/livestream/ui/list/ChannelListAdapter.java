@@ -1,20 +1,19 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.WeakHashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
+import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 
@@ -52,8 +51,8 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.fragment_channel_list_item, parent, false);
-		return new ViewHolder(view);
+		FragmentChannelListItemBinding binding = FragmentChannelListItemBinding.inflate(inflater, parent, false);
+		return new ViewHolder(binding);
 	}
 
 	@Override
@@ -85,23 +84,22 @@ class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHol
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-		@BindView(R.id.text_channel_subtitle)
-		TextView subtitle;
 
-		@BindView(R.id.image_channel_logo)
-		ImageView logo;
-
-		@BindView(R.id.program_info)
-		ProgramInfoViewBase programInfoView;
+		private TextView subtitle;
+		private ImageView logo;
+		private ProgramInfoViewBase programInfoView;
 
 		private ChannelModel channel;
 
-		ViewHolder(View view) {
-			super(view);
-			ButterKnife.bind(this, view);
+		ViewHolder(FragmentChannelListItemBinding binding) {
+			super(binding.getRoot());
 
-			view.setOnLongClickListener(this);
-			view.setOnClickListener(this);
+			binding.getRoot().setOnLongClickListener(this);
+			binding.getRoot().setOnClickListener(this);
+
+			subtitle = binding.textChannelSubtitle;
+			logo = binding.imageChannelLogo;
+			programInfoView = binding.programInfo;
 		}
 
 		@Override

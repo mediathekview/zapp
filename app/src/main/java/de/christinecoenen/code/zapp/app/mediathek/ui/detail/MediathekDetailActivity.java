@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 
@@ -28,7 +27,6 @@ public class MediathekDetailActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mediathek_detail);
-		ButterKnife.bind(this);
 
 		//noinspection ConstantConditions
 		show = (MediathekShow) getIntent().getExtras().getSerializable(EXTRA_SHOW);

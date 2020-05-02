@@ -16,10 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity;
+import de.christinecoenen.code.zapp.databinding.FragmentChannelListBinding;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.ISortableChannelList;
 import de.christinecoenen.code.zapp.model.json.SortableVisibleJsonChannelList;
@@ -33,10 +32,6 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 	public static ChannelListFragment getInstance() {
 		return new ChannelListFragment();
 	}
-
-
-	@BindView(R.id.gridview_channels)
-	protected RecyclerView channelGridView;
 
 
 	private ISortableChannelList channelList;
@@ -58,14 +53,14 @@ public class ChannelListFragment extends Fragment implements ChannelListAdapter.
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
-		ButterKnife.bind(this, view);
+		FragmentChannelListBinding binding = FragmentChannelListBinding.inflate(inflater, container, false);
 
+		RecyclerView channelGridView = binding.gridviewChannels;
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true);
 		channelGridView.setLayoutManager(new GridAutofitLayoutManager(getContext(), 320));
 		channelGridView.setAdapter(gridAdapter);
 
-		return view;
+		return binding.getRoot();
 	}
 
 	@Override

@@ -1,23 +1,21 @@
 package de.christinecoenen.code.zapp.utils.video;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.databinding.ViewSwipeIndicatorBinding;
 
 public class SwipeIndicatorView extends FrameLayout {
 
-	@BindView(R.id.indicator)
-	protected FrameLayout indicator;
-
-	@BindView(R.id.icon)
-	protected ImageView icon;
+	private FrameLayout indicator;
+	private ImageView icon;
 
 	public SwipeIndicatorView(@NonNull Context context) {
 		super(context);
@@ -56,8 +54,11 @@ public class SwipeIndicatorView extends FrameLayout {
 	}
 
 	private void init(Context context) {
-		inflate(context, R.layout.view_swipe_indicator, this);
-		ButterKnife.bind(this);
+		View view = inflate(context, R.layout.view_swipe_indicator, this);
+
+		ViewSwipeIndicatorBinding binding = ViewSwipeIndicatorBinding.bind(view);
+		indicator = binding.indicator;
+		icon = binding.icon;
 
 		setVisibility(GONE);
 	}

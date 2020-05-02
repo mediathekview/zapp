@@ -1,20 +1,19 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding;
 
 class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.ViewHolder> {
 
@@ -67,16 +66,14 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		int layoutId = (viewType == VIEW_TYPE_ITEM) ?
-			R.layout.fragment_mediathek_list_item : R.layout.fragment_mediathek_list_item_footer;
-
-		View view = LayoutInflater
-			.from(parent.getContext())
-			.inflate(layoutId, parent, false);
+		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
 		if (viewType == VIEW_TYPE_ITEM) {
-			return new ItemViewHolder(view);
+			FragmentMediathekListItemBinding binding =
+				FragmentMediathekListItemBinding.inflate(inflater, parent, false);
+			return new ItemViewHolder(binding);
 		} else {
+			View view = inflater.inflate(R.layout.fragment_mediathek_list_item_footer, parent, false);
 			progressBar = view.findViewById(R.id.progress);
 			return new ViewHolder(view);
 		}
@@ -93,13 +90,13 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		ItemViewHolder itemHodler = (ItemViewHolder) holder;
 		itemHodler.setShow(show);
 
-		itemHodler.view.setOnClickListener(v -> {
+		itemHodler.getView().setOnClickListener(v -> {
 			if (null != listener) {
 				listener.onShowClicked(show);
 			}
 		});
 
-		itemHodler.view.setOnLongClickListener(v -> {
+		itemHodler.getView().setOnLongClickListener(v -> {
 			if (null != listener) {
 				listener.onShowLongClicked(show, v);
 				return true;
@@ -129,45 +126,31 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 
 	static class ItemViewHolder extends ViewHolder {
 
-		@BindView(R.id.title)
-		protected TextView title;
+		private final FragmentMediathekListItemBinding binding;
 
-		@BindView(R.id.topic)
-		protected TextView topic;
+		ItemViewHolder(FragmentMediathekListItemBinding binding) {
+			super(binding.getRoot());
 
-		@BindView(R.id.text_show_duration)
-		protected TextView duration;
+			this.binding = binding;
+		}
 
-		@BindView(R.id.text_show_channel)
-		protected TextView channel;
-
-		@BindView(R.id.text_show_time)
-		protected TextView time;
-
-		@BindView(R.id.text_show_subtitle)
-		protected TextView subtitle;
-
-		private final View view;
-
-		ItemViewHolder(View view) {
-			super(view);
-			this.view = view;
-			ButterKnife.bind(this, view);
+		View getView() {
+			return binding.getRoot();
 		}
 
 		void setShow(MediathekShow show) {
-			title.setText(show.getTitle());
-			topic.setText(show.getTopic());
-			duration.setText(show.getFormattedDuration());
-			channel.setText(show.getChannel());
-			time.setText(show.getFormattedTimestamp());
-			subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+			binding.title.setText(show.getTitle());
+			binding.topic.setText(show.getTopic());
+			binding.duration.setText(show.getFormattedDuration());
+			binding.channel.setText(show.getChannel());
+			binding.time.setText(show.getFormattedTimestamp());
+			binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 		}
 
 		@NonNull
 		@Override
 		public String toString() {
-			return super.toString() + " '" + title.getText() + "'";
+			return super.toString() + " '" + binding.title.getText() + "'";
 		}
 	}
 }

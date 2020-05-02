@@ -3,8 +3,6 @@ package de.christinecoenen.code.zapp.app.livestream.ui.detail;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +11,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import de.christinecoenen.code.zapp.R;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import de.christinecoenen.code.zapp.databinding.FragmentStreamPageBinding;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import timber.log.Timber;
 
@@ -23,19 +22,11 @@ public class StreamPageFragment extends Fragment {
 
 	private static final String ARGUMENT_CHANNEL_MODEL = "ARGUMENT_CHANNEL_MODEL";
 
-	@BindView(R.id.image_channel_logo)
-	protected ImageView logoView;
-
-	@BindView(R.id.text_channel_subtitle)
-	protected TextView subtitleText;
-
-	@BindView(R.id.text_error)
-	protected TextView errorText;
-
 	private View rootView;
+	private TextView errorText;
 	private Listener listener;
 
-	public static StreamPageFragment newInstance(ChannelModel channelModel) {
+	static StreamPageFragment newInstance(ChannelModel channelModel) {
 		StreamPageFragment fragment = new StreamPageFragment();
 		Bundle args = new Bundle();
 		args.putSerializable(ARGUMENT_CHANNEL_MODEL, channelModel);
@@ -45,13 +36,16 @@ public class StreamPageFragment extends Fragment {
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_stream_page, container, false);
-		ButterKnife.bind(this, rootView);
+		FragmentStreamPageBinding binding = FragmentStreamPageBinding.inflate(inflater, container, false);
+
+		rootView = binding.getRoot();
+		errorText = binding.textError;
 
 		Bundle args = getArguments();
 		ChannelModel channel = (ChannelModel) args.getSerializable(ARGUMENT_CHANNEL_MODEL);
 
 		if (channel != null) {
+			ImageView logoView = binding.imageChannelLogo;
 			logoView.setImageResource(channel.getDrawableId());
 			logoView.setContentDescription(channel.getName());
 			errorText.setBackgroundColor(channel.getColor());
@@ -59,6 +53,7 @@ public class StreamPageFragment extends Fragment {
 			errorText.setOnClickListener(view -> onErrorViewClick());
 
 			if (channel.getSubtitle() != null) {
+				TextView subtitleText = binding.textChannelSubtitle;
 				subtitleText.setText(channel.getSubtitle());
 			}
 		} else {
@@ -93,16 +88,16 @@ public class StreamPageFragment extends Fragment {
 		errorText.setVisibility(View.GONE);
 	}
 
-	public void onHide() {
+	void onHide() {
 		rootView.setVisibility(View.VISIBLE);
 		errorText.setVisibility(View.GONE);
 	}
 
-	public void onVideoStart() {
+	void onVideoStart() {
 		fadeOutLogo();
 	}
 
-	public void onVideoError(String message) {
+	void onVideoError(String message) {
 		rootView.setVisibility(View.VISIBLE);
 		errorText.setVisibility(View.VISIBLE);
 		errorText.setText(message);

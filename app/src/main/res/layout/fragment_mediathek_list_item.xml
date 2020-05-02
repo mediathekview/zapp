@@ -45,28 +45,28 @@
 		android:paddingEnd="@dimen/activity_horizontal_margin">
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/text_show_duration"
+			android:id="@+id/duration"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			tools:text="58:59 Minuten" />
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/text_show_channel"
+			android:id="@+id/channel"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			tools:text="ZDF-tivi" />
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/text_show_time"
+			android:id="@+id/time"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="@dimen/activity_horizontal_margin"
 			tools:text="vor 29 Minuten" />
 
 		<TextView
-			android:id="@+id/text_show_subtitle"
+			android:id="@+id/subtitle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:background="?attr/colorSecondary"
