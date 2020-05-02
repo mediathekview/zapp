@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +14,7 @@ import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
@@ -23,10 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import butterknife.BindDrawable;
-import butterknife.BindInt;
-import butterknife.BindView;
-import butterknife.OnTouch;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
@@ -34,6 +30,7 @@ import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import de.christinecoenen.code.zapp.databinding.ActivityChannelDetailBinding;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
@@ -50,31 +47,13 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 
 	private static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
+	private Toolbar toolbar;
+	private ClickableViewPager viewPager;
+	private SwipeablePlayerView videoView;
+	private ProgressBar progressView;
+	private ProgramInfoViewBase programInfoView;
 
-	@BindView(R.id.toolbar)
-	protected Toolbar toolbar;
-
-	@BindView(R.id.viewpager_channels)
-	protected ClickableViewPager viewPager;
-
-	@BindView(R.id.video)
-	protected SwipeablePlayerView videoView;
-
-	@BindView(R.id.progressbar_video)
-	protected ProgressBar progressView;
-
-	@BindView(R.id.program_info)
-	protected ProgramInfoViewBase programInfoView;
-
-
-	@BindDrawable(android.R.drawable.ic_media_pause)
-	protected Drawable pauseIcon;
-
-	@BindDrawable(android.R.drawable.ic_media_play)
-	protected Drawable playIcon;
-
-	@BindInt(R.integer.activity_channel_detail_play_stream_delay_millis)
-	protected int playStreamDelayMillis;
+	private int playStreamDelayMillis;
 
 	private final Handler playHandler = new Handler();
 	private ChannelDetailAdapter channelDetailAdapter;
@@ -155,6 +134,17 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		ActivityChannelDetailBinding binding = ActivityChannelDetailBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+
+		toolbar = binding.toolbar;
+		viewPager = binding.viewpagerChannels;
+		videoView = binding.video;
+		programInfoView = binding.programInfo;
+		progressView = binding.progressbarVideo;
+
+		playStreamDelayMillis = getResources().getInteger(R.integer.activity_channel_detail_play_stream_delay_millis);
+
 		setSupportActionBar(toolbar);
 		window = getWindow();
 
@@ -170,7 +160,8 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 			getSupportFragmentManager(), channelList, channelDetailListener);
 		viewPager.setAdapter(channelDetailAdapter);
 		viewPager.addOnPageChangeListener(onPageChangeListener);
-		viewPager.setOnClickListener(view -> mContentView.performClick());
+		viewPager.setOnClickListener(view -> contentView.performClick());
+		viewPager.setOnTouchListener(this::onPagerTouch);
 		videoView.setTouchOverlay(viewPager);
 
 		parseIntent(getIntent());
@@ -301,21 +292,14 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	}
 
 	@Override
-	protected int getViewId() {
-		return R.layout.activity_channel_detail;
-	}
-
-	@SuppressWarnings("SameReturnValue")
-	@OnTouch(R.id.viewpager_channels)
-	public boolean onPagerTouch() {
-		delayHide();
-		return false;
-	}
-
-	@Override
 	public void onErrorViewClicked() {
 		player.recreate();
 		player.resume();
+	}
+
+	private boolean onPagerTouch(View view, MotionEvent motionEvent) {
+		delayHide();
+		return false;
 	}
 
 	private void parseIntent(Intent intent) {
@@ -397,6 +381,6 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 		window.setStatusBarColor(colorDarker);
 
 		int colorAlpha = ColorHelper.darker(ColorHelper.withAlpha(color, 150), 0.25f);
-		mControlsView.setBackgroundColor(colorAlpha);
+		controlsView.setBackgroundColor(colorAlpha);
 	}
 }

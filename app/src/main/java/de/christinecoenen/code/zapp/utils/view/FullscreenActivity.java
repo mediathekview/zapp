@@ -1,18 +1,13 @@
 package de.christinecoenen.code.zapp.utils.view;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
 import android.os.Handler;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 
-import butterknife.BindBool;
-import butterknife.BindInt;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import de.christinecoenen.code.zapp.R;
 
 /**
@@ -21,35 +16,29 @@ import de.christinecoenen.code.zapp.R;
  */
 public abstract class FullscreenActivity extends AppCompatActivity {
 
-	@BindView(R.id.fullscreen_content)
-	protected View mContentView;
-
-	@BindView(R.id.fullscreen_content_controls)
-	protected View mControlsView;
-
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #autoHideUiMillis} milliseconds.
 	 */
-	@BindBool(R.bool.activity_fullscreen_auto_hide_ui)
-	protected boolean autoHideUi;
+	private boolean autoHideUi;
 
 	/**
 	 * If {@link #autoHideUi} is set, the number of milliseconds to wait after
 	 * user interaction before hiding the system UI.
 	 */
-	@BindInt(R.integer.activity_fullscreen_auto_hide_ui_millis)
-	protected int autoHideUiMillis;
+	private int autoHideUiMillis;
 
 	/**
 	 * Some older devices needs a small delay between UI widget updates
 	 * and a change of the status and navigation bar.
 	 */
-	@BindInt(R.integer.activity_fullscreen_ui_animation_delay)
-	protected int uiAnimationDelay;
+	private int uiAnimationDelay;
 
-	private final Handler mHideHandler = new Handler();
-	private final Runnable mHidePart2Runnable = new Runnable() {
+	protected View contentView;
+	protected View controlsView;
+
+	private final Handler hideHandler = new Handler();
+	private final Runnable hidePart2Runnable = new Runnable() {
 		@SuppressLint("InlinedApi")
 		@Override
 		public void run() {
@@ -58,15 +47,15 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 			// Note that some of these constants are new as of API 16 (Jelly Bean)
 			// and API 19 (KitKat). It is safe to use them, as they are inlined
 			// at compile-time and do nothing on earlier devices.
-			mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-					| View.SYSTEM_UI_FLAG_FULLSCREEN
-					| View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+			contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+				| View.SYSTEM_UI_FLAG_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		}
 	};
-	private final Runnable mShowPart2Runnable = new Runnable() {
+	private final Runnable showPart2Runnable = new Runnable() {
 		@Override
 		public void run() {
 			// Delayed display of UI elements
@@ -74,35 +63,31 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 			if (actionBar != null) {
 				actionBar.show();
 			}
-			mControlsView.setVisibility(View.VISIBLE);
+			controlsView.setVisibility(View.VISIBLE);
 		}
 	};
-	private boolean mVisible;
-	private final Runnable mHideRunnable = this::hide;
 
-	@SuppressWarnings("SameReturnValue")
-	protected abstract int getViewId();
+	private boolean isVisible;
+	private final Runnable hideRunnable = this::hide;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void setContentView(View rootView) {
+		contentView = rootView.findViewById(R.id.fullscreen_content);
+		contentView.setOnClickListener(this::onFullscreenContentClick);
+		controlsView = rootView.findViewById(R.id.fullscreen_content_controls);
 
-		setContentView(getViewId());
+		autoHideUi = getResources().getBoolean(R.bool.activity_fullscreen_auto_hide_ui);
+		autoHideUiMillis = getResources().getInteger(R.integer.activity_fullscreen_auto_hide_ui_millis);
+		uiAnimationDelay = getResources().getInteger(R.integer.activity_fullscreen_ui_animation_delay);
 
-		ButterKnife.bind(this);
-	}
-
-	@OnClick(R.id.fullscreen_content)
-	public void onFullscreenContentClick () {
-		// Set up the user interaction to manually show or hide the system UI.
-		toggle();
+		super.setContentView(rootView);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		mVisible = true;
+		isVisible = true;
 
 		// Trigger the initial hide() shortly after the activity has been
 		// created, to briefly hint to the user that UI controls
@@ -129,7 +114,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	}
 
 	private void toggle() {
-		if (mVisible) {
+		if (isVisible) {
 			hide();
 		} else {
 			show();
@@ -142,26 +127,31 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 		if (actionBar != null) {
 			actionBar.hide();
 		}
-		mControlsView.setVisibility(View.GONE);
-		mVisible = false;
+		controlsView.setVisibility(View.GONE);
+		isVisible = false;
 
 		// Schedule a runnable to remove the status and navigation bar after a delay
-		mHideHandler.removeCallbacks(mShowPart2Runnable);
-		mHideHandler.postDelayed(mHidePart2Runnable, uiAnimationDelay);
+		hideHandler.removeCallbacks(showPart2Runnable);
+		hideHandler.postDelayed(hidePart2Runnable, uiAnimationDelay);
 	}
 
 	@SuppressWarnings("WeakerAccess")
 	@SuppressLint("InlinedApi")
 	protected void show() {
 		// Show the system bar
-		mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-		mVisible = true;
+		contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+		isVisible = true;
 
 		// Schedule a runnable to display UI elements after a delay
-		mHideHandler.removeCallbacks(mHidePart2Runnable);
-		mHideHandler.postDelayed(mShowPart2Runnable, uiAnimationDelay);
+		hideHandler.removeCallbacks(hidePart2Runnable);
+		hideHandler.postDelayed(showPart2Runnable, uiAnimationDelay);
 		delayHide();
+	}
+
+	private void onFullscreenContentClick(View view) {
+		// Set up the user interaction to manually show or hide the system UI.
+		toggle();
 	}
 
 	/**
@@ -169,7 +159,7 @@ public abstract class FullscreenActivity extends AppCompatActivity {
 	 * previously scheduled calls.
 	 */
 	private void delayedHide(int delayMillis) {
-		mHideHandler.removeCallbacks(mHideRunnable);
-		mHideHandler.postDelayed(mHideRunnable, delayMillis);
+		hideHandler.removeCallbacks(hideRunnable);
+		hideHandler.postDelayed(hideRunnable, delayMillis);
 	}
 }
