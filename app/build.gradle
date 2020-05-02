@@ -96,10 +96,6 @@ dependencies {
 	// markdown
 	implementation 'ru.noties:markwon:2.0.2'
 
-	// butterknive:
-	implementation 'com.jakewharton:butterknife:10.2.1'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
-
 	// exo player
 	implementation 'com.google.android.exoplayer:exoplayer-core:2.9.2'
 	implementation 'com.google.android.exoplayer:exoplayer-hls:2.9.2'
