@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.net.UnknownServiceException;
@@ -23,13 +22,12 @@ import java.util.List;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
+import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding;
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -43,17 +41,10 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		return new MediathekListFragment();
 	}
 
-	@BindView(R.id.list)
-	protected RecyclerView recyclerView;
 
-	@BindView(R.id.error)
-	protected TextView errorView;
-
-	@BindView(R.id.no_shows)
-	protected View noShowsWarning;
-
-	@BindView(R.id.refresh_layout)
-	protected SwipeRefreshLayout swipeRefreshLayout;
+	private TextView errorView;
+	private View noShowsWarning;
+	private SwipeRefreshLayout swipeRefreshLayout;
 
 	private QueryRequest queryRequest;
 	private MediathekItemAdapter adapter;
@@ -87,11 +78,14 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_mediathek_list, container, false);
-		ButterKnife.bind(this, view);
+		FragmentMediathekListBinding binding = FragmentMediathekListBinding.inflate(inflater, container, false);
 
-		LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
-		recyclerView.setLayoutManager(layoutManager);
+		errorView = binding.error;
+		noShowsWarning = binding.noShows;
+		swipeRefreshLayout = binding.refreshLayout;
+
+		LinearLayoutManager layoutManager = new LinearLayoutManager(binding.getRoot().getContext());
+		binding.list.setLayoutManager(layoutManager);
 
 		scrollListener = new InfiniteScrollListener(layoutManager) {
 			@Override
@@ -99,16 +93,16 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 				loadItems(totalItemCount, false);
 			}
 		};
-		recyclerView.addOnScrollListener(scrollListener);
+		binding.list.addOnScrollListener(scrollListener);
 		swipeRefreshLayout.setOnRefreshListener(this);
 		swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
 
 		adapter = new MediathekItemAdapter(MediathekListFragment.this);
-		recyclerView.setAdapter(adapter);
+		binding.list.setAdapter(adapter);
 
 		loadItems(0, true);
 
-		return view;
+		return binding.getRoot();
 	}
 
 	@Override
