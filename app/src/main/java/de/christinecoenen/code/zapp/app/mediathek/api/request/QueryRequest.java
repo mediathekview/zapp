@@ -12,7 +12,32 @@ import java.util.List;
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public class QueryRequest implements Serializable {
 
+	@SuppressWarnings("FieldCanBeLocal")
+	private final String[] ALLOWED_CHANNELS = new String[]{
+		"ARD",
+		"ZDF",
+		"SWR",
+		"NDR",
+		"BR",
+		"ARTE.DE",
+		"DW",
+		"3Sat",
+		"SRF",
+		"MDR",
+		"SR",
+		"KiKA",
+		"HR",
+		"RBB",
+		"ORF",
+		"WDR",
+		"rbtv",
+		"PHOENIX",
+		"ZDF-tivi",
+		"SRF.Podcast"
+	};
+
 	private final List<Query> queries = new ArrayList<>();
+	private final List<Query> alowedChannelsQueries = new ArrayList<>();
 
 	private String sortBy = "timestamp";
 	private String sortOrder = "desc";
@@ -22,8 +47,17 @@ public class QueryRequest implements Serializable {
 	private int offset = 0;
 	private int size = 30;
 
+	public QueryRequest() {
+		for (String allowedChannel : ALLOWED_CHANNELS) {
+			this.alowedChannelsQueries.add(new Query(allowedChannel, "channel"));
+		}
+
+		ResetQueries();
+	}
+
 	public QueryRequest setSimpleSearch(String queryString) {
-		this.queries.clear();
+		ResetQueries();
+
 		if (!TextUtils.isEmpty(queryString)) {
 			this.queries.add(new Query(queryString, "title", "topic"));
 		}
@@ -53,6 +87,11 @@ public class QueryRequest implements Serializable {
 	public QueryRequest setSize(int size) {
 		this.size = size;
 		return this;
+	}
+
+	private void ResetQueries() {
+		this.queries.clear();
+		this.queries.addAll(alowedChannelsQueries);
 	}
 
 	@NonNull
