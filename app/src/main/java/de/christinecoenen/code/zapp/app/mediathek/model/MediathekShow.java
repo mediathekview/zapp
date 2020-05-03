@@ -170,64 +170,44 @@ public class MediathekShow implements Serializable {
 		return !TextUtils.isEmpty(subtitleUrl);
 	}
 
-	public String getVideoUrl() {
-		return videoUrl;
-	}
-
 	public void setVideoUrl(String videoUrl) {
 		this.videoUrl = videoUrl;
-	}
-
-	public String getVideoUrlLow() {
-		return videoUrlLow;
 	}
 
 	public void setVideoUrlLow(String videoUrlLow) {
 		this.videoUrlLow = videoUrlLow;
 	}
 
-	public String getVideoUrlHd() {
-		return videoUrlHd;
-	}
-
 	public void setVideoUrlHd(String videoUrlHd) {
 		this.videoUrlHd = videoUrlHd;
 	}
 
-	public boolean hasStreamingQualityHd() {
-		return isValidStreamingUrl(videoUrlHd);
+	public String getVideoUrl(Quality quality) {
+		switch (quality) {
+			case Low:
+				return videoUrlLow;
+			case Medium:
+				return videoUrl;
+			case High:
+				return videoUrlHd;
+			default:
+				throw new IllegalArgumentException();
+		}
 	}
 
-	public boolean hasStreamingQualityMedium() {
+	public boolean hasStreamingQuality(Quality quality) {
+		String videoUrl = getVideoUrl(quality);
 		return isValidStreamingUrl(videoUrl);
 	}
 
-	public boolean hasStreamingQualityLow() {
-		return isValidStreamingUrl(videoUrlLow);
-	}
-
-	public boolean hasDownloadQualityHd() {
-		return isValidDownloadUrl(videoUrlHd);
-	}
-
-	public boolean hasDownloadQualityMedium() {
+	public boolean hasDownloadQuality(Quality quality) {
+		String videoUrl = getVideoUrl(quality);
 		return isValidDownloadUrl(videoUrl);
 	}
 
-	public boolean hasDownloadQualityLow() {
-		return isValidDownloadUrl(videoUrlLow);
-	}
-
-	public String getDownloadFileName() {
+	public String getDownloadFileName(Quality quality) {
+		String videoUrl = getVideoUrl(quality);
 		return getDownloadFileName(videoUrl);
-	}
-
-	public String getDownloadFileNameHd() {
-		return getDownloadFileName(videoUrlHd);
-	}
-
-	public String getDownloadFileNameLow() {
-		return getDownloadFileName(videoUrlLow);
 	}
 
 	public String getDownloadFileNameSubtitle() {

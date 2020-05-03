@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
@@ -199,7 +200,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
-				IntentHelper.openUrl(this, show.getVideoUrl());
+				IntentHelper.openUrl(this, show.getVideoUrl(Quality.Medium));
 				return true;
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();

@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
@@ -13,9 +14,9 @@ public class VideoInfo {
 
 	public static VideoInfo fromShow(MediathekShow show) {
 		VideoInfo videoInfo = new VideoInfo();
-		videoInfo.url = show.getVideoUrl();
-		videoInfo.urlHighestQuality = show.getVideoUrlHd();
-		videoInfo.urlLowestQuality = show.getVideoUrlLow();
+		videoInfo.url = show.getVideoUrl(Quality.Medium);
+		videoInfo.urlHighestQuality = show.getVideoUrl(Quality.High);
+		videoInfo.urlLowestQuality = show.getVideoUrl(Quality.Low);
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
 		videoInfo.subtitleUrl = show.getSubtitleUrl();

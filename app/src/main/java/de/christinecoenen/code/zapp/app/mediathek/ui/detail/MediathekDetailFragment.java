@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
@@ -82,18 +83,18 @@ public class MediathekDetailFragment extends Fragment {
 		binding.duration.setText(show.getFormattedDuration());
 		binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		binding.qualities.rowHigh.setVisibility(show.hasStreamingQualityHd() ? View.VISIBLE : View.GONE);
-		binding.qualities.rowMedium.setVisibility(show.hasStreamingQualityMedium() ? View.VISIBLE : View.GONE);
-		binding.qualities.rowLow.setVisibility(show.hasStreamingQualityLow() ? View.VISIBLE : View.GONE);
+		binding.qualities.rowHigh.setVisibility(show.hasStreamingQuality(Quality.High) ? View.VISIBLE : View.GONE);
+		binding.qualities.rowMedium.setVisibility(show.hasStreamingQuality(Quality.Medium) ? View.VISIBLE : View.GONE);
+		binding.qualities.rowLow.setVisibility(show.hasStreamingQuality(Quality.Low) ? View.VISIBLE : View.GONE);
 		binding.qualities.rowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		binding.qualities.downloadButtonHigh.setEnabled(show.hasDownloadQualityHd());
-		binding.qualities.downloadButtonMedium.setEnabled(show.hasDownloadQualityMedium());
-		binding.qualities.downloadButtonLow.setEnabled(show.hasDownloadQualityLow());
+		binding.qualities.downloadButtonHigh.setEnabled(show.hasDownloadQuality(Quality.High));
+		binding.qualities.downloadButtonMedium.setEnabled(show.hasDownloadQuality(Quality.Medium));
+		binding.qualities.downloadButtonLow.setEnabled(show.hasDownloadQuality(Quality.Low));
 
-		boolean isMissingDownloadsErrorVisible = !show.hasDownloadQualityHd() ||
-			!show.hasDownloadQualityMedium() ||
-			!show.hasDownloadQualityLow();
+		boolean isMissingDownloadsErrorVisible = !show.hasDownloadQuality(Quality.High) ||
+			!show.hasDownloadQuality(Quality.Medium) ||
+			!show.hasDownloadQuality(Quality.Low);
 		binding.qualities.error.setVisibility(isMissingDownloadsErrorVisible ? View.VISIBLE : View.GONE);
 
 		binding.play.setOnClickListener(this::onPlayClick);
@@ -120,15 +121,15 @@ public class MediathekDetailFragment extends Fragment {
 	}
 
 	private void onDownloadHighClick(View view) {
-		download(show.getVideoUrlHd(), show.getDownloadFileNameHd());
+		dowloadQuality(Quality.High);
 	}
 
 	private void onDownloadMediumClick(View view) {
-		download(show.getVideoUrl(), show.getDownloadFileName());
+		dowloadQuality(Quality.Medium);
 	}
 
 	private void onDownloadLowClick(View view) {
-		download(show.getVideoUrlLow(), show.getDownloadFileNameLow());
+		dowloadQuality(Quality.Low);
 	}
 
 	private void onDownloadSubtitleClick(View view) {
@@ -136,21 +137,26 @@ public class MediathekDetailFragment extends Fragment {
 	}
 
 	private void onShareHighClick(View view) {
-		share(show.getVideoUrlHd());
+		share(Quality.High);
 	}
 
 	private void onShareMediumClick(View view) {
-		share(show.getVideoUrl());
+		share(Quality.Medium);
 	}
 
 	private void onShareLowClick(View view) {
-		share(show.getVideoUrlLow());
+		share(Quality.Low);
 	}
 
-	private void share(String url) {
+	private void share(Quality quality) {
 		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
+		String url = show.getVideoUrl(quality);
 		videoIntent.setDataAndType(Uri.parse(url), "video/*");
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
+	}
+
+	private void dowloadQuality(Quality quality) {
+		download(show.getVideoUrl(quality), show.getDownloadFileName(quality));
 	}
 
 	private void download(String url, String downloadFileName) {
