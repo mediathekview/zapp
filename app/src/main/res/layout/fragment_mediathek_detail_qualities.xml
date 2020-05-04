@@ -93,23 +93,6 @@
 
 	</LinearLayout>
 
-	<LinearLayout
-		android:id="@+id/row_subtitle"
-		style="@style/MediathekDetailQualityRow">
-
-		<com.google.android.material.textview.MaterialTextView
-			style="@style/MediathekDetailQualityTitle"
-			android:layout_weight="1"
-			android:text="@string/fragment_mediathek_batch_subtitle" />
-
-		<com.google.android.material.button.MaterialButton
-			android:id="@+id/download_button_subtitle"
-			style="@style/MediathekDetailQualityButton"
-			android:contentDescription="@string/fragment_mediathek_download"
-			app:icon="@drawable/ic_file_download_white_24dp" />
-
-	</LinearLayout>
-
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/error"
 		android:layout_width="match_parent"

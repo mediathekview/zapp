@@ -1,13 +1,10 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadController;
+import de.christinecoenen.code.zapp.app.mediathek.controller.exceptions.DownloadException;
+import de.christinecoenen.code.zapp.app.mediathek.controller.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
-import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
@@ -35,7 +34,7 @@ public class MediathekDetailFragment extends Fragment {
 
 
 	private MediathekShow show;
-	private SettingsRepository settingsRepository;
+	private DownloadController downloadController;
 
 
 	public MediathekDetailFragment() {
@@ -53,13 +52,13 @@ public class MediathekDetailFragment extends Fragment {
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
-		settingsRepository = new SettingsRepository(context);
+		downloadController = new DownloadController(context);
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		settingsRepository = null;
+		downloadController = null;
 	}
 
 	@Override
@@ -86,7 +85,6 @@ public class MediathekDetailFragment extends Fragment {
 		binding.qualities.rowHigh.setVisibility(show.hasStreamingQuality(Quality.High) ? View.VISIBLE : View.GONE);
 		binding.qualities.rowMedium.setVisibility(show.hasStreamingQuality(Quality.Medium) ? View.VISIBLE : View.GONE);
 		binding.qualities.rowLow.setVisibility(show.hasStreamingQuality(Quality.Low) ? View.VISIBLE : View.GONE);
-		binding.qualities.rowSubtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
 		binding.qualities.downloadButtonHigh.setEnabled(show.hasDownloadQuality(Quality.High));
 		binding.qualities.downloadButtonMedium.setEnabled(show.hasDownloadQuality(Quality.Medium));
@@ -103,7 +101,6 @@ public class MediathekDetailFragment extends Fragment {
 		binding.qualities.downloadButtonHigh.setOnClickListener(this::onDownloadHighClick);
 		binding.qualities.downloadButtonMedium.setOnClickListener(this::onDownloadMediumClick);
 		binding.qualities.downloadButtonLow.setOnClickListener(this::onDownloadLowClick);
-		binding.qualities.downloadButtonSubtitle.setOnClickListener(this::onDownloadSubtitleClick);
 
 		binding.qualities.shareButtonHigh.setOnClickListener(this::onShareHighClick);
 		binding.qualities.shareButtonMedium.setOnClickListener(this::onShareMediumClick);
@@ -121,19 +118,15 @@ public class MediathekDetailFragment extends Fragment {
 	}
 
 	private void onDownloadHighClick(View view) {
-		dowloadQuality(Quality.High);
+		download(Quality.High);
 	}
 
 	private void onDownloadMediumClick(View view) {
-		dowloadQuality(Quality.Medium);
+		download(Quality.Medium);
 	}
 
 	private void onDownloadLowClick(View view) {
-		dowloadQuality(Quality.Low);
-	}
-
-	private void onDownloadSubtitleClick(View view) {
-		download(show.getSubtitleUrl(), show.getDownloadFileNameSubtitle());
+		download(Quality.Low);
 	}
 
 	private void onShareHighClick(View view) {
@@ -155,60 +148,31 @@ public class MediathekDetailFragment extends Fragment {
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
 	}
 
-	private void dowloadQuality(Quality quality) {
-		download(show.getVideoUrl(quality), show.getDownloadFileName(quality));
-	}
-
-	private void download(String url, String downloadFileName) {
+	private void download(Quality quality) {
 		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
 			Timber.w("no permission to download show");
 			return;
 		}
 
-		Uri uri = Uri.parse(url);
+		long downloadId;
 
-		DownloadManager.Request request = null;
 		try {
-			// create request for android download manager
-			request = new DownloadManager.Request(uri);
-		} finally {
-			if (request == null) {
-				Toast.makeText(getContext(), R.string.error_mediathek_invalid_url, Toast.LENGTH_LONG).show();
-			} else {
-				enqueueDownload(request, downloadFileName);
-			}
-		}
-	}
-
-	private void enqueueDownload(DownloadManager.Request request, String downloadFileName) {
-		// setting title and directory of request
-		request.setTitle(show.getTitle());
-		request.allowScanningByMediaScanner();
-		request.setVisibleInDownloadsUi(true);
-		request.setAllowedOverMetered(!settingsRepository.getDownloadOverWifiOnly());
-		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
-
-		// enqueue download
-		DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-		ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		if (downloadManager == null || connectivityManager == null) {
-			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
-		} else if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
+			downloadId = downloadController.startDownload(show, quality);
+		} catch (WrongNetworkConditionException e) {
 			Snackbar snackbar = Snackbar
 				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.activity_settings_title, v -> startActivity(SettingsActivity.getStartIntent(getContext())));
 			snackbar.show();
-		} else {
-			long downloadId = downloadManager.enqueue(request);
-
-			String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
-			Snackbar snackbar = Snackbar
-				.make(requireView(), infoString, Snackbar.LENGTH_LONG);
-			snackbar.setAction(R.string.action_cancel, v -> downloadManager.remove(downloadId));
-			snackbar.show();
+			return;
+		} catch (DownloadException e) {
+			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
+			return;
 		}
+
+		String infoString = getString(R.string.fragment_mediathek_download_started, show.getTitle());
+		Snackbar snackbar = Snackbar
+			.make(requireView(), infoString, Snackbar.LENGTH_LONG);
+		snackbar.setAction(R.string.action_cancel, v -> downloadController.stopDownload(downloadId));
+		snackbar.show();
 	}
 }
