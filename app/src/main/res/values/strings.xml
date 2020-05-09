@@ -114,4 +114,18 @@
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>
 	<string name="notification_channel_name_download_progress">Download Fortschritt</string>
 	<string name="notification_channel_name_download_event">Download Event</string>
+
+	<!-- fetch download notifications -->
+	<string name="fetch_notification_download_eta_sec">%1$ds verbleibend</string>
+	<string name="fetch_notification_download_eta_min">%1$dm %2$ds verbleibend</string>
+	<string name="fetch_notification_download_eta_hrs">%1$dh %2$dm %3$ds verbleibend</string>
+	<string name="fetch_notification_download_complete">Fertig</string>
+	<string name="fetch_notification_download_failed">Fehlgeschlagen</string>
+	<string name="fetch_notification_download_pause">Pause</string>
+	<string name="fetch_notification_download_resume">Fortsetzen</string>
+	<string name="fetch_notification_download_retry">Wiederholen</string>
+	<string name="fetch_notification_download_cancel">Abbrechen</string>
+	<string name="fetch_notification_download_paused">Pausiert</string>
+	<string name="fetch_notification_download_starting">Startet</string>
+	<string name="fetch_notification_download_downloading">Lädt herunter</string>
 </resources>
