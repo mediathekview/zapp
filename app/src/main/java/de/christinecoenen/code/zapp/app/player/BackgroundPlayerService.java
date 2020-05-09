@@ -124,7 +124,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 			String errorMessage = getString(R.string.error_prefixed_message, getString(messageResourceId));
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationHelper.BACKGROUND_PLAYBACK_CHANNEL_ID)
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK)
 				.setContentTitle(player.getCurrentVideoInfo().getTitle())
 				.setContentText(errorMessage)
 				.setColor(getResources().getColor(R.color.colorPrimaryDark))
@@ -179,7 +179,7 @@ public class BackgroundPlayerService extends IntentService implements
 		isPlaybackInBackground = true;
 
 		playerNotificationManager = new PlayerNotificationManager(this,
-			NotificationHelper.BACKGROUND_PLAYBACK_CHANNEL_ID,
+			NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
 			this);
 		playerNotificationManager.setOngoing(false);

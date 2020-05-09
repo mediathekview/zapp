@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadController;
-import de.christinecoenen.code.zapp.app.mediathek.controller.exceptions.DownloadException;
-import de.christinecoenen.code.zapp.app.mediathek.controller.exceptions.WrongNetworkConditionException;
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.exceptions;
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions;
 
 public class DownloadException extends RuntimeException {
 
