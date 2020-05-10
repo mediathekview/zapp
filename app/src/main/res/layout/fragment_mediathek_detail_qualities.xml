@@ -7,7 +7,8 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:padding="@dimen/activity_horizontal_margin"
-	tools:showIn="@layout/fragment_mediathek_detail">
+	tools:showIn="@layout/fragment_mediathek_detail"
+	android:visibility="gone">
 
 	<com.google.android.material.textview.MaterialTextView
 		android:layout_width="match_parent"

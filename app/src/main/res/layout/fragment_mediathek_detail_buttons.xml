@@ -7,6 +7,38 @@
 	android:orientation="vertical"
 	tools:showIn="@layout/fragment_mediathek_detail">
 
+	<RelativeLayout
+		android:id="@+id/downloadWrapper"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:animateLayoutChanges="true">
+
+		<ProgressBar
+			android:id="@+id/downloadProgress"
+			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:progress="0" />
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/download"
+			style="@style/ColorlessOutlinedButton"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/fragment_mediathek_download"
+			app:icon="@drawable/ic_file_download_white_24dp" />
+
+	</RelativeLayout>
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/share"
+		style="@style/ColorlessOutlinedButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/action_share"
+		app:icon="@drawable/ic_share_white_24dp" />
+
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/website"
 		style="@style/ColorlessOutlinedButton"

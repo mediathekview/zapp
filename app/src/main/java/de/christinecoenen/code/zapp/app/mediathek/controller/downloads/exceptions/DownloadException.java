@@ -2,7 +2,7 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptio
 
 public class DownloadException extends RuntimeException {
 
-	public DownloadException(String message) {
+	DownloadException(String message) {
 		super(message);
 	}
 
