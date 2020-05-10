@@ -87,6 +87,8 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		binding.duration.setText(show.getFormattedDuration());
 		binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
+		binding.buttons.download.setEnabled(show.hasAnyDownloadQuality());
+
 		binding.play.setOnClickListener(this::onPlayClick);
 		binding.buttons.download.setOnClickListener(this::onDownloadClick);
 		binding.buttons.share.setOnClickListener(this::onShareClick);
@@ -127,8 +129,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 			case PAUSED:
 			case REMOVED:
 			case FAILED:
-				// TODO: show dialog to choose quality
-				download(Quality.High);
+				download();
 				break;
 			case ADDED:
 			case QUEUED:
@@ -143,8 +144,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	}
 
 	private void onShareClick(View view) {
-		// TODO: show dialog to choose quality
-		share(Quality.High);
+		share();
 	}
 
 	private void onWebsiteClick(View view) {
@@ -189,21 +189,23 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		}
 	}
 
-	private void share(Quality quality) {
+	private void share() {
 		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
-		String url = show.getVideoUrl(quality);
+		String url = show.getHighestPossibleStreamingUrl();
 		videoIntent.setDataAndType(Uri.parse(url), "video/*");
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
 	}
 
-	private void download(Quality quality) {
+	private void download() {
 		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
 			Timber.w("no permission to download show");
 			return;
 		}
 
+		Quality downloadQuality = show.getHighestPossibleDownloadQuality();
+
 		try {
-			downloadController.startDownload(show, quality);
+			downloadController.startDownload(show, downloadQuality);
 		} catch (WrongNetworkConditionException e) {
 			Snackbar snackbar = Snackbar
 				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);

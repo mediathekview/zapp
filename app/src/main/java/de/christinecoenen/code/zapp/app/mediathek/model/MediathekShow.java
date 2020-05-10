@@ -195,14 +195,27 @@ public class MediathekShow implements Serializable {
 		}
 	}
 
-	public boolean hasStreamingQuality(Quality quality) {
-		String videoUrl = getVideoUrl(quality);
-		return isValidStreamingUrl(videoUrl);
+	public String getHighestPossibleStreamingUrl() {
+		String highVideoUrl = getVideoUrl(Quality.High);
+		String mediumVideoUrl = getVideoUrl(Quality.Medium);
+		return isValidStreamingUrl(highVideoUrl) ? highVideoUrl : mediumVideoUrl;
+	}
+
+	public boolean hasAnyDownloadQuality() {
+		String highVideoUrl = getVideoUrl(Quality.High);
+		String mediumVideoUrl = getVideoUrl(Quality.Medium);
+		return isValidDownloadUrl(highVideoUrl) || isValidDownloadUrl(mediumVideoUrl);
 	}
 
 	public boolean hasDownloadQuality(Quality quality) {
 		String videoUrl = getVideoUrl(quality);
 		return isValidDownloadUrl(videoUrl);
+	}
+
+	public Quality getHighestPossibleDownloadQuality() {
+		String highVideoUrl = getVideoUrl(Quality.High);
+		String mediumVideoUrl = getVideoUrl(Quality.Medium);
+		return isValidDownloadUrl(highVideoUrl) ? Quality.High : Quality.Medium;
 	}
 
 	public String getDownloadFileName(Quality quality) {
