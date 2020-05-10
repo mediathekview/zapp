@@ -87,30 +87,10 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		binding.duration.setText(show.getFormattedDuration());
 		binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
-		binding.qualities.rowHigh.setVisibility(show.hasStreamingQuality(Quality.High) ? View.VISIBLE : View.GONE);
-		binding.qualities.rowMedium.setVisibility(show.hasStreamingQuality(Quality.Medium) ? View.VISIBLE : View.GONE);
-		binding.qualities.rowLow.setVisibility(show.hasStreamingQuality(Quality.Low) ? View.VISIBLE : View.GONE);
-
-		binding.qualities.downloadButtonHigh.setEnabled(show.hasDownloadQuality(Quality.High));
-		binding.qualities.downloadButtonMedium.setEnabled(show.hasDownloadQuality(Quality.Medium));
-		binding.qualities.downloadButtonLow.setEnabled(show.hasDownloadQuality(Quality.Low));
-
-		boolean isMissingDownloadsErrorVisible = !show.hasDownloadQuality(Quality.High) ||
-			!show.hasDownloadQuality(Quality.Medium) ||
-			!show.hasDownloadQuality(Quality.Low);
-		binding.qualities.error.setVisibility(isMissingDownloadsErrorVisible ? View.VISIBLE : View.GONE);
-
 		binding.play.setOnClickListener(this::onPlayClick);
-		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
 		binding.buttons.download.setOnClickListener(this::onDownloadClick);
-
-		binding.qualities.downloadButtonHigh.setOnClickListener(this::onDownloadHighClick);
-		binding.qualities.downloadButtonMedium.setOnClickListener(this::onDownloadMediumClick);
-		binding.qualities.downloadButtonLow.setOnClickListener(this::onDownloadLowClick);
-
-		binding.qualities.shareButtonHigh.setOnClickListener(this::onShareHighClick);
-		binding.qualities.shareButtonMedium.setOnClickListener(this::onShareMediumClick);
-		binding.qualities.shareButtonLow.setOnClickListener(this::onShareLowClick);
+		binding.buttons.share.setOnClickListener(this::onShareClick);
+		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
 
 		adjustDownloadButton(Status.NONE);
 		downloadController.addSigleDownloadListener(show.getId(), this);
@@ -139,10 +119,6 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
 	}
 
-	private void onWebsiteClick(View view) {
-		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
-	}
-
 	private void onDownloadClick(View view) {
 		switch (downloadStatus) {
 			case NONE:
@@ -152,7 +128,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 			case REMOVED:
 			case FAILED:
 				// TODO: show dialog to choose quality
-				download(Quality.Medium);
+				download(Quality.High);
 				break;
 			case ADDED:
 			case QUEUED:
@@ -166,28 +142,13 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		}
 	}
 
-	private void onDownloadHighClick(View view) {
-		download(Quality.High);
-	}
-
-	private void onDownloadMediumClick(View view) {
-		download(Quality.Medium);
-	}
-
-	private void onDownloadLowClick(View view) {
-		download(Quality.Low);
-	}
-
-	private void onShareHighClick(View view) {
+	private void onShareClick(View view) {
+		// TODO: show dialog to choose quality
 		share(Quality.High);
 	}
 
-	private void onShareMediumClick(View view) {
-		share(Quality.Medium);
-	}
-
-	private void onShareLowClick(View view) {
-		share(Quality.Low);
+	private void onWebsiteClick(View view) {
+		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
 	}
 
 	private void adjustDownloadButton(Status status) {

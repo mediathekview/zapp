@@ -151,10 +151,6 @@
 			android:layout_height="wrap_content"
 			android:layout_marginHorizontal="@dimen/activity_horizontal_margin" />
 
-		<include
-			android:id="@+id/qualities"
-			layout="@layout/fragment_mediathek_detail_qualities" />
-
 	</LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

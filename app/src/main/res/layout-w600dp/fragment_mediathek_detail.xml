@@ -68,10 +68,6 @@
 				android:contentDescription="@string/exo_controls_play_description"
 				android:src="@drawable/ic_play_arrow_white_24dp" />
 
-			<include
-				android:id="@+id/qualities"
-				layout="@layout/fragment_mediathek_detail_qualities" />
-
 		</LinearLayout>
 
 		<LinearLayout
