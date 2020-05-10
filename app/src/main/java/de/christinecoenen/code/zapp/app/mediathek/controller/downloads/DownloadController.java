@@ -1,16 +1,24 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads;
 
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
 
+import com.tonyodev.fetch2.Download;
+import com.tonyodev.fetch2.Error;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchConfiguration;
 import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.NetworkType;
 import com.tonyodev.fetch2.Request;
+import com.tonyodev.fetch2.Status;
+import com.tonyodev.fetch2core.DownloadBlock;
+
+import java.io.File;
+import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
@@ -18,14 +26,17 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 
-public class DownloadController {
+public class DownloadController implements FetchListener {
 
 	private final Fetch fetch;
 
+	private final Context applicationContext;
 	private final ConnectivityManager connectivityManager;
 	private final SettingsRepository settingsRepository;
 
 	public DownloadController(Context applicationContext) {
+		this.applicationContext = applicationContext;
+
 		connectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		settingsRepository = new SettingsRepository(applicationContext);
@@ -43,6 +54,7 @@ public class DownloadController {
 			.build();
 
 		fetch = Fetch.Impl.getInstance(fetchConfiguration);
+		fetch.addListener(this);
 	}
 
 	public void startDownload(MediathekShow show, Quality quality) {
@@ -95,6 +107,16 @@ public class DownloadController {
 		}
 	}
 
+	public void deleteDownloadsWithDeletedFiles() {
+		fetch.getDownloadsWithStatus(Status.COMPLETED, downloads -> {
+			for (Download download : downloads) {
+				if (!new File(download.getFileUri().toString()).exists()) {
+					fetch.delete(download.getId());
+				}
+			}
+		});
+	}
+
 	private void enqueueDownload(MediathekShow show, Request request) {
 		NetworkType networkType = settingsRepository.getDownloadOverWifiOnly() ?
 			NetworkType.WIFI_ONLY : NetworkType.ALL;
@@ -106,5 +128,75 @@ public class DownloadController {
 		}
 
 		fetch.enqueue(request, null, null);
+	}
+
+	private void rescanDownloadFile(@NonNull Download download) {
+		String filePath = download.getFileUri().getPath();
+		MediaScannerConnection.scanFile(applicationContext, new String[]{filePath}, new String[]{"video/*"}, null);
+	}
+
+	@Override
+	public void onAdded(@NonNull Download download) {
+
+	}
+
+	@Override
+	public void onCancelled(@NonNull Download download) {
+
+	}
+
+	@Override
+	public void onCompleted(@NonNull Download download) {
+		rescanDownloadFile(download);
+	}
+
+	@Override
+	public void onDeleted(@NonNull Download download) {
+		rescanDownloadFile(download);
+	}
+
+	@Override
+	public void onDownloadBlockUpdated(@NonNull Download download, @NonNull DownloadBlock downloadBlock, int i) {
+
+	}
+
+	@Override
+	public void onError(@NonNull Download download, @NonNull Error error, Throwable throwable) {
+
+	}
+
+	@Override
+	public void onPaused(@NonNull Download download) {
+
+	}
+
+	@Override
+	public void onProgress(@NonNull Download download, long l, long l1) {
+
+	}
+
+	@Override
+	public void onQueued(@NonNull Download download, boolean b) {
+
+	}
+
+	@Override
+	public void onRemoved(@NonNull Download download) {
+
+	}
+
+	@Override
+	public void onResumed(@NonNull Download download) {
+
+	}
+
+	@Override
+	public void onStarted(@NonNull Download download, @NonNull List<? extends DownloadBlock> list, int i) {
+
+	}
+
+	@Override
+	public void onWaitingNetwork(@NonNull Download download) {
+
 	}
 }
