@@ -27,8 +27,6 @@ import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
-import de.christinecoenen.code.zapp.utils.system.PermissionHelper;
-import timber.log.Timber;
 
 
 public class MediathekDetailFragment extends Fragment implements ISingleDownloadListener {
@@ -203,11 +201,6 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	}
 
 	private void download() {
-		if (!PermissionHelper.writeExternalStorageAllowed(this)) {
-			Timber.w("no permission to download show");
-			return;
-		}
-
 		Quality downloadQuality = show.getHighestPossibleDownloadQuality();
 
 		try {

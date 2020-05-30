@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
-import android.os.Environment;
 
 import androidx.annotation.NonNull;
 
@@ -60,8 +59,9 @@ public class DownloadController implements FetchListener {
 	public void startDownload(MediathekShow show, Quality quality) {
 		String downloadUrl = show.getVideoUrl(quality);
 		String fileName = show.getDownloadFileName(quality);
-		String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath()
-			+ "/zapp/" + fileName;
+
+		// TODO: choose between primary storage & sd card
+		String filePath = new File(applicationContext.getExternalMediaDirs()[0], fileName).getAbsolutePath();
 
 		Request request;
 		try {
@@ -110,7 +110,7 @@ public class DownloadController implements FetchListener {
 	public void deleteDownloadsWithDeletedFiles() {
 		fetch.getDownloadsWithStatus(Status.COMPLETED, downloads -> {
 			for (Download download : downloads) {
-				if (!new File(download.getFileUri().toString()).exists()) {
+				if (!new File(download.getFile()).exists()) {
 					fetch.delete(download.getId());
 				}
 			}
