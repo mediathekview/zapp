@@ -17,6 +17,8 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressWarnings("unused")
@@ -193,6 +195,18 @@ public class MediathekShow implements Serializable {
 			default:
 				throw new IllegalArgumentException();
 		}
+	}
+
+	public List<Quality> getSupportedDownloadQualities() {
+		List<Quality> qualities = new ArrayList<>();
+
+		for (Quality quality : Quality.values()) {
+			if (hasDownloadQuality(quality)) {
+				qualities.add(quality);
+			}
+		}
+
+		return qualities;
 	}
 
 	public String getHighestPossibleStreamingUrl() {

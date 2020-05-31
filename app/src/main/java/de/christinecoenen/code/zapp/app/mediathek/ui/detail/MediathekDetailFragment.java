@@ -30,7 +30,9 @@ import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 
 
-public class MediathekDetailFragment extends Fragment implements ISingleDownloadListener, ConfirmFileDeletionDialog.Listener {
+public class MediathekDetailFragment extends Fragment implements ISingleDownloadListener,
+	ConfirmFileDeletionDialog.Listener,
+	SelectQualityDialog.Listener {
 
 	private static final String ARG_SHOW = "ARG_SHOW";
 
@@ -127,6 +129,11 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		downloadController.deleteDownload(show.getId());
 	}
 
+	@Override
+	public void onQualitySelected(Quality quality) {
+		download(quality);
+	}
+
 	private void onPlayClick(View view) {
 		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
 	}
@@ -139,7 +146,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 			case PAUSED:
 			case REMOVED:
 			case FAILED:
-				download();
+				showSelectDownloadQualityDialog();
 				break;
 			case ADDED:
 			case QUEUED:
@@ -162,6 +169,12 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 
 	private void showConfirmDeleteDialog() {
 		DialogFragment newFragment = new ConfirmFileDeletionDialog();
+		newFragment.setTargetFragment(this, 0);
+		newFragment.show(getParentFragmentManager(), null);
+	}
+
+	private void showSelectDownloadQualityDialog() {
+		DialogFragment newFragment = SelectQualityDialog.newInstance(show);
 		newFragment.setTargetFragment(this, 0);
 		newFragment.show(getParentFragmentManager(), null);
 	}
@@ -210,9 +223,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
 	}
 
-	private void download() {
-		Quality downloadQuality = show.getHighestPossibleDownloadQuality();
-
+	private void download(Quality downloadQuality) {
 		try {
 			downloadController.startDownload(show, downloadQuality);
 		} catch (WrongNetworkConditionException e) {
