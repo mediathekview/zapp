@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import de.christinecoenen.code.zapp.utils.system.IntentHelper;
+import de.christinecoenen.code.zapp.app.MainActivity;
 
 import static com.tonyodev.fetch2.FetchIntent.EXTRA_ACTION_TYPE;
 
@@ -22,7 +22,12 @@ public class DownloadReceiver extends BroadcastReceiver {
 		int actionType = intent.getIntExtra(EXTRA_ACTION_TYPE, ACTION_NOTIFICATION_CLICKED);
 
 		if (actionType == ACTION_NOTIFICATION_CLICKED) {
-			IntentHelper.openDownloadManager(context);
+			// bring running zapp instance to front
+			Intent zappIntent = new Intent(context, MainActivity.class);
+			zappIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			zappIntent.setAction(Intent.ACTION_MAIN);
+			zappIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			context.startActivity(zappIntent);
 		}
 	}
 }
