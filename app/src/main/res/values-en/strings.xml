@@ -130,4 +130,6 @@
 	<string name="fetch_notification_download_paused">Paused</string>
 	<string name="fetch_notification_download_starting">Starting</string>
 	<string name="fetch_notification_download_downloading">Downloading</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
 </resources>

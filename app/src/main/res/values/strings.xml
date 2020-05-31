@@ -37,6 +37,8 @@
 	<string name="fragment_mediathek_download_retry">Download widerholen</string>
 	<string name="fragment_mediathek_download_running">Download läuft…</string>
 	<string name="fragment_mediathek_download_delete">Download löschen</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Datei wirklich löschen?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">Die Video-Datei wird gelöscht und kann später nochmals herunter geladen werden.</string>
 
 	<!-- error messages -->
 	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>

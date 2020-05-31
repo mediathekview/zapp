@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -29,7 +30,7 @@ import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 
 
-public class MediathekDetailFragment extends Fragment implements ISingleDownloadListener {
+public class MediathekDetailFragment extends Fragment implements ISingleDownloadListener, ConfirmFileDeletionDialog.Listener {
 
 	private static final String ARG_SHOW = "ARG_SHOW";
 
@@ -121,6 +122,11 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		adjustDownloadButton(downloadStatus);
 	}
 
+	@Override
+	public void onConfirmDeleteDialogOkClicked() {
+		downloadController.deleteDownload(show.getId());
+	}
+
 	private void onPlayClick(View view) {
 		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
 	}
@@ -141,8 +147,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 				downloadController.stopDownload(show.getId());
 				break;
 			case COMPLETED:
-				// TODO: show dialog
-				downloadController.deleteDownload(show.getId());
+				showConfirmDeleteDialog();
 				break;
 		}
 	}
@@ -153,6 +158,12 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 
 	private void onWebsiteClick(View view) {
 		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
+	}
+
+	private void showConfirmDeleteDialog() {
+		DialogFragment newFragment = new ConfirmFileDeletionDialog();
+		newFragment.setTargetFragment(this, 0);
+		newFragment.show(getParentFragmentManager(), null);
 	}
 
 	private void adjustDownloadButton(Status status) {
@@ -180,7 +191,6 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp);
 				break;
 			case COMPLETED:
-				// TODO: use colored style
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
 				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
