@@ -108,7 +108,7 @@ public class DownloadController implements FetchListener {
 	public void deleteDownloadsWithDeletedFiles() {
 		fetch.getDownloadsWithStatus(Status.COMPLETED, downloads -> {
 			for (Download download : downloads) {
-				if (!new File(download.getFile()).exists()) {
+				if (shouldDeleteDownload(download)) {
 					fetch.delete(download.getId());
 				}
 			}
@@ -131,6 +131,11 @@ public class DownloadController implements FetchListener {
 	private void rescanDownloadFile(@NonNull Download download) {
 		String filePath = download.getFileUri().getPath();
 		MediaScannerConnection.scanFile(applicationContext, new String[]{filePath}, new String[]{"video/*"}, null);
+	}
+
+	private boolean shouldDeleteDownload(Download download) {
+		File downloadFile = new File(download.getFile());
+		return !downloadFile.exists() && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(downloadFile));
 	}
 
 	private String getDownloadFilePath(MediathekShow show, Quality quality) {
