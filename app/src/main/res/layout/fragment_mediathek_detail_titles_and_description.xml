@@ -23,6 +23,14 @@
 		android:layout_marginBottom="@dimen/activity_vertical_margin"
 		tools:text="Some show title" />
 
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/thumbnail"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/activity_vertical_margin"
+		android:scaleType="fitStart"
+		android:visibility="gone" />
+
 	<TextView
 		android:id="@+id/description"
 		style="@style/Base.TextAppearance.AppCompat.Body1"

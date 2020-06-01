@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Status;
 
+import java.io.IOException;
+
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.ISingleDownloadListener;
@@ -27,6 +30,7 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
+import de.christinecoenen.code.zapp.utils.system.ImageHelper;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 
 
@@ -95,7 +99,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		binding.buttons.share.setOnClickListener(this::onShareClick);
 		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
 
-		adjustDownloadButton(Status.NONE);
+		adjustUiToDownloadStatus(Status.NONE, null);
 		downloadController.addSigleDownloadListener(show.getId(), this);
 
 		return binding.getRoot();
@@ -121,7 +125,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	@Override
 	public void onDownloadStatusChanged(@NonNull Download download) {
 		downloadStatus = download.getStatus();
-		adjustDownloadButton(downloadStatus);
+		adjustUiToDownloadStatus(downloadStatus, download);
 	}
 
 	@Override
@@ -184,7 +188,9 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		newFragment.show(getParentFragmentManager(), null);
 	}
 
-	private void adjustDownloadButton(Status status) {
+	private void adjustUiToDownloadStatus(Status status, Download download) {
+		binding.texts.thumbnail.setVisibility(View.GONE);
+
 		switch (status) {
 			case NONE:
 			case CANCELLED:
@@ -212,6 +218,15 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
 				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
+
+				Bitmap thumbnail;
+				try {
+					thumbnail = ImageHelper.loadThumbnail(download.getFile());
+					binding.texts.thumbnail.setImageBitmap(thumbnail);
+					binding.texts.thumbnail.setVisibility(View.VISIBLE);
+				} catch (IOException ignored) {
+				}
+
 				break;
 			case FAILED:
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
