@@ -130,8 +130,13 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	}
 
 	@Override
-	public void onQualitySelected(Quality quality) {
+	public void onDownloadQualitySelected(Quality quality) {
 		download(quality);
+	}
+
+	@Override
+	public void onShareQualitySelected(Quality quality) {
+		share(quality);
 	}
 
 	private void onPlayClick(View view) {
@@ -146,7 +151,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 			case PAUSED:
 			case REMOVED:
 			case FAILED:
-				showSelectDownloadQualityDialog();
+				showSelectQualityDialog(SelectQualityDialog.Mode.DOWNLOAD);
 				break;
 			case ADDED:
 			case QUEUED:
@@ -160,7 +165,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	}
 
 	private void onShareClick(View view) {
-		share();
+		showSelectQualityDialog(SelectQualityDialog.Mode.SHARE);
 	}
 
 	private void onWebsiteClick(View view) {
@@ -173,8 +178,8 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		newFragment.show(getParentFragmentManager(), null);
 	}
 
-	private void showSelectDownloadQualityDialog() {
-		DialogFragment newFragment = SelectQualityDialog.newInstance(show);
+	private void showSelectQualityDialog(SelectQualityDialog.Mode mode) {
+		DialogFragment newFragment = SelectQualityDialog.newInstance(show, mode);
 		newFragment.setTargetFragment(this, 0);
 		newFragment.show(getParentFragmentManager(), null);
 	}
@@ -216,9 +221,9 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		}
 	}
 
-	private void share() {
+	private void share(Quality quality) {
 		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
-		String url = show.getHighestPossibleStreamingUrl();
+		String url = show.getVideoUrl(quality);
 		videoIntent.setDataAndType(Uri.parse(url), "video/*");
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
 	}

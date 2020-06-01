@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.util.List;
-import java.util.Objects;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
@@ -20,18 +20,22 @@ import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 public class SelectQualityDialog extends AppCompatDialogFragment {
 
 	private static final String ARGUMENT_MEDIATHEK_SHOW = "ARGUMENT_MEDIATHEK_SHOW";
+	private static final String ARGUMENT_MODE = "ARGUMENT_MODE";
 
-	static SelectQualityDialog newInstance(MediathekShow mediathekShow) {
+	static SelectQualityDialog newInstance(MediathekShow mediathekShow, Mode mode) {
 		SelectQualityDialog fragment = new SelectQualityDialog();
 
 		Bundle args = new Bundle();
 		args.putSerializable(ARGUMENT_MEDIATHEK_SHOW, mediathekShow);
+		args.putSerializable(ARGUMENT_MODE, mode);
 		fragment.setArguments(args);
 
 		return fragment;
 	}
 
-	private String[] qualities;
+	private List<Quality> qualities;
+	private String[] qualityLabels;
+	private Mode mode;
 	private Listener listener;
 
 	@Override
@@ -40,13 +44,24 @@ public class SelectQualityDialog extends AppCompatDialogFragment {
 
 		assert getArguments() != null;
 
+		mode = (Mode) getArguments().getSerializable(ARGUMENT_MODE);
+
 		MediathekShow show = (MediathekShow) getArguments().getSerializable(ARGUMENT_MEDIATHEK_SHOW);
-		List<Quality> supportedQualities = Objects.requireNonNull(show).getSupportedDownloadQualities();
+		assert show != null;
 
-		qualities = new String[supportedQualities.size()];
+		switch (mode) {
+			case DOWNLOAD:
+				qualities = show.getSupportedDownloadQualities();
+				break;
+			case SHARE:
+				qualities = show.getSupportedStreamingQualities();
+				break;
+		}
 
-		for (int i = 0; i < supportedQualities.size(); i++) {
-			qualities[i] = getString(supportedQualities.get(i).getLabelResId());
+		qualityLabels = new String[qualities.size()];
+
+		for (int i = 0; i < qualities.size(); i++) {
+			qualityLabels[i] = getString(qualities.get(i).getLabelResId());
 		}
 	}
 
@@ -66,12 +81,32 @@ public class SelectQualityDialog extends AppCompatDialogFragment {
 	public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 		return new AlertDialog.Builder(requireActivity())
 			.setTitle(R.string.fragment_mediathek_qualities_title)
-			.setItems(qualities, (dialogInterface, i) -> listener.onQualitySelected(Quality.values()[i]))
+			.setItems(qualityLabels, this::onItemSelected)
 			.setNegativeButton(android.R.string.cancel, null)
 			.create();
 	}
 
+	private void onItemSelected(DialogInterface dialogInterface, int i) {
+		Quality quality = qualities.get(i);
+
+		switch (mode) {
+			case DOWNLOAD:
+				listener.onDownloadQualitySelected(quality);
+				break;
+			case SHARE:
+				listener.onShareQualitySelected(quality);
+				break;
+		}
+	}
+
+	public enum Mode {
+		DOWNLOAD,
+		SHARE
+	}
+
 	interface Listener {
-		void onQualitySelected(Quality quality);
+		void onDownloadQualitySelected(Quality quality);
+
+		void onShareQualitySelected(Quality quality);
 	}
 }

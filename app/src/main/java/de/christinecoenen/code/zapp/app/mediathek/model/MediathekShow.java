@@ -209,6 +209,19 @@ public class MediathekShow implements Serializable {
 		return qualities;
 	}
 
+	public List<Quality> getSupportedStreamingQualities() {
+		List<Quality> qualities = new ArrayList<>();
+
+		for (Quality quality : Quality.values()) {
+			String url = getVideoUrl(quality);
+			if (isValidStreamingUrl(url)) {
+				qualities.add(quality);
+			}
+		}
+
+		return qualities;
+	}
+
 	public String getHighestPossibleStreamingUrl() {
 		String highVideoUrl = getVideoUrl(Quality.High);
 		String mediumVideoUrl = getVideoUrl(Quality.Medium);

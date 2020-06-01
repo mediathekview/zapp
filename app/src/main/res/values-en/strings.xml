@@ -29,7 +29,7 @@
 	<string name="fragment_mediathek_duration">Duration</string>
 	<string name="fragment_mediathek_website">Website</string>
 	<string name="fragment_mediathek_batch_subtitle">ST</string>
-	<string name="fragment_mediathek_qualities_title">Qualities</string>
+	<string name="fragment_mediathek_qualities_title">Choose quality</string>
 	<string name="fragment_mediathek_qualities_low">Low</string>
 	<string name="fragment_mediathek_qualities_medium">Medium</string>
 	<string name="fragment_mediathek_qualities_high">High</string>
