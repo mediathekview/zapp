@@ -111,6 +111,9 @@
 	<string name="stream_quality_cellular_medium">Mittlere Qualität</string>
 	<string name="stream_quality_cellular_highest">Höchste Qualität</string>
 
+	<string name="pref_download_to_sd_card_title">Downloads auf SD-Karte</string>
+	<string name="pref_download_to_sd_card_summary">Wenn verfügbar, werden Video-Dateien auf die SD-Karte gespeichert.</string>
+
 	<string name="pref_delete_search_queries_title">Suchanfragen löschen</string>
 	<string name="pref_delete_search_queries_dialog_message">Wirklich alle vergangenen Suchanfragen löschen?</string>
 

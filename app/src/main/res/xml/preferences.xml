@@ -64,6 +64,12 @@
 		android:icon="@drawable/ic_save_white_24dp"
 		android:title="@string/pref_header_data">
 
+		<SwitchPreference
+			android:defaultValue="true"
+			android:key="@string/pref_key_download_to_sd_card"
+			android:summary="@string/pref_download_to_sd_card_summary"
+			android:title="@string/pref_download_to_sd_card_title" />
+
 		<de.christinecoenen.code.zapp.app.settings.ui.DeleteSearchQueriesPreference
 			android:dialogMessage="@string/pref_delete_search_queries_dialog_message"
 			android:key="@string/pref_key_delete_search_queries"

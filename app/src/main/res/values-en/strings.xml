@@ -109,6 +109,9 @@
 	<string name="stream_quality_cellular_medium">Medium quality</string>
 	<string name="stream_quality_cellular_highest">Highest quality</string>
 
+	<string name="pref_download_to_sd_card_title">Download to sd card</string>
+	<string name="pref_download_to_sd_card_summary">Video files will be saved to sd card if present.</string>
+
 	<string name="pref_delete_search_queries_title">Delete search queries</string>
 	<string name="pref_delete_search_queries_dialog_message">Really delete all of your search queries?</string>
 

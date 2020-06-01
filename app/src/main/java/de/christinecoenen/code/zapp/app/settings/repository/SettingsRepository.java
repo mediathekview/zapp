@@ -59,6 +59,10 @@ public class SettingsRepository {
 			.apply();
 	}
 
+	public boolean getDownloadToSdCard() {
+		return preferences.getBoolean(context.getString(R.string.pref_key_download_to_sd_card), true);
+	}
+
 	public int getUiMode() {
 		String uiMode = preferences.getString(context.getString(R.string.pref_key_ui_mode), "0");
 		return prefValueToUiMode(uiMode);

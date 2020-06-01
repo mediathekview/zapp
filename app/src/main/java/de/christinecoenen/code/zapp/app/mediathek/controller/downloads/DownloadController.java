@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
 
@@ -58,10 +59,7 @@ public class DownloadController implements FetchListener {
 
 	public void startDownload(MediathekShow show, Quality quality) {
 		String downloadUrl = show.getVideoUrl(quality);
-		String fileName = show.getDownloadFileName(quality);
-
-		// TODO: choose between primary storage & sd card
-		String filePath = new File(applicationContext.getExternalMediaDirs()[0], fileName).getAbsolutePath();
+		String filePath = getDownloadFilePath(show, quality);
 
 		Request request;
 		try {
@@ -133,6 +131,26 @@ public class DownloadController implements FetchListener {
 	private void rescanDownloadFile(@NonNull Download download) {
 		String filePath = download.getFileUri().getPath();
 		MediaScannerConnection.scanFile(applicationContext, new String[]{filePath}, new String[]{"video/*"}, null);
+	}
+
+	private String getDownloadFilePath(MediathekShow show, Quality quality) {
+		String fileName = show.getDownloadFileName(quality);
+
+		File downloadFile = null;
+
+		File[] externalMediaDirs = applicationContext.getExternalMediaDirs();
+		File sdCardDir = externalMediaDirs.length > 1 ? externalMediaDirs[1] : null;
+
+		if (settingsRepository.getDownloadToSdCard() && sdCardDir != null &&
+			Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(sdCardDir))) {
+			downloadFile = new File(sdCardDir, fileName);
+		}
+
+		if (downloadFile == null) {
+			downloadFile = new File(externalMediaDirs[0], fileName);
+		}
+
+		return downloadFile.getAbsolutePath();
 	}
 
 	@Override
