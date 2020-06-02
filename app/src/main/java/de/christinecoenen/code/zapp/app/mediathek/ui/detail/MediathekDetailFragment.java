@@ -221,7 +221,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 
 				Bitmap thumbnail;
 				try {
-					thumbnail = ImageHelper.loadThumbnail(download.getFile());
+					thumbnail = ImageHelper.loadThumbnail(getContext(), download.getFile());
 					binding.texts.thumbnail.setImageBitmap(thumbnail);
 					binding.texts.thumbnail.setVisibility(View.VISIBLE);
 				} catch (IOException ignored) {
