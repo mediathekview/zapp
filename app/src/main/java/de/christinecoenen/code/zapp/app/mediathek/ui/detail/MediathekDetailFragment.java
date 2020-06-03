@@ -108,12 +108,14 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	@Override
 	public void onResume() {
 		super.onResume();
+
 		downloadController.deleteDownloadsWithDeletedFiles();
 	}
 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
+
 		downloadController.removeSigleDownloadListener(this);
 	}
 

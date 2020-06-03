@@ -1,9 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads;
 
 import android.content.Context;
-import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
-import android.os.Environment;
 
 import androidx.annotation.NonNull;
 
@@ -17,7 +15,6 @@ import com.tonyodev.fetch2.Request;
 import com.tonyodev.fetch2.Status;
 import com.tonyodev.fetch2core.DownloadBlock;
 
-import java.io.File;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
@@ -30,16 +27,15 @@ public class DownloadController implements FetchListener {
 
 	private final Fetch fetch;
 
-	private final Context applicationContext;
 	private final ConnectivityManager connectivityManager;
 	private final SettingsRepository settingsRepository;
+	private final DownloadFileInfoManager downloadFileInfoManager;
 
 	public DownloadController(Context applicationContext) {
-		this.applicationContext = applicationContext;
+		settingsRepository = new SettingsRepository(applicationContext);
+		downloadFileInfoManager = new DownloadFileInfoManager(applicationContext, settingsRepository);
 
 		connectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		settingsRepository = new SettingsRepository(applicationContext);
 
 		FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(applicationContext)
 			.setNotificationManager(new ZappNotificationManager(applicationContext) {
@@ -59,7 +55,7 @@ public class DownloadController implements FetchListener {
 
 	public void startDownload(MediathekShow show, Quality quality) {
 		String downloadUrl = show.getVideoUrl(quality);
-		String filePath = getDownloadFilePath(show, quality);
+		String filePath = downloadFileInfoManager.getDownloadFilePath(show, quality);
 
 		Request request;
 		try {
@@ -108,8 +104,8 @@ public class DownloadController implements FetchListener {
 	public void deleteDownloadsWithDeletedFiles() {
 		fetch.getDownloadsWithStatus(Status.COMPLETED, downloads -> {
 			for (Download download : downloads) {
-				if (shouldDeleteDownload(download)) {
-					fetch.delete(download.getId());
+				if (downloadFileInfoManager.shouldDeleteDownload(download)) {
+					fetch.remove(download.getId());
 				}
 			}
 		});
@@ -128,36 +124,6 @@ public class DownloadController implements FetchListener {
 		fetch.enqueue(request, null, null);
 	}
 
-	private void rescanDownloadFile(@NonNull Download download) {
-		String filePath = download.getFileUri().getPath();
-		MediaScannerConnection.scanFile(applicationContext, new String[]{filePath}, new String[]{"video/*"}, null);
-	}
-
-	private boolean shouldDeleteDownload(Download download) {
-		File downloadFile = new File(download.getFile());
-		return !downloadFile.exists() && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(downloadFile));
-	}
-
-	private String getDownloadFilePath(MediathekShow show, Quality quality) {
-		String fileName = show.getDownloadFileName(quality);
-
-		File downloadFile = null;
-
-		File[] externalMediaDirs = applicationContext.getExternalMediaDirs();
-		File sdCardDir = externalMediaDirs.length > 1 ? externalMediaDirs[1] : null;
-
-		if (settingsRepository.getDownloadToSdCard() && sdCardDir != null &&
-			Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(sdCardDir))) {
-			downloadFile = new File(sdCardDir, fileName);
-		}
-
-		if (downloadFile == null) {
-			downloadFile = new File(externalMediaDirs[0], fileName);
-		}
-
-		return downloadFile.getAbsolutePath();
-	}
-
 	@Override
 	public void onAdded(@NonNull Download download) {
 
@@ -170,12 +136,12 @@ public class DownloadController implements FetchListener {
 
 	@Override
 	public void onCompleted(@NonNull Download download) {
-		rescanDownloadFile(download);
+		downloadFileInfoManager.updateDownloadFileInMediaCollection(download);
 	}
 
 	@Override
 	public void onDeleted(@NonNull Download download) {
-		rescanDownloadFile(download);
+		downloadFileInfoManager.updateDownloadFileInMediaCollection(download);
 	}
 
 	@Override
