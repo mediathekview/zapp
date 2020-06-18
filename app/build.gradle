@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 
@@ -93,6 +94,14 @@ dependencies {
 	implementation 'androidx.recyclerview:recyclerview:1.1.0'
 	implementation 'androidx.preference:preference:1.1.1'
 
+	// room database
+	def room_version = "2.2.5"
+	implementation  "androidx.room:room-runtime:$room_version"
+	kapt "androidx.room:room-compiler:$room_version"
+	implementation "androidx.room:room-ktx:$room_version"
+	implementation "androidx.room:room-rxjava2:$room_version"
+
+
 	// helper
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'commons-io:commons-io:2.6'
@@ -132,5 +141,6 @@ dependencies {
 
 	// about libraries view
 	implementation 'com.mikepenz:aboutlibraries:8.1.2'
-	implementation 'org.jetbrains:annotations:15.0'
+
+	implementation 'org.jetbrains:annotations-java5:19.0.0'
 }

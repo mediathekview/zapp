@@ -22,6 +22,7 @@ import com.tonyodev.fetch2.Status;
 import java.io.IOException;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.ISingleDownloadListener;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
@@ -62,7 +63,8 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
-		downloadController = new DownloadController(context);
+		ZappApplicationBase app = (ZappApplicationBase) context.getApplicationContext();
+		downloadController = app.getDownloadController();
 	}
 
 	@Override
@@ -100,7 +102,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
 
 		adjustUiToDownloadStatus(Status.NONE, null);
-		downloadController.addSigleDownloadListener(show.getId(), this);
+		downloadController.addSigleDownloadListener(show.getApiId(), this);
 
 		return binding.getRoot();
 	}
@@ -132,7 +134,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 
 	@Override
 	public void onConfirmDeleteDialogOkClicked() {
-		downloadController.deleteDownload(show.getId());
+		downloadController.deleteDownload(show.getApiId());
 	}
 
 	@Override
@@ -162,7 +164,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 			case ADDED:
 			case QUEUED:
 			case DOWNLOADING:
-				downloadController.stopDownload(show.getId());
+				downloadController.stopDownload(show.getApiId());
 				break;
 			case COMPLETED:
 				showConfirmDeleteDialog();

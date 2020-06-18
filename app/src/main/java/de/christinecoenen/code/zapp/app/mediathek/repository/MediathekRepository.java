@@ -6,7 +6,10 @@ import java.util.List;
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.repository.persistence.MediathekDatabase;
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ConnectionSpec;
@@ -21,9 +24,12 @@ public class MediathekRepository {
 
 
 	private final MediathekService service;
+	private final MediathekDatabase database;
 
 
-	public MediathekRepository() {
+	public MediathekRepository(MediathekDatabase mediathekDatabase) {
+		this.database = mediathekDatabase;
+
 		// workaround to avoid SSLHandshakeException on Android 7 devices
 		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
 		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
@@ -54,5 +60,18 @@ public class MediathekRepository {
 				}
 				return mediathekAnswer.result.results;
 			});
+	}
+
+	public void persistShow(MediathekShow show) {
+		PersistedMediathekShow persistedShow = new PersistedMediathekShow();
+		persistedShow.setMediathekShow(show);
+		database.mediathekShowDao()
+			.insert(persistedShow)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public Flowable<PersistedMediathekShow> getPersistedShow(String apiId) {
+		return database.mediathekShowDao().getFromApiId(apiId).subscribeOn(Schedulers.io());
 	}
 }

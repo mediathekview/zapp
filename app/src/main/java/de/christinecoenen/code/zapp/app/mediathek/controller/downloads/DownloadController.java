@@ -21,6 +21,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 
 public class DownloadController implements FetchListener {
@@ -30,8 +31,11 @@ public class DownloadController implements FetchListener {
 	private final ConnectivityManager connectivityManager;
 	private final SettingsRepository settingsRepository;
 	private final DownloadFileInfoManager downloadFileInfoManager;
+	private final MediathekRepository mediathekRepository;
 
-	public DownloadController(Context applicationContext) {
+	public DownloadController(Context applicationContext, MediathekRepository mediathekRepository) {
+		this.mediathekRepository = mediathekRepository;
+
 		settingsRepository = new SettingsRepository(applicationContext);
 		downloadFileInfoManager = new DownloadFileInfoManager(applicationContext, settingsRepository);
 
@@ -54,6 +58,8 @@ public class DownloadController implements FetchListener {
 	}
 
 	public void startDownload(MediathekShow show, Quality quality) {
+		mediathekRepository.persistShow(show);
+
 		String downloadUrl = show.getVideoUrl(quality);
 		String filePath = downloadFileInfoManager.getDownloadFilePath(show, quality);
 
@@ -115,7 +121,7 @@ public class DownloadController implements FetchListener {
 		NetworkType networkType = settingsRepository.getDownloadOverWifiOnly() ?
 			NetworkType.WIFI_ONLY : NetworkType.ALL;
 		request.setNetworkType(networkType);
-		request.setIdentifier(show.getId().hashCode());
+		request.setIdentifier(show.getApiId().hashCode());
 
 		if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
 			throw new WrongNetworkConditionException("Download over metered networks prohibited.");

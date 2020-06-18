@@ -6,7 +6,7 @@ public class MediathekData {
 
 	public static MediathekShow getTestShow() {
 		MediathekShow mediathekShow = new MediathekShow();
-		mediathekShow.setId("test123");
+		mediathekShow.setApiId("test123");
 		mediathekShow.setChannel("ARD");
 		mediathekShow.setTitle("My Title");
 		mediathekShow.setVideoUrl("http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
