@@ -16,36 +16,40 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.tonyodev.fetch2.Download;
-import com.tonyodev.fetch2.Status;
 
 import java.io.IOException;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.ISingleDownloadListener;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
+import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.ImageHelper;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 
-public class MediathekDetailFragment extends Fragment implements ISingleDownloadListener,
-	ConfirmFileDeletionDialog.Listener,
+public class MediathekDetailFragment extends Fragment implements ConfirmFileDeletionDialog.Listener,
 	SelectQualityDialog.Listener {
 
 	private static final String ARG_SHOW = "ARG_SHOW";
 
 
+	private CompositeDisposable createViewDisposables;
 	private FragmentMediathekDetailBinding binding;
+	private MediathekRepository mediathekRepository;
 	private MediathekShow show;
 	private DownloadController downloadController;
-	private Status downloadStatus = Status.NONE;
+	private DownloadStatus downloadStatus = DownloadStatus.NONE;
 
 
 	public MediathekDetailFragment() {
@@ -65,6 +69,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		super.onAttach(context);
 		ZappApplicationBase app = (ZappApplicationBase) context.getApplicationContext();
 		downloadController = app.getDownloadController();
+		mediathekRepository = app.getMediathekRepository();
 	}
 
 	@Override
@@ -101,8 +106,22 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		binding.buttons.share.setOnClickListener(this::onShareClick);
 		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
 
-		adjustUiToDownloadStatus(Status.NONE, null);
-		downloadController.addSigleDownloadListener(show.getApiId(), this);
+		createViewDisposables = new CompositeDisposable();
+
+		createViewDisposables.add(downloadController
+			.getDownloadStatus(show.getApiId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::onDownloadStatusChanged));
+
+		createViewDisposables.add(downloadController
+			.getDownloadProgress(show.getApiId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::onDownloadProgressChanged));
+
+		createViewDisposables.add(mediathekRepository
+			.getPersistedShow(show.getApiId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(persistedMediathekShow -> Timber.d(""+persistedMediathekShow.getId())));
 
 		return binding.getRoot();
 	}
@@ -117,19 +136,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-
-		downloadController.removeSigleDownloadListener(this);
-	}
-
-	@Override
-	public void onDownloadProgressChanged(@NonNull Download download) {
-		binding.buttons.downloadProgress.setProgress(download.getProgress());
-	}
-
-	@Override
-	public void onDownloadStatusChanged(@NonNull Download download) {
-		downloadStatus = download.getStatus();
-		adjustUiToDownloadStatus(downloadStatus, download);
+		createViewDisposables.clear();
 	}
 
 	@Override
@@ -145,6 +152,17 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 	@Override
 	public void onShareQualitySelected(Quality quality) {
 		share(quality);
+	}
+
+	private void onDownloadStatusChanged(DownloadStatus downloadStatus) {
+		Timber.d("downloadStatus: %s", downloadStatus);
+		this.downloadStatus = downloadStatus;
+		adjustUiToDownloadStatus(downloadStatus);
+	}
+
+	private void onDownloadProgressChanged(Integer progress) {
+		Timber.d("progress: %s", progress);
+		binding.buttons.downloadProgress.setProgress(progress);
 	}
 
 	private void onPlayClick(View view) {
@@ -192,7 +210,7 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 		newFragment.show(getParentFragmentManager(), null);
 	}
 
-	private void adjustUiToDownloadStatus(Status status, Download download) {
+	private void adjustUiToDownloadStatus(DownloadStatus status) {
 		binding.texts.thumbnail.setVisibility(View.GONE);
 
 		switch (status) {
@@ -223,13 +241,11 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
 				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
 
-				Bitmap thumbnail;
-				try {
-					thumbnail = ImageHelper.loadThumbnail(getContext(), download.getFile());
-					binding.texts.thumbnail.setImageBitmap(thumbnail);
-					binding.texts.thumbnail.setVisibility(View.VISIBLE);
-				} catch (IOException ignored) {
-				}
+				createViewDisposables.add(mediathekRepository
+					.getPersistedShow(show.getApiId())
+					.firstElement()
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(this::loadVideoThumbnail));
 
 				break;
 			case FAILED:
@@ -237,6 +253,16 @@ public class MediathekDetailFragment extends Fragment implements ISingleDownload
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_retry);
 				binding.buttons.download.setIconResource(R.drawable.ic_warning_white_24dp);
 				break;
+		}
+	}
+
+	private void loadVideoThumbnail(PersistedMediathekShow persistedShow) {
+		Bitmap thumbnail;
+		try {
+			thumbnail = ImageHelper.loadThumbnail(getContext(), persistedShow.getDownloadedVideoPath());
+			binding.texts.thumbnail.setImageBitmap(thumbnail);
+			binding.texts.thumbnail.setVisibility(View.VISIBLE);
+		} catch (IOException ignored) {
 		}
 	}
 

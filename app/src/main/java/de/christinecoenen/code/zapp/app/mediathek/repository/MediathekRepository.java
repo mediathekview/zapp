@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
+import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.repository.persistence.MediathekDatabase;
@@ -62,16 +63,62 @@ public class MediathekRepository {
 			});
 	}
 
-	public void persistShow(MediathekShow show) {
+	public PersistedMediathekShow persistShow(MediathekShow show) {
 		PersistedMediathekShow persistedShow = new PersistedMediathekShow();
 		persistedShow.setMediathekShow(show);
 		database.mediathekShowDao()
 			.insert(persistedShow)
 			.subscribeOn(Schedulers.io())
 			.subscribe();
+
+		return persistedShow;
+	}
+
+	public void updateShow(PersistedMediathekShow show) {
+		database.mediathekShowDao()
+			.update(show)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public void updateDownloadStatus(long downloadId, DownloadStatus downloadStatus) {
+		database.mediathekShowDao()
+			.updateDownloadStatus(downloadId, downloadStatus)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public void updateDownloadProgress(long downloadId, int progress) {
+		database.mediathekShowDao()
+			.updateDownloadProgress(downloadId, progress)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public void updateDownloadedVideoPath(long downloadId, String videoPath) {
+		database.mediathekShowDao()
+			.updateDownloadedVideoPath(downloadId, videoPath)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
 	}
 
 	public Flowable<PersistedMediathekShow> getPersistedShow(String apiId) {
 		return database.mediathekShowDao().getFromApiId(apiId).subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {
+		return database
+			.mediathekShowDao()
+			.getDownloadStatus(apiId)
+			.startWith(DownloadStatus.NONE)
+			.subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<Integer> getDownloadProgress(String apiId) {
+		return database
+			.mediathekShowDao()
+			.getDownloadProgress(apiId)
+			.startWith(0)
+			.subscribeOn(Schedulers.io());
 	}
 }

@@ -19,7 +19,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
-			android:progress="0" />
+			android:progress="0"
+			android:visibility="gone" />
 
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/download"

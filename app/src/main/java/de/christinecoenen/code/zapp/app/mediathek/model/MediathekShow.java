@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -7,14 +7,16 @@ import androidx.room.PrimaryKey
 @Entity
 class PersistedMediathekShow {
 
-	@PrimaryKey
-	var id = 0
+	@PrimaryKey(autoGenerate = true)
+	var id : Int = 0
 
-	var downloadId = 0
+	var downloadId = 0L
 
-	var downloadedVideoUri: String? = null
+	var downloadedVideoPath: String? = null
 
-	var downloadStatus = 0
+	var downloadStatus : DownloadStatus = DownloadStatus.NONE
+
+	var downloadProgress = 0
 
 	@Embedded
 	var mediathekShow: MediathekShow? = null

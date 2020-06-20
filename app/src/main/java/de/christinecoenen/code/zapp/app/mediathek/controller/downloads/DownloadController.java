@@ -19,10 +19,13 @@ import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
+import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
+import io.reactivex.Flowable;
 
 public class DownloadController implements FetchListener {
 
@@ -58,7 +61,7 @@ public class DownloadController implements FetchListener {
 	}
 
 	public void startDownload(MediathekShow show, Quality quality) {
-		mediathekRepository.persistShow(show);
+		PersistedMediathekShow persistedShow = mediathekRepository.persistShow(show);
 
 		String downloadUrl = show.getVideoUrl(quality);
 		String filePath = downloadFileInfoManager.getDownloadFilePath(show, quality);
@@ -71,7 +74,10 @@ public class DownloadController implements FetchListener {
 			throw new DownloadException("Constructing download request failed.", e);
 		}
 
-		enqueueDownload(show, request);
+		persistedShow.setDownloadId(show.getApiId().hashCode());
+		mediathekRepository.updateShow(persistedShow);
+
+		enqueueDownload(persistedShow, request);
 	}
 
 	public void stopDownload(String showId) {
@@ -90,21 +96,12 @@ public class DownloadController implements FetchListener {
 		});
 	}
 
-	public void addSigleDownloadListener(String showId, ISingleDownloadListener listener) {
-		FetchListener fetchListener = new SingleDownloadListener(showId.hashCode(), listener);
-		fetch.addListener(fetchListener, true);
+	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {
+		return mediathekRepository.getDownloadStatus(apiId);
 	}
 
-	public void removeSigleDownloadListener(ISingleDownloadListener listener) {
-		for (FetchListener fetchListener : fetch.getListenerSet()) {
-			if (fetchListener instanceof SingleDownloadListener) {
-				SingleDownloadListener singleDownloadListener = (SingleDownloadListener) fetchListener;
-				ISingleDownloadListener internalListener = singleDownloadListener.getInternalListener();
-				if (internalListener == null || internalListener == listener) {
-					fetch.removeListener(fetchListener);
-				}
-			}
-		}
+	public Flowable<Integer> getDownloadProgress(String apiId) {
+		return mediathekRepository.getDownloadProgress(apiId);
 	}
 
 	public void deleteDownloadsWithDeletedFiles() {
@@ -117,11 +114,11 @@ public class DownloadController implements FetchListener {
 		});
 	}
 
-	private void enqueueDownload(MediathekShow show, Request request) {
+	private void enqueueDownload(PersistedMediathekShow persistedShow, Request request) {
 		NetworkType networkType = settingsRepository.getDownloadOverWifiOnly() ?
 			NetworkType.WIFI_ONLY : NetworkType.ALL;
 		request.setNetworkType(networkType);
-		request.setIdentifier(show.getApiId().hashCode());
+		request.setIdentifier(persistedShow.getDownloadId());
 
 		if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
 			throw new WrongNetworkConditionException("Download over metered networks prohibited.");
@@ -130,23 +127,37 @@ public class DownloadController implements FetchListener {
 		fetch.enqueue(request, null, null);
 	}
 
+	private void updateDownloadStatus(@NonNull Download download) {
+		DownloadStatus downloadStatus = DownloadStatus.values()[download.getStatus().getValue()];
+		mediathekRepository.updateDownloadStatus(download.getIdentifier(), downloadStatus);
+	}
+
+	private void updateDownloadProgress(@NonNull Download download, int progress) {
+		mediathekRepository.updateDownloadProgress(download.getIdentifier(), progress);
+	}
+
 	@Override
 	public void onAdded(@NonNull Download download) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onCancelled(@NonNull Download download) {
-
+		updateDownloadStatus(download);
+		updateDownloadProgress(download, 0);
 	}
 
 	@Override
 	public void onCompleted(@NonNull Download download) {
+		updateDownloadStatus(download);
+		mediathekRepository.updateDownloadedVideoPath(download.getIdentifier(), download.getFile());
 		downloadFileInfoManager.updateDownloadFileInMediaCollection(download);
 	}
 
 	@Override
 	public void onDeleted(@NonNull Download download) {
+		updateDownloadStatus(download);
+		updateDownloadProgress(download, 0);
 		downloadFileInfoManager.updateDownloadFileInMediaCollection(download);
 	}
 
@@ -157,41 +168,41 @@ public class DownloadController implements FetchListener {
 
 	@Override
 	public void onError(@NonNull Download download, @NonNull Error error, Throwable throwable) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onPaused(@NonNull Download download) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onProgress(@NonNull Download download, long l, long l1) {
-
+		updateDownloadProgress(download, download.getProgress());
 	}
 
 	@Override
 	public void onQueued(@NonNull Download download, boolean b) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onRemoved(@NonNull Download download) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onResumed(@NonNull Download download) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onStarted(@NonNull Download download, @NonNull List<? extends DownloadBlock> list, int i) {
-
+		updateDownloadStatus(download);
 	}
 
 	@Override
 	public void onWaitingNetwork(@NonNull Download download) {
-
+		updateDownloadStatus(download);
 	}
 }
