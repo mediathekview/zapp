@@ -115,11 +115,6 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::onDownloadProgressChanged));
 
-		createViewDisposables.add(mediathekRepository
-			.getPersistedShow(show.getApiId())
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(persistedMediathekShow -> Timber.d("" + persistedMediathekShow.getId())));
-
 		return binding.getRoot();
 	}
 
@@ -152,13 +147,11 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	}
 
 	private void onDownloadStatusChanged(DownloadStatus downloadStatus) {
-		Timber.d("downloadStatus: %s", downloadStatus);
 		this.downloadStatus = downloadStatus;
 		adjustUiToDownloadStatus(downloadStatus);
 	}
 
 	private void onDownloadProgressChanged(Integer progress) {
-		Timber.d("progress: %s", progress);
 		binding.buttons.downloadProgress.setProgress(progress);
 	}
 
