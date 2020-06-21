@@ -275,6 +275,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 	override fun postDownloadUpdate(download: Download): Boolean {
 		mediathekRepository
 			.getPersistedShow(download.identifier)
+			.firstElement()
 			.subscribe { persistedShow -> postDownloadUpdate(download, persistedShow) }
 
 		return true
