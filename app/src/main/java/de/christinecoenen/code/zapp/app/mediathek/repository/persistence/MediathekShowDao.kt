@@ -15,6 +15,9 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getFromApiId(apiId: String): Flowable<PersistedMediathekShow>
 
+	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadId=:downloadId")
+	fun getFromDownloadId(downloadId: Long): Flowable<PersistedMediathekShow>
+
 	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getDownloadStatus(apiId: String): Flowable<DownloadStatus>
 

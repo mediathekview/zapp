@@ -67,7 +67,7 @@ public class MediathekRepository {
 		PersistedMediathekShow persistedShow = new PersistedMediathekShow();
 		persistedShow.setDownloadId(downloadId);
 		persistedShow.setMediathekShow(show);
-		
+
 		database.mediathekShowDao()
 			.insert(persistedShow)
 			.subscribeOn(Schedulers.io())
@@ -106,6 +106,10 @@ public class MediathekRepository {
 
 	public Flowable<PersistedMediathekShow> getPersistedShow(String apiId) {
 		return database.mediathekShowDao().getFromApiId(apiId).subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<PersistedMediathekShow> getPersistedShow(long downloadId) {
+		return database.mediathekShowDao().getFromDownloadId(downloadId).subscribeOn(Schedulers.io());
 	}
 
 	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {

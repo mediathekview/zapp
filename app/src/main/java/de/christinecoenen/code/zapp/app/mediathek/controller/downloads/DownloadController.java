@@ -45,7 +45,7 @@ public class DownloadController implements FetchListener {
 		connectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(applicationContext)
-			.setNotificationManager(new ZappNotificationManager(applicationContext) {
+			.setNotificationManager(new ZappNotificationManager(applicationContext, mediathekRepository) {
 				@NonNull
 				@Override
 				public Fetch getFetchInstanceForNamespace(@NonNull String namespace) {

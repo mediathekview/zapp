@@ -7,16 +7,17 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.Uri
 import androidx.core.app.NotificationCompat
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET
 import com.tonyodev.fetch2.util.onDownloadNotificationActionTriggered
 import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
-abstract class ZappNotificationManager(context: Context) : FetchNotificationManager {
+abstract class ZappNotificationManager(context: Context, private val mediathekRepository: MediathekRepository) : FetchNotificationManager {
 
 	private val context: Context = context.applicationContext
 	private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -270,40 +271,13 @@ abstract class ZappNotificationManager(context: Context) : FetchNotificationMana
 		return downloadNotification.isPaused
 	}
 
+	@SuppressLint("CheckResult")
 	override fun postDownloadUpdate(download: Download): Boolean {
-		return synchronized(downloadNotificationsMap) {
-			if (downloadNotificationsMap.size > 50) {
-				downloadNotificationsBuilderMap.clear()
-				downloadNotificationsMap.clear()
-			}
+		mediathekRepository
+			.getPersistedShow(download.identifier)
+			.subscribe { persistedShow -> postDownloadUpdate(download, persistedShow) }
 
-			val downloadNotification = downloadNotificationsMap[download.id]
-				?: DownloadNotification()
-			downloadNotification.status = download.status
-			downloadNotification.progress = download.progress
-			downloadNotification.notificationId = download.id
-			downloadNotification.groupId = download.group
-			downloadNotification.etaInMilliSeconds = download.etaInMilliSeconds
-			downloadNotification.downloadedBytesPerSecond = download.downloadedBytesPerSecond
-			downloadNotification.total = download.total
-			downloadNotification.downloaded = download.downloaded
-			downloadNotification.namespace = download.namespace
-			downloadNotification.title = getDownloadNotificationTitle(download)
-			downloadNotificationsMap[download.id] = downloadNotification
-
-			if (downloadNotificationExcludeSet.contains(downloadNotification.notificationId)
-				&& !downloadNotification.isFailed && !downloadNotification.isCompleted) {
-				downloadNotificationExcludeSet.remove(downloadNotification.notificationId)
-			}
-
-			if (downloadNotification.isCancelledNotification || shouldCancelNotification(downloadNotification)) {
-				cancelNotification(downloadNotification.notificationId)
-			} else {
-				notify(download.group)
-			}
-
-			true
-		}
+		return true
 	}
 
 	@SuppressLint("RestrictedApi")
@@ -339,11 +313,6 @@ abstract class ZappNotificationManager(context: Context) : FetchNotificationMana
 
 	abstract override fun getFetchInstanceForNamespace(namespace: String): Fetch
 
-	override fun getDownloadNotificationTitle(download: Download): String {
-		return download.fileUri.lastPathSegment ?: Uri.parse(download.url).lastPathSegment
-		?: download.url
-	}
-
 	override fun getSubtitleText(context: Context, downloadNotification: DownloadNotification): String {
 		return when {
 			downloadNotification.isCompleted -> context.getString(R.string.fetch_notification_download_complete)
@@ -352,6 +321,40 @@ abstract class ZappNotificationManager(context: Context) : FetchNotificationMana
 			downloadNotification.isQueued -> context.getString(R.string.fetch_notification_download_starting)
 			downloadNotification.etaInMilliSeconds < 0 -> context.getString(R.string.fetch_notification_download_downloading)
 			else -> getEtaText(context, downloadNotification.etaInMilliSeconds)
+		}
+	}
+
+	private fun postDownloadUpdate(download: Download, persistedShow: PersistedMediathekShow) {
+		return synchronized(downloadNotificationsMap) {
+			if (downloadNotificationsMap.size > 50) {
+				downloadNotificationsBuilderMap.clear()
+				downloadNotificationsMap.clear()
+			}
+
+			val downloadNotification = downloadNotificationsMap[download.id]
+				?: DownloadNotification()
+			downloadNotification.status = download.status
+			downloadNotification.progress = download.progress
+			downloadNotification.notificationId = download.id
+			downloadNotification.groupId = download.group
+			downloadNotification.etaInMilliSeconds = download.etaInMilliSeconds
+			downloadNotification.downloadedBytesPerSecond = download.downloadedBytesPerSecond
+			downloadNotification.total = download.total
+			downloadNotification.downloaded = download.downloaded
+			downloadNotification.namespace = download.namespace
+			downloadNotification.title = persistedShow.mediathekShow!!.title
+			downloadNotificationsMap[download.id] = downloadNotification
+
+			if (downloadNotificationExcludeSet.contains(downloadNotification.notificationId)
+				&& !downloadNotification.isFailed && !downloadNotification.isCompleted) {
+				downloadNotificationExcludeSet.remove(downloadNotification.notificationId)
+			}
+
+			if (downloadNotification.isCancelledNotification || shouldCancelNotification(downloadNotification)) {
+				cancelNotification(downloadNotification.notificationId)
+			} else {
+				notify(download.group)
+			}
 		}
 	}
 
