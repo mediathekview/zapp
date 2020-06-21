@@ -48,6 +48,8 @@ public class VideoInfo {
 	@Nullable
 	private String subtitleUrl;
 
+	private String filePath;
+
 	private boolean hasDuration = false;
 
 	@NonNull
@@ -56,7 +58,11 @@ public class VideoInfo {
 	}
 
 	@NonNull
-	String getUrl(StreamQualityBucket quality) {
+	String getPlaybackUrlOrFilePath(StreamQualityBucket quality) {
+		if (isOfflineVideo()) {
+			return filePath;
+		}
+
 		switch (quality) {
 			case MEDIUM:
 				return url;
@@ -83,7 +89,20 @@ public class VideoInfo {
 	}
 
 	public boolean hasSubtitles() {
-		return subtitleUrl != null;
+		// no subtitle support for downloaded videos yet
+		return subtitleUrl != null && !isOfflineVideo();
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public boolean isOfflineVideo() {
+		return filePath != null;
 	}
 
 	boolean hasDuration() {
@@ -101,12 +120,13 @@ public class VideoInfo {
 			Objects.equals(urlHighestQuality, videoInfo.urlHighestQuality) &&
 			title.equals(videoInfo.title) &&
 			Objects.equals(subtitle, videoInfo.subtitle) &&
+			Objects.equals(filePath, videoInfo.filePath) &&
 			Objects.equals(subtitleUrl, videoInfo.subtitleUrl);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(url, urlLowestQuality, urlHighestQuality, title, subtitle, subtitleUrl, hasDuration);
+		return Objects.hash(url, urlLowestQuality, urlHighestQuality, title, subtitle, subtitleUrl, filePath, hasDuration);
 	}
 
 	@NonNull
@@ -119,6 +139,7 @@ public class VideoInfo {
 			", title='" + title + '\'' +
 			", subtitle='" + subtitle + '\'' +
 			", subtitleUrl='" + subtitleUrl + '\'' +
+			", filePath='" + filePath + '\'' +
 			", hasDuration=" + hasDuration +
 			'}';
 	}

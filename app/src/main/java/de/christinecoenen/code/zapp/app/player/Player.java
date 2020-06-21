@@ -233,7 +233,7 @@ public class Player {
 	@NonNull
 	private MediaSource getMediaSource(VideoInfo videoInfo) {
 		StreamQualityBucket quality = getRequiredStreamQualityBucket();
-		Uri uri = Uri.parse(videoInfo.getUrl(quality));
+		Uri uri = Uri.parse(videoInfo.getPlaybackUrlOrFilePath(quality));
 		MediaSource mediaSource = getMediaSourceWithoutSubtitles(uri);
 
 		// add subtitles if present
@@ -290,7 +290,11 @@ public class Player {
 	}
 
 	private StreamQualityBucket getRequiredStreamQualityBucket() {
-		return networkConnectionHelper.isConnectedToWifi() ? StreamQualityBucket.HIGHEST : settings.getCellularStreamQuality();
+		if (networkConnectionHelper.isConnectedToWifi() || (currentVideoInfo != null && currentVideoInfo.isOfflineVideo())) {
+			return StreamQualityBucket.HIGHEST;
+		} else {
+			return settings.getCellularStreamQuality();
+		}
 	}
 
 	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {

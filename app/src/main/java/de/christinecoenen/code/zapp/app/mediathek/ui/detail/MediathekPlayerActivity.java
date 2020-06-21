@@ -72,7 +72,10 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			player = binder.getPlayer();
 			player.setView(videoView);
 
-			player.load(VideoInfo.fromShow(show));
+			VideoInfo videoInfo = VideoInfo.fromShow(show);
+			// TODO: set file path when show has been downloaded
+			// videoInfo.setFilePath("content://media/394a-1bf5/video/media/32097");
+			player.load(videoInfo);
 			player.resume();
 
 			Disposable bufferingDisposable = player.isBuffering()
