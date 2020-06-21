@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
 
-@Database(entities = [PersistedMediathekShow::class], version = 1, exportSchema = false)
+@Database(entities = [PersistedMediathekShow::class], version = 2, exportSchema = false)
 @TypeConverters(DownloadStatusConverter::class)
 abstract class MediathekDatabase : RoomDatabase() {
 
@@ -15,8 +15,7 @@ abstract class MediathekDatabase : RoomDatabase() {
 
 		fun getInstance(applicationContext: Context): MediathekDatabase {
 			return Room
-				.databaseBuilder(applicationContext, MediathekDatabase::class.java, "mediathek-db")
-				.fallbackToDestructiveMigration()
+				.databaseBuilder(applicationContext, MediathekDatabase::class.java, "mediathek.db")
 				.build()
 		}
 

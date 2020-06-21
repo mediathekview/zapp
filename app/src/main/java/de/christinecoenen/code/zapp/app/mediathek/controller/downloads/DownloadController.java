@@ -61,7 +61,8 @@ public class DownloadController implements FetchListener {
 	}
 
 	public void startDownload(MediathekShow show, Quality quality) {
-		PersistedMediathekShow persistedShow = mediathekRepository.persistShow(show);
+		long downloadId = show.getApiId().hashCode();
+		PersistedMediathekShow persistedShow = mediathekRepository.persistShow(show, downloadId);
 
 		String downloadUrl = show.getVideoUrl(quality);
 		String filePath = downloadFileInfoManager.getDownloadFilePath(show, quality);
@@ -73,9 +74,6 @@ public class DownloadController implements FetchListener {
 		} catch (Exception e) {
 			throw new DownloadException("Constructing download request failed.", e);
 		}
-
-		persistedShow.setDownloadId(show.getApiId().hashCode());
-		mediathekRepository.updateShow(persistedShow);
 
 		enqueueDownload(persistedShow, request);
 	}

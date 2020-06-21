@@ -63,9 +63,11 @@ public class MediathekRepository {
 			});
 	}
 
-	public PersistedMediathekShow persistShow(MediathekShow show) {
+	public PersistedMediathekShow persistShow(MediathekShow show, long downloadId) {
 		PersistedMediathekShow persistedShow = new PersistedMediathekShow();
+		persistedShow.setDownloadId(downloadId);
 		persistedShow.setMediathekShow(show);
+		
 		database.mediathekShowDao()
 			.insert(persistedShow)
 			.subscribeOn(Schedulers.io())
