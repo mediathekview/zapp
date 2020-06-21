@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,8 +16,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.IOException;
-
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
@@ -26,7 +23,6 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
@@ -35,6 +31,7 @@ import de.christinecoenen.code.zapp.utils.system.ImageHelper;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 
@@ -121,7 +118,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 		createViewDisposables.add(mediathekRepository
 			.getPersistedShow(show.getApiId())
 			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(persistedMediathekShow -> Timber.d(""+persistedMediathekShow.getId())));
+			.subscribe(persistedMediathekShow -> Timber.d("" + persistedMediathekShow.getId())));
 
 		return binding.getRoot();
 	}
@@ -241,11 +238,18 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
 				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
 
-				createViewDisposables.add(mediathekRepository
+				Disposable loadThumbnailDisposable = mediathekRepository
 					.getPersistedShow(show.getApiId())
 					.firstElement()
+					.flatMapSingle(persistedShow ->
+						ImageHelper.loadThumbnailAsync(getContext(), persistedShow.getDownloadedVideoPath()))
 					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(this::loadVideoThumbnail));
+					.subscribe(thumbnail -> {
+						binding.texts.thumbnail.setImageBitmap(thumbnail);
+						binding.texts.thumbnail.setVisibility(View.VISIBLE);
+					}, Timber::e);
+
+				createViewDisposables.add(loadThumbnailDisposable);
 
 				break;
 			case FAILED:
@@ -253,16 +257,6 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_retry);
 				binding.buttons.download.setIconResource(R.drawable.ic_warning_white_24dp);
 				break;
-		}
-	}
-
-	private void loadVideoThumbnail(PersistedMediathekShow persistedShow) {
-		Bitmap thumbnail;
-		try {
-			thumbnail = ImageHelper.loadThumbnail(getContext(), persistedShow.getDownloadedVideoPath());
-			binding.texts.thumbnail.setImageBitmap(thumbnail);
-			binding.texts.thumbnail.setVisibility(View.VISIBLE);
-		} catch (IOException ignored) {
 		}
 	}
 

@@ -12,11 +12,20 @@ import android.util.Size;
 import java.io.File;
 import java.io.IOException;
 
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
+
 public class ImageHelper {
 
 	private static final Size THUMBNAIL_SIZE = new Size(640, 240);
 
-	public static Bitmap loadThumbnail(Context context, String filePath) throws IOException {
+	public static Single<Bitmap> loadThumbnailAsync(Context context, String filePtah) {
+		return Single
+			.fromCallable(() -> ImageHelper.loadThumbnail(context, filePtah))
+			.subscribeOn(Schedulers.computation());
+	}
+
+	private static Bitmap loadThumbnail(Context context, String filePath) throws IOException {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 			ContentResolver contentResolver = context.getContentResolver();
 
