@@ -307,6 +307,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		}
 	}
 
+	override fun getDownloadNotificationTitle(download: Download): String {
+		return ""
+	}
+
 	override fun getNotificationTimeOutMillis(): Long {
 		return DEFAULT_NOTIFICATION_TIMEOUT_AFTER
 	}
