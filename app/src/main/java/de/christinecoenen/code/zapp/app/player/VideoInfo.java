@@ -6,21 +6,27 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class VideoInfo {
 
-	public static VideoInfo fromShow(MediathekShow show) {
+	public static VideoInfo fromShow(PersistedMediathekShow persistedShow) {
+		MediathekShow show = persistedShow.getMediathekShow();
+
 		VideoInfo videoInfo = new VideoInfo();
 		videoInfo.url = show.getVideoUrl(Quality.Medium);
 		videoInfo.urlHighestQuality = show.getVideoUrl(Quality.High);
 		videoInfo.urlLowestQuality = show.getVideoUrl(Quality.Low);
+		videoInfo.filePath = persistedShow.getDownloadedVideoPath();
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
 		videoInfo.subtitleUrl = show.getSubtitleUrl();
 		videoInfo.hasDuration = true;
+
 		return videoInfo;
 	}
 

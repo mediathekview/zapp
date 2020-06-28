@@ -20,7 +20,6 @@ import java.util.List;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
@@ -60,12 +59,13 @@ public class DownloadController implements FetchListener {
 		fetch.addListener(this);
 	}
 
-	public void startDownload(MediathekShow show, Quality quality) {
-		long downloadId = show.getApiId().hashCode();
-		PersistedMediathekShow persistedShow = mediathekRepository.persistShow(show, downloadId);
+	public void startDownload(PersistedMediathekShow show, Quality quality) {
+		long downloadId = show.getMediathekShow().getApiId().hashCode();
+		show.setDownloadId(downloadId);
+		mediathekRepository.updateShow(show);
 
-		String downloadUrl = show.getVideoUrl(quality);
-		String filePath = downloadFileInfoManager.getDownloadFilePath(show, quality);
+		String downloadUrl = show.getMediathekShow().getVideoUrl(quality);
+		String filePath = downloadFileInfoManager.getDownloadFilePath(show.getMediathekShow(), quality);
 
 		Request request;
 		try {
@@ -75,21 +75,21 @@ public class DownloadController implements FetchListener {
 			throw new DownloadException("Constructing download request failed.", e);
 		}
 
-		enqueueDownload(persistedShow, request);
+		enqueueDownload(show, request);
 	}
 
 	public void stopDownload(String showId) {
 		fetch.getDownloadsByRequestIdentifier(showId.hashCode(), result -> {
-			if (!result.isEmpty()) {
-				fetch.cancel(result.get(0).getId());
+			for (Download download : result) {
+				fetch.cancel(download.getId());
 			}
 		});
 	}
 
 	public void deleteDownload(String showId) {
 		fetch.getDownloadsByRequestIdentifier(showId.hashCode(), result -> {
-			if (!result.isEmpty()) {
-				fetch.delete(result.get(0).getId());
+			for (Download download : result) {
+				fetch.delete(download.getId());
 			}
 		});
 	}

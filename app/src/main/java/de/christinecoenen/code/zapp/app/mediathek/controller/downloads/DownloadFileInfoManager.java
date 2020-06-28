@@ -109,6 +109,8 @@ class DownloadFileInfoManager {
 		videoContentValues.put(MediaStore.Video.Media.CATEGORY, mediathekShow.getChannel());
 
 		ContentResolver resolver = applicationContext.getContentResolver();
+		// TODO: this might fail on external sd cards configured for file transfer because volume is not writable
+		// TODO: this might fail if media has already been inserted
 		return resolver.insert(videoMediaStoreUri, videoContentValues);
 	}
 

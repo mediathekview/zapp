@@ -23,8 +23,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.ZappApplication;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;
@@ -33,6 +35,7 @@ import de.christinecoenen.code.zapp.databinding.ActivityMediathekPlayerBinding;
 import de.christinecoenen.code.zapp.utils.system.IntentHelper;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -40,12 +43,12 @@ import timber.log.Timber;
 public class MediathekPlayerActivity extends AppCompatActivity implements
 	PlayerControlView.VisibilityListener {
 
-	private static final String EXTRA_SHOW = "de.christinecoenen.code.zapp.EXTRA_SHOW";
+	private static final String EXTRA_PERSISTED_SHOW_ID = "de.christinecoenen.code.zapp.EXTRA_PERSISTED_SHOW_ID";
 
-	public static Intent getStartIntent(Context context, MediathekShow show) {
+	public static Intent getStartIntent(Context context, int persistedShowId) {
 		Intent intent = new Intent(context, MediathekPlayerActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
-		intent.putExtra(EXTRA_SHOW, show);
+		intent.putExtra(EXTRA_PERSISTED_SHOW_ID, persistedShowId);
 		return intent;
 	}
 
@@ -58,9 +61,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private ImageButton captionButtonDisable;
 
 
-	private final CompositeDisposable disposable = new CompositeDisposable();
-	private MediathekShow show;
+	private final CompositeDisposable pauseDisposables = new CompositeDisposable();
+	private int persistedShowId;
+	private PersistedMediathekShow persistedShow;
 	private Player player;
+	private MediathekRepository mediathekRepository;
 	private SettingsRepository settings;
 	private BackgroundPlayerService.Binder binder;
 
@@ -72,24 +77,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 			player = binder.getPlayer();
 			player.setView(videoView);
 
-			VideoInfo videoInfo = VideoInfo.fromShow(show);
-			// TODO: set file path when show has been downloaded
-			// videoInfo.setFilePath("content://media/394a-1bf5/video/media/32097");
-			player.load(videoInfo);
-			player.resume();
+			Disposable loadShowDisposable = mediathekRepository.getPersistedShow(persistedShowId)
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(MediathekPlayerActivity.this::onShowLoaded, Timber::e);
 
-			Disposable bufferingDisposable = player.isBuffering()
-				.subscribe(MediathekPlayerActivity.this::onBufferingChanged, Timber::e);
-			Disposable errorDisposable = player.getErrorResourceId()
-				.subscribe(MediathekPlayerActivity.this::onVideoError, Timber::e);
-			disposable.addAll(bufferingDisposable, errorDisposable);
-
-			binder.movePlaybackToForeground();
-
-			updateSubtitleButtons();
-
-			boolean isInPipMode = MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this);
-			onPictureInPictureModeChanged(isInPipMode);
+			pauseDisposables.add(loadShowDisposable);
 		}
 
 		@Override
@@ -118,6 +110,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		parseIntent(getIntent());
 
 		settings = new SettingsRepository(this);
+		mediathekRepository = ((ZappApplication) getApplicationContext()).getMediathekRepository();
 
 		videoView.setControllerVisibilityListener(this);
 		videoView.requestFocus();
@@ -203,7 +196,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
-				IntentHelper.openUrl(this, show.getVideoUrl(Quality.Medium));
+				IntentHelper.openUrl(this, persistedShow.getMediathekShow().getVideoUrl(Quality.Medium));
 				return true;
 			case R.id.menu_play_in_background:
 				binder.movePlaybackToBackground();
@@ -264,6 +257,32 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		}
 	}
 
+	private void onShowLoaded(PersistedMediathekShow persistedMediathekShow) {
+		this.persistedShow = persistedMediathekShow;
+
+		if (getSupportActionBar() != null) {
+			setTitle(persistedShow.getMediathekShow().getTopic());
+			getSupportActionBar().setSubtitle(persistedShow.getMediathekShow().getTitle());
+		}
+
+		VideoInfo videoInfo = VideoInfo.fromShow(persistedShow);
+		player.load(videoInfo);
+		player.resume();
+
+		Disposable bufferingDisposable = player.isBuffering()
+			.subscribe(MediathekPlayerActivity.this::onBufferingChanged, Timber::e);
+		Disposable errorDisposable = player.getErrorResourceId()
+			.subscribe(MediathekPlayerActivity.this::onVideoError, Timber::e);
+		pauseDisposables.addAll(bufferingDisposable, errorDisposable);
+
+		binder.movePlaybackToForeground();
+
+		updateSubtitleButtons();
+
+		boolean isInPipMode = MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this);
+		onPictureInPictureModeChanged(isInPipMode);
+	}
+
 	private void onVideoError(Integer messageResourceId) {
 		if (messageResourceId == null || messageResourceId == -1) {
 			hideError();
@@ -287,7 +306,7 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	}
 
 	private void pauseActivity() {
-		disposable.clear();
+		pauseDisposables.clear();
 		try {
 			unbindService(backgroundPlayerServiceConnection);
 		} catch (IllegalArgumentException ignored) {
@@ -297,8 +316,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 	private void parseIntent(Intent intent) {
 		//noinspection ConstantConditions
-		show = (MediathekShow) intent.getExtras().getSerializable(EXTRA_SHOW);
-		if (show == null) {
+		persistedShowId = intent.getExtras().getInt(EXTRA_PERSISTED_SHOW_ID, 0);
+		if (persistedShowId == 0) {
 			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show();
 			finish();
 			return;
@@ -306,8 +325,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			setTitle(show.getTopic());
-			getSupportActionBar().setSubtitle(show.getTitle());
 		}
 	}
 

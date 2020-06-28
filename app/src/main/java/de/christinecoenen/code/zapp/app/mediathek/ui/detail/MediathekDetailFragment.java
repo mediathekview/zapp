@@ -23,6 +23,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
@@ -41,10 +42,11 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	private static final String ARG_SHOW = "ARG_SHOW";
 
 
-	private CompositeDisposable createViewDisposables;
+	private CompositeDisposable createDisposables = new CompositeDisposable();
+	private CompositeDisposable createViewDisposables = new CompositeDisposable();
 	private FragmentMediathekDetailBinding binding;
 	private MediathekRepository mediathekRepository;
-	private MediathekShow show;
+	private PersistedMediathekShow persistedMediathekShow;
 	private DownloadController downloadController;
 	private DownloadStatus downloadStatus = DownloadStatus.NONE;
 
@@ -78,8 +80,17 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		if (getArguments() != null) {
-			show = (MediathekShow) getArguments().getSerializable(ARG_SHOW);
+			MediathekShow show = (MediathekShow) getArguments().getSerializable(ARG_SHOW);
+
+			Disposable persistShowDisposable = mediathekRepository
+				.persistOrUpdateShow(show)
+				.firstElement()
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::onShowLoaded, Timber::e);
+
+			createDisposables.add(persistShowDisposable);
 		}
 	}
 
@@ -87,33 +98,10 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentMediathekDetailBinding.inflate(inflater, container, false);
 
-		binding.texts.topic.setText(show.getTopic());
-		binding.texts.title.setText(show.getTitle());
-		binding.texts.description.setText(show.getDescription());
-
-		binding.time.setText(show.getFormattedTimestamp());
-		binding.channel.setText(show.getChannel());
-		binding.duration.setText(show.getFormattedDuration());
-		binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
-
-		binding.buttons.download.setEnabled(show.hasAnyDownloadQuality());
-
 		binding.play.setOnClickListener(this::onPlayClick);
 		binding.buttons.download.setOnClickListener(this::onDownloadClick);
 		binding.buttons.share.setOnClickListener(this::onShareClick);
 		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
-
-		createViewDisposables = new CompositeDisposable();
-
-		createViewDisposables.add(downloadController
-			.getDownloadStatus(show.getApiId())
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::onDownloadStatusChanged));
-
-		createViewDisposables.add(downloadController
-			.getDownloadProgress(show.getApiId())
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::onDownloadProgressChanged));
 
 		return binding.getRoot();
 	}
@@ -132,8 +120,14 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	}
 
 	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		createDisposables.clear();
+	}
+
+	@Override
 	public void onConfirmDeleteDialogOkClicked() {
-		downloadController.deleteDownload(show.getApiId());
+		downloadController.deleteDownload(persistedMediathekShow.getMediathekShow().getApiId());
 	}
 
 	@Override
@@ -146,6 +140,33 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 		share(quality);
 	}
 
+	private void onShowLoaded(PersistedMediathekShow persistedMediathekShow) {
+		this.persistedMediathekShow = persistedMediathekShow;
+
+		MediathekShow show = persistedMediathekShow.getMediathekShow();
+
+		binding.texts.topic.setText(show.getTopic());
+		binding.texts.title.setText(show.getTitle());
+		binding.texts.description.setText(show.getDescription());
+
+		binding.time.setText(show.getFormattedTimestamp());
+		binding.channel.setText(show.getChannel());
+		binding.duration.setText(show.getFormattedDuration());
+		binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+
+		binding.buttons.download.setEnabled(show.hasAnyDownloadQuality());
+
+		createViewDisposables.add(downloadController
+			.getDownloadStatus(show.getApiId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::onDownloadStatusChanged));
+
+		createViewDisposables.add(downloadController
+			.getDownloadProgress(show.getApiId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::onDownloadProgressChanged));
+	}
+
 	private void onDownloadStatusChanged(DownloadStatus downloadStatus) {
 		this.downloadStatus = downloadStatus;
 		adjustUiToDownloadStatus(downloadStatus);
@@ -156,7 +177,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	}
 
 	private void onPlayClick(View view) {
-		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), show));
+		startActivity(MediathekPlayerActivity.getStartIntent(getContext(), persistedMediathekShow.getId()));
 	}
 
 	private void onDownloadClick(View view) {
@@ -172,7 +193,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case ADDED:
 			case QUEUED:
 			case DOWNLOADING:
-				downloadController.stopDownload(show.getApiId());
+				downloadController.stopDownload(persistedMediathekShow.getMediathekShow().getApiId());
 				break;
 			case COMPLETED:
 				showConfirmDeleteDialog();
@@ -185,7 +206,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	}
 
 	private void onWebsiteClick(View view) {
-		IntentHelper.openUrl(requireContext(), show.getWebsiteUrl());
+		IntentHelper.openUrl(requireContext(), persistedMediathekShow.getMediathekShow().getWebsiteUrl());
 	}
 
 	private void showConfirmDeleteDialog() {
@@ -195,7 +216,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	}
 
 	private void showSelectQualityDialog(SelectQualityDialog.Mode mode) {
-		DialogFragment newFragment = SelectQualityDialog.newInstance(show, mode);
+		DialogFragment newFragment = SelectQualityDialog.newInstance(persistedMediathekShow.getMediathekShow(), mode);
 		newFragment.setTargetFragment(this, 0);
 		newFragment.show(getParentFragmentManager(), null);
 	}
@@ -231,11 +252,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
 				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
 
-				Disposable loadThumbnailDisposable = mediathekRepository
-					.getPersistedShow(show.getApiId())
-					.firstElement()
-					.flatMapSingle(persistedShow ->
-						ImageHelper.loadThumbnailAsync(getContext(), persistedShow.getDownloadedVideoPath()))
+				Disposable loadThumbnailDisposable = ImageHelper.loadThumbnailAsync(getContext(), persistedMediathekShow.getDownloadedVideoPath())
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(thumbnail -> {
 						binding.texts.thumbnail.setImageBitmap(thumbnail);
@@ -255,14 +272,14 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 
 	private void share(Quality quality) {
 		Intent videoIntent = new Intent(Intent.ACTION_VIEW);
-		String url = show.getVideoUrl(quality);
+		String url = persistedMediathekShow.getMediathekShow().getVideoUrl(quality);
 		videoIntent.setDataAndType(Uri.parse(url), "video/*");
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)));
 	}
 
 	private void download(Quality downloadQuality) {
 		try {
-			downloadController.startDownload(show, downloadQuality);
+			downloadController.startDownload(persistedMediathekShow, downloadQuality);
 		} catch (WrongNetworkConditionException e) {
 			Snackbar snackbar = Snackbar
 				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);

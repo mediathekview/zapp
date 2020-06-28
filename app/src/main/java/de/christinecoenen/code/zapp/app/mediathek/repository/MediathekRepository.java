@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.repository;
 
+import org.reactivestreams.Publisher;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.repository.persistence.MediathekDatabase;
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -63,17 +66,10 @@ public class MediathekRepository {
 			});
 	}
 
-	public PersistedMediathekShow persistShow(MediathekShow show, long downloadId) {
-		PersistedMediathekShow persistedShow = new PersistedMediathekShow();
-		persistedShow.setDownloadId(downloadId);
-		persistedShow.setMediathekShow(show);
-
-		database.mediathekShowDao()
-			.insert(persistedShow)
-			.subscribeOn(Schedulers.io())
-			.subscribe();
-
-		return persistedShow;
+	public Flowable<PersistedMediathekShow> persistOrUpdateShow(MediathekShow show) {
+		return Completable.fromAction(() -> database.mediathekShowDao().insertOrUpdate(show))
+			.andThen(database.mediathekShowDao().getFromApiId(show.getApiId()))
+			.subscribeOn(Schedulers.io());
 	}
 
 	public void updateShow(PersistedMediathekShow show) {
@@ -102,6 +98,10 @@ public class MediathekRepository {
 			.updateDownloadedVideoPath(downloadId, videoPath)
 			.subscribeOn(Schedulers.io())
 			.subscribe();
+	}
+
+	public Flowable<PersistedMediathekShow> getPersistedShow(int id) {
+		return database.mediathekShowDao().getFromId(id).subscribeOn(Schedulers.io());
 	}
 
 	public Flowable<PersistedMediathekShow> getPersistedShow(String apiId) {
