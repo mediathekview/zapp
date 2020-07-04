@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
@@ -42,8 +44,8 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	private static final String ARG_SHOW = "ARG_SHOW";
 
 
-	private CompositeDisposable createDisposables = new CompositeDisposable();
-	private CompositeDisposable createViewDisposables = new CompositeDisposable();
+	private final CompositeDisposable createDisposables = new CompositeDisposable();
+	private final CompositeDisposable createViewDisposables = new CompositeDisposable();
 	private FragmentMediathekDetailBinding binding;
 	private MediathekRepository mediathekRepository;
 	private PersistedMediathekShow persistedMediathekShow;
@@ -85,7 +87,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			MediathekShow show = (MediathekShow) getArguments().getSerializable(ARG_SHOW);
 
 			Disposable persistShowDisposable = mediathekRepository
-				.persistOrUpdateShow(show)
+				.persistOrUpdateShow(Objects.requireNonNull(show))
 				.firstElement()
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(this::onShowLoaded, Timber::e);
@@ -127,7 +129,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 
 	@Override
 	public void onConfirmDeleteDialogOkClicked() {
-		downloadController.deleteDownload(persistedMediathekShow.getMediathekShow().getApiId());
+		downloadController.deleteDownload(persistedMediathekShow.getDownloadId());
 	}
 
 	@Override
@@ -193,7 +195,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case ADDED:
 			case QUEUED:
 			case DOWNLOADING:
-				downloadController.stopDownload(persistedMediathekShow.getMediathekShow().getApiId());
+				downloadController.stopDownload(persistedMediathekShow.getDownloadId());
 				break;
 			case COMPLETED:
 				showConfirmDeleteDialog();

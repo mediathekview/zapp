@@ -10,7 +10,7 @@ class PersistedMediathekShow {
 	@PrimaryKey(autoGenerate = true)
 	var id : Int = 0
 
-	var downloadId = 0L
+	var downloadId = 0
 
 	var downloadedVideoPath: String? = null
 

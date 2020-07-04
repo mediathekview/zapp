@@ -274,7 +274,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 	@SuppressLint("CheckResult")
 	override fun postDownloadUpdate(download: Download): Boolean {
 		mediathekRepository
-			.getPersistedShow(download.identifier)
+			.getPersistedShowByDownloadId(download.id)
 			.firstElement()
 			.subscribe { persistedShow -> postDownloadUpdate(download, persistedShow) }
 
@@ -347,7 +347,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			downloadNotification.total = download.total
 			downloadNotification.downloaded = download.downloaded
 			downloadNotification.namespace = download.namespace
-			downloadNotification.title = persistedShow.mediathekShow!!.title
+			downloadNotification.title = persistedShow.mediathekShow.title
 			downloadNotificationsMap[download.id] = downloadNotification
 
 			if (downloadNotificationExcludeSet.contains(downloadNotification.notificationId)
@@ -365,10 +365,9 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	private fun getContentIntent(downloadNotification: DownloadNotification): PendingIntent {
 		synchronized(downloadNotificationsMap) {
-			val intent = Intent(notificationManagerAction)
-			val action = DownloadReceiver.ACTION_NOTIFICATION_CLICKED
-			intent.putExtra(EXTRA_ACTION_TYPE, action)
-			return PendingIntent.getBroadcast(context, downloadNotification.notificationId + action, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			val intent = DownloadReceiver.getNotificationClickedIntent(notificationManagerAction, downloadNotification.notificationId)
+			val requestCode = downloadNotification.notificationId + DownloadReceiver.ACTION_NOTIFICATION_CLICKED
+			return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 	}
 

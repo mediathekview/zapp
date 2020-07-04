@@ -60,10 +60,6 @@ public class DownloadController implements FetchListener {
 	}
 
 	public void startDownload(PersistedMediathekShow show, Quality quality) {
-		long downloadId = show.getMediathekShow().getApiId().hashCode();
-		show.setDownloadId(downloadId);
-		mediathekRepository.updateShow(show);
-
 		String downloadUrl = show.getMediathekShow().getVideoUrl(quality);
 		String filePath = downloadFileInfoManager.getDownloadFilePath(show.getMediathekShow(), quality);
 
@@ -75,23 +71,18 @@ public class DownloadController implements FetchListener {
 			throw new DownloadException("Constructing download request failed.", e);
 		}
 
-		enqueueDownload(show, request);
+		show.setDownloadId(request.getId());
+		mediathekRepository.updateShow(show);
+
+		enqueueDownload(request);
 	}
 
-	public void stopDownload(String showId) {
-		fetch.getDownloadsByRequestIdentifier(showId.hashCode(), result -> {
-			for (Download download : result) {
-				fetch.cancel(download.getId());
-			}
-		});
+	public void stopDownload(int downloadId) {
+		fetch.cancel(downloadId);
 	}
 
-	public void deleteDownload(String showId) {
-		fetch.getDownloadsByRequestIdentifier(showId.hashCode(), result -> {
-			for (Download download : result) {
-				fetch.delete(download.getId());
-			}
-		});
+	public void deleteDownload(int downloadId) {
+		fetch.delete(downloadId);
 	}
 
 	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {
@@ -112,11 +103,10 @@ public class DownloadController implements FetchListener {
 		});
 	}
 
-	private void enqueueDownload(PersistedMediathekShow persistedShow, Request request) {
+	private void enqueueDownload(Request request) {
 		NetworkType networkType = settingsRepository.getDownloadOverWifiOnly() ?
 			NetworkType.WIFI_ONLY : NetworkType.ALL;
 		request.setNetworkType(networkType);
-		request.setIdentifier(persistedShow.getDownloadId());
 
 		if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
 			throw new WrongNetworkConditionException("Download over metered networks prohibited.");
@@ -127,11 +117,11 @@ public class DownloadController implements FetchListener {
 
 	private void updateDownloadStatus(@NonNull Download download) {
 		DownloadStatus downloadStatus = DownloadStatus.values()[download.getStatus().getValue()];
-		mediathekRepository.updateDownloadStatus(download.getIdentifier(), downloadStatus);
+		mediathekRepository.updateDownloadStatus(download.getId(), downloadStatus);
 	}
 
 	private void updateDownloadProgress(@NonNull Download download, int progress) {
-		mediathekRepository.updateDownloadProgress(download.getIdentifier(), progress);
+		mediathekRepository.updateDownloadProgress(download.getId(), progress);
 	}
 
 	@Override
@@ -148,7 +138,7 @@ public class DownloadController implements FetchListener {
 	@Override
 	public void onCompleted(@NonNull Download download) {
 		updateDownloadStatus(download);
-		mediathekRepository.updateDownloadedVideoPath(download.getIdentifier(), download.getFile());
+		mediathekRepository.updateDownloadedVideoPath(download.getId(), download.getFile());
 		downloadFileInfoManager.updateDownloadFileInMediaCollection(download);
 	}
 

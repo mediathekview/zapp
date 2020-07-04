@@ -1,7 +1,5 @@
 package de.christinecoenen.code.zapp.app.mediathek.repository;
 
-import org.reactivestreams.Publisher;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -79,21 +77,21 @@ public class MediathekRepository {
 			.subscribe();
 	}
 
-	public void updateDownloadStatus(long downloadId, DownloadStatus downloadStatus) {
+	public void updateDownloadStatus(int downloadId, DownloadStatus downloadStatus) {
 		database.mediathekShowDao()
 			.updateDownloadStatus(downloadId, downloadStatus)
 			.subscribeOn(Schedulers.io())
 			.subscribe();
 	}
 
-	public void updateDownloadProgress(long downloadId, int progress) {
+	public void updateDownloadProgress(int downloadId, int progress) {
 		database.mediathekShowDao()
 			.updateDownloadProgress(downloadId, progress)
 			.subscribeOn(Schedulers.io())
 			.subscribe();
 	}
 
-	public void updateDownloadedVideoPath(long downloadId, String videoPath) {
+	public void updateDownloadedVideoPath(int downloadId, String videoPath) {
 		database.mediathekShowDao()
 			.updateDownloadedVideoPath(downloadId, videoPath)
 			.subscribeOn(Schedulers.io())
@@ -104,11 +102,7 @@ public class MediathekRepository {
 		return database.mediathekShowDao().getFromId(id).subscribeOn(Schedulers.io());
 	}
 
-	public Flowable<PersistedMediathekShow> getPersistedShow(String apiId) {
-		return database.mediathekShowDao().getFromApiId(apiId).subscribeOn(Schedulers.io());
-	}
-
-	public Flowable<PersistedMediathekShow> getPersistedShow(long downloadId) {
+	public Flowable<PersistedMediathekShow> getPersistedShowByDownloadId(int downloadId) {
 		return database.mediathekShowDao().getFromDownloadId(downloadId).subscribeOn(Schedulers.io());
 	}
 
