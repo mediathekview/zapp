@@ -12,18 +12,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-import static com.tonyodev.fetch2.FetchIntent.EXTRA_ACTION_TYPE;
-
 
 public class DownloadReceiver extends BroadcastReceiver {
 
-	public static final int ACTION_NOTIFICATION_CLICKED = 42;
-
+	private static final String ACTION_NOTIFICATION_CLICKED = "de.christinecoenen.code.zapp.NOTIFICATION_CLICKED";
 	private static final String EXTRA_DOWNLOAD_ID = "EXTRA_DOWNLOAD_ID";
 
-	public static Intent getNotificationClickedIntent(String targetAction, int downloadId) {
-		Intent intent = new Intent(targetAction);
-		intent.putExtra(EXTRA_ACTION_TYPE, ACTION_NOTIFICATION_CLICKED);
+	public static Intent getNotificationClickedIntent(Context context, int downloadId) {
+		Intent intent = new Intent(context, DownloadReceiver.class);
+		intent.setAction(ACTION_NOTIFICATION_CLICKED);
 		intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId);
 		return intent;
 	}
@@ -34,9 +31,9 @@ public class DownloadReceiver extends BroadcastReceiver {
 			return;
 		}
 
-		int actionType = intent.getIntExtra(EXTRA_ACTION_TYPE, ACTION_NOTIFICATION_CLICKED);
+		String action = intent.getAction();
 
-		if (actionType == ACTION_NOTIFICATION_CLICKED) {
+		if (ACTION_NOTIFICATION_CLICKED.equals(action)) {
 
 			ZappApplication application = (ZappApplication) context.getApplicationContext();
 			MediathekRepository mediathekRepository = application.getMediathekRepository();

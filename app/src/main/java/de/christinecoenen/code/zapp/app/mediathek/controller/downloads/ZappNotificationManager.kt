@@ -36,9 +36,6 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 		}
 
-	private val notificationClickedReceiver: BroadcastReceiver
-		get() = DownloadReceiver()
-
 	init {
 		initialize()
 	}
@@ -50,12 +47,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	override fun registerBroadcastReceiver() {
 		context.registerReceiver(broadcastReceiver, IntentFilter(notificationManagerAction))
-		context.registerReceiver(notificationClickedReceiver, IntentFilter(notificationManagerAction))
 	}
 
 	override fun unregisterBroadcastReceiver() {
 		context.unregisterReceiver(broadcastReceiver)
-		context.unregisterReceiver(notificationClickedReceiver)
 	}
 
 	override fun createNotificationChannels(context: Context, notificationManager: NotificationManager) {
@@ -365,9 +360,8 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	private fun getContentIntent(downloadNotification: DownloadNotification): PendingIntent {
 		synchronized(downloadNotificationsMap) {
-			val intent = DownloadReceiver.getNotificationClickedIntent(notificationManagerAction, downloadNotification.notificationId)
-			val requestCode = downloadNotification.notificationId + DownloadReceiver.ACTION_NOTIFICATION_CLICKED
-			return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			val intent = DownloadReceiver.getNotificationClickedIntent(context, downloadNotification.notificationId)
+			return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 	}
 
