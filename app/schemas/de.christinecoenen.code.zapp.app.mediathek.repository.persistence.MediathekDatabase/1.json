@@ -1,0 +1,154 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "cafccf30d3b0eb7b866c3023cf59fac4",
+    "entities": [
+      {
+        "tableName": "PersistedMediathekShow",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `playbackPosition` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creationDate",
+            "columnName": "creationDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadId",
+            "columnName": "downloadId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadedVideoPath",
+            "columnName": "downloadedVideoPath",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "downloadStatus",
+            "columnName": "downloadStatus",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadProgress",
+            "columnName": "downloadProgress",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playbackPosition",
+            "columnName": "playbackPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediathekShow.apiId",
+            "columnName": "apiId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.topic",
+            "columnName": "topic",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.channel",
+            "columnName": "channel",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediathekShow.size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediathekShow.duration",
+            "columnName": "duration",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.filmlisteTimestamp",
+            "columnName": "filmlisteTimestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediathekShow.websiteUrl",
+            "columnName": "websiteUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.subtitleUrl",
+            "columnName": "subtitleUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.videoUrl",
+            "columnName": "videoUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.videoUrlLow",
+            "columnName": "videoUrlLow",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mediathekShow.videoUrlHd",
+            "columnName": "videoUrlHd",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cafccf30d3b0eb7b866c3023cf59fac4')"
+    ]
+  }
+}
