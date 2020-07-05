@@ -129,7 +129,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 
 	@Override
 	public void onConfirmDeleteDialogOkClicked() {
-		downloadController.deleteDownload(persistedMediathekShow.getDownloadId());
+		downloadController.deleteDownload(persistedMediathekShow.getId());
 	}
 
 	@Override
@@ -195,7 +195,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case ADDED:
 			case QUEUED:
 			case DOWNLOADING:
-				downloadController.stopDownload(persistedMediathekShow.getDownloadId());
+				downloadController.stopDownload(persistedMediathekShow.getId());
 				break;
 			case COMPLETED:
 				showConfirmDeleteDialog();
@@ -253,16 +253,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
 				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
-
-				Disposable loadThumbnailDisposable = ImageHelper.loadThumbnailAsync(getContext(), persistedMediathekShow.getDownloadedVideoPath())
-					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(thumbnail -> {
-						binding.texts.thumbnail.setImageBitmap(thumbnail);
-						binding.texts.thumbnail.setVisibility(View.VISIBLE);
-					}, Timber::e);
-
-				createViewDisposables.add(loadThumbnailDisposable);
-
+				updateVideoThumbnail();
 				break;
 			case FAILED:
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
@@ -270,6 +261,21 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 				binding.buttons.download.setIconResource(R.drawable.ic_warning_white_24dp);
 				break;
 		}
+	}
+
+	private void updateVideoThumbnail() {
+		// reload show for up to date file path and then update thumbnail
+		Disposable loadThumbnailDisposable = mediathekRepository
+			.getPersistedShow(persistedMediathekShow.getId())
+			.firstOrError()
+			.flatMap(show -> ImageHelper.loadThumbnailAsync(getContext(), show.getDownloadedVideoPath()))
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(thumbnail -> {
+				binding.texts.thumbnail.setImageBitmap(thumbnail);
+				binding.texts.thumbnail.setVisibility(View.VISIBLE);
+			}, Timber::e);
+
+		createViewDisposables.add(loadThumbnailDisposable);
 	}
 
 	private void share(Quality quality) {
