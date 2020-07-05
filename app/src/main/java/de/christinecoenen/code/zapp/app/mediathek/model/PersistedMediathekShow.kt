@@ -3,12 +3,15 @@ package de.christinecoenen.code.zapp.app.mediathek.model
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.joda.time.DateTime
 
 @Entity
 class PersistedMediathekShow {
 
 	@PrimaryKey(autoGenerate = true)
 	var id : Int = 0
+
+	var creationDate : DateTime = DateTime.now()
 
 	var downloadId = 0
 
