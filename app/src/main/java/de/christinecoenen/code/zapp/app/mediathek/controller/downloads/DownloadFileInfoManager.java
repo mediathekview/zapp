@@ -83,24 +83,36 @@ class DownloadFileInfoManager {
 	private Uri getMediaStoreUri(MediathekShow mediathekShow) {
 		Set<String> volumeNames = MediaStore.getExternalVolumeNames(applicationContext);
 
-		String volumeName = null;
+		String sdcardVoumeName = volumeNames
+			.stream()
+			.filter(name -> !MediaStore.VOLUME_EXTERNAL_PRIMARY.equals(name))
+			.findFirst()
+			.orElse(null);
 
-		if (settingsRepository.getDownloadToSdCard()) {
-			volumeName = volumeNames
-				.stream()
-				.filter(name -> !MediaStore.VOLUME_EXTERNAL_PRIMARY.equals(name))
-				.findFirst()
-				.orElse(null);
+		String primaryVolumeName = volumeNames
+			.stream()
+			.filter(MediaStore.VOLUME_EXTERNAL_PRIMARY::equals)
+			.findFirst()
+			.orElse(null);
+		assert primaryVolumeName != null;
+
+		String volumeName = settingsRepository.getDownloadToSdCard() && sdcardVoumeName != null ?
+			sdcardVoumeName : primaryVolumeName;
+
+		Uri downloadFileUri = getMediaStoreUriForVolume(volumeName, mediathekShow);
+
+		if (downloadFileUri == null &&
+			settingsRepository.getDownloadToSdCard() &&
+			volumeName.equals(sdcardVoumeName)) {
+			// most likely the external sd card is not properly writable - fall back to primary storage
+			downloadFileUri = getMediaStoreUriForVolume(primaryVolumeName, mediathekShow);
 		}
 
-		if (volumeName == null) {
-			volumeName = volumeNames
-				.stream()
-				.filter(MediaStore.VOLUME_EXTERNAL_PRIMARY::equals)
-				.findFirst()
-				.orElse(null);
-		}
+		return downloadFileUri;
+	}
 
+	@RequiresApi(api = Build.VERSION_CODES.Q)
+	private Uri getMediaStoreUriForVolume(@NonNull String volumeName, MediathekShow mediathekShow) {
 		Uri videoMediaStoreUri = MediaStore.Video.Media.getContentUri(volumeName);
 
 		ContentValues videoContentValues = new ContentValues();
@@ -109,8 +121,8 @@ class DownloadFileInfoManager {
 		videoContentValues.put(MediaStore.Video.Media.CATEGORY, mediathekShow.getChannel());
 
 		ContentResolver resolver = applicationContext.getContentResolver();
-		// TODO: this might fail on external sd cards configured for file transfer because volume is not writable
 		// TODO: this might fail if media has already been inserted
+
 		return resolver.insert(videoMediaStoreUri, videoContentValues);
 	}
 
