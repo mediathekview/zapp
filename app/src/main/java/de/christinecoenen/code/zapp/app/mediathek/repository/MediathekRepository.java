@@ -12,6 +12,7 @@ import de.christinecoenen.code.zapp.app.mediathek.repository.persistence.Mediath
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ConnectionSpec;
@@ -120,5 +121,18 @@ public class MediathekRepository {
 			.getDownloadProgress(apiId)
 			.startWith(0)
 			.subscribeOn(Schedulers.io());
+	}
+
+	public Single<Long> getPlaybackProsition(int showId) {
+		return database.mediathekShowDao()
+			.getPlaybackPosition(showId)
+			.subscribeOn(Schedulers.io());
+	}
+
+	public void setPlaybackPosition(int showId, long millis) {
+		database.mediathekShowDao()
+			.setPlaybackPosition(showId, millis)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
 	}
 }

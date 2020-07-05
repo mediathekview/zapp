@@ -18,6 +18,8 @@ class PersistedMediathekShow {
 
 	var downloadProgress = 0
 
+	var playbackPosition = 0L
+
 	@Embedded
 	var mediathekShow: MediathekShow = MediathekShow()
 

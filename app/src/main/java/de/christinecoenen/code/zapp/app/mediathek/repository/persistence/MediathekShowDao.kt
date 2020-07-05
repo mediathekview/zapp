@@ -6,6 +6,7 @@ import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface MediathekShowDao {
@@ -61,6 +62,12 @@ interface MediathekShowDao {
 
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
 	fun updateDownloadedVideoPath(downloadId: Int, videoPath: String): Completable
+
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:millis WHERE id=:id")
+	fun setPlaybackPosition(id: Int, millis: Long): Completable
+
+	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
+	fun getPlaybackPosition(id: Int): Single<Long>
 
 	@Delete
 	fun delete(show: PersistedMediathekShow): Completable

@@ -8,7 +8,6 @@ import java.util.Objects;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
@@ -18,6 +17,7 @@ public class VideoInfo {
 		MediathekShow show = persistedShow.getMediathekShow();
 
 		VideoInfo videoInfo = new VideoInfo();
+		videoInfo.id = persistedShow.getId();
 		videoInfo.url = show.getVideoUrl(Quality.Medium);
 		videoInfo.urlHighestQuality = show.getVideoUrl(Quality.High);
 		videoInfo.urlLowestQuality = show.getVideoUrl(Quality.Low);
@@ -39,6 +39,8 @@ public class VideoInfo {
 		return videoInfo;
 	}
 
+	private int id = 0;
+
 	@NonNull
 	private String url = "";
 
@@ -58,9 +60,8 @@ public class VideoInfo {
 
 	private boolean hasDuration = false;
 
-	@NonNull
-	String getUrl() {
-		return url;
+	public int getId() {
+		return id;
 	}
 
 	@NonNull
@@ -97,14 +98,6 @@ public class VideoInfo {
 	public boolean hasSubtitles() {
 		// no subtitle support for downloaded videos yet
 		return subtitleUrl != null && !isOfflineVideo();
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public String getFilePath() {
-		return filePath;
 	}
 
 	public boolean isOfflineVideo() {

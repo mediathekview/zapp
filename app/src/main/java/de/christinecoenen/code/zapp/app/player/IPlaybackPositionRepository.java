@@ -1,8 +1,10 @@
 package de.christinecoenen.code.zapp.app.player;
 
-interface IPlaybackPositionRepository {
+import io.reactivex.Single;
+
+public interface IPlaybackPositionRepository {
 
 	void savePlaybackPosition(VideoInfo videoInfo, long millis);
-	long getPlaybackPosition(VideoInfo videoInfo);
+	Single<Long> getPlaybackPosition(VideoInfo videoInfo);
 
 }
