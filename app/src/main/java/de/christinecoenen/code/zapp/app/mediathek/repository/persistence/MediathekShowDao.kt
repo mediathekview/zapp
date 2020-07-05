@@ -23,7 +23,7 @@ interface MediathekShowDao {
 	fun getFromApiIdSync(apiId: String): PersistedMediathekShow?
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadId=:downloadId")
-	fun getFromDownloadId(downloadId: Long): Flowable<PersistedMediathekShow>
+	fun getFromDownloadId(downloadId: Int): Flowable<PersistedMediathekShow>
 
 	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getDownloadStatus(apiId: String): Flowable<DownloadStatus>
@@ -54,13 +54,13 @@ interface MediathekShowDao {
 	}
 
 	@Query("UPDATE PersistedMediathekShow SET downloadStatus=:downloadStatus WHERE downloadId=:downloadId")
-	fun updateDownloadStatus(downloadId: Long, downloadStatus: DownloadStatus): Completable
+	fun updateDownloadStatus(downloadId: Int, downloadStatus: DownloadStatus): Completable
 
 	@Query("UPDATE PersistedMediathekShow SET downloadProgress=:progress WHERE downloadId=:downloadId")
-	fun updateDownloadProgress(downloadId: Long, progress: Int): Completable
+	fun updateDownloadProgress(downloadId: Int, progress: Int): Completable
 
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
-	fun updateDownloadedVideoPath(downloadId: Long, videoPath: String): Completable
+	fun updateDownloadedVideoPath(downloadId: Int, videoPath: String): Completable
 
 	@Delete
 	fun delete(show: PersistedMediathekShow): Completable

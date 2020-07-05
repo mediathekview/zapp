@@ -65,8 +65,8 @@ public class DownloadController implements FetchListener {
 
 		Request request;
 		try {
-			// create request for android download manager
 			request = new Request(downloadUrl, filePath);
+			request.setIdentifier(show.getId());
 		} catch (Exception e) {
 			throw new DownloadException("Constructing download request failed.", e);
 		}
@@ -77,12 +77,20 @@ public class DownloadController implements FetchListener {
 		enqueueDownload(request);
 	}
 
-	public void stopDownload(int downloadId) {
-		fetch.cancel(downloadId);
+	public void stopDownload(int id) {
+		fetch.getDownloadsByRequestIdentifier(id, downloadList -> {
+			for (Download download : downloadList) {
+				fetch.cancel(download.getId());
+			}
+		});
 	}
 
-	public void deleteDownload(int downloadId) {
-		fetch.delete(downloadId);
+	public void deleteDownload(int id) {
+		fetch.getDownloadsByRequestIdentifier(id, downloadList -> {
+			for (Download download : downloadList) {
+				fetch.delete(download.getId());
+			}
+		});
 	}
 
 	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {
