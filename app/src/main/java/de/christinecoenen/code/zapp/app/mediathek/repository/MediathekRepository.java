@@ -8,11 +8,10 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.repository.persistence.MediathekDatabase;
+import de.christinecoenen.code.zapp.persistence.Database;
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ConnectionSpec;
@@ -27,11 +26,11 @@ public class MediathekRepository {
 
 
 	private final MediathekService service;
-	private final MediathekDatabase database;
+	private final Database database;
 
 
-	public MediathekRepository(MediathekDatabase mediathekDatabase) {
-		this.database = mediathekDatabase;
+	public MediathekRepository(Database database) {
+		this.database = database;
 
 		// workaround to avoid SSLHandshakeException on Android 7 devices
 		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0

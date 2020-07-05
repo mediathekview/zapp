@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.repository.persistence
+package de.christinecoenen.code.zapp.persistence
 
 import androidx.room.TypeConverter
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus

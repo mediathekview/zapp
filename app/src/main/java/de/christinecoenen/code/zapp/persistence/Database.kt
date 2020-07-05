@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.repository.persistence
+package de.christinecoenen.code.zapp.persistence
 
 import android.content.Context
 import androidx.room.Database
@@ -9,13 +9,13 @@ import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
 
 @Database(entities = [PersistedMediathekShow::class], version = 1, exportSchema = true)
 @TypeConverters(DownloadStatusConverter::class, DateTimeConverter::class)
-abstract class MediathekDatabase : RoomDatabase() {
+abstract class Database : RoomDatabase() {
 
 	companion object {
 
-		fun getInstance(applicationContext: Context): MediathekDatabase {
+		fun getInstance(applicationContext: Context): de.christinecoenen.code.zapp.persistence.Database {
 			return Room
-				.databaseBuilder(applicationContext, MediathekDatabase::class.java, "mediathek.db")
+				.databaseBuilder(applicationContext, de.christinecoenen.code.zapp.persistence.Database::class.java, "zapp.db")
 				.build()
 		}
 

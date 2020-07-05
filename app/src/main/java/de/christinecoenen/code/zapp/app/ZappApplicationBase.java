@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
-import de.christinecoenen.code.zapp.app.mediathek.repository.persistence.MediathekDatabase;
+import de.christinecoenen.code.zapp.persistence.Database;
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository;
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
@@ -52,9 +52,9 @@ public abstract class ZappApplicationBase extends Application {
 
 		channelRepository = new ChannelRepository(this);
 
-		MediathekDatabase mediathekDatabase = MediathekDatabase.Companion.getInstance(this);
+		Database database = Database.Companion.getInstance(this);
 
-		mediathekRepository = new MediathekRepository(mediathekDatabase);
+		mediathekRepository = new MediathekRepository(database);
 		playbackPositionRepository = new PersistedPlaybackPositionRepository(mediathekRepository);
 
 		downloadController = new DownloadController(this, mediathekRepository);
