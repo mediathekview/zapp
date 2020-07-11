@@ -10,14 +10,14 @@ class DateTimeConverter {
 
 		@TypeConverter
 		@JvmStatic
-		fun fromDownloadStatus(value: DateTime): Long {
-			return value.toDateTimeISO().millis
+		fun fromDownloadStatus(value: DateTime?): Long {
+			return value?.toDateTimeISO()?.millis ?: 0L
 		}
 
 		@TypeConverter
 		@JvmStatic
-		fun toDownloadStatus(value: Long): DateTime {
-			return DateTime(value)
+		fun toDownloadStatus(value: Long): DateTime? {
+			return if (value == 0L) null else DateTime(value)
 		}
 
 	}

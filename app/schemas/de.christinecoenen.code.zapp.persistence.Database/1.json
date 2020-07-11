@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cafccf30d3b0eb7b866c3023cf59fac4",
+    "identityHash": "3519f39f9fd63cc0b5f40a9b92c05078",
     "entities": [
       {
         "tableName": "PersistedMediathekShow",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `playbackPosition` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadDate` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `playbackPosition` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -25,6 +25,12 @@
             "columnName": "downloadId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "downloadDate",
+            "columnName": "downloadDate",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "downloadedVideoPath",
@@ -148,7 +154,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cafccf30d3b0eb7b866c3023cf59fac4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3519f39f9fd63cc0b5f40a9b92c05078')"
     ]
   }
 }

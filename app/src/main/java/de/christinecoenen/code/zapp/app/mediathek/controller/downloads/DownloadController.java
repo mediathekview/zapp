@@ -15,6 +15,8 @@ import com.tonyodev.fetch2.Request;
 import com.tonyodev.fetch2.Status;
 import com.tonyodev.fetch2core.DownloadBlock;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
@@ -72,6 +74,7 @@ public class DownloadController implements FetchListener {
 		}
 
 		show.setDownloadId(request.getId());
+		show.setDownloadDate(DateTime.now());
 		mediathekRepository.updateShow(show);
 
 		enqueueDownload(request);
