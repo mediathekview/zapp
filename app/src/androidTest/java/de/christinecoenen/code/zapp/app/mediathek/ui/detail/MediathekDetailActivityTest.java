@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -21,7 +22,7 @@ public class MediathekDetailActivityTest {
 		Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 		Intent intent = MediathekDetailActivity.getStartIntent(context, MediathekData.getTestShow());
 
-		ActivityScenario scenario = ActivityScenario.launch(intent);
+		ActivityScenario<Activity> scenario = ActivityScenario.launch(intent);
 		scenario.recreate();
 
 		scenario.onActivity(activity -> activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
