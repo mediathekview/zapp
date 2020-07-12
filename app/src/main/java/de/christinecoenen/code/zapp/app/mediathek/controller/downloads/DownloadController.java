@@ -74,7 +74,7 @@ public class DownloadController implements FetchListener {
 		}
 
 		show.setDownloadId(request.getId());
-		show.setDownloadDate(DateTime.now());
+		show.setDownloadedAt(DateTime.now());
 		mediathekRepository.updateShow(show);
 
 		enqueueDownload(request);
