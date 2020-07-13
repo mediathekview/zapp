@@ -134,4 +134,18 @@ public class MediathekRepository {
 			.subscribeOn(Schedulers.io())
 			.subscribe();
 	}
+
+	/**
+	 * @return Wether the show is a managed download (excluding stopped and removed downloads).
+	 */
+	public Flowable<Boolean> isDownload(String apiId) {
+		return Flowable.just(false)
+			.concatWith(database.mediathekShowDao()
+				.getDownloadStatus(apiId)
+				.map(downloadStatus -> downloadStatus != DownloadStatus.NONE &&
+					downloadStatus != DownloadStatus.CANCELLED &&
+					downloadStatus != DownloadStatus.REMOVED &&
+					downloadStatus != DownloadStatus.DELETED))
+			.subscribeOn(Schedulers.io());
+	}
 }

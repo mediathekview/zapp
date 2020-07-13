@@ -12,8 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.ZappApplication;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.ViewHolder> {
 
@@ -127,9 +133,14 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 	static class ItemViewHolder extends ViewHolder {
 
 		private final FragmentMediathekListItemBinding binding;
+		private final MediathekRepository mediathekRepository;
+		private final CompositeDisposable disposables = new CompositeDisposable();
 
 		ItemViewHolder(FragmentMediathekListItemBinding binding) {
 			super(binding.getRoot());
+
+			ZappApplication app = ((ZappApplication) binding.getRoot().getContext().getApplicationContext());
+			mediathekRepository = app.getMediathekRepository();
 
 			this.binding = binding;
 		}
@@ -139,12 +150,25 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		}
 
 		void setShow(MediathekShow show) {
+			disposables.clear();
+
+			Disposable isDownloadDisposable = mediathekRepository
+				.isDownload(show.getApiId())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::updateIsDownload, Timber::e);
+
+			disposables.add(isDownloadDisposable);
+
 			binding.title.setText(show.getTitle());
 			binding.topic.setText(show.getTopic());
 			binding.duration.setText(show.getFormattedDuration());
 			binding.channel.setText(show.getChannel());
 			binding.time.setText(show.getFormattedTimestamp());
 			binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+		}
+
+		private void updateIsDownload(boolean isDownload) {
+			// TODO: display downloaded status to user
 		}
 
 		@NonNull
