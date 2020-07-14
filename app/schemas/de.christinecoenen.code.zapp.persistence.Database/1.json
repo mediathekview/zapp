@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0a692b965fa6e2c63e2d40ac5cea263f",
+    "identityHash": "bdd6cfcaaf39b6ebb2baf0cd857f167e",
     "entities": [
       {
         "tableName": "PersistedMediathekShow",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedAt` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `playbackPosition` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedAt` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `lastPlayedBackAt` INTEGER, `playbackPosition` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -49,6 +49,12 @@
             "columnName": "downloadProgress",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "lastPlayedBackAt",
+            "columnName": "lastPlayedBackAt",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "playbackPosition",
@@ -154,7 +160,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a692b965fa6e2c63e2d40ac5cea263f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bdd6cfcaaf39b6ebb2baf0cd857f167e')"
     ]
   }
 }

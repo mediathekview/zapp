@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.repository;
 
+import org.joda.time.DateTime;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -134,7 +136,7 @@ public class MediathekRepository {
 
 	public void setPlaybackPosition(int showId, long millis) {
 		database.mediathekShowDao()
-			.setPlaybackPosition(showId, millis)
+			.setPlaybackPosition(showId, millis, DateTime.now())
 			.subscribeOn(Schedulers.io())
 			.subscribe();
 	}

@@ -23,6 +23,8 @@ class PersistedMediathekShow {
 
 	var downloadProgress = 0
 
+	var lastPlayedBackAt: DateTime? = null
+
 	var playbackPosition = 0L
 
 	@Embedded
