@@ -17,7 +17,7 @@ class PersistedPlaybackPositionRepository(private val mediathekRepository: Media
 		return if (videoInfo.id == 0) {
 			Single.just(0L)
 		} else {
-			mediathekRepository.getPlaybackProsition(videoInfo.id)
+			mediathekRepository.getPlaybackPosition(videoInfo.id)
 		}
 	}
 

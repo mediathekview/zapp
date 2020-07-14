@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,13 @@ import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplication;
+import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding;
+import de.christinecoenen.code.zapp.utils.system.ImageHelper;
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -152,23 +157,30 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		void setShow(MediathekShow show) {
 			disposables.clear();
 
-			Disposable isDownloadDisposable = mediathekRepository
-				.isDownload(show.getApiId())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(this::updateIsDownload, Timber::e);
-
-			disposables.add(isDownloadDisposable);
-
+			binding.image.setVisibility(View.GONE);
 			binding.title.setText(show.getTitle());
 			binding.topic.setText(show.getTopic());
 			binding.duration.setText(show.getFormattedDuration());
 			binding.channel.setText(show.getChannel());
 			binding.time.setText(show.getFormattedTimestamp());
 			binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+
+			Flowable<PersistedMediathekShow> persistedShowCall = mediathekRepository
+				.getPersistedShowByApiId(show.getApiId());
+
+			Disposable isDownloadDisposable = persistedShowCall
+				.filter(persistedShow -> persistedShow.getDownloadStatus() == DownloadStatus.COMPLETED)
+				.firstOrError()
+				.flatMap(persistedShow -> ImageHelper.loadThumbnailAsync(binding.getRoot().getContext(), persistedShow.getDownloadedVideoPath()))
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::updatethumbnail, Timber::e);
+
+			disposables.add(isDownloadDisposable);
 		}
 
-		private void updateIsDownload(boolean isDownload) {
-			// TODO: display downloaded status to user
+		private void updatethumbnail(Bitmap thumbnail) {
+			binding.image.setImageBitmap(thumbnail);
+			binding.image.setVisibility(View.VISIBLE);
 		}
 
 		@NonNull

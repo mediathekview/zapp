@@ -6,74 +6,91 @@
 	android:background="?android:attr/selectableItemBackground"
 	android:clickable="true"
 	android:focusable="true"
-	android:orientation="vertical"
+	android:orientation="horizontal"
 	android:paddingTop="8dp"
 	android:paddingBottom="8dp"
 	android:textAppearance="?attr/textAppearanceListItem">
 
-	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/topic"
-		style="@style/TextAppearance.MaterialComponents.Body1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="2dp"
-		android:background="?attr/colorSecondary"
-		android:ellipsize="end"
-		android:maxLines="1"
-		android:paddingStart="@dimen/activity_horizontal_margin"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
-		android:textColor="?attr/colorOnSecondary"
-		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
-
-	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/title"
-		style="@style/TextAppearance.MaterialComponents.Headline6"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="2dp"
-		android:ellipsize="end"
-		android:maxLines="2"
-		android:paddingStart="@dimen/activity_horizontal_margin"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
-		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/image"
+		android:layout_width="80dp"
+		android:layout_height="match_parent"
+		android:layout_marginEnd="4dp"
+		android:background="@color/about_libraries_dividerDark_openSource"
+		android:scaleType="centerCrop"
+		android:visibility="gone"
+		tools:visibility="visible" />
 
 	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:paddingStart="@dimen/activity_horizontal_margin"
-		android:paddingEnd="@dimen/activity_horizontal_margin">
+		android:orientation="vertical">
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/duration"
+			android:id="@+id/topic"
+			style="@style/TextAppearance.MaterialComponents.Body1"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			tools:text="58:59 Minuten" />
-
-		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/channel"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			tools:text="ZDF-tivi" />
-
-		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/time"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="@dimen/activity_horizontal_margin"
-			tools:text="vor 29 Minuten" />
-
-		<TextView
-			android:id="@+id/subtitle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_marginBottom="2dp"
 			android:background="?attr/colorSecondary"
-			android:paddingStart="4dp"
-			android:paddingEnd="4dp"
-			android:text="@string/fragment_mediathek_batch_subtitle"
-			android:textColor="?attr/colorOnSecondary" />
+			android:ellipsize="end"
+			android:maxLines="1"
+			android:paddingStart="@dimen/activity_horizontal_margin"
+			android:paddingEnd="@dimen/activity_horizontal_margin"
+			android:textColor="?attr/colorOnSecondary"
+			tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/title"
+			style="@style/TextAppearance.MaterialComponents.Headline6"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="2dp"
+			android:ellipsize="end"
+			android:maxLines="2"
+			android:paddingStart="@dimen/activity_horizontal_margin"
+			android:paddingEnd="@dimen/activity_horizontal_margin"
+			tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
+
+		<androidx.appcompat.widget.LinearLayoutCompat
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:paddingStart="@dimen/activity_horizontal_margin"
+			android:paddingEnd="@dimen/activity_horizontal_margin">
+
+			<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/duration"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="@dimen/activity_horizontal_margin"
+				tools:text="58:59 Minuten" />
+
+			<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/channel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="@dimen/activity_horizontal_margin"
+				tools:text="ZDF-tivi" />
+
+			<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/time"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="@dimen/activity_horizontal_margin"
+				tools:text="vor 29 Minuten" />
+
+			<TextView
+				android:id="@+id/subtitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="?attr/colorSecondary"
+				android:paddingStart="4dp"
+				android:paddingEnd="4dp"
+				android:text="@string/fragment_mediathek_batch_subtitle"
+				android:textColor="?attr/colorOnSecondary" />
+
+		</androidx.appcompat.widget.LinearLayoutCompat>
 
 	</androidx.appcompat.widget.LinearLayoutCompat>
 

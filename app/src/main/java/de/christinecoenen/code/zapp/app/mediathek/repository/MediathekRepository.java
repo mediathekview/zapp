@@ -102,6 +102,10 @@ public class MediathekRepository {
 		return database.mediathekShowDao().getFromId(id).subscribeOn(Schedulers.io());
 	}
 
+	public Flowable<PersistedMediathekShow> getPersistedShowByApiId(String apiId) {
+		return database.mediathekShowDao().getFromApiId(apiId).subscribeOn(Schedulers.io());
+	}
+
 	public Flowable<PersistedMediathekShow> getPersistedShowByDownloadId(int downloadId) {
 		return database.mediathekShowDao().getFromDownloadId(downloadId).subscribeOn(Schedulers.io());
 	}
@@ -122,7 +126,7 @@ public class MediathekRepository {
 			.subscribeOn(Schedulers.io());
 	}
 
-	public Single<Long> getPlaybackProsition(int showId) {
+	public Single<Long> getPlaybackPosition(int showId) {
 		return database.mediathekShowDao()
 			.getPlaybackPosition(showId)
 			.subscribeOn(Schedulers.io());
@@ -133,19 +137,5 @@ public class MediathekRepository {
 			.setPlaybackPosition(showId, millis)
 			.subscribeOn(Schedulers.io())
 			.subscribe();
-	}
-
-	/**
-	 * @return Wether the show is a managed download (excluding stopped and removed downloads).
-	 */
-	public Flowable<Boolean> isDownload(String apiId) {
-		return Flowable.just(false)
-			.concatWith(database.mediathekShowDao()
-				.getDownloadStatus(apiId)
-				.map(downloadStatus -> downloadStatus != DownloadStatus.NONE &&
-					downloadStatus != DownloadStatus.CANCELLED &&
-					downloadStatus != DownloadStatus.REMOVED &&
-					downloadStatus != DownloadStatus.DELETED))
-			.subscribeOn(Schedulers.io());
 	}
 }
