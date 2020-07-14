@@ -63,32 +63,41 @@
 				android:id="@+id/duration"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="@dimen/activity_horizontal_margin"
 				tools:text="58:59 Minuten" />
+
+			<com.google.android.material.textview.MaterialTextView
+				style="@style/TextDividerStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
 
 			<com.google.android.material.textview.MaterialTextView
 				android:id="@+id/channel"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="@dimen/activity_horizontal_margin"
 				tools:text="ZDF-tivi" />
+
+			<com.google.android.material.textview.MaterialTextView
+				style="@style/TextDividerStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
 
 			<com.google.android.material.textview.MaterialTextView
 				android:id="@+id/time"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="@dimen/activity_horizontal_margin"
 				tools:text="vor 29 Minuten" />
 
-			<TextView
+			<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/subtitle_divider"
+				style="@style/TextDividerStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<com.google.android.material.textview.MaterialTextView
 				android:id="@+id/subtitle"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="?attr/colorSecondary"
-				android:paddingStart="4dp"
-				android:paddingEnd="4dp"
-				android:text="@string/fragment_mediathek_batch_subtitle"
-				android:textColor="?attr/colorOnSecondary" />
+				android:text="@string/fragment_mediathek_batch_subtitle" />
 
 		</androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -69,6 +69,13 @@
 		<item name="android:tint">?attr/colorOnPrimary</item>
 	</style>
 
+	<style name="TextDividerStyle" parent="Widget.MaterialComponents.TextView">
+		<item name="android:layout_marginStart">6dp</item>
+		<item name="android:layout_marginEnd">6dp</item>
+		<item name="android:alpha">0.3</item>
+		<item name="android:text">|</item>
+	</style>
+
 	<style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary" />
 
 	<style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">

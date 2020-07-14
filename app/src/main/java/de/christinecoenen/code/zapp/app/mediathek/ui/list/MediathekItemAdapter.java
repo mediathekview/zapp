@@ -164,6 +164,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 			binding.channel.setText(show.getChannel());
 			binding.time.setText(show.getFormattedTimestamp());
 			binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+			binding.subtitleDivider.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
 
 			Flowable<PersistedMediathekShow> persistedShowCall = mediathekRepository
 				.getPersistedShowByApiId(show.getApiId());
