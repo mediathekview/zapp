@@ -124,7 +124,6 @@ public class MediathekRepository {
 		return database
 			.mediathekShowDao()
 			.getDownloadProgress(apiId)
-			.startWith(0)
 			.subscribeOn(Schedulers.io());
 	}
 
