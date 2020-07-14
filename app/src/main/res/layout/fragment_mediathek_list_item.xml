@@ -11,15 +11,29 @@
 	android:paddingBottom="8dp"
 	android:textAppearance="?attr/textAppearanceListItem">
 
-	<androidx.appcompat.widget.AppCompatImageView
-		android:id="@+id/image"
+	<RelativeLayout
+		android:id="@+id/image_holder"
 		android:layout_width="80dp"
 		android:layout_height="match_parent"
 		android:layout_marginEnd="4dp"
-		android:background="@color/about_libraries_dividerDark_openSource"
-		android:scaleType="centerCrop"
 		android:visibility="gone"
-		tools:visibility="visible" />
+		tools:visibility="visible">
+
+		<androidx.appcompat.widget.AppCompatImageView
+			android:id="@+id/image"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scaleType="centerCrop" />
+
+		<View
+			android:id="@+id/progress"
+			android:layout_width="match_parent"
+			android:layout_height="4dp"
+			android:layout_alignParentBottom="true"
+			android:background="?attr/colorSecondary"
+			android:transformPivotX="0dp" />
+
+	</RelativeLayout>
 
 	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"

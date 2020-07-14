@@ -5,12 +5,12 @@ import io.reactivex.Single
 
 class PersistedPlaybackPositionRepository(private val mediathekRepository: MediathekRepository) : IPlaybackPositionRepository {
 
-	override fun savePlaybackPosition(videoInfo: VideoInfo, millis: Long) {
+	override fun savePlaybackPosition(videoInfo: VideoInfo, positionMillis: Long, durationMillis: Long) {
 		if (videoInfo.id == 0) {
 			return
 		}
 
-		mediathekRepository.setPlaybackPosition(videoInfo.id, millis)
+		mediathekRepository.setPlaybackPosition(videoInfo.id, positionMillis, durationMillis)
 	}
 
 	override fun getPlaybackPosition(videoInfo: VideoInfo): Single<Long> {

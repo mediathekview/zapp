@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bdd6cfcaaf39b6ebb2baf0cd857f167e",
+    "identityHash": "62cc23e0e67ad8479c9fce79f8615a6a",
     "entities": [
       {
         "tableName": "PersistedMediathekShow",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedAt` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `lastPlayedBackAt` INTEGER, `playbackPosition` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedAt` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `lastPlayedBackAt` INTEGER, `playbackPosition` INTEGER NOT NULL, `videoDuration` INTEGER NOT NULL, `apiId` TEXT, `topic` TEXT, `title` TEXT, `description` TEXT, `channel` TEXT, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -59,6 +59,12 @@
           {
             "fieldPath": "playbackPosition",
             "columnName": "playbackPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "videoDuration",
+            "columnName": "videoDuration",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -153,14 +159,23 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_PersistedMediathekShow_apiId",
+            "unique": true,
+            "columnNames": [
+              "apiId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_PersistedMediathekShow_apiId` ON `${TABLE_NAME}` (`apiId`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bdd6cfcaaf39b6ebb2baf0cd857f167e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62cc23e0e67ad8479c9fce79f8615a6a')"
     ]
   }
 }

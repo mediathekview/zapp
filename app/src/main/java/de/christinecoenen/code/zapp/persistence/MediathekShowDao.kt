@@ -64,11 +64,14 @@ interface MediathekShowDao {
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
 	fun updateDownloadedVideoPath(downloadId: Int, videoPath: String): Completable
 
-	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:millis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
-	fun setPlaybackPosition(id: Int, millis: Long, lastPlayedBackAt: DateTime): Completable
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
+	fun setPlaybackPosition(id: Int, positionMillis: Long, durationMillis: Long, lastPlayedBackAt: DateTime): Completable
 
 	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
 	fun getPlaybackPosition(id: Int): Single<Long>
+
+	@Query("SELECT (CAST(playbackPosition AS FLOAT) / videoDuration) FROM PersistedMediathekShow WHERE apiId=:apiId")
+	fun getPlaybackPositionPercent(apiId: String): Flowable<Float>
 
 	@Delete
 	fun delete(show: PersistedMediathekShow): Completable

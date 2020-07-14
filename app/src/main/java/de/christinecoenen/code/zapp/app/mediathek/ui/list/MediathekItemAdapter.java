@@ -157,7 +157,7 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		void setShow(MediathekShow show) {
 			disposables.clear();
 
-			binding.image.setVisibility(View.GONE);
+			binding.imageHolder.setVisibility(View.GONE);
 			binding.title.setText(show.getTitle());
 			binding.topic.setText(show.getTopic());
 			binding.duration.setText(show.getFormattedDuration());
@@ -176,12 +176,22 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(this::updatethumbnail, Timber::e);
 
+			Disposable viewingProgressDisposable = mediathekRepository
+				.getPlaybackPositionPercent(show.getApiId())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::updatePlaybackPosition, Timber::e);
+
 			disposables.add(isDownloadDisposable);
+			disposables.add(viewingProgressDisposable);
+		}
+
+		private void updatePlaybackPosition(float progressPercent) {
+			binding.progress.setScaleX(progressPercent);
 		}
 
 		private void updatethumbnail(Bitmap thumbnail) {
 			binding.image.setImageBitmap(thumbnail);
-			binding.image.setVisibility(View.VISIBLE);
+			binding.imageHolder.setVisibility(View.VISIBLE);
 		}
 
 		@NonNull

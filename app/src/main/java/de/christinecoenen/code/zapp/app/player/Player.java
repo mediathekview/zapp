@@ -232,7 +232,7 @@ public class Player {
 			return;
 		}
 
-		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
+		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis(), player.getDuration());
 	}
 
 	@NonNull

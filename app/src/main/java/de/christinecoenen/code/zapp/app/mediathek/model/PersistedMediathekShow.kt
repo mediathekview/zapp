@@ -2,10 +2,11 @@ package de.christinecoenen.code.zapp.app.mediathek.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.joda.time.DateTime
 
-@Entity
+@Entity(indices = [Index(value = ["apiId"], unique = true)])
 class PersistedMediathekShow {
 
 	@PrimaryKey(autoGenerate = true)
@@ -26,6 +27,8 @@ class PersistedMediathekShow {
 	var lastPlayedBackAt: DateTime? = null
 
 	var playbackPosition = 0L
+
+	var videoDuration = 0L
 
 	@Embedded
 	var mediathekShow: MediathekShow = MediathekShow()

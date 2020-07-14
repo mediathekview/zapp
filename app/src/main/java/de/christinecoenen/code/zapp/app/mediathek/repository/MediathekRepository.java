@@ -134,10 +134,18 @@ public class MediathekRepository {
 			.subscribeOn(Schedulers.io());
 	}
 
-	public void setPlaybackPosition(int showId, long millis) {
+	public void setPlaybackPosition(int showId, long positionMillis, long durationMillis) {
 		database.mediathekShowDao()
-			.setPlaybackPosition(showId, millis, DateTime.now())
+			.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
 			.subscribeOn(Schedulers.io())
 			.subscribe();
+	}
+
+	public Flowable<Float> getPlaybackPositionPercent(String apiId) {
+		return database.mediathekShowDao()
+			.getPlaybackPositionPercent(apiId)
+			.startWith(0f)
+			.distinct()
+			.subscribeOn(Schedulers.io());
 	}
 }
