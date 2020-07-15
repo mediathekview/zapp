@@ -126,15 +126,39 @@
 
 			</LinearLayout>
 
-			<com.google.android.material.floatingactionbutton.FloatingActionButton
-				android:id="@+id/play"
+			<RelativeLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="start|bottom"
-				android:layout_marginTop="@dimen/activity_vertical_margin"
+				android:layout_marginTop="10dp"
 				android:layout_marginEnd="@dimen/activity_horizontal_margin"
-				android:contentDescription="@string/exo_controls_play_description"
-				android:src="@drawable/ic_play_arrow_white_24dp" />
+				android:layout_marginStart="-6dp"
+				android:clipToPadding="false"
+				android:elevation="1dp"
+				android:padding="6dp">
+
+				<ProgressBar
+					android:id="@+id/viewingProgress"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:layout_width="62dp"
+					android:layout_height="62dp"
+					android:layout_centerInParent="true"
+					android:elevation="8dp"
+					android:max="100"
+					android:progress="0"
+					android:progressDrawable="@drawable/circular"
+					android:rotation="-90"
+					tools:progress="40" />
+
+				<com.google.android.material.floatingactionbutton.FloatingActionButton
+					android:id="@+id/play"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:contentDescription="@string/exo_controls_play_description"
+					android:src="@drawable/ic_play_arrow_white_24dp" />
+
+			</RelativeLayout>
 
 		</LinearLayout>
 

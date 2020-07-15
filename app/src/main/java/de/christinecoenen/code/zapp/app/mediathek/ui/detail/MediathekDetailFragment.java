@@ -49,6 +49,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	private FragmentMediathekDetailBinding binding;
 	private MediathekRepository mediathekRepository;
 	private PersistedMediathekShow persistedMediathekShow;
+	private MediathekShow argumentsMediathekShow;
 	private DownloadController downloadController;
 	private DownloadStatus downloadStatus = DownloadStatus.NONE;
 
@@ -84,10 +85,10 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 		super.onCreate(savedInstanceState);
 
 		if (getArguments() != null) {
-			MediathekShow show = (MediathekShow) getArguments().getSerializable(ARG_SHOW);
+			argumentsMediathekShow = (MediathekShow) getArguments().getSerializable(ARG_SHOW);
 
 			Disposable persistShowDisposable = mediathekRepository
-				.persistOrUpdateShow(Objects.requireNonNull(show))
+				.persistOrUpdateShow(Objects.requireNonNull(argumentsMediathekShow))
 				.firstElement()
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(this::onShowLoaded, Timber::e);
@@ -104,6 +105,13 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 		binding.buttons.download.setOnClickListener(this::onDownloadClick);
 		binding.buttons.share.setOnClickListener(this::onShareClick);
 		binding.buttons.website.setOnClickListener(this::onWebsiteClick);
+
+		Disposable viewingProgressDisposable = mediathekRepository
+			.getPlaybackPositionPercent(argumentsMediathekShow.getApiId())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::updatePlaybackPosition, Timber::e);
+
+		createViewDisposables.add(viewingProgressDisposable);
 
 		return binding.getRoot();
 	}
@@ -167,6 +175,10 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			.getDownloadProgress(show.getApiId())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::onDownloadProgressChanged));
+	}
+
+	private void updatePlaybackPosition(Float viewingProgress) {
+		binding.viewingProgress.setProgress((int) (viewingProgress * binding.viewingProgress.getMax()));
 	}
 
 	private void onDownloadStatusChanged(DownloadStatus downloadStatus) {
