@@ -190,7 +190,6 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 
 		private void updatePlaybackPosition(float progressPercent) {
 			binding.progress.setScaleX(progressPercent);
-			binding.imageHolder.setVisibility(View.VISIBLE);
 		}
 
 		private void updatethumbnail(Bitmap thumbnail) {
