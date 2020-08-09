@@ -35,7 +35,7 @@ public class ChannelInfoRepository {
 			.build();
 
 		service = new Retrofit.Builder()
-			.baseUrl("https://zappbackend.herokuapp.com/v1/")
+			.baseUrl("https://api.zapp.mediathekview.de/v1/")
 			.client(client)
 			.addConverterFactory(GsonConverterFactory.create())
 			.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
