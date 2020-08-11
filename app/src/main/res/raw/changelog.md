@@ -1,3 +1,13 @@
+# 3.5.0 - Beta 1
+* Downloads auf SD-Karte möglich
+* Klick auf Download-Notificaton öffnet entsprechende Sendung
+* Download-Fortschritt wird innerhalb der App angezeigt
+* Vorschaubild für heruntergeladene Sendungen
+* Abspiel-Position für Sendungen wird dauerhaft gespeichert
+* Mediathek-Benutzeroberfläche überarbeitet
+* ARTE.FR aus Mediathek entfernt
+* Multiwindow-Unterstützung hinzugefügt
+
 # 3.4.0
 * Stream von ARD repariert
 * Unbekannte Veröffentlichungsdaten markiert
