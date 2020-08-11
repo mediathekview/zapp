@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.settings.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -19,7 +20,7 @@ public class ChannelSelectionActivityTest {
 		Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 		Intent intent = new Intent(context, ChannelSelectionActivity.class);
 
-		ActivityScenario scenario = ActivityScenario.launch(intent);
+		ActivityScenario<Activity> scenario = ActivityScenario.launch(intent);
 		scenario.recreate();
 
 		scenario.onActivity(activity -> activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));

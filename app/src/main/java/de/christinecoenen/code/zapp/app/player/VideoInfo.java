@@ -6,21 +6,27 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.model.ChannelModel;
 
 public class VideoInfo {
 
-	public static VideoInfo fromShow(MediathekShow show) {
+	public static VideoInfo fromShow(PersistedMediathekShow persistedShow) {
+		MediathekShow show = persistedShow.getMediathekShow();
+
 		VideoInfo videoInfo = new VideoInfo();
+		videoInfo.id = persistedShow.getId();
 		videoInfo.url = show.getVideoUrl(Quality.Medium);
 		videoInfo.urlHighestQuality = show.getVideoUrl(Quality.High);
 		videoInfo.urlLowestQuality = show.getVideoUrl(Quality.Low);
+		videoInfo.filePath = persistedShow.getDownloadedVideoPath();
 		videoInfo.title = show.getTitle();
 		videoInfo.subtitle = show.getTopic();
 		videoInfo.subtitleUrl = show.getSubtitleUrl();
 		videoInfo.hasDuration = true;
+
 		return videoInfo;
 	}
 
@@ -32,6 +38,8 @@ public class VideoInfo {
 		videoInfo.hasDuration = false;
 		return videoInfo;
 	}
+
+	private int id = 0;
 
 	@NonNull
 	private String url = "";
@@ -48,15 +56,20 @@ public class VideoInfo {
 	@Nullable
 	private String subtitleUrl;
 
+	private String filePath;
+
 	private boolean hasDuration = false;
 
-	@NonNull
-	String getUrl() {
-		return url;
+	public int getId() {
+		return id;
 	}
 
 	@NonNull
-	String getUrl(StreamQualityBucket quality) {
+	String getPlaybackUrlOrFilePath(StreamQualityBucket quality) {
+		if (isOfflineVideo()) {
+			return filePath;
+		}
+
 		switch (quality) {
 			case MEDIUM:
 				return url;
@@ -83,7 +96,12 @@ public class VideoInfo {
 	}
 
 	public boolean hasSubtitles() {
-		return subtitleUrl != null;
+		// no subtitle support for downloaded videos yet
+		return subtitleUrl != null && !isOfflineVideo();
+	}
+
+	public boolean isOfflineVideo() {
+		return filePath != null;
 	}
 
 	boolean hasDuration() {
@@ -101,12 +119,13 @@ public class VideoInfo {
 			Objects.equals(urlHighestQuality, videoInfo.urlHighestQuality) &&
 			title.equals(videoInfo.title) &&
 			Objects.equals(subtitle, videoInfo.subtitle) &&
+			Objects.equals(filePath, videoInfo.filePath) &&
 			Objects.equals(subtitleUrl, videoInfo.subtitleUrl);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(url, urlLowestQuality, urlHighestQuality, title, subtitle, subtitleUrl, hasDuration);
+		return Objects.hash(url, urlLowestQuality, urlHighestQuality, title, subtitle, subtitleUrl, filePath, hasDuration);
 	}
 
 	@NonNull
@@ -119,6 +138,7 @@ public class VideoInfo {
 			", title='" + title + '\'' +
 			", subtitle='" + subtitle + '\'' +
 			", subtitleUrl='" + subtitleUrl + '\'' +
+			", filePath='" + filePath + '\'' +
 			", hasDuration=" + hasDuration +
 			'}';
 	}

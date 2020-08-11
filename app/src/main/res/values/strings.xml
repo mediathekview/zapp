@@ -28,13 +28,17 @@
 	<string name="fragment_mediathek_channel">Sender</string>
 	<string name="fragment_mediathek_duration">Dauer</string>
 	<string name="fragment_mediathek_website">Website</string>
-	<string name="fragment_mediathek_download">Download</string>
 	<string name="fragment_mediathek_batch_subtitle">UT</string>
-	<string name="fragment_mediathek_qualities_title">Qualitäten</string>
+	<string name="fragment_mediathek_qualities_title">Qualität auswählen</string>
 	<string name="fragment_mediathek_qualities_low">Niedrig</string>
 	<string name="fragment_mediathek_qualities_medium">Mittel</string>
 	<string name="fragment_mediathek_qualities_high">Hoch</string>
-	<string name="fragment_mediathek_download_started">Download von \'%s\' gestartet…</string>
+	<string name="fragment_mediathek_download">Download</string>
+	<string name="fragment_mediathek_download_retry">Download widerholen</string>
+	<string name="fragment_mediathek_download_running">Download läuft…</string>
+	<string name="fragment_mediathek_download_delete">Download löschen</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Datei wirklich löschen?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">Die Video-Datei wird gelöscht und kann später nochmals herunter geladen werden.</string>
 
 	<!-- error messages -->
 	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
@@ -48,16 +52,12 @@
 	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
 	<string name="error_mediathek_no_download_manager">Fehler: Download-Manager nicht verfügbar.</string>
-	<string name="error_mediathek_invalid_url">Fehler: Download-URL ist invalide.</string>
 	<string name="error_mediathek_download_over_wifi_only">Download nur über WLAN erlaubt.</string>
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 
-	<string name="error_mediathek_some_downloads_not_available">Einige Sendungensqualitäten können leider nicht herunter geladen werden.</string>
-
 
 	<!-- menus & buttons -->
-	<string name="action_cancel">Abbrechen</string>
 	<string name="action_share">Teilen</string>
 	<string name="action_continue">Weiter</string>
 	<string name="action_open">Öffnen</string>
@@ -107,9 +107,28 @@
 	<string name="stream_quality_cellular_medium">Mittlere Qualität</string>
 	<string name="stream_quality_cellular_highest">Höchste Qualität</string>
 
+	<string name="pref_download_to_sd_card_title">Downloads auf SD-Karte</string>
+	<string name="pref_download_to_sd_card_summary">Wenn verfügbar, werden Video-Dateien auf die SD-Karte gespeichert.</string>
+
 	<string name="pref_delete_search_queries_title">Suchanfragen löschen</string>
 	<string name="pref_delete_search_queries_dialog_message">Wirklich alle vergangenen Suchanfragen löschen?</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>
+	<string name="notification_channel_name_download_progress">Download Fortschritt</string>
+	<string name="notification_channel_name_download_event">Download Event</string>
+
+	<!-- fetch download notifications -->
+	<string name="fetch_notification_download_eta_sec">%1$ds verbleibend</string>
+	<string name="fetch_notification_download_eta_min">%1$dm %2$ds verbleibend</string>
+	<string name="fetch_notification_download_eta_hrs">%1$dh %2$dm %3$ds verbleibend</string>
+	<string name="fetch_notification_download_complete">Fertig</string>
+	<string name="fetch_notification_download_failed">Fehlgeschlagen</string>
+	<string name="fetch_notification_download_pause">Pause</string>
+	<string name="fetch_notification_download_resume">Fortsetzen</string>
+	<string name="fetch_notification_download_retry">Wiederholen</string>
+	<string name="fetch_notification_download_cancel">Abbrechen</string>
+	<string name="fetch_notification_download_paused">Pausiert</string>
+	<string name="fetch_notification_download_starting">Startet</string>
+	<string name="fetch_notification_download_downloading">Lädt herunter</string>
 </resources>

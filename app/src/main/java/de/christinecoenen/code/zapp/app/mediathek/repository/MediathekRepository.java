@@ -1,12 +1,19 @@
 package de.christinecoenen.code.zapp.app.mediathek.repository;
 
+import org.joda.time.DateTime;
+
 import java.util.Collections;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekService;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
+import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
+import de.christinecoenen.code.zapp.persistence.Database;
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ConnectionSpec;
@@ -21,9 +28,12 @@ public class MediathekRepository {
 
 
 	private final MediathekService service;
+	private final Database database;
 
 
-	public MediathekRepository() {
+	public MediathekRepository(Database database) {
+		this.database = database;
+
 		// workaround to avoid SSLHandshakeException on Android 7 devices
 		// see: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
 		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
@@ -54,5 +64,87 @@ public class MediathekRepository {
 				}
 				return mediathekAnswer.result.results;
 			});
+	}
+
+	public Flowable<PersistedMediathekShow> persistOrUpdateShow(MediathekShow show) {
+		return Completable.fromAction(() -> database.mediathekShowDao().insertOrUpdate(show))
+			.andThen(database.mediathekShowDao().getFromApiId(show.getApiId()))
+			.subscribeOn(Schedulers.io());
+	}
+
+	public void updateShow(PersistedMediathekShow show) {
+		database.mediathekShowDao()
+			.update(show)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public void updateDownloadStatus(int downloadId, DownloadStatus downloadStatus) {
+		database.mediathekShowDao()
+			.updateDownloadStatus(downloadId, downloadStatus)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public void updateDownloadProgress(int downloadId, int progress) {
+		database.mediathekShowDao()
+			.updateDownloadProgress(downloadId, progress)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public void updateDownloadedVideoPath(int downloadId, String videoPath) {
+		database.mediathekShowDao()
+			.updateDownloadedVideoPath(downloadId, videoPath)
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public Flowable<PersistedMediathekShow> getPersistedShow(int id) {
+		return database.mediathekShowDao().getFromId(id).subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<PersistedMediathekShow> getPersistedShowByApiId(String apiId) {
+		return database.mediathekShowDao().getFromApiId(apiId).subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<PersistedMediathekShow> getPersistedShowByDownloadId(int downloadId) {
+		return database.mediathekShowDao().getFromDownloadId(downloadId).subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {
+		return database
+			.mediathekShowDao()
+			.getDownloadStatus(apiId)
+			.startWith(DownloadStatus.NONE)
+			.subscribeOn(Schedulers.io());
+	}
+
+	public Flowable<Integer> getDownloadProgress(String apiId) {
+		return database
+			.mediathekShowDao()
+			.getDownloadProgress(apiId)
+			.subscribeOn(Schedulers.io());
+	}
+
+	public Single<Long> getPlaybackPosition(int showId) {
+		return database.mediathekShowDao()
+			.getPlaybackPosition(showId)
+			.subscribeOn(Schedulers.io());
+	}
+
+	public void setPlaybackPosition(int showId, long positionMillis, long durationMillis) {
+		database.mediathekShowDao()
+			.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
+			.subscribeOn(Schedulers.io())
+			.subscribe();
+	}
+
+	public Flowable<Float> getPlaybackPositionPercent(String apiId) {
+		return database.mediathekShowDao()
+			.getPlaybackPositionPercent(apiId)
+			.startWith(0f)
+			.distinct()
+			.subscribeOn(Schedulers.io());
 	}
 }

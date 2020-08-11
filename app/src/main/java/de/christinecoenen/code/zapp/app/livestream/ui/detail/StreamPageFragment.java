@@ -41,7 +41,7 @@ public class StreamPageFragment extends Fragment {
 		rootView = binding.getRoot();
 		errorText = binding.textError;
 
-		Bundle args = getArguments();
+		Bundle args = requireArguments();
 		ChannelModel channel = (ChannelModel) args.getSerializable(ARGUMENT_CHANNEL_MODEL);
 
 		if (channel != null) {

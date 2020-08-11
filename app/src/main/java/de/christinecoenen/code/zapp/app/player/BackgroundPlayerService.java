@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import java.util.Objects;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.ZappApplication;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -43,8 +44,8 @@ public class BackgroundPlayerService extends IntentService implements
 	 * Binds this service to the given context.
 	 *
 	 * @param context
-	 * @param serviceConnection        will be used to pass a {@link Binder} instance
-	 *                                 for further communication with this service
+	 * @param serviceConnection will be used to pass a {@link Binder} instance
+	 *                          for further communication with this service
 	 */
 	public static void bind(Context context, ServiceConnection serviceConnection) {
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
@@ -69,7 +70,9 @@ public class BackgroundPlayerService extends IntentService implements
 	public void onCreate() {
 		super.onCreate();
 
-		player = new Player(this);
+		ZappApplication application = (ZappApplication) getApplicationContext();
+
+		player = new Player(this, application.getPlaybackPositionRepository());
 		errorMessageDisposable = player.getErrorResourceId().subscribe(this::onPlayerError);
 	}
 
@@ -124,7 +127,7 @@ public class BackgroundPlayerService extends IntentService implements
 
 			String errorMessage = getString(R.string.error_prefixed_message, getString(messageResourceId));
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationHelper.BACKGROUND_PLAYBACK_CHANNEL_ID)
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK)
 				.setContentTitle(player.getCurrentVideoInfo().getTitle())
 				.setContentText(errorMessage)
 				.setColor(getResources().getColor(R.color.colorPrimaryDark))
@@ -179,7 +182,7 @@ public class BackgroundPlayerService extends IntentService implements
 		isPlaybackInBackground = true;
 
 		playerNotificationManager = new PlayerNotificationManager(this,
-			NotificationHelper.BACKGROUND_PLAYBACK_CHANNEL_ID,
+			NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
 			this);
 		playerNotificationManager.setOngoing(false);

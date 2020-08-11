@@ -1,8 +1,13 @@
 package de.christinecoenen.code.zapp.app.player;
 
-interface IPlaybackPositionRepository {
+import androidx.annotation.NonNull;
 
-	void savePlaybackPosition(VideoInfo videoInfo, long millis);
-	long getPlaybackPosition(VideoInfo videoInfo);
+import io.reactivex.Single;
+
+public interface IPlaybackPositionRepository {
+
+	void savePlaybackPosition(@NonNull VideoInfo videoInfo, long positionMillis, long durationMillis);
+
+	Single<Long> getPlaybackPosition(@NonNull VideoInfo videoInfo);
 
 }

@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.ZappApplication;
+import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
+import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding;
+import de.christinecoenen.code.zapp.utils.system.ImageHelper;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.ViewHolder> {
 
@@ -127,9 +138,14 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 	static class ItemViewHolder extends ViewHolder {
 
 		private final FragmentMediathekListItemBinding binding;
+		private final MediathekRepository mediathekRepository;
+		private final CompositeDisposable disposables = new CompositeDisposable();
 
 		ItemViewHolder(FragmentMediathekListItemBinding binding) {
 			super(binding.getRoot());
+
+			ZappApplication app = ((ZappApplication) binding.getRoot().getContext().getApplicationContext());
+			mediathekRepository = app.getMediathekRepository();
 
 			this.binding = binding;
 		}
@@ -139,12 +155,46 @@ class MediathekItemAdapter extends RecyclerView.Adapter<MediathekItemAdapter.Vie
 		}
 
 		void setShow(MediathekShow show) {
+			disposables.clear();
+
+			binding.imageHolder.setVisibility(View.GONE);
+			binding.thumbnail.setImageBitmap(null);
+			binding.progress.setScaleX(0);
 			binding.title.setText(show.getTitle());
 			binding.topic.setText(show.getTopic());
 			binding.duration.setText(show.getFormattedDuration());
 			binding.channel.setText(show.getChannel());
 			binding.time.setText(show.getFormattedTimestamp());
 			binding.subtitle.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+			binding.subtitleDivider.setVisibility(show.hasSubtitle() ? View.VISIBLE : View.GONE);
+
+			Flowable<PersistedMediathekShow> persistedShowCall = mediathekRepository
+				.getPersistedShowByApiId(show.getApiId());
+
+			Disposable isDownloadDisposable = persistedShowCall
+				.filter(persistedShow -> persistedShow.getDownloadStatus() == DownloadStatus.COMPLETED)
+				.firstOrError()
+				.flatMap(persistedShow -> ImageHelper.loadThumbnailAsync(binding.getRoot().getContext(), persistedShow.getDownloadedVideoPath()))
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::updatethumbnail, Timber::e);
+
+			Disposable viewingProgressDisposable = mediathekRepository
+				.getPlaybackPositionPercent(show.getApiId())
+				.filter(playbackPosition -> playbackPosition > 0)
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::updatePlaybackPosition, Timber::e);
+
+			disposables.add(isDownloadDisposable);
+			disposables.add(viewingProgressDisposable);
+		}
+
+		private void updatePlaybackPosition(float progressPercent) {
+			binding.progress.setScaleX(progressPercent);
+		}
+
+		private void updatethumbnail(Bitmap thumbnail) {
+			binding.thumbnail.setImageBitmap(thumbnail);
+			binding.imageHolder.setVisibility(View.VISIBLE);
 		}
 
 		@NonNull

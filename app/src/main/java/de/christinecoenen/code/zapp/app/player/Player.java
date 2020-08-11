@@ -36,16 +36,17 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 public class Player {
 
 	private final static String SUBTITLE_LANGUAGE_ON = "deu";
 	private final static String SUBTITLE_LANGUAGE_OFF = "none";
 
-	private final static IPlaybackPositionRepository playbackPositionRepository = new MemoryPlaybackPositionRepository();
-
+	private final IPlaybackPositionRepository playbackPositionRepository;
 	private final SimpleExoPlayer player;
 	private final DefaultDataSourceFactory dataSourceFactory;
 	private final TrackSelectorWrapper trackSelectorWrapper;
@@ -59,7 +60,8 @@ public class Player {
 
 	private VideoInfo currentVideoInfo;
 
-	public Player(Context context) {
+	public Player(Context context, IPlaybackPositionRepository playbackPositionRepository) {
+		this.playbackPositionRepository = playbackPositionRepository;
 		settings = new SettingsRepository(context);
 		networkConnectionHelper = new NetworkConnectionHelper(context);
 
@@ -126,8 +128,11 @@ public class Player {
 		player.prepare(videoSource);
 
 		if (videoInfo.hasDuration()) {
-			long positionMillis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo);
-			setMillis(positionMillis);
+			Disposable loadPositionDisposable = playbackPositionRepository
+				.getPlaybackPosition(currentVideoInfo)
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::setMillis, Timber::e);
+			disposables.add(loadPositionDisposable);
 		}
 	}
 
@@ -227,13 +232,13 @@ public class Player {
 			return;
 		}
 
-		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis());
+		playbackPositionRepository.savePlaybackPosition(currentVideoInfo, getMillis(), player.getDuration());
 	}
 
 	@NonNull
 	private MediaSource getMediaSource(VideoInfo videoInfo) {
 		StreamQualityBucket quality = getRequiredStreamQualityBucket();
-		Uri uri = Uri.parse(videoInfo.getUrl(quality));
+		Uri uri = Uri.parse(videoInfo.getPlaybackUrlOrFilePath(quality));
 		MediaSource mediaSource = getMediaSourceWithoutSubtitles(uri);
 
 		// add subtitles if present
@@ -290,7 +295,11 @@ public class Player {
 	}
 
 	private StreamQualityBucket getRequiredStreamQualityBucket() {
-		return networkConnectionHelper.isConnectedToWifi() ? StreamQualityBucket.HIGHEST : settings.getCellularStreamQuality();
+		if (networkConnectionHelper.isConnectedToWifi() || (currentVideoInfo != null && currentVideoInfo.isOfflineVideo())) {
+			return StreamQualityBucket.HIGHEST;
+		} else {
+			return settings.getCellularStreamQuality();
+		}
 	}
 
 	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {

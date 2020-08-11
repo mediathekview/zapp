@@ -17,6 +17,8 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressWarnings("unused")
@@ -36,13 +38,16 @@ public class MediathekShow implements Serializable {
 		.appendSeparatorIfFieldsBefore("s")
 		.toFormatter();
 
-	private String id;
+	@SerializedName("id")
+	private String apiId;
+
 	private String topic;
 	private String title;
 	private String description;
 	private String channel;
 	private int timestamp;
 	private long size;
+
 	private String duration;
 	private int filmlisteTimestamp;
 
@@ -62,12 +67,12 @@ public class MediathekShow implements Serializable {
 	private String videoUrlHd;
 
 
-	public String getId() {
-		return id;
+	public String getApiId() {
+		return apiId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setApiId(String apiId) {
+		this.apiId = apiId;
 	}
 
 	public String getTopic() {
@@ -129,6 +134,14 @@ public class MediathekShow implements Serializable {
 		this.size = size;
 	}
 
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
 	public String getFormattedDuration() {
 		int duration;
 		try {
@@ -170,12 +183,24 @@ public class MediathekShow implements Serializable {
 		return !TextUtils.isEmpty(subtitleUrl);
 	}
 
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
 	public void setVideoUrl(String videoUrl) {
 		this.videoUrl = videoUrl;
 	}
 
+	public String getVideoUrlLow() {
+		return videoUrlLow;
+	}
+
 	public void setVideoUrlLow(String videoUrlLow) {
 		this.videoUrlLow = videoUrlLow;
+	}
+
+	public String getVideoUrlHd() {
+		return videoUrlHd;
 	}
 
 	public void setVideoUrlHd(String videoUrlHd) {
@@ -195,14 +220,52 @@ public class MediathekShow implements Serializable {
 		}
 	}
 
-	public boolean hasStreamingQuality(Quality quality) {
-		String videoUrl = getVideoUrl(quality);
-		return isValidStreamingUrl(videoUrl);
+	public List<Quality> getSupportedDownloadQualities() {
+		List<Quality> qualities = new ArrayList<>();
+
+		for (Quality quality : Quality.values()) {
+			if (hasDownloadQuality(quality)) {
+				qualities.add(quality);
+			}
+		}
+
+		return qualities;
+	}
+
+	public List<Quality> getSupportedStreamingQualities() {
+		List<Quality> qualities = new ArrayList<>();
+
+		for (Quality quality : Quality.values()) {
+			String url = getVideoUrl(quality);
+			if (isValidStreamingUrl(url)) {
+				qualities.add(quality);
+			}
+		}
+
+		return qualities;
+	}
+
+	public String getHighestPossibleStreamingUrl() {
+		String highVideoUrl = getVideoUrl(Quality.High);
+		String mediumVideoUrl = getVideoUrl(Quality.Medium);
+		return isValidStreamingUrl(highVideoUrl) ? highVideoUrl : mediumVideoUrl;
+	}
+
+	public boolean hasAnyDownloadQuality() {
+		String highVideoUrl = getVideoUrl(Quality.High);
+		String mediumVideoUrl = getVideoUrl(Quality.Medium);
+		return isValidDownloadUrl(highVideoUrl) || isValidDownloadUrl(mediumVideoUrl);
 	}
 
 	public boolean hasDownloadQuality(Quality quality) {
 		String videoUrl = getVideoUrl(quality);
 		return isValidDownloadUrl(videoUrl);
+	}
+
+	public Quality getHighestPossibleDownloadQuality() {
+		String highVideoUrl = getVideoUrl(Quality.High);
+		String mediumVideoUrl = getVideoUrl(Quality.Medium);
+		return isValidDownloadUrl(highVideoUrl) ? Quality.High : Quality.Medium;
 	}
 
 	public String getDownloadFileName(Quality quality) {
@@ -252,20 +315,20 @@ public class MediathekShow implements Serializable {
 
 		MediathekShow that = (MediathekShow) o;
 
-		return id.equals(that.id);
+		return apiId.equals(that.apiId);
 
 	}
 
 	@Override
 	public int hashCode() {
-		return id.hashCode();
+		return apiId.hashCode();
 	}
 
 	@NonNull
 	@Override
 	public String toString() {
 		return "MediathekShow{" +
-			"id='" + id + '\'' +
+			"id='" + apiId + '\'' +
 			", topic='" + topic + '\'' +
 			", title='" + title + '\'' +
 			", description='" + description + '\'' +

@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.settings.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -18,7 +19,7 @@ public class SettingsActivityTest {
 		Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 		Intent intent = SettingsActivity.getStartIntent(context);
 
-		ActivityScenario scenario = ActivityScenario.launch(intent);
+		ActivityScenario<Activity> scenario = ActivityScenario.launch(intent);
 		scenario.recreate();
 	}
 

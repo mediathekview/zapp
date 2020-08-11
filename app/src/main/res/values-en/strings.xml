@@ -28,13 +28,15 @@
 	<string name="fragment_mediathek_channel">Channel</string>
 	<string name="fragment_mediathek_duration">Duration</string>
 	<string name="fragment_mediathek_website">Website</string>
-	<string name="fragment_mediathek_download">Download</string>
 	<string name="fragment_mediathek_batch_subtitle">ST</string>
-	<string name="fragment_mediathek_qualities_title">Qualities</string>
+	<string name="fragment_mediathek_qualities_title">Choose quality</string>
 	<string name="fragment_mediathek_qualities_low">Low</string>
 	<string name="fragment_mediathek_qualities_medium">Medium</string>
 	<string name="fragment_mediathek_qualities_high">High</string>
-	<string name="fragment_mediathek_download_started">Started download of \'%s\'…</string>
+	<string name="fragment_mediathek_download">Download</string>
+	<string name="fragment_mediathek_download_retry">Retry download</string>
+	<string name="fragment_mediathek_download_running">Downloading…</string>
+	<string name="fragment_mediathek_download_delete">Delete download</string>
 
 	<!-- error messages -->
 	<string name="error_app_crash">We are very sorry, but Zapp just crashed.\nWould you like to send a crash report to the developer to help fix this error?</string>
@@ -48,16 +50,12 @@
 	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
 	<string name="error_mediathek_called_without_show">Error: No show handed over.</string>
 	<string name="error_mediathek_no_download_manager">Error: No download manager available. </string>
-	<string name="error_mediathek_invalid_url">Error: Download url is invalid.</string>
-	<string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
+    <string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
 
 	<string name="error_prefixed_message">Error: %s</string>
 
-	<string name="error_mediathek_some_downloads_not_available">Unfortunately some show qualities are not available for download.</string>
-
 
 	<!-- menus & buttons -->
-	<string name="action_cancel">Cancel</string>
 	<string name="action_share">Share</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
@@ -107,9 +105,30 @@
 	<string name="stream_quality_cellular_medium">Medium quality</string>
 	<string name="stream_quality_cellular_highest">Highest quality</string>
 
+	<string name="pref_download_to_sd_card_title">Download to sd card</string>
+	<string name="pref_download_to_sd_card_summary">Video files will be saved to sd card if present.</string>
+
 	<string name="pref_delete_search_queries_title">Delete search queries</string>
 	<string name="pref_delete_search_queries_dialog_message">Really delete all of your search queries?</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>
+	<string name="notification_channel_name_download_progress">Download progress</string>
+	<string name="notification_channel_name_download_event">Download event</string>
+
+	<!-- fetch download notifications -->
+	<string name="fetch_notification_download_eta_sec">%1$ds left</string>
+	<string name="fetch_notification_download_eta_min">%1$dm %2$ds left</string>
+	<string name="fetch_notification_download_eta_hrs">%1$dh %2$dm %3$ds left</string>
+	<string name="fetch_notification_download_complete">Complete</string>
+	<string name="fetch_notification_download_failed">Failed</string>
+	<string name="fetch_notification_download_pause">Pause</string>
+	<string name="fetch_notification_download_resume">Resume</string>
+	<string name="fetch_notification_download_retry">Retry</string>
+	<string name="fetch_notification_download_cancel">Cancel</string>
+	<string name="fetch_notification_download_paused">Paused</string>
+	<string name="fetch_notification_download_starting">Starting</string>
+	<string name="fetch_notification_download_downloading">Downloading</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
 </resources>

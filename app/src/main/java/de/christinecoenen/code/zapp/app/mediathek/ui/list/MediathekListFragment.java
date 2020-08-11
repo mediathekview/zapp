@@ -23,6 +23,7 @@ import java.util.List;
 import javax.net.ssl.SSLHandshakeException;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
@@ -73,7 +74,8 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		queryRequest = new QueryRequest()
 			.setSize(ITEM_COUNT_PER_PAGE);
 
-		mediathekRepository = new MediathekRepository();
+		ZappApplicationBase app = (ZappApplicationBase) requireContext().getApplicationContext();
+		mediathekRepository = app.getMediathekRepository();
 	}
 
 	@Override

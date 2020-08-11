@@ -4,7 +4,6 @@
 	package="de.christinecoenen.code.zapp">
 
 	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -113,12 +112,6 @@
 			android:authorities="de.christinecoenen.code.zapp.MediathekSearchSuggestionsProvider"
 			android:exported="false" />
 
-		<receiver android:name=".app.mediathek.controller.DownloadReceiver">
-			<intent-filter>
-				<action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
-			</intent-filter>
-		</receiver>
-
 		<receiver
 			android:name=".utils.system.PackageUpdateReceiver"
 			android:enabled="true"
@@ -127,6 +120,12 @@
 				<action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
 			</intent-filter>
 		</receiver>
+
+		<receiver
+			android:name=".app.mediathek.controller.DownloadReceiver"
+			android:enabled="true"
+			android:exported="false" />
+
 	</application>
 
 </manifest>
