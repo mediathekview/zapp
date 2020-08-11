@@ -50,16 +50,12 @@
 	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
 	<string name="error_mediathek_called_without_show">Error: No show handed over.</string>
 	<string name="error_mediathek_no_download_manager">Error: No download manager available. </string>
-	<string name="error_mediathek_invalid_url">Error: Download url is invalid.</string>
-	<string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
+    <string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
 
 	<string name="error_prefixed_message">Error: %s</string>
 
-	<string name="error_mediathek_some_downloads_not_available">Unfortunately some show qualities are not available for download.</string>
-
 
 	<!-- menus & buttons -->
-	<string name="action_cancel">Cancel</string>
 	<string name="action_share">Share</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>

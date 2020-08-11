@@ -19,7 +19,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.net.UnknownServiceException;
 import java.util.List;
-import java.util.Objects;
 
 import javax.net.ssl.SSLHandshakeException;
 

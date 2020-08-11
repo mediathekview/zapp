@@ -22,6 +22,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Objects;
+
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		setSupportActionBar(binding.toolbar);
 
-		ActionBar actionbar = getSupportActionBar();
+		ActionBar actionbar = Objects.requireNonNull(getSupportActionBar());
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 

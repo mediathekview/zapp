@@ -7,7 +7,7 @@ public enum Quality {
 	Medium(R.string.fragment_mediathek_qualities_medium),
 	High(R.string.fragment_mediathek_qualities_high);
 
-	private int labelResId;
+	private final int labelResId;
 
 	Quality(int labelResId) {
 		this.labelResId = labelResId;

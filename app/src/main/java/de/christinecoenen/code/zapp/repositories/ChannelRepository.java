@@ -31,6 +31,7 @@ public class ChannelRepository {
 	private final Context context;
 	private final ISortableChannelList channelList;
 	private Map<String, ChannelInfo> channelInfoList;
+
 	@SuppressLint("CheckResult")
 	public ChannelRepository(Context context) {
 		this.context = context;
@@ -73,7 +74,10 @@ public class ChannelRepository {
 		for (String channelId : channelInfoList.keySet()) {
 			ChannelModel channel = channelList.get(channelId);
 			if (channel != null) {
-				channel.setStreamUrl(channelInfoList.get(channelId).getStreamUrl());
+				ChannelInfo channelInfo = channelInfoList.get(channelId);
+				if (channelInfo != null) {
+					channel.setStreamUrl(channelInfo.getStreamUrl());
+				}
 			}
 		}
 	}

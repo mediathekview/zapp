@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import de.christinecoenen.code.zapp.R;
@@ -64,11 +65,19 @@ public class SettingsRepository {
 	}
 
 	public int getUiMode() {
-		String uiMode = preferences.getString(context.getString(R.string.pref_key_ui_mode), "0");
+		String uiMode = preferences.getString(context.getString(R.string.pref_key_ui_mode), null);
 		return prefValueToUiMode(uiMode);
 	}
 
-	public int prefValueToUiMode(String prefSetting) {
+	public int prefValueToUiMode(@Nullable String prefSetting) {
+		int defaultMode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ?
+			AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM :
+			AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+
+		if (prefSetting == null) {
+			return defaultMode;
+		}
+
 		switch (prefSetting) {
 			case "light":
 				// light
@@ -78,9 +87,7 @@ public class SettingsRepository {
 				return AppCompatDelegate.MODE_NIGHT_YES;
 			default:
 				// default
-				return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ?
-					AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM :
-					AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+				return defaultMode;
 		}
 	}
 }
