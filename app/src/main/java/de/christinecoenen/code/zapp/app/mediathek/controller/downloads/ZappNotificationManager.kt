@@ -113,11 +113,13 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 		if (downloadNotification.isFailed || downloadNotification.isCompleted) {
 			notificationBuilder.setProgress(0, 0, false)
+			notificationBuilder.setAutoCancel(true)
 		} else {
 			val progressIndeterminate = downloadNotification.progressIndeterminate
 			val maxProgress = if (downloadNotification.progressIndeterminate) 0 else 100
 			val progress = if (downloadNotification.progress < 0) 0 else downloadNotification.progress
 			notificationBuilder.setProgress(maxProgress, progress, progressIndeterminate)
+			notificationBuilder.setAutoCancel(false)
 		}
 
 		when {
@@ -297,6 +299,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 				.setGroup(groupId.toString())
 				.setOnlyAlertOnce(true)
 				.setSmallIcon(android.R.drawable.stat_sys_download_done)
+				.setAutoCancel(false)
 				.mActions.clear()
 
 			return notificationBuilder
