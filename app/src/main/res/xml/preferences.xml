@@ -31,7 +31,7 @@
 			android:entries="@array/pref_stream_quality_cellular_names"
 			android:entryValues="@array/pref_stream_quality_cellular_values"
 			android:key="@string/pref_key_stream_quality_cellular"
-			android:title="Videoqualität im Mobilfunknetz"
+			android:title="@string/pref_stream_quality_cellular_title"
 			app:useSimpleSummaryProvider="true" />
 
 		<SwitchPreference

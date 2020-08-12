@@ -86,6 +86,8 @@
 	<string name="pref_detail_landscape_title">Videos always in landscape mode</string>
 	<string name="pref_detail_landscape_summary">Locks the app in landscape mode as long as a video is playing</string>
 
+	<string name="pref_stream_quality_cellular_title">"Video quality over cellular networks "</string>
+
 	<string name="pref_download_wifi_only_title">Download over Wifi only</string>
 	<string name="pref_download_wifi_only_summary">Videos won\'t download when your device has a mobile connection</string>
 
