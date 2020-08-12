@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.media.session.MediaSessionCompat;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
@@ -31,6 +29,7 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
+import androidx.annotation.NonNull;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket;
@@ -290,7 +289,7 @@ public class Player {
 	}
 
 	private StreamQualityBucket getRequiredStreamQualityBucket() {
-		return networkConnectionHelper.isConnectedToWifi() ? StreamQualityBucket.HIGHEST : settings.getCellularStreamQuality();
+		return networkConnectionHelper.isConnectedToWifiOrEthernet() ? StreamQualityBucket.HIGHEST : settings.getCellularStreamQuality();
 	}
 
 	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {

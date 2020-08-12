@@ -21,12 +21,13 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.model.json.JsonChannelList;
 import timber.log.Timber;
 
-import static de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity.EXTRA_CHANNEL_ID;
 
 /**
  * helper class to install channel and program starters an Android TV.
  */
 public class TvHelper {
+
+	public static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
 	private static final String[] CHANNELS_PROJECTION = {
 		TvContractCompat.Channels._ID,
