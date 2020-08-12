@@ -30,8 +30,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding;
 import de.christinecoenen.code.zapp.utils.system.MenuHelper;
-
-import static de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity.EXTRA_CHANNEL_ID;
+import de.christinecoenen.code.zapp.utils.system.TvHelper;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener {
 
@@ -168,8 +167,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		}
 		// Android TV program starters will send this action and the desired channel to play as extra
 		if ("play".equals(intent.getAction()) && intent.getExtras()!=null) {
-			String channelId = intent.getExtras().getString(EXTRA_CHANNEL_ID);
-			startActivity(ChannelDetailActivity.getStartIntent(this, channelId));
+			startActivity(ChannelDetailActivity.getStartIntent(this,
+				intent.getExtras().getString(TvHelper.EXTRA_CHANNEL_ID)));
 		}
 	}
 

@@ -35,6 +35,7 @@ import de.christinecoenen.code.zapp.model.ChannelModel;
 import de.christinecoenen.code.zapp.model.IChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
+import de.christinecoenen.code.zapp.utils.system.TvHelper;
 import de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView;
 import de.christinecoenen.code.zapp.utils.view.ClickableViewPager;
 import de.christinecoenen.code.zapp.utils.view.ColorHelper;
@@ -44,8 +45,6 @@ import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class ChannelDetailActivity extends FullscreenActivity implements StreamPageFragment.Listener {
-
-	public static final String EXTRA_CHANNEL_ID = "de.christinecoenen.code.zapp.EXTRA_CHANNEL_ID";
 
 	private Toolbar toolbar;
 	private ClickableViewPager viewPager;
@@ -126,7 +125,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	public static Intent getStartIntent(Context context, String channelId) {
 		Intent intent = new Intent(context, ChannelDetailActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
-		intent.putExtra(EXTRA_CHANNEL_ID, channelId);
+		intent.putExtra(TvHelper.EXTRA_CHANNEL_ID, channelId);
 		return intent;
 	}
 
@@ -305,7 +304,7 @@ public class ChannelDetailActivity extends FullscreenActivity implements StreamP
 	private void parseIntent(Intent intent) {
 		Bundle extras = intent.getExtras();
 		//noinspection ConstantConditions
-		String channelId = extras.getString(EXTRA_CHANNEL_ID);
+		String channelId = extras.getString(TvHelper.EXTRA_CHANNEL_ID);
 
 		int channelPosition = channelList.indexOf(channelId);
 
