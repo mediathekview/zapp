@@ -50,15 +50,15 @@ public class DownloadController {
 		request.setTitle(show.getTitle());
 		request.allowScanningByMediaScanner();
 		request.setVisibleInDownloadsUi(true);
-		request.setAllowedOverMetered(!settingsRepository.getDownloadOverWifiOnly());
+		request.setAllowedOverMetered(!settingsRepository.getDownloadOverWifiOnly()); // FIXME I think we don't need this, because this request is never enqueued on mobile networks (see below)
 		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
 		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, "zapp/" + downloadFileName);
 
 		if (downloadManager == null || connectivityManager == null) {
 			throw new DownloadException("No download manager available.");
-		} else if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
-			throw new WrongNetworkConditionException("Download over metered networks prohibited.");
+		} else if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.getActiveNetworkInfo().getType()==ConnectivityManager.TYPE_MOBILE) {
+			throw new WrongNetworkConditionException("Download over mobile networks prohibited.");
 		}
 
 		return downloadManager.enqueue(request);

@@ -43,7 +43,7 @@ public class NetworkConnectionHelper {
 		context.unregisterReceiver(networkReceiver);
 	}
 
-	public boolean isConnectedToWifi() {
+	public boolean isConnectedToWifiOrEthernet() {
 		Context context = contextReference.get();
 		if (context == null) {
 			return false;
@@ -55,7 +55,7 @@ public class NetworkConnectionHelper {
 		NetworkInfo activeInfo = Objects.requireNonNull(connectionManager).getActiveNetworkInfo();
 		return activeInfo != null &&
 			activeInfo.isConnected() &&
-			activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
+			(activeInfo.getType() == ConnectivityManager.TYPE_WIFI || activeInfo.getType() == ConnectivityManager.TYPE_ETHERNET );
 	}
 
 
