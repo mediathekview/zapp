@@ -34,7 +34,7 @@
 	<string name="fragment_mediathek_qualities_medium">Mittel</string>
 	<string name="fragment_mediathek_qualities_high">Hoch</string>
 	<string name="fragment_mediathek_download">Download</string>
-	<string name="fragment_mediathek_download_retry">Download widerholen</string>
+	<string name="fragment_mediathek_download_retry">Download wiederholen</string>
 	<string name="fragment_mediathek_download_running">Download läuft…</string>
 	<string name="fragment_mediathek_download_delete">Download löschen</string>
 	<string name="fragment_mediathek_confirm_delete_dialog_title">Datei wirklich löschen?</string>
