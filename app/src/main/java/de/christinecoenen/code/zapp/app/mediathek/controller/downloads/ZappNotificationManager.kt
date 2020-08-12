@@ -361,7 +361,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 	private fun getContentIntent(downloadNotification: DownloadNotification): PendingIntent {
 		synchronized(downloadNotificationsMap) {
 			val intent = DownloadReceiver.getNotificationClickedIntent(context, downloadNotification.notificationId)
-			return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			return PendingIntent.getBroadcast(context, downloadNotification.notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 	}
 
