@@ -23,6 +23,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 	private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 	private val downloadNotificationsMap = mutableMapOf<Int, DownloadNotification>()
 	private val downloadNotificationsBuilderMap = mutableMapOf<Int, NotificationCompat.Builder>()
+	private val errorMap = mutableMapOf<Int, Error>()
 	private val downloadNotificationExcludeSet = mutableSetOf<Int>()
 
 	override val notificationManagerAction: String = "DEFAULT_FETCH2_NOTIFICATION_MANAGER_ACTION_" + System.currentTimeMillis()
@@ -106,6 +107,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			.setSmallIcon(smallIcon)
 			.setContentTitle(downloadNotification.title)
 			.setContentText(getSubtitleText(context, downloadNotification))
+			.setSubText(getSubSubtitleText(downloadNotification))
 			.setOngoing(downloadNotification.isOnGoingNotification)
 			.setGroup(downloadNotification.groupId.toString())
 			.setGroupSummary(false)
@@ -292,6 +294,7 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 				.setProgress(0, 0, false)
 				.setContentTitle(null)
 				.setContentText(null)
+				.setSubText(null)
 				.setContentIntent(null)
 				.setGroupSummary(false)
 				.setTimeoutAfter(DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET)
@@ -327,6 +330,13 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		}
 	}
 
+	private fun getSubSubtitleText(downloadNotification: DownloadNotification): String? {
+		return when {
+			downloadNotification.isFailed -> errorMap[downloadNotification.notificationId]?.toString()
+			else -> null
+		}
+	}
+
 	private fun postDownloadUpdate(download: Download, persistedShow: PersistedMediathekShow) {
 		return synchronized(downloadNotificationsMap) {
 			if (downloadNotificationsMap.size > 50) {
@@ -347,6 +357,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			downloadNotification.namespace = download.namespace
 			downloadNotification.title = persistedShow.mediathekShow.title
 			downloadNotificationsMap[download.id] = downloadNotification
+
+			if (download.error != Error.NONE) {
+				errorMap[downloadNotification.notificationId] = download.error
+			}
 
 			if (downloadNotificationExcludeSet.contains(downloadNotification.notificationId)
 				&& !downloadNotification.isFailed && !downloadNotification.isCompleted) {
