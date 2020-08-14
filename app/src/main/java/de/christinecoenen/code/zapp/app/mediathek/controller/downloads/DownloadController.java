@@ -142,6 +142,7 @@ public class DownloadController implements FetchListener {
 
 	@Override
 	public void onCancelled(@NonNull Download download) {
+		fetch.delete(download.getId());
 		updateDownloadStatus(download);
 		updateDownloadProgress(download, 0);
 	}
