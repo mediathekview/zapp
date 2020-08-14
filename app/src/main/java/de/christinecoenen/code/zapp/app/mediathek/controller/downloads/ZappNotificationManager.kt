@@ -127,9 +127,6 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		when {
 			downloadNotification.isDownloading -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
-					.addAction(R.drawable.fetch_notification_pause,
-						context.getString(R.string.fetch_notification_download_pause),
-						getActionPendingIntent(downloadNotification, DownloadNotification.ActionType.PAUSE))
 					.addAction(R.drawable.fetch_notification_cancel,
 						context.getString(R.string.fetch_notification_download_cancel),
 						getActionPendingIntent(downloadNotification, DownloadNotification.ActionType.CANCEL))
