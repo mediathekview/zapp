@@ -119,6 +119,7 @@ class DownloadFileInfoManager {
 		videoContentValues.put(MediaStore.Video.Media.DISPLAY_NAME, mediathekShow.getTitle());
 		videoContentValues.put(MediaStore.Video.Media.DESCRIPTION, mediathekShow.getDescription());
 		videoContentValues.put(MediaStore.Video.Media.CATEGORY, mediathekShow.getChannel());
+		videoContentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/Zapp");
 
 		ContentResolver resolver = applicationContext.getContentResolver();
 		// TODO: this might fail if media has already been inserted
