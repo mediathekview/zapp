@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -21,7 +20,7 @@ import java.util.Objects;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
@@ -46,6 +45,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 
 	private final CompositeDisposable createDisposables = new CompositeDisposable();
 	private final CompositeDisposable createViewDisposables = new CompositeDisposable();
+	private Disposable startDownloadDisposable;
 	private FragmentMediathekDetailBinding binding;
 	private MediathekRepository mediathekRepository;
 	private PersistedMediathekShow persistedMediathekShow;
@@ -298,15 +298,33 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	}
 
 	private void download(Quality downloadQuality) {
-		try {
-			downloadController.startDownload(persistedMediathekShow, downloadQuality);
-		} catch (WrongNetworkConditionException e) {
+		if (startDownloadDisposable != null && !startDownloadDisposable.isDisposed()) {
+			startDownloadDisposable.dispose();
+		}
+
+		startDownloadDisposable = downloadController
+			.startDownload(persistedMediathekShow, downloadQuality)
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(() -> {
+			}, this::onStartDownloadException);
+
+		createViewDisposables.add(startDownloadDisposable);
+	}
+
+	private void onStartDownloadException(Throwable throwable) {
+		if (throwable instanceof WrongNetworkConditionException) {
 			Snackbar snackbar = Snackbar
 				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.activity_settings_title, v -> startActivity(SettingsActivity.getStartIntent(getContext())));
 			snackbar.show();
-		} catch (DownloadException e) {
-			Toast.makeText(getContext(), R.string.error_mediathek_no_download_manager, Toast.LENGTH_LONG).show();
+		} else if (throwable instanceof NoNetworkException) {
+			Snackbar snackbar = Snackbar
+				.make(requireView(), R.string.error_mediathek_download_no_network, Snackbar.LENGTH_LONG);
+			snackbar.show();
+		} else {
+			Snackbar snackbar = Snackbar
+				.make(requireView(), R.string.error_mediathek_generic_start_download_error, Snackbar.LENGTH_LONG);
+			snackbar.show();
 		}
 	}
 }

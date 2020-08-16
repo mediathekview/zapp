@@ -51,8 +51,9 @@
 	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
 	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
-	<string name="error_mediathek_no_download_manager">Fehler: Download-Manager nicht verfügbar.</string>
+	<string name="error_mediathek_generic_start_download_error">Der download konnte nicht gestartet werden.</string>
 	<string name="error_mediathek_download_over_wifi_only">Download nur über WLAN erlaubt.</string>
+	<string name="error_mediathek_download_no_network">Kein Internet verfügbar.</string>
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 

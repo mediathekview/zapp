@@ -49,8 +49,9 @@
 	<string name="error_mediathek_info_not_available">An error occurred while loading the media center. Please check your internet connection.</string>
 	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
 	<string name="error_mediathek_called_without_show">Error: No show handed over.</string>
-	<string name="error_mediathek_no_download_manager">Error: No download manager available. </string>
+	<string name="error_mediathek_generic_start_download_error">The download could not be started.</string>
     <string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
+	<string name="error_mediathek_download_no_network">No internet connection available.</string>
 
 	<string name="error_prefixed_message">Error: %s</string>
 
