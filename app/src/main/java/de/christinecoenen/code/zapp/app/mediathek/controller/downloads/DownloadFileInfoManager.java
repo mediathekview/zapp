@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.tonyodev.fetch2.Download;
+import com.tonyodev.fetch2.Status;
 
 import java.io.File;
 import java.util.Set;
@@ -58,6 +59,22 @@ class DownloadFileInfoManager {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
 			String filePath = download.getFileUri().getPath();
 			MediaScannerConnection.scanFile(applicationContext, new String[]{filePath}, new String[]{"video/*"}, null);
+		} else {
+			ContentResolver resolver = applicationContext.getContentResolver();
+			switch (download.getStatus()) {
+				case DELETED:
+					try {
+						resolver.delete(download.getFileUri(), null, null);
+					} catch (SecurityException e) {
+						// maybe file is already deleted - that's okay
+					}
+					break;
+				case COMPLETED:
+					ContentValues videoContentValues = new ContentValues();
+					videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 0);
+					resolver.update(download.getFileUri(), videoContentValues, null, null);
+					break;
+			}
 		}
 	}
 
@@ -120,6 +137,7 @@ class DownloadFileInfoManager {
 		videoContentValues.put(MediaStore.Video.Media.DESCRIPTION, mediathekShow.getDescription());
 		videoContentValues.put(MediaStore.Video.Media.CATEGORY, mediathekShow.getChannel());
 		videoContentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/Zapp");
+		videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 1);
 
 		ContentResolver resolver = applicationContext.getContentResolver();
 		// TODO: this might fail if media has already been inserted
