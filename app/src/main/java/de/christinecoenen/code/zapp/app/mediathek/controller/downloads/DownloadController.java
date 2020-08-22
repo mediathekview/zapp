@@ -14,12 +14,12 @@ import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.NetworkType;
 import com.tonyodev.fetch2.Request;
 import com.tonyodev.fetch2.Status;
+import com.tonyodev.fetch2.database.DownloadInfo;
 import com.tonyodev.fetch2core.DownloadBlock;
 
 import org.joda.time.DateTime;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException;
@@ -31,6 +31,7 @@ import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class DownloadController implements FetchListener {
 
@@ -66,8 +67,38 @@ public class DownloadController implements FetchListener {
 	}
 
 	public Completable startDownload(PersistedMediathekShow show, Quality quality) {
-		return deleteDownloadAsync(show.getId())
-			.andThen(Completable.fromAction(() -> startDownloadInternal(show, quality)));
+
+		String downloadUrl = show.getMediathekShow().getVideoUrl(quality);
+
+		return getDownload(show.getDownloadId())
+			.flatMapCompletable(download -> {
+				if (download.getId() != 0 && download.getUrl().equals(downloadUrl)) {
+					// same quality --> retry
+					fetch.retry(show.getDownloadId());
+				} else {
+					// delete old file with wrong quality
+					fetch.delete(show.getDownloadId());
+
+					String filePath = downloadFileInfoManager.getDownloadFilePath(show.getMediathekShow(), quality);
+
+					Request request;
+					try {
+						request = new Request(downloadUrl, filePath);
+						request.setIdentifier(show.getId());
+					} catch (Exception e) {
+						throw new DownloadException("Constructing download request failed.", e);
+					}
+
+					show.setDownloadId(request.getId());
+					show.setDownloadedAt(DateTime.now());
+					show.setDownloadProgress(0);
+					mediathekRepository.updateShow(show);
+
+					enqueueDownload(request);
+				}
+
+				return Completable.complete();
+			});
 	}
 
 	public void stopDownload(int id) {
@@ -79,10 +110,11 @@ public class DownloadController implements FetchListener {
 	}
 
 	public void deleteDownload(int id) {
-		boolean success = deleteDownloadAsync(id).blockingAwait(500, TimeUnit.MILLISECONDS);
-		if (!success) {
-			throw new RuntimeException("deleteDownloadAsync timed out");
-		}
+		fetch.getDownloadsByRequestIdentifier(id, downloadList -> {
+			for (Download download : downloadList) {
+				fetch.delete(download.getId());
+			}
+		});
 	}
 
 	public Flowable<DownloadStatus> getDownloadStatus(String apiId) {
@@ -103,36 +135,17 @@ public class DownloadController implements FetchListener {
 		});
 	}
 
-	private Completable deleteDownloadAsync(int id) {
-		return Completable.create(emitter -> fetch.getDownloadsByRequestIdentifier(id, downloadList -> {
-			try {
-				for (Download download : downloadList) {
-					fetch.delete(download.getId());
-				}
-				emitter.onComplete();
-			} catch (Exception e) {
-				emitter.onError(e);
+	/**
+	 * @return download with the given id or empty download with id of 0
+	 */
+	private Single<Download> getDownload(int downloadId) {
+		return Single.create(emitter -> fetch.getDownload(downloadId, download -> {
+			if (download == null) {
+				emitter.onSuccess(new DownloadInfo());
+			} else {
+				emitter.onSuccess(download);
 			}
 		}));
-	}
-
-	private void startDownloadInternal(PersistedMediathekShow show, Quality quality) {
-		String downloadUrl = show.getMediathekShow().getVideoUrl(quality);
-		String filePath = downloadFileInfoManager.getDownloadFilePath(show.getMediathekShow(), quality);
-
-		Request request;
-		try {
-			request = new Request(downloadUrl, filePath);
-			request.setIdentifier(show.getId());
-		} catch (Exception e) {
-			throw new DownloadException("Constructing download request failed.", e);
-		}
-
-		show.setDownloadId(request.getId());
-		show.setDownloadedAt(DateTime.now());
-		mediathekRepository.updateShow(show);
-
-		enqueueDownload(request);
 	}
 
 	private void enqueueDownload(Request request) {
