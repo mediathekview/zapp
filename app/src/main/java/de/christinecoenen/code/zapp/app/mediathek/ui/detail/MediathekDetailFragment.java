@@ -325,6 +325,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			Snackbar snackbar = Snackbar
 				.make(requireView(), R.string.error_mediathek_generic_start_download_error, Snackbar.LENGTH_LONG);
 			snackbar.show();
+			Timber.e(throwable);
 		}
 	}
 }

@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.tonyodev.fetch2.Download;
-import com.tonyodev.fetch2.Status;
 
 import java.io.File;
 import java.util.Set;
+import java.util.UUID;
 
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
@@ -140,9 +140,19 @@ class DownloadFileInfoManager {
 		videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 1);
 
 		ContentResolver resolver = applicationContext.getContentResolver();
-		// TODO: this might fail if media has already been inserted
+		Uri fileUri = resolver.insert(videoMediaStoreUri, videoContentValues);
 
-		return resolver.insert(videoMediaStoreUri, videoContentValues);
+		if (fileUri == null) {
+			// Insertion failed because somewhere in MediaStore this file already exists.
+			// We cannot query for it, because we have no id and display name may have been changed
+			// by the system or app may no longer have rights to access it.
+			// We create a new file with slightly altered title as workaround.
+			videoContentValues.put(MediaStore.Video.Media.DISPLAY_NAME, mediathekShow.getTitle() + " (" + UUID.randomUUID().toString().substring(0, 5) + ")");
+
+			fileUri = resolver.insert(videoMediaStoreUri, videoContentValues);
+		}
+
+		return fileUri;
 	}
 
 	private boolean isMediaStoreFile(String path) {
