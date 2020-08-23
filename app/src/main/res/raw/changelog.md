@@ -1,3 +1,12 @@
+# 3.5.0
+* Text- und Übersetzungs-Fehler verbessert
+* Fehlertyp wird in Download-Fehler-Benachrichtigung angezeigt
+* Klick auf Download-Benachrichtigung führt nicht mehr zur falschen Sendung
+* Dateien abgebrochener Downloads werden gelöscht
+* Abstürze bei Downloads in verschiedenen Netzwerk-Typen behoben
+* Absturz behoben, wenn fehlerhafte Downloads nochmals aufgenommen werden
+* MediaStore-Handling auf Android 10 verbessert
+
 # 3.5.0 - Beta 1
 * Downloads auf SD-Karte möglich
 * Klick auf Download-Notificaton öffnet entsprechende Sendung
