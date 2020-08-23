@@ -73,7 +73,17 @@ public class DownloadController implements FetchListener {
 		return getDownload(show.getDownloadId())
 			.flatMapCompletable(download -> {
 				if (download.getId() != 0 && download.getUrl().equals(downloadUrl)) {
-					// same quality --> retry
+					// same quality as existing download
+					// save new settings to request
+					applySettingsToRequest(download.getRequest());
+					fetch.updateRequest(download.getId(), download.getRequest(), false, null, null);
+
+					// update show properties
+					show.setDownloadedAt(DateTime.now());
+					show.setDownloadProgress(0);
+					mediathekRepository.updateShow(show);
+
+					// retry
 					fetch.retry(show.getDownloadId());
 				} else {
 					// delete old file with wrong quality
@@ -89,6 +99,7 @@ public class DownloadController implements FetchListener {
 						throw new DownloadException("Constructing download request failed.", e);
 					}
 
+					// update show properties
 					show.setDownloadId(request.getId());
 					show.setDownloadedAt(DateTime.now());
 					show.setDownloadProgress(0);
@@ -149,6 +160,11 @@ public class DownloadController implements FetchListener {
 	}
 
 	private void enqueueDownload(Request request) {
+		applySettingsToRequest(request);
+		fetch.enqueue(request, null, null);
+	}
+
+	private void applySettingsToRequest(Request request) {
 		NetworkType networkType = settingsRepository.getDownloadOverWifiOnly() ?
 			NetworkType.WIFI_ONLY : NetworkType.ALL;
 		request.setNetworkType(networkType);
@@ -160,8 +176,6 @@ public class DownloadController implements FetchListener {
 		if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
 			throw new WrongNetworkConditionException("Download over metered networks prohibited.");
 		}
-
-		fetch.enqueue(request, null, null);
 	}
 
 	private void updateDownloadStatus(@NonNull Download download) {
