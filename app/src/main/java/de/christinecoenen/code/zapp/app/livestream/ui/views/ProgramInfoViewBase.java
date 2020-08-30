@@ -170,11 +170,11 @@ public abstract class ProgramInfoViewBase extends LinearLayout {
 
 		showTitleView.setText(currentShow.getTitle());
 
-		if (currentShow.getSubtitle() == null) {
-			showSubtitleView.setVisibility(GONE);
-		} else {
+		if (currentShow.hasSubtitle()) {
 			showSubtitleView.setText(currentShow.getSubtitle());
 			showSubtitleView.setVisibility(VISIBLE);
+		} else {
+			showSubtitleView.setVisibility(GONE);
 		}
 	}
 

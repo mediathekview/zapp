@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.livestream.model;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import org.joda.time.DateTime;
@@ -23,6 +25,10 @@ public class LiveShow {
 
 	public String getSubtitle() {
 		return subtitle;
+	}
+
+	public boolean hasSubtitle() {
+		return !TextUtils.isEmpty(subtitle);
 	}
 
 	public void setSubtitle(String subtitle) {
