@@ -138,7 +138,8 @@ dependencies {
 	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
 	// ACRA crash reporting
-	releaseImplementation 'ch.acra:acra:4.11.1'
+	implementation 'ch.acra:acra-mail:5.6.1'
+	implementation 'ch.acra:acra-dialog:5.6.1'
 
 	// timber logging
 	implementation 'com.jakewharton.timber:timber:4.7.1'
