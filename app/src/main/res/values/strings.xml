@@ -42,6 +42,8 @@
 
 	<!-- error messages -->
 	<string name="error_app_crash">Entschuldigung, Zapp ist abgestürzt.\nMöchtest zu einen Absturzbericht per Mail an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
+	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
+	<string name="error_app_crash_mail_body">Vielen Dank für die Rückmeldung!\n\nFolgende Informationen helfen den Entwicklern von Zapp, den Fehler zu beheben:\n</string>
 
 	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
 	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
