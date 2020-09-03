@@ -88,7 +88,7 @@
 		<item name="colorAccent">#bbffffff</item>
 	</style>
 
-	<style name="ChrashDialog" parent="Theme.MaterialComponents.Dialog">
+	<style name="ChrashDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
 		<item name="android:windowNoTitle">false</item>
 		<item name="android:windowIsFloating">true</item>
 		<item name="android:paddingStart">4dp</item>
