@@ -16,10 +16,15 @@ import com.tonyodev.fetch2.Request;
 import com.tonyodev.fetch2.Status;
 import com.tonyodev.fetch2.database.DownloadInfo;
 import com.tonyodev.fetch2core.DownloadBlock;
+import com.tonyodev.fetch2core.Downloader;
+import com.tonyodev.fetch2okhttp.OkHttpDownloader;
 
 import org.joda.time.DateTime;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException;
@@ -32,6 +37,8 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
 
 public class DownloadController implements FetchListener {
 
@@ -50,6 +57,19 @@ public class DownloadController implements FetchListener {
 
 		connectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+		CookieManager cookieManager = new CookieManager();
+		cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
+		OkHttpClient client = new OkHttpClient.Builder()
+			.readTimeout(40, TimeUnit.SECONDS) // fetch default: 20 seconds
+			.connectTimeout(30, TimeUnit.SECONDS) // fetch default: 15 seconds
+			.cache(null)
+			.followRedirects(true)
+			.followSslRedirects(true)
+			.retryOnConnectionFailure(false)
+			.cookieJar(new JavaNetCookieJar(cookieManager))
+			.build();
+
 		FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(applicationContext)
 			.setNotificationManager(new ZappNotificationManager(applicationContext, mediathekRepository) {
 				@NonNull
@@ -59,7 +79,10 @@ public class DownloadController implements FetchListener {
 				}
 			})
 			.enableRetryOnNetworkGain(false)
-			.setAutoRetryMaxAttempts(0)
+			.setAutoRetryMaxAttempts(2)
+			.setDownloadConcurrentLimit(1)
+			.setHttpDownloader(new OkHttpDownloader(client, Downloader.FileDownloaderType.PARALLEL))
+			.enableLogging(true)
 			.build();
 
 		fetch = Fetch.Impl.getInstance(fetchConfiguration);
