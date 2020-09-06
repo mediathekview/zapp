@@ -79,9 +79,10 @@ public class DownloadController implements FetchListener {
 				}
 			})
 			.enableRetryOnNetworkGain(false)
-			.setAutoRetryMaxAttempts(2)
+			.setAutoRetryMaxAttempts(0)
 			.setDownloadConcurrentLimit(1)
-			.setHttpDownloader(new OkHttpDownloader(client, Downloader.FileDownloaderType.PARALLEL))
+			.preAllocateFileOnCreation(false) // true causes downloads to sd card to hang
+			.setHttpDownloader(new OkHttpDownloader(client, Downloader.FileDownloaderType.SEQUENTIAL))
 			.enableLogging(true)
 			.build();
 
