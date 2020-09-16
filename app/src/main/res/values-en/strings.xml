@@ -39,7 +39,7 @@
 	<string name="fragment_mediathek_download_delete">Delete download</string>
 
 	<!-- error messages -->
-	<string name="error_app_crash">We are very sorry, but Zapp just crashed.\nWould you like to send a crash report to the developer to help fix this error?</string>
+	<string name="error_app_crash">We are very sorry, but an error occurred.\nWould you like to send an error report to the developer to help fix this problem?</string>
 	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
 	<string name="error_app_crash_mail_body">Thank you very much for this report!\n\nFollowing information will help fix this error:\n</string>
 

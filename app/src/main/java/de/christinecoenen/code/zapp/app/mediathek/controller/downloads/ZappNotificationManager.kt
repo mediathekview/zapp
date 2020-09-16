@@ -12,13 +12,17 @@ import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET
 import com.tonyodev.fetch2.util.onDownloadNotificationActionTriggered
+import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
+const val ACTION_TYPE_REPORT_ERROR = 42
+
 abstract class ZappNotificationManager(context: Context, private val mediathekRepository: MediathekRepository) : FetchNotificationManager {
 
+	private val application: ZappApplication = context.applicationContext as ZappApplication
 	private val context: Context = context.applicationContext
 	private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 	private val downloadNotificationsMap = mutableMapOf<Int, DownloadNotification>()
@@ -32,7 +36,19 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		get() = object : BroadcastReceiver() {
 
 			override fun onReceive(context: Context?, intent: Intent?) {
+				// handled by fetch
 				onDownloadNotificationActionTriggered(context, intent, this@ZappNotificationManager)
+
+				// handled by zapp - may be error report intent
+				if (intent != null) {
+					val actionType = intent.getIntExtra(EXTRA_ACTION_TYPE, ACTION_TYPE_INVALID)
+					val notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_ID_INVALID)
+
+					if (actionType == ACTION_TYPE_REPORT_ERROR && notificationId != NOTIFICATION_ID_INVALID) {
+						val error = errorMap[notificationId]
+						application.reportError(error!!.throwable)
+					}
+				}
 			}
 
 		}
@@ -142,6 +158,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			}
 			downloadNotification.isQueued -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
+			}
+			downloadNotification.isFailed -> {
+				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
+					.addAction(R.drawable.fetch_notification_cancel, "Report", getReportPendingIntent(downloadNotification))
 			}
 			else -> {
 				notificationBuilder.setTimeoutAfter(DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET)
@@ -324,6 +344,22 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			downloadNotification.isQueued -> context.getString(R.string.fetch_notification_download_starting)
 			downloadNotification.etaInMilliSeconds < 0 -> context.getString(R.string.fetch_notification_download_downloading)
 			else -> getEtaText(context, downloadNotification.etaInMilliSeconds)
+		}
+	}
+
+	private fun getReportPendingIntent(downloadNotification: DownloadNotification): PendingIntent {
+		synchronized(downloadNotificationsMap) {
+			val intent = Intent(notificationManagerAction)
+			intent.putExtra(EXTRA_NAMESPACE, downloadNotification.namespace)
+			intent.putExtra(EXTRA_DOWNLOAD_ID, downloadNotification.notificationId)
+			intent.putExtra(EXTRA_NOTIFICATION_ID, downloadNotification.notificationId)
+			intent.putExtra(EXTRA_GROUP_ACTION, false)
+			intent.putExtra(EXTRA_NOTIFICATION_GROUP_ID, downloadNotification.groupId)
+
+			val action = ACTION_TYPE_REPORT_ERROR
+
+			intent.putExtra(EXTRA_ACTION_TYPE, action)
+			return PendingIntent.getBroadcast(context, downloadNotification.notificationId + action, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 	}
 
