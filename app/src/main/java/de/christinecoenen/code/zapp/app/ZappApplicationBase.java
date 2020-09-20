@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import org.acra.ACRA;
 import org.acra.BuildConfig;
 import org.acra.ReportField;
 import org.acra.annotation.AcraCore;
@@ -20,6 +21,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import de.christinecoenen.code.zapp.persistence.Database;
 import de.christinecoenen.code.zapp.repositories.ChannelRepository;
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper;
+import timber.log.Timber;
 
 @AcraCore(buildConfigClass = BuildConfig.class,
 	reportFormat = StringFormat.KEY_VALUE_LIST,
@@ -74,6 +76,14 @@ public abstract class ZappApplicationBase extends Application {
 
 	public IPlaybackPositionRepository getPlaybackPositionRepository() {
 		return playbackPositionRepository;
+	}
+
+	public void reportError(Throwable throwable) {
+		if (ACRA.isInitialised()) {
+			ACRA.getErrorReporter().handleException(throwable);
+		}
+
+		Timber.e(throwable);
 	}
 
 	@Override
