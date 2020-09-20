@@ -161,7 +161,9 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			}
 			downloadNotification.isFailed -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
-					.addAction(R.drawable.fetch_notification_cancel, "Report", getReportPendingIntent(downloadNotification))
+					.addAction(R.drawable.fetch_notification_cancel,
+						context.getString(de.christinecoenen.code.zapp.R.string.error_report),
+						getReportPendingIntent(downloadNotification))
 			}
 			else -> {
 				notificationBuilder.setTimeoutAfter(DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET)
