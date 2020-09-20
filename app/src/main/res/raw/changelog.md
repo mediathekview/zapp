@@ -1,3 +1,8 @@
+# 3.5.1
+* Fehler beim Download auf SD-Karte behoben
+* Fehler-Melden-Button in Download-Benachrichtigung eingebaut
+* Downloads bei instabiler Internet-Verbindung verbessert
+
 # 3.5.0
 * Text- und Übersetzungs-Fehler verbessert
 * Fehlertyp wird in Download-Fehler-Benachrichtigung angezeigt

@@ -1,6 +1,3 @@
-* Stream von ARD repariert
-* Unbekannte Veröffentlichungsdaten markiert
-* Falscher Download-Dateiname auf Samsung-Geräten behoben
-* Fehlende Tastatur auf FireTV eingeblendet
-* App-Theme auf Material-Components umgestellt
-* Absturz beim Download behoben, wenn "..." im Dateinamen vorkommt
+* Fehler beim Download auf SD-Karte behoben
+* Fehler-Melden-Button in Download-Benachrichtigung eingebaut
+* Downloads bei instabiler Internet-Verbindung verbessert
