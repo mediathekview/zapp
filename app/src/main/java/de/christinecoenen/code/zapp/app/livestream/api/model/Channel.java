@@ -39,7 +39,10 @@ public enum Channel {
 	DEUTSCHE_WELLE_PLUS("deutsche_welle_plus"),
 
 	PARLAMENTSFERNSEHEN_1("parlamentsfernsehen_1"),
-	PARLAMENTSFERNSEHEN_2("parlamentsfernsehen_2");
+	PARLAMENTSFERNSEHEN_2("parlamentsfernsehen_2"),
+
+	EBS("ebs"),
+	EBS_PLUS("ebs_plus");
 
 	public static Channel getById(String id) {
 		for (Channel channel : Channel.values()) {
