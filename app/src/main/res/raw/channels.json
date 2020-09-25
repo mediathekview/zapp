@@ -243,14 +243,14 @@
 	{
 		"id": "ebs",
 		"name": "Europe by Satellite",
-		"stream_url": "https://euc-live.fl.freecaster.net/live/eucom/ebs-audio_int=96000-video=2600000.m3u8",
+		"stream_url": "https://euc-live.fl.freecaster.net/live/eucom/ebs.m3u8",
 		"logo_name": "channel_logo_ebs",
 		"color": "#004494"
 	},
 	{
 		"id": "ebs_plus",
 		"name": "Europe by Satellite +",
-		"stream_url": "https://euc-live.fl.freecaster.net/live/eucom/ebsp-audio_int=96000-video=2600000.m3u8",
+		"stream_url": "https://euc-live.fl.freecaster.net/live/eucom/ebsp.m3u8",
 		"logo_name": "channel_logo_ebs_plus",
 		"color": "#1E7755"
 	}
