@@ -57,3 +57,10 @@
 ## start exoplayer
 -dontwarn com.google.android.exoplayer2.upstream.DataSource
 ## end exopayer
+
+## start fetch
+-keep class com.tonyodev.fetch2.** { *; }
+-keep class com.tonyodev.fetch2core.** { *; }
+-keep interface com.tonyodev.fetch2.** { *; }
+-keep interface com.tonyodev.fetch2core.** { *; }
+## end fetch
