@@ -9,27 +9,23 @@ import android.support.v4.media.session.MediaSessionCompat;
 import androidx.annotation.NonNull;
 
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MergingMediaSource;
-import com.google.android.exoplayer2.source.SingleSampleMediaSource;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
@@ -44,7 +40,6 @@ import timber.log.Timber;
 public class Player {
 
 	private final static String SUBTITLE_LANGUAGE_ON = "deu";
-	private final static String SUBTITLE_LANGUAGE_OFF = "none";
 
 	private final IPlaybackPositionRepository playbackPositionRepository;
 	private final SimpleExoPlayer player;
@@ -67,18 +62,23 @@ public class Player {
 
 		String userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
 		TransferListener transferListener = new OnlyWifiTransferListener();
+		// TODO: we should use this to handle network changes
 		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, transferListener);
 		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
-		DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+		DefaultTrackSelector trackSelector = new DefaultTrackSelector(context, videoTrackSelectionFactory);
 
-		player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+		player = new SimpleExoPlayer
+			.Builder(context)
+			.setTrackSelector(trackSelector)
+			.build();
+
 		playerHandler = new Handler(player.getApplicationLooper());
 		trackSelectorWrapper = new TrackSelectorWrapper(trackSelector);
 
 		// media session setup
 		mediaSession = new MediaSessionCompat(context, context.getPackageName());
 		MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
-		mediaSessionConnector.setPlayer(player, null);
+		mediaSessionConnector.setPlayer(player);
 		mediaSession.setActive(true);
 
 		// audio focus setup
@@ -89,9 +89,6 @@ public class Player {
 		player.setAudioAttributes(audioAttributes, true);
 
 		playerEventHandler = new PlayerEventHandler();
-
-		// enable subtitles
-		enableSubtitles(settings.getEnableSubtitles());
 
 		// wakelocks
 		playerWakeLocks = new PlayerWakeLocks(context, "Zapp::Player");
@@ -105,7 +102,7 @@ public class Player {
 		networkConnectionHelper.startListenForNetworkChanges(this::setStreamQualityByNetworkType);
 	}
 
-	public void setView(PlayerView videoView) {
+	public void setView(StyledPlayerView videoView) {
 		videoView.setPlayer(player);
 	}
 
@@ -121,11 +118,13 @@ public class Player {
 		playerEventHandler.getErrorResourceId().onNext(-1);
 
 		currentVideoInfo = videoInfo;
-		MediaSource videoSource = getMediaSource(videoInfo);
+		MediaItem mediaItem = getMediaItem(videoInfo);
 		player.stop(true);
 
 		player.addAnalyticsListener(playerEventHandler);
-		player.prepare(videoSource);
+
+		player.addMediaItem(mediaItem);
+		player.prepare();
 
 		if (videoInfo.hasDuration()) {
 			Disposable loadPositionDisposable = playbackPositionRepository
@@ -153,23 +152,17 @@ public class Player {
 	}
 
 	public void rewind() {
-		player.seekTo(
+		// TODO: do we still need this?
+		/*player.seekTo(
 			Math.max(player.getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS, 0)
-		);
+		);*/
 	}
 
 	public void fastForward() {
-		player.seekTo(
+		// TODO: do we still need this?
+		/*player.seekTo(
 			Math.min(player.getCurrentPosition() + PlayerControlView.DEFAULT_FAST_FORWARD_MS, player.getDuration())
-		);
-	}
-
-	public void enableSubtitles() {
-		enableSubtitles(true);
-	}
-
-	public void disableSubtitles() {
-		enableSubtitles(false);
+		);*/
 	}
 
 	public Observable<Boolean> isBuffering() {
@@ -178,10 +171,6 @@ public class Player {
 
 	public boolean isIdle() {
 		return player.getPlaybackState() == com.google.android.exoplayer2.Player.STATE_IDLE;
-	}
-
-	public boolean isShowingSubtitles() {
-		return trackSelectorWrapper.areSubtitlesEnabled();
 	}
 
 	public Observable<Integer> getErrorResourceId() {
@@ -222,11 +211,6 @@ public class Player {
 		return player.getCurrentPosition();
 	}
 
-	private void enableSubtitles(boolean enabled) {
-		trackSelectorWrapper.enableSubtitles(enabled);
-		settings.setEnableSubtitles(enabled);
-	}
-
 	private void saveCurrentPlaybackPosition() {
 		if (currentVideoInfo == null) {
 			return;
@@ -236,28 +220,26 @@ public class Player {
 	}
 
 	@NonNull
-	private MediaSource getMediaSource(VideoInfo videoInfo) {
+	private MediaItem getMediaItem(VideoInfo videoInfo) {
 		StreamQualityBucket quality = getRequiredStreamQualityBucket();
-		Uri uri = Uri.parse(videoInfo.getPlaybackUrlOrFilePath(quality));
-		MediaSource mediaSource = getMediaSourceWithoutSubtitles(uri);
+		String uri = videoInfo.getPlaybackUrlOrFilePath(quality);
+		MediaItem.Builder mediaItemBuilder = new MediaItem.Builder().setUri(uri);
 
 		// add subtitles if present
 		if (videoInfo.hasSubtitles()) {
-			Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML, C.SELECTION_FLAG_DEFAULT, SUBTITLE_LANGUAGE_ON);
-			MediaSource textMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory)
-				.setTreatLoadErrorsAsEndOfStream(true)
-				.createMediaSource(Uri.parse(videoInfo.getSubtitleUrl()), textFormat, C.TIME_UNSET);
-			mediaSource = new MergingMediaSource(mediaSource, textMediaSource);
+			MediaItem.Subtitle subtitle =
+				new MediaItem.Subtitle(
+					Uri.parse(videoInfo.getSubtitleUrl()),
+					MimeTypes.TEXT_VTT,
+					SUBTITLE_LANGUAGE_ON,
+					C.SELECTION_FLAG_AUTOSELECT);
+
+			List<MediaItem.Subtitle> subtitles = new ArrayList<>();
+			subtitles.add(subtitle);
+			mediaItemBuilder.setSubtitles(subtitles);
 		}
 
-		// empty subtitle source to switch to
-		Format emptyTextFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_TTML, C.SELECTION_FLAG_DEFAULT, SUBTITLE_LANGUAGE_OFF);
-		MediaSource emptyTextMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory)
-			.setTreatLoadErrorsAsEndOfStream(true)
-			.createMediaSource(Uri.EMPTY, emptyTextFormat, 0);
-		mediaSource = new MergingMediaSource(mediaSource, emptyTextMediaSource);
-
-		return mediaSource;
+		return mediaItemBuilder.build();
 	}
 
 	private void setStreamQuality(StreamQualityBucket streamQuality) {
@@ -270,23 +252,6 @@ public class Player {
 			default:
 				trackSelectorWrapper.setStreamQuality(streamQuality);
 				break;
-		}
-	}
-
-	@NonNull
-	private MediaSource getMediaSourceWithoutSubtitles(Uri uri) {
-		int type = Util.inferContentType(uri);
-		switch (type) {
-			case C.TYPE_HLS:
-				return new HlsMediaSource.Factory(dataSourceFactory)
-					.createMediaSource(uri);
-			case C.TYPE_OTHER:
-				return new ExtractorMediaSource.Factory(dataSourceFactory)
-					.createMediaSource(uri);
-			case C.TYPE_DASH:
-			case C.TYPE_SS:
-			default:
-				throw new IllegalStateException("Unsupported type: " + type);
 		}
 	}
 

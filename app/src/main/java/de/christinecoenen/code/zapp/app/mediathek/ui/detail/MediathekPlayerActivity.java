@@ -13,14 +13,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.StyledPlayerControlView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplication;
@@ -41,7 +39,7 @@ import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class MediathekPlayerActivity extends AppCompatActivity implements
-	PlayerControlView.VisibilityListener {
+	StyledPlayerControlView.VisibilityListener {
 
 	private static final String EXTRA_PERSISTED_SHOW_ID = "de.christinecoenen.code.zapp.EXTRA_PERSISTED_SHOW_ID";
 
@@ -56,9 +54,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	private View fullscreenContent;
 	private SwipeablePlayerView videoView;
 	private TextView errorView;
-	private ProgressBar loadingIndicator;
-	private ImageButton captionButtonEnable;
-	private ImageButton captionButtonDisable;
 
 
 	private final CompositeDisposable pauseDisposables = new CompositeDisposable();
@@ -100,9 +95,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		fullscreenContent = binding.fullscreenContent;
 		videoView = binding.video;
 		errorView = binding.error;
-		loadingIndicator = binding.progress;
-		captionButtonEnable = binding.getRoot().findViewById(R.id.btn_caption_enable);
-		captionButtonDisable = binding.getRoot().findViewById(R.id.btn_caption_disable);
 
 		setSupportActionBar(binding.toolbar);
 
@@ -116,8 +108,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		videoView.requestFocus();
 
 		errorView.setOnClickListener(this::onErrorViewClick);
-		captionButtonDisable.setOnClickListener(this::onDisableCaptionsClick);
-		captionButtonEnable.setOnClickListener(this::onEnableCaptionsClick);
 	}
 
 	@Override
@@ -174,10 +164,8 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode);
 		if (isInPictureInPictureMode) {
 			videoView.setUseController(false);
-			videoView.hideControls();
 		} else {
 			videoView.setUseController(true);
-			videoView.showControls();
 		}
 	}
 
@@ -269,15 +257,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		player.load(videoInfo);
 		player.resume();
 
-		Disposable bufferingDisposable = player.isBuffering()
-			.subscribe(MediathekPlayerActivity.this::onBufferingChanged, Timber::e);
 		Disposable errorDisposable = player.getErrorResourceId()
 			.subscribe(MediathekPlayerActivity.this::onVideoError, Timber::e);
-		pauseDisposables.addAll(bufferingDisposable, errorDisposable);
+		pauseDisposables.addAll(errorDisposable);
 
 		binder.movePlaybackToForeground();
-
-		updateSubtitleButtons();
 
 		boolean isInPipMode = MultiWindowHelper.isInPictureInPictureMode(MediathekPlayerActivity.this);
 		onPictureInPictureModeChanged(isInPipMode);
@@ -289,20 +273,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		} else {
 			showError(messageResourceId);
 		}
-	}
-
-	private void onBufferingChanged(boolean isBuffering) {
-		loadingIndicator.setVisibility(isBuffering ? View.VISIBLE : View.INVISIBLE);
-	}
-
-	private void onDisableCaptionsClick(View view) {
-		player.disableSubtitles();
-		updateSubtitleButtons();
-	}
-
-	private void onEnableCaptionsClick(View view) {
-		player.enableSubtitles();
-		updateSubtitleButtons();
 	}
 
 	private void pauseActivity() {
@@ -333,11 +303,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 		BackgroundPlayerService.bind(this, backgroundPlayerServiceConnection);
 	}
 
-	private void updateSubtitleButtons() {
-		captionButtonEnable.setVisibility(player.getCurrentVideoInfo().hasSubtitles() && !player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
-		captionButtonDisable.setVisibility(player.isShowingSubtitles() ? View.VISIBLE : View.GONE);
-	}
-
 	private void showError(int messageResId) {
 		Timber.e(getString(messageResId));
 
@@ -346,7 +311,6 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 
 		errorView.setText(messageResId);
 		errorView.setVisibility(View.VISIBLE);
-		loadingIndicator.setVisibility(View.INVISIBLE);
 	}
 
 	private void hideError() {

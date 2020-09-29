@@ -185,7 +185,6 @@ public class BackgroundPlayerService extends IntentService implements
 			NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
 			this);
-		playerNotificationManager.setOngoing(false);
 		playerNotificationManager.setNotificationListener(this);
 		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
 		playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimaryDark));

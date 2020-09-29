@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.player;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -97,7 +99,7 @@ public class VideoInfo {
 
 	public boolean hasSubtitles() {
 		// no subtitle support for downloaded videos yet
-		return subtitleUrl != null && !isOfflineVideo();
+		return !TextUtils.isEmpty(subtitleUrl) && !isOfflineVideo();
 	}
 
 	public boolean isOfflineVideo() {
