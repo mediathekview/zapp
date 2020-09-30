@@ -31,7 +31,7 @@ import timber.log.Timber;
 
 public class Player {
 
-	private final static String SUBTITLE_LANGUAGE_ON = "deu";
+	private final static String LANGUAGE_GERMAN = "deu";
 
 	private final IPlaybackPositionRepository playbackPositionRepository;
 	private final SimpleExoPlayer player;
@@ -52,6 +52,9 @@ public class Player {
 		networkConnectionHelper = new NetworkConnectionHelper(context);
 
 		DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
+		trackSelector.setParameters(trackSelector
+			.buildUponParameters()
+			.setPreferredAudioLanguage(LANGUAGE_GERMAN));
 		trackSelectorWrapper = new TrackSelectorWrapper(trackSelector);
 
 		// audio focus setup
@@ -206,7 +209,7 @@ public class Player {
 				new MediaItem.Subtitle(
 					Uri.parse(videoInfo.getSubtitleUrl()),
 					MimeTypes.TEXT_VTT,
-					SUBTITLE_LANGUAGE_ON,
+					LANGUAGE_GERMAN,
 					C.SELECTION_FLAG_AUTOSELECT);
 
 			List<MediaItem.Subtitle> subtitles = new ArrayList<>();
