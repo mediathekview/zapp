@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.IBinder;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -50,7 +51,6 @@ public class BackgroundPlayerService extends IntentService implements
 	public static void bind(Context context, ServiceConnection serviceConnection) {
 		Intent intent = new Intent(context, BackgroundPlayerService.class);
 		context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-		// wird korrekt aufgerufen
 	}
 
 	private static void startInBackground(Context context) {
@@ -184,43 +184,48 @@ public class BackgroundPlayerService extends IntentService implements
 		playerNotificationManager = new PlayerNotificationManager(this,
 			NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
+			this,
 			this);
-		playerNotificationManager.setNotificationListener(this);
 		playerNotificationManager.setSmallIcon(R.drawable.ic_zapp_tv);
 		playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimaryDark));
 		playerNotificationManager.setPlayer(player.getExoPlayer());
 		playerNotificationManager.setMediaSessionToken(player.getMediaSession().getSessionToken());
 	}
 
+	@NonNull
 	@Override
-	public String getCurrentContentTitle(com.google.android.exoplayer2.Player player) {
+	public String getCurrentContentTitle(@NonNull com.google.android.exoplayer2.Player player) {
 		return this.player.getCurrentVideoInfo().getTitle();
 	}
 
 	@Override
-	public PendingIntent createCurrentContentIntent(com.google.android.exoplayer2.Player player) {
+	public PendingIntent createCurrentContentIntent(@NonNull com.google.android.exoplayer2.Player player) {
 		Timber.i("createCurrentContentIntent: %s", foregroundActivityIntent.getComponent());
 		// a notification click will bring us back to the activity that launched it
 		return PendingIntent.getActivity(this, 0, foregroundActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override
-	public String getCurrentContentText(com.google.android.exoplayer2.Player player) {
+	public String getCurrentContentText(@NonNull com.google.android.exoplayer2.Player player) {
 		return this.player.getCurrentVideoInfo().getSubtitle();
 	}
 
 	@Override
-	public Bitmap getCurrentLargeIcon(com.google.android.exoplayer2.Player player, PlayerNotificationManager.BitmapCallback callback) {
+	public Bitmap getCurrentLargeIcon(@NonNull com.google.android.exoplayer2.Player player, @NonNull PlayerNotificationManager.BitmapCallback callback) {
 		return null;
 	}
 
 	@Override
-	public void onNotificationStarted(int notificationId, Notification notification) {
-		startForeground(notificationId, notification);
+	public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
+		if (ongoing) {
+			startForeground(notificationId, notification);
+		} else {
+			stopForeground(false);
+		}
 	}
 
 	@Override
-	public void onNotificationCancelled(int notificationId) {
+	public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
 		movePlaybackToForeground();
 	}
 
