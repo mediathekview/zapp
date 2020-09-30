@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.player;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.NonNull;
@@ -13,16 +12,9 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.MimeTypes;
-import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +35,11 @@ public class Player {
 
 	private final IPlaybackPositionRepository playbackPositionRepository;
 	private final SimpleExoPlayer player;
-	private final DefaultDataSourceFactory dataSourceFactory;
 	private final TrackSelectorWrapper trackSelectorWrapper;
 	private final PlayerEventHandler playerEventHandler;
 	private final MediaSessionCompat mediaSession;
 	private final SettingsRepository settings;
 	private final NetworkConnectionHelper networkConnectionHelper;
-	private final Handler playerHandler;
 	private final CompositeDisposable disposables = new CompositeDisposable();
 
 	private VideoInfo currentVideoInfo;
@@ -59,12 +49,7 @@ public class Player {
 		settings = new SettingsRepository(context);
 		networkConnectionHelper = new NetworkConnectionHelper(context);
 
-		String userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
-		TransferListener transferListener = new OnlyWifiTransferListener();
-		// TODO: we should use this to handle network changes
-		dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, transferListener);
-		TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
-		DefaultTrackSelector trackSelector = new DefaultTrackSelector(context, videoTrackSelectionFactory);
+		DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
 
 		player = new SimpleExoPlayer
 			.Builder(context)
@@ -72,7 +57,6 @@ public class Player {
 			.setWakeMode(C.WAKE_MODE_NETWORK)
 			.build();
 
-		playerHandler = new Handler(player.getApplicationLooper());
 		trackSelectorWrapper = new TrackSelectorWrapper(trackSelector);
 
 		// media session setup
@@ -92,6 +76,7 @@ public class Player {
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(this::setStreamQualityByNetworkType);
+		setStreamQualityByNetworkType();
 	}
 
 	public void setView(StyledPlayerView videoView) {
@@ -255,25 +240,6 @@ public class Player {
 			return StreamQualityBucket.HIGHEST;
 		} else {
 			return settings.getCellularStreamQuality();
-		}
-	}
-
-	private class OnlyWifiTransferListener implements TransferListener {
-		@Override
-		public void onTransferInitializing(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-			playerHandler.post(Player.this::setStreamQualityByNetworkType);
-		}
-
-		@Override
-		public void onTransferStart(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-		}
-
-		@Override
-		public void onBytesTransferred(DataSource source, DataSpec dataSpec, boolean isNetwork, int bytesTransferred) {
-		}
-
-		@Override
-		public void onTransferEnd(DataSource source, DataSpec dataSpec, boolean isNetwork) {
 		}
 	}
 }
