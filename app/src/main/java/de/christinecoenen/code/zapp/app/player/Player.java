@@ -8,6 +8,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import androidx.annotation.NonNull;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultControlDispatcher;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
@@ -131,17 +132,15 @@ public class Player {
 	}
 
 	public void rewind() {
-		// TODO: do we still need this?
-		/*player.seekTo(
-			Math.max(player.getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS, 0)
-		);*/
+		player.seekTo(
+			Math.max(player.getCurrentPosition() - DefaultControlDispatcher.DEFAULT_REWIND_MS, 0)
+		);
 	}
 
 	public void fastForward() {
-		// TODO: do we still need this?
-		/*player.seekTo(
-			Math.min(player.getCurrentPosition() + PlayerControlView.DEFAULT_FAST_FORWARD_MS, player.getDuration())
-		);*/
+		player.seekTo(
+			Math.min(player.getCurrentPosition() + DefaultControlDispatcher.DEFAULT_FAST_FORWARD_MS, player.getDuration())
+		);
 	}
 
 	public Observable<Boolean> isBuffering() {

@@ -206,13 +206,11 @@ public class MediathekPlayerActivity extends AppCompatActivity implements
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
 			case KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD:
 			case KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD:
 			case KeyEvent.KEYCODE_MEDIA_REWIND:
 				player.rewind();
 				return true;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
 			case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
 			case KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD:
 			case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
