@@ -21,7 +21,6 @@ class PlayerEventHandler implements AnalyticsListener {
 	private final BehaviorSubject<Boolean> isBufferingSource = BehaviorSubject.create();
 	private final BehaviorSubject<Boolean> isIdleSource = BehaviorSubject.create();
 	private final BehaviorSubject<Integer> errorResourceIdSource = BehaviorSubject.create();
-	private final BehaviorSubject<Boolean> shouldHoldWakelockSource = BehaviorSubject.create();
 
 	BehaviorSubject<Boolean> isBuffering() {
 		return isBufferingSource;
@@ -35,25 +34,13 @@ class PlayerEventHandler implements AnalyticsListener {
 		return errorResourceIdSource;
 	}
 
-	/**
-	 * @return emits true when the player is playing or buffering and false
-	 * if it is idle, paused or stopped
-	 */
-	BehaviorSubject<Boolean> getShouldHoldWakelock() {
-		return shouldHoldWakelockSource;
-	}
-
 	@Override
-	public void onPlayerStateChanged(EventTime eventTime, boolean playWhenReady, int playbackState) {
+	public void onPlaybackStateChanged(EventTime eventTime, int playbackState) {
 		boolean isBuffering = playbackState == Player.STATE_BUFFERING;
 		isBufferingSource.onNext(isBuffering);
 
 		boolean isReady = playbackState == Player.STATE_IDLE;
 		isIdleSource.onNext(isReady);
-
-		boolean shouldHoldWakelock = playWhenReady &&
-			(playbackState == Player.STATE_BUFFERING || playbackState == Player.STATE_READY);
-		shouldHoldWakelockSource.onNext(shouldHoldWakelock);
 	}
 
 	@Override
@@ -71,6 +58,11 @@ class PlayerEventHandler implements AnalyticsListener {
 				break;
 			case ExoPlaybackException.TYPE_UNEXPECTED:
 				Timber.e(error, "exo player error TYPE_UNEXPECTED");
+				break;
+			case ExoPlaybackException.TYPE_OUT_OF_MEMORY:
+			case ExoPlaybackException.TYPE_REMOTE:
+			case ExoPlaybackException.TYPE_TIMEOUT:
+				Timber.e(error, "exo player error %s", error.type);
 				break;
 		}
 
