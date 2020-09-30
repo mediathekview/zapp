@@ -50,7 +50,6 @@ public class Player {
 	private final SettingsRepository settings;
 	private final NetworkConnectionHelper networkConnectionHelper;
 	private final Handler playerHandler;
-	private final PlayerWakeLocks playerWakeLocks;
 	private final CompositeDisposable disposables = new CompositeDisposable();
 
 	private VideoInfo currentVideoInfo;
@@ -70,6 +69,7 @@ public class Player {
 		player = new SimpleExoPlayer
 			.Builder(context)
 			.setTrackSelector(trackSelector)
+			.setWakeMode(C.WAKE_MODE_NETWORK)
 			.build();
 
 		playerHandler = new Handler(player.getApplicationLooper());
@@ -89,14 +89,6 @@ public class Player {
 		player.setAudioAttributes(audioAttributes, true);
 
 		playerEventHandler = new PlayerEventHandler();
-
-		// wakelocks
-		playerWakeLocks = new PlayerWakeLocks(context, "Zapp::Player");
-		Disposable wakelockDisposable = playerEventHandler
-			.getShouldHoldWakelock()
-			.distinctUntilChanged()
-			.subscribe(this::shouldHoldWakelockChanged);
-		disposables.add(wakelockDisposable);
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(this::setStreamQualityByNetworkType);
@@ -195,7 +187,6 @@ public class Player {
 	void destroy() {
 		saveCurrentPlaybackPosition();
 
-		playerWakeLocks.destroy();
 		disposables.clear();
 		networkConnectionHelper.endListenForNetworkChanges();
 		player.removeAnalyticsListener(playerEventHandler);
@@ -264,14 +255,6 @@ public class Player {
 			return StreamQualityBucket.HIGHEST;
 		} else {
 			return settings.getCellularStreamQuality();
-		}
-	}
-
-	private void shouldHoldWakelockChanged(boolean shouldHoldWakelock) {
-		if (shouldHoldWakelock) {
-			playerWakeLocks.acquire();
-		} else {
-			playerWakeLocks.release();
 		}
 	}
 
