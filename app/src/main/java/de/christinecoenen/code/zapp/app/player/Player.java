@@ -46,33 +46,32 @@ public class Player {
 
 	public Player(Context context, IPlaybackPositionRepository playbackPositionRepository) {
 		this.playbackPositionRepository = playbackPositionRepository;
+
+		playerEventHandler = new PlayerEventHandler();
 		settings = new SettingsRepository(context);
 		networkConnectionHelper = new NetworkConnectionHelper(context);
 
 		DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
-
-		player = new SimpleExoPlayer
-			.Builder(context)
-			.setTrackSelector(trackSelector)
-			.setWakeMode(C.WAKE_MODE_NETWORK)
-			.build();
-
 		trackSelectorWrapper = new TrackSelectorWrapper(trackSelector);
-
-		// media session setup
-		mediaSession = new MediaSessionCompat(context, context.getPackageName());
-		MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
-		mediaSessionConnector.setPlayer(player);
-		mediaSession.setActive(true);
 
 		// audio focus setup
 		AudioAttributes audioAttributes = new AudioAttributes.Builder()
 			.setUsage(C.USAGE_MEDIA)
 			.setContentType(C.CONTENT_TYPE_MOVIE)
 			.build();
-		player.setAudioAttributes(audioAttributes, true);
 
-		playerEventHandler = new PlayerEventHandler();
+		player = new SimpleExoPlayer
+			.Builder(context)
+			.setTrackSelector(trackSelector)
+			.setWakeMode(C.WAKE_MODE_NETWORK)
+			.setAudioAttributes(audioAttributes, true)
+			.build();
+
+		// media session setup
+		mediaSession = new MediaSessionCompat(context, context.getPackageName());
+		MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
+		mediaSessionConnector.setPlayer(player);
+		mediaSession.setActive(true);
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(this::setStreamQualityByNetworkType);
