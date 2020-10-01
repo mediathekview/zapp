@@ -106,7 +106,7 @@ public class Player {
 		player.addMediaItem(mediaItem);
 		player.prepare();
 
-		if (videoInfo.hasDuration()) {
+		if (videoInfo.getHasDuration()) {
 			Disposable loadPositionDisposable = playbackPositionRepository
 				.getPlaybackPosition(currentVideoInfo)
 				.observeOn(AndroidSchedulers.mainThread())
@@ -203,7 +203,7 @@ public class Player {
 		MediaItem.Builder mediaItemBuilder = new MediaItem.Builder().setUri(uri);
 
 		// add subtitles if present
-		if (videoInfo.hasSubtitles()) {
+		if (videoInfo.getHasSubtitles()) {
 			MediaItem.Subtitle subtitle =
 				new MediaItem.Subtitle(
 					Uri.parse(videoInfo.getSubtitleUrl()),
