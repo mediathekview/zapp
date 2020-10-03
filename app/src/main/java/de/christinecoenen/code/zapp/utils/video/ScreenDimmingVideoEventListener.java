@@ -19,14 +19,14 @@ class ScreenDimmingVideoEventListener implements Player.EventListener {
 	}
 
 	@Override
-	public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+	public void onPlaybackStateChanged(int playbackState) {
 		View view = viewToKeepScreenOn.get();
 
 		if (view == null) {
 			return;
 		}
 
-		if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED || !playWhenReady) {
+		if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED) {
 			view.setKeepScreenOn(false);
 		} else {
 			// This prevents the screen from getting dim/lock
