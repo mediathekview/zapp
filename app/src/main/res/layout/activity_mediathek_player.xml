@@ -15,15 +15,13 @@
 		android:layout_gravity="center"
 		android:animateLayoutChanges="true"
 		android:keepScreenOn="true"
-		app:controller_layout_id="@layout/activity_mediathek_player_controler" />
-
-	<ProgressBar
-		android:id="@+id/progress"
-		style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
-		android:indeterminate="true" />
+		app:auto_show="true"
+		app:hide_on_touch="true"
+		app:show_buffering="always"
+		app:show_next_button="false"
+		app:show_previous_button="false"
+		app:show_shuffle_button="false"
+		app:show_subtitle_button="true" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/error"

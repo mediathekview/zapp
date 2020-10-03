@@ -19,18 +19,16 @@ import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 
 
-public class SwipeablePlayerView extends PlayerView implements View.OnTouchListener, AspectRatioFrameLayout.AspectRatioListener {
+public class SwipeablePlayerView extends StyledPlayerView implements View.OnTouchListener, AspectRatioFrameLayout.AspectRatioListener {
 
 	private static final int INDICATOR_WIDTH = 300;
 
-	private PlayerControlView controlView;
 	private SettingsRepository settingsRepository;
 	private GestureDetector gestureDetector;
 	private ScaleGestureDetector scaleGestureDetector;
@@ -59,28 +57,13 @@ public class SwipeablePlayerView extends PlayerView implements View.OnTouchListe
 		view.setOnTouchListener(this);
 	}
 
+	// TODO: test if we can remove this
 	public void toggleControls() {
-		if (controlView.isVisible()) {
-			controlView.hide();
+		if (isControllerFullyVisible()) {
+			hideController();
 		} else {
-			controlView.show();
+			showController();
 		}
-	}
-
-	public void hideControls() {
-		controlView.hide();
-	}
-
-	public void showControls() {
-		controlView.show();
-	}
-
-	@Override
-	public boolean performClick() {
-		if (getUseController()) {
-			toggleControls();
-		}
-		return super.performClick();
 	}
 
 	@Override
@@ -93,7 +76,6 @@ public class SwipeablePlayerView extends PlayerView implements View.OnTouchListe
 	}
 
 	private void init(Context context) {
-		controlView = (PlayerControlView) getChildAt(2);
 		window = ((Activity) context).getWindow();
 		audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -216,7 +198,7 @@ public class SwipeablePlayerView extends PlayerView implements View.OnTouchListe
 		@Override
 		public boolean onDown(MotionEvent e) {
 			maxVerticalMovement = 0;
-			canUseWipeControls = !controlView.isVisible();
+			canUseWipeControls = !isControllerFullyVisible();
 			return super.onDown(e);
 		}
 

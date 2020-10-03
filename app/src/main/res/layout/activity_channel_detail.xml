@@ -22,6 +22,12 @@
 			android:layout_height="match_parent"
 			android:layout_gravity="center"
 			android:keepScreenOn="true"
+			app:auto_show="true"
+			app:hide_on_touch="true"
+			app:show_buffering="always"
+			app:show_next_button="false"
+			app:show_previous_button="false"
+			app:show_shuffle_button="false"
 			app:use_controller="false" />
 
 		<de.christinecoenen.code.zapp.utils.view.ClickableViewPager
