@@ -69,7 +69,7 @@
 	<string name="action_enable_subtitles">Untertitel aktivieren</string>
 	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
-	<string name="action_start_picture_in_picture">Bild im Bild (Beta)</string>
+	<string name="action_start_picture_in_picture">Bild im Bild</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
 
