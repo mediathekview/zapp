@@ -162,6 +162,7 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		return false;
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private void loadItems(int startWith, boolean replaceItems) {
 		Timber.d("loadItems: %s", startWith);
 

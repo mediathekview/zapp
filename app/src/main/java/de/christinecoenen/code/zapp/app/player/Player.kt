@@ -17,7 +17,6 @@ import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import timber.log.Timber
 
 class Player(context: Context, private val playbackPositionRepository: IPlaybackPositionRepository) {
@@ -44,7 +43,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		get() = Observable.combineLatest(
 			playerEventHandler.errorResourceId,
 			playerEventHandler.isIdle,
-			BiFunction<Int, Boolean, Int?> { errorResourceId: Int, isIdle: Boolean -> if (isIdle) errorResourceId else -1 })
+			{ errorResourceId, isIdle -> if (isIdle) errorResourceId else -1 })
 
 
 	private val playerEventHandler: PlayerEventHandler = PlayerEventHandler()

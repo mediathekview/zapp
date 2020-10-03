@@ -214,7 +214,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		/**
 		 * @return Player instance that will live as long as this service is up and running.
 		 */
-		fun getPlayer(): Player? {
+		fun getPlayer(): Player {
 			if (foregroundActivityIntent == null) {
 				throw RuntimeException("Using player without an intent is not allowed. " +
 					"Use BackgroundPlayerService.setForegroundActivityIntent.")
