@@ -1,3 +1,8 @@
+# 3.6.0
+* Fehler beim Download behoben
+* Fehler beim laden der Untertitel behoben
+* Einstellbare Wiedergabe-Geschwindigkeit
+
 # 3.5.1
 * Fehler beim Download auf SD-Karte behoben
 * Fehler-Melden-Button in Download-Benachrichtigung eingebaut
