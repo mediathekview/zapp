@@ -189,7 +189,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		if (videoInfo.hasSubtitles) {
 			val subtitle = MediaItem.Subtitle(
 				Uri.parse(videoInfo.subtitleUrl),
-				MimeTypes.TEXT_VTT,
+				videoInfo.subtitleUrl!!.toSubtitleMimeType(),
 				LANGUAGE_GERMAN,
 				C.SELECTION_FLAG_AUTOSELECT)
 
@@ -212,5 +212,13 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 
 	private fun setStreamQualityByNetworkType() {
 		setStreamQuality(requiredStreamQualityBucket)
+	}
+
+	private fun String.toSubtitleMimeType(): String {
+		return when {
+			endsWith("vtt", true) -> MimeTypes.TEXT_VTT
+			endsWith("xml", true) || endsWith("ttml", true) -> MimeTypes.APPLICATION_TTML
+			else -> MimeTypes.APPLICATION_TTML
+		}
 	}
 }
