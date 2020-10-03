@@ -57,7 +57,6 @@ public class SwipeablePlayerView extends StyledPlayerView implements View.OnTouc
 		view.setOnTouchListener(this);
 	}
 
-	// TODO: test if we can remove this
 	public void toggleControls() {
 		if (isControllerFullyVisible()) {
 			hideController();
