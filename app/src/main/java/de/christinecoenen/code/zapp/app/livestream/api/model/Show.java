@@ -7,7 +7,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 
-@SuppressWarnings({"unused", "CanBeFinal"})
+@SuppressWarnings({"CanBeFinal"})
 public class Show {
 
 	private static final DateTimeFormatter formatter = ISODateTimeFormat.dateTimeParser();

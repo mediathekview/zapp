@@ -39,7 +39,6 @@ public class DownloadReceiver extends BroadcastReceiver {
 			MediathekRepository mediathekRepository = application.getMediathekRepository();
 			int downloadId = intent.getIntExtra(EXTRA_DOWNLOAD_ID, 0);
 
-			//noinspection unused
 			Disposable loadShowDisposable = mediathekRepository
 				.getPersistedShowByDownloadId(downloadId)
 				.firstElement()

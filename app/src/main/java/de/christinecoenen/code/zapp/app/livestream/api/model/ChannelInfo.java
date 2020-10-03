@@ -3,7 +3,7 @@ package de.christinecoenen.code.zapp.app.livestream.api.model;
 
 import androidx.annotation.NonNull;
 
-@SuppressWarnings({"unused", "CanBeFinal"})
+@SuppressWarnings({"CanBeFinal"})
 public class ChannelInfo {
 
 	private String streamUrl;

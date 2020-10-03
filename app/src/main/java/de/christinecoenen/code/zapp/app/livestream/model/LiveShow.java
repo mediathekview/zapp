@@ -35,7 +35,6 @@ public class LiveShow {
 		this.subtitle = subtitle;
 	}
 
-	@SuppressWarnings("unused")
 	public void setDescription(String description) {
 		this.description = description;
 	}

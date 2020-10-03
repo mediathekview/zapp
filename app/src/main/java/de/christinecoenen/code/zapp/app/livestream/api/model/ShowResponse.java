@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-@SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "unused", "CanBeFinal"})
+@SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "CanBeFinal"})
 public class ShowResponse {
 
 	private List<Show> shows;

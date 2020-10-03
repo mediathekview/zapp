@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@SuppressWarnings("unused")
 public class MediathekShow implements Serializable {
 
 	private static final PeriodFormatter hourPeriodFormatter = new PeriodFormatterBuilder()

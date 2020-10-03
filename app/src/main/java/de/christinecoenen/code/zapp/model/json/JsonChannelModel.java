@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Transitional model to store parsed json data.
  */
-@SuppressWarnings({"CanBeFinal", "unused"})
+@SuppressWarnings({"CanBeFinal"})
 class JsonChannelModel {
 	@SerializedName("id")
 	String id;

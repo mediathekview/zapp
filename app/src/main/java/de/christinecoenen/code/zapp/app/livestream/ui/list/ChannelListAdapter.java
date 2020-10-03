@@ -19,7 +19,6 @@ import de.christinecoenen.code.zapp.model.IChannelList;
 
 class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = ChannelListAdapter.class.getSimpleName();
 
 	private final IChannelList channelList;

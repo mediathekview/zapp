@@ -5,7 +5,7 @@ import java.util.List;
 
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
 
-@SuppressWarnings({"CanBeFinal", "unused"})
+@SuppressWarnings({"CanBeFinal"})
 public class MediathekAnswerResult {
 
 	public List<MediathekShow> results;
