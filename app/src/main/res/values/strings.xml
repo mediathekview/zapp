@@ -66,8 +66,6 @@
 	<string name="action_continue">Weiter</string>
 	<string name="action_open">Öffnen</string>
 	<string name="action_send_mail">Mail senden</string>
-	<string name="action_enable_subtitles">Untertitel aktivieren</string>
-	<string name="action_disable_subtitles">Untertitel deaktivieren</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
 	<string name="action_start_picture_in_picture">Bild im Bild</string>
 
