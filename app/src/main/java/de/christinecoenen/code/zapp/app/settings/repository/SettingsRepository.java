@@ -18,8 +18,6 @@ public class SettingsRepository {
 	public SettingsRepository(Context context) {
 		this.context = context.getApplicationContext();
 
-		// TODO: migrate "pref_key_stream_wifi_only" bool to "pref_key_stream_quality_cellular" enum
-
 		preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
 	}
 
@@ -27,8 +25,8 @@ public class SettingsRepository {
 		return preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true);
 	}
 
-	public StreamQualityBucket getCellularStreamQuality() {
-		String quality = preferences.getString(context.getString(R.string.pref_key_stream_quality_cellular), null);
+	public StreamQualityBucket getMeteredNetworkStreamQuality() {
+		String quality = preferences.getString(context.getString(R.string.pref_key_stream_quality_over_metered_network), null);
 		if (quality == null) {
 			return StreamQualityBucket.DISABLED;
 		} else {
@@ -36,18 +34,8 @@ public class SettingsRepository {
 		}
 	}
 
-	public boolean getDownloadOverWifiOnly() {
-		return preferences.getBoolean(context.getString(R.string.pref_key_download_wifi_only), true);
-	}
-
-	public boolean getEnableSubtitles() {
-		return preferences.getBoolean(context.getString(R.string.pref_key_enable_subtitles), false);
-	}
-
-	public void setEnableSubtitles(boolean enabled) {
-		preferences.edit()
-			.putBoolean(context.getString(R.string.pref_key_enable_subtitles), enabled)
-			.apply();
+	public boolean getDownloadOverUnmeteredNetworkOnly() {
+		return preferences.getBoolean(context.getString(R.string.pref_key_download_over_unmetered_network_only), true);
 	}
 
 	public boolean getIsPlayerZoomed() {

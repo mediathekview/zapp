@@ -49,13 +49,13 @@
 	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
 	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
-	<string name="error_stream_not_in_wifi">Das Abspielen über Mobilverbindungen wurde in den Einstellungen deaktiviert.</string>
+	<string name="error_stream_not_in_unmetered_network">Das Abspielen über kostenpflichtige Netzwerke wurde in den Einstellungen deaktiviert.</string>
 
 	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
 	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
 	<string name="error_mediathek_called_without_show">Fehler: Keine Sendung übergeben.</string>
 	<string name="error_mediathek_generic_start_download_error">Der download konnte nicht gestartet werden.</string>
-	<string name="error_mediathek_download_over_wifi_only">Download nur über WLAN erlaubt.</string>
+	<string name="error_mediathek_download_over_unmetered_network_only">Download nur über kostenlose Netzwerke erlaubt.</string>
 	<string name="error_mediathek_download_no_network">Kein Internet verfügbar.</string>
 
 	<string name="error_prefixed_message">Fehler: %s</string>
@@ -90,10 +90,10 @@
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
 	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
 
-	<string name="pref_stream_quality_cellular_title">Videoqualität im Mobilfunknetz</string>
+	<string name="pref_stream_quality_cellular_title">Videoqualität in kostenpflichtigen Netzwerken</string>
 
-	<string name="pref_download_wifi_only_title">Nur über WLAN herunter laden</string>
-	<string name="pref_download_wifi_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät im Mobilfunknetz befindet</string>
+	<string name="pref_download_over_unmetered_network_only_title">Nur in kostenlosen Netzwerken herunter laden</string>
+	<string name="pref_download_over_unmetered_network_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät z.B. im Mobilfunknetz befindet</string>
 
 	<string name="pref_channel_selection_title">Sender anordnen</string>
 

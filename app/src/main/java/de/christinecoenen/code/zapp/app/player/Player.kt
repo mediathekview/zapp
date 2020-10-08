@@ -55,10 +55,10 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 
 
 	private val requiredStreamQualityBucket: StreamQualityBucket
-		get() = if (networkConnectionHelper.isConnectedToWifi || currentVideoInfo?.isOfflineVideo == true) {
+		get() = if (networkConnectionHelper.isConnectedToUnmeteredNetwork || currentVideoInfo?.isOfflineVideo == true) {
 			StreamQualityBucket.HIGHEST
 		} else {
-			settings.cellularStreamQuality
+			settings.meteredNetworkStreamQuality
 		}
 
 	private var millis: Long
@@ -98,7 +98,6 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges { setStreamQualityByNetworkType() }
-		setStreamQualityByNetworkType()
 	}
 
 	fun setView(videoView: StyledPlayerView) {
@@ -121,6 +120,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		exoPlayer.stop(true)
 		exoPlayer.addAnalyticsListener(playerEventHandler)
 		exoPlayer.addMediaItem(mediaItem)
+
 		exoPlayer.prepare()
 
 		if (videoInfo.hasDuration) {
@@ -131,6 +131,8 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 
 			disposables.add(loadPositionDisposable)
 		}
+
+		setStreamQualityByNetworkType()
 	}
 
 	fun recreate() {
@@ -202,8 +204,8 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		when (streamQuality) {
 			StreamQualityBucket.DISABLED -> {
 				exoPlayer.stop()
-				playerEventHandler.errorResourceId.onNext(R.string.error_stream_not_in_wifi)
 				exoPlayer.removeAnalyticsListener(playerEventHandler)
+				playerEventHandler.errorResourceId.onNext(R.string.error_stream_not_in_unmetered_network)
 			}
 			else -> trackSelectorWrapper.setStreamQuality(streamQuality)
 		}

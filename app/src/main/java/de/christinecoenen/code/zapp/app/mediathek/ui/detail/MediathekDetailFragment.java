@@ -314,7 +314,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 	private void onStartDownloadException(Throwable throwable) {
 		if (throwable instanceof WrongNetworkConditionException) {
 			Snackbar snackbar = Snackbar
-				.make(requireView(), R.string.error_mediathek_download_over_wifi_only, Snackbar.LENGTH_LONG);
+				.make(requireView(), R.string.error_mediathek_download_over_unmetered_network_only, Snackbar.LENGTH_LONG);
 			snackbar.setAction(R.string.activity_settings_title, v -> startActivity(SettingsActivity.getStartIntent(getContext())));
 			snackbar.show();
 		} else if (throwable instanceof NoNetworkException) {

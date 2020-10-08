@@ -30,15 +30,15 @@
 			android:defaultValue="disabled"
 			android:entries="@array/pref_stream_quality_cellular_names"
 			android:entryValues="@array/pref_stream_quality_cellular_values"
-			android:key="@string/pref_key_stream_quality_cellular"
+			android:key="@string/pref_key_stream_quality_over_metered_network"
 			android:title="@string/pref_stream_quality_cellular_title"
 			app:useSimpleSummaryProvider="true" />
 
 		<SwitchPreference
 			android:defaultValue="true"
-			android:key="@string/pref_key_download_wifi_only"
-			android:summary="@string/pref_download_wifi_only_summary"
-			android:title="@string/pref_download_wifi_only_title" />
+			android:key="@string/pref_key_download_over_unmetered_network_only"
+			android:summary="@string/pref_download_over_unmetered_network_only_summary"
+			android:title="@string/pref_download_over_unmetered_network_only_title" />
 
 	</PreferenceCategory>
 

@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
+import androidx.core.net.ConnectivityManagerCompat;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 
 
 public class NetworkConnectionHelper {
@@ -43,7 +43,7 @@ public class NetworkConnectionHelper {
 		context.unregisterReceiver(networkReceiver);
 	}
 
-	public boolean isConnectedToWifi() {
+	public boolean isConnectedToUnmeteredNetwork() {
 		Context context = contextReference.get();
 		if (context == null) {
 			return false;
@@ -52,10 +52,8 @@ public class NetworkConnectionHelper {
 		ConnectivityManager connectionManager = (ConnectivityManager)
 			context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		NetworkInfo activeInfo = Objects.requireNonNull(connectionManager).getActiveNetworkInfo();
-		return activeInfo != null &&
-			activeInfo.isConnected() &&
-			activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
+
+		return !ConnectivityManagerCompat.isActiveNetworkMetered(connectionManager);
 	}
 
 

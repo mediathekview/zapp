@@ -47,13 +47,13 @@
 	<string name="error_stream_unknown">The video could not be played because of an unknown error.</string>
 	<string name="error_stream_io">The video could not be loaded. Maybe you have no internet connection or this video is not available in your country.</string>
 	<string name="error_stream_unsupported">The video is broken or the format is not supported.</string>
-	<string name="error_stream_not_in_wifi">Playback over mobile connections has been disabled in the settings.</string>
+	<string name="error_stream_not_in_unmetered_network">Playback over metered connections has been disabled in the settings.</string>
 
 	<string name="error_mediathek_info_not_available">An error occurred while loading the media center. Please check your internet connection.</string>
 	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
 	<string name="error_mediathek_called_without_show">Error: No show handed over.</string>
 	<string name="error_mediathek_generic_start_download_error">The download could not be started.</string>
-    <string name="error_mediathek_download_over_wifi_only">Download allowed over Wifi only</string>
+    <string name="error_mediathek_download_over_unmetered_network_only">Download allowed over unmetered networks only</string>
 	<string name="error_mediathek_download_no_network">No internet connection available.</string>
 
 	<string name="error_prefixed_message">Error: %s</string>
@@ -88,10 +88,10 @@
 	<string name="pref_detail_landscape_title">Videos always in landscape mode</string>
 	<string name="pref_detail_landscape_summary">Locks the app in landscape mode as long as a video is playing</string>
 
-	<string name="pref_stream_quality_cellular_title">"Video quality over cellular networks "</string>
+	<string name="pref_stream_quality_cellular_title">Video quality over metered networks</string>
 
-	<string name="pref_download_wifi_only_title">Download over Wifi only</string>
-	<string name="pref_download_wifi_only_summary">Videos won\'t download when your device has a mobile connection</string>
+	<string name="pref_download_over_unmetered_network_only_title">Download over unmetered networks only</string>
+	<string name="pref_download_over_unmetered_network_only_summary">Videos won\'t download when your device uses for example a mobile connection</string>
 
 	<string name="pref_channel_selection_title">Channel order</string>
 

@@ -189,15 +189,15 @@ public class DownloadController implements FetchListener {
 	}
 
 	private void applySettingsToRequest(Request request) {
-		NetworkType networkType = settingsRepository.getDownloadOverWifiOnly() ?
-			NetworkType.WIFI_ONLY : NetworkType.ALL;
+		NetworkType networkType = settingsRepository.getDownloadOverUnmeteredNetworkOnly() ?
+			NetworkType.UNMETERED : NetworkType.ALL;
 		request.setNetworkType(networkType);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && connectivityManager.getActiveNetwork() == null) {
 			throw new NoNetworkException("No active network available.");
 		}
 
-		if (settingsRepository.getDownloadOverWifiOnly() && connectivityManager.isActiveNetworkMetered()) {
+		if (settingsRepository.getDownloadOverUnmeteredNetworkOnly() && connectivityManager.isActiveNetworkMetered()) {
 			throw new WrongNetworkConditionException("Download over metered networks prohibited.");
 		}
 	}
