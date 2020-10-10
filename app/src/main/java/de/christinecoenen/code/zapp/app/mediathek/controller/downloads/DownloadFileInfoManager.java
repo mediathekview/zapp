@@ -15,6 +15,8 @@ import androidx.annotation.RequiresApi;
 
 import com.tonyodev.fetch2.Download;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.util.Set;
 import java.util.UUID;
@@ -31,6 +33,12 @@ class DownloadFileInfoManager {
 	DownloadFileInfoManager(Context applicationContext, SettingsRepository settingsRepository) {
 		this.applicationContext = applicationContext;
 		this.settingsRepository = settingsRepository;
+	}
+
+	void deleteDownloadFile(Download download) {
+		File file = new File(download.getFile());
+		FileUtils.deleteQuietly(file);
+		updateDownloadFileInMediaCollection(download);
 	}
 
 	boolean shouldDeleteDownload(Download download) {
@@ -63,6 +71,7 @@ class DownloadFileInfoManager {
 			ContentResolver resolver = applicationContext.getContentResolver();
 			switch (download.getStatus()) {
 				case DELETED:
+				case FAILED:
 					try {
 						resolver.delete(download.getFileUri(), null, null);
 					} catch (SecurityException e) {

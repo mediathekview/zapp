@@ -244,6 +244,7 @@ public class DownloadController implements FetchListener {
 
 	@Override
 	public void onError(@NonNull Download download, @NonNull Error error, Throwable throwable) {
+		downloadFileInfoManager.deleteDownloadFile(download);
 		updateDownloadStatus(download);
 	}
 
