@@ -18,8 +18,8 @@ Zapp gibt dir schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Ferns
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
-<img src="app/src/main/play/de-DE/listing/phoneScreenshots/02_live_video.png" width="49%" alt="video screen" /><img src="app/src/main/play/de-DE/listing/phoneScreenshots/06_mediathek_player.png" width="49%" alt="video screen" /><br>
-<img src="app/src/main/play/de-DE/listing/phoneScreenshots/01_live.png" width="33%" alt="main screen" /><img src="app/src/main/play/de-DE/listing/phoneScreenshots/04_mediathek_search.png" width="33%" alt="arrange screen" /><img src="app/src/main/play/de-DE/listing/phoneScreenshots/05_mediathek_details.png" width="33%" alt="settings screen" />
+<img src="app/src/main/play/listings/de/phone-screenshots/02_live_video.png" width="49%" alt="video screen" /><img src="app/src/main/play/listings/de/phone-screenshots/06_mediathek_player.png" width="49%" alt="video screen" /><br>
+<img src="app/src/main/play/listings/de/phone-screenshots/01_live.png" width="33%" alt="main screen" /><img src="app/src/main/play/listings/de/phone-screenshots/04_mediathek_search.png" width="33%" alt="arrange screen" /><img src="app/src/main/play/listings/de/phone-screenshots/05_mediathek_details.png" width="33%" alt="settings screen" />
 
 ---------------------
 
