@@ -5,7 +5,7 @@
 	<string name="aboutLibraries_description_showVersion" translatable="false">true</string>
 	<string name="aboutLibraries_description_text" translatable="false">@string/activity_about_summary</string>
 
-	<string name="aboutLibraries_description_special1_name" translatable="false">@string/activity_faq_title</string>
-	<string name="aboutLibraries_description_special2_name" translatable="false">@string/activity_changelog_title</string>
+	<string name="aboutLibraries_description_special1_name" translatable="false">@string/activity_changelog_title</string>
+	<string name="aboutLibraries_description_special2_name" translatable="false">@string/activity_faq_title</string>
 	<string name="aboutLibraries_description_special3_name" translatable="false">@string/menu_feedback</string>
 </resources>

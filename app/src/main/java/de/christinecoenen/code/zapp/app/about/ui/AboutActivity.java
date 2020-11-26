@@ -32,10 +32,10 @@ public class AboutActivity extends LibsActivity {
 		public boolean onExtraClicked(@NonNull View view, Libs.SpecialButton specialButton) {
 			switch (specialButton) {
 				case SPECIAL1:
-					startActivity(FaqActivity.getStartIntent(AboutActivity.this));
+					startActivity(ChangelogActivity.getStartIntent(AboutActivity.this));
 					return true;
 				case SPECIAL2:
-					startActivity(ChangelogActivity.getStartIntent(AboutActivity.this));
+					startActivity(FaqActivity.getStartIntent(AboutActivity.this));
 					return true;
 				case SPECIAL3:
 					IntentHelper.sendMail(AboutActivity.this,
