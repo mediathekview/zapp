@@ -118,7 +118,7 @@
   {
 	"id": "mdr_sachsen",
 	"name": "MDR Sachsen",
-	"stream_url": "http://mdrsnhls-lh.akamaihd.net/i/livetvmdrsachsen_de@513998/master.m3u8",
+	"stream_url": "https://mdrtvsnhls.akamaized.net/hls/live/2016928/mdrtvsn/master.m3u8",
 	"logo_name": "channel_logo_mdr",
 	"subtitle": "Sachsen",
 	"color": "#0063AD"
@@ -126,7 +126,7 @@
   {
 	"id": "mdr_sachsen_anhalt",
 	"name": "MDR Sachsen-Anhalt",
-	"stream_url": "http://mdrsahls-lh.akamaihd.net/i/livetvmdrsachsenanhalt_de@513999/master.m3u8",
+	"stream_url": "https://mdrtvsahls.akamaized.net/hls/live/2016879/mdrtvsa/master.m3u8",
 	"logo_name": "channel_logo_mdr",
 	"subtitle": "Sachsen-Anhalt",
 	"color": "#0063AD"
@@ -134,7 +134,7 @@
   {
 	"id": "mdr_thueringen",
 	"name": "MDR Thüringen",
-	"stream_url": "http://mdrthuhls-lh.akamaihd.net/i/livetvmdrthueringen_de@514027/master.m3u8",
+	"stream_url": "https://mdrtvthhls.akamaized.net/hls/live/2016880/mdrtvth/master.m3u8",
 	"logo_name": "channel_logo_mdr",
 	"subtitle": "Thüringen",
 	"color": "#0063AD"
