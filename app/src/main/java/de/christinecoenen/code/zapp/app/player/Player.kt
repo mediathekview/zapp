@@ -73,7 +73,10 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		val trackSelector = DefaultTrackSelector(context).apply {
 			setParameters(this
 				.buildUponParameters()
-				.setPreferredAudioLanguage(LANGUAGE_GERMAN))
+				.setPreferredAudioLanguage(LANGUAGE_GERMAN)
+				.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings(context)
+				.setSelectUndeterminedTextLanguage(true)
+				.setDisabledTextTrackSelectionFlags(C.SELECTION_FLAG_DEFAULT))
 		}
 		trackSelectorWrapper = TrackSelectorWrapper(trackSelector)
 
