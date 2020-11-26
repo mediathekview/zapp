@@ -1,3 +1,10 @@
+# 3.6.1
+* Untertitel in Live-Streams abgeschaltet (können über die Android-Bedienungshilfe aktiviert werden)
+* Streams von MDR repariert
+* Abgeschnittene Texte in About-Screen behoben
+* Verbesserungen beim Erkennen von kostenpflichtigen vs. unbeschränkten Internet-Verbindungen
+* Metadaten in F-Droid repariert
+
 # 3.6.0
 * Fehler beim Download behoben
 * Fehler beim laden der Untertitel behoben
