@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+		android:id="@+id/menu_live"
+		android:icon="@drawable/ic_ondemand_video_white_24dp"
+		android:title="@string/activity_main_tab_live" />
+
+	<item
+		android:id="@+id/menu_mediathek"
+		android:icon="@drawable/ic_playlist_play_white_24dp"
+		android:title="@string/activity_main_tab_mediathek" />
+
+	<item
+		android:id="@+id/menu_downloads"
+		android:icon="@drawable/ic_file_download_white_24dp"
+		android:title="Downloads" />
+
+</menu>
