@@ -55,7 +55,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_gravity="bottom"
-		android:background="?android:attr/windowBackground"
 		app:menu="@menu/activity_test" />
 
 </RelativeLayout>
