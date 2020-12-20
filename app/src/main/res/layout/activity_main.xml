@@ -55,6 +55,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_gravity="bottom"
-		app:menu="@menu/activity_test" />
+		app:menu="@menu/activity_main_bottom_nav" />
 
 </RelativeLayout>
