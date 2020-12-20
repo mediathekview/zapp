@@ -46,7 +46,6 @@
 			android:parentActivityName=".app.about.ui.AboutActivity" />
 		<activity
 			android:name=".app.MainActivity"
-			android:label="@string/app_name"
 			android:launchMode="singleTop"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>

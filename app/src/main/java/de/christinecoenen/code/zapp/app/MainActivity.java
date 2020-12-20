@@ -101,13 +101,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		switch (position) {
 			case PAGE_MEDIATHEK_LIST:
-				setTitle(R.string.activity_main_tab_mediathek);
 				searchView.setVisibility(View.VISIBLE);
 				bottomNavigation.setSelectedItemId(R.id.menu_mediathek);
 				break;
 			case PAGE_CHANNEL_LIST:
 			default:
-				setTitle(R.string.activity_main_tab_live);
 				searchView.setVisibility(View.GONE);
 				bottomNavigation.setSelectedItemId(R.id.menu_live);
 				break;
@@ -192,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		return true;
 	}
 
-	private class MainPageAdapter extends FragmentPagerAdapter {
+	private static class MainPageAdapter extends FragmentPagerAdapter {
 
 		MainPageAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -212,17 +210,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 				case PAGE_MEDIATHEK_LIST:
 				default:
 					return MediathekListFragment.getInstance();
-			}
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-				case 0:
-					return getString(R.string.activity_main_tab_live);
-				case PAGE_MEDIATHEK_LIST:
-				default:
-					return getString(R.string.activity_main_tab_mediathek);
 			}
 		}
 	}
