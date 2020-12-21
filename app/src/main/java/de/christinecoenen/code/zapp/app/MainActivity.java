@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		searchView.setOnQueryTextListener(this);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		searchView.setIconified(false);
 		searchView.setIconifiedByDefault(false);
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		searchView.clearFocus();
@@ -92,6 +92,30 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_main_toolbar, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		Intent intent;
+
+		switch (item.getItemId()) {
+			case R.id.menu_about:
+				intent = AboutActivity.getStartIntent(this);
+				startActivity(intent);
+				return true;
+			case R.id.menu_settings:
+				intent = SettingsActivity.getStartIntent(this);
+				startActivity(intent);
+				return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 	}
 
@@ -101,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		switch (position) {
 			case PAGE_MEDIATHEK_LIST:
-				searchView.setVisibility(View.VISIBLE);
 				bottomNavigation.setSelectedItemId(R.id.menu_mediathek);
+				searchView.setVisibility(View.VISIBLE);
 				break;
 			case PAGE_CHANNEL_LIST:
 			default:
-				searchView.setVisibility(View.GONE);
 				bottomNavigation.setSelectedItemId(R.id.menu_live);
+				searchView.setVisibility(View.GONE);
 				break;
 		}
 	}
@@ -145,22 +169,12 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	}
 
 	private boolean onNavigationItemSelected(MenuItem menuItem) {
-		Intent intent;
-
 		switch (menuItem.getItemId()) {
 			case R.id.menu_live:
 				viewPager.setCurrentItem(PAGE_CHANNEL_LIST, false);
 				return true;
 			case R.id.menu_mediathek:
 				viewPager.setCurrentItem(PAGE_MEDIATHEK_LIST, false);
-				return true;
-			case R.id.menu_about:
-				intent = AboutActivity.getStartIntent(this);
-				startActivity(intent);
-				return true;
-			case R.id.menu_settings:
-				intent = SettingsActivity.getStartIntent(this);
-				startActivity(intent);
 				return true;
 		}
 
