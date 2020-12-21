@@ -23,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
+import de.christinecoenen.code.zapp.app.downloads.ui.DownloadsFragment;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSuggestionsProvider;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 	private static final String ARG_QUERY = "ARG_QUERY";
 	private static final int PAGE_CHANNEL_LIST = 0;
 	private static final int PAGE_MEDIATHEK_LIST = 1;
+	private static final int PAGE_DOWNLOADS = 2;
 
 	private ViewPager2 viewPager;
 	private SearchView searchView;
@@ -184,6 +186,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 			case R.id.menu_mediathek:
 				viewPager.setCurrentItem(PAGE_MEDIATHEK_LIST, false);
 				return true;
+			case R.id.menu_downloads:
+				viewPager.setCurrentItem(PAGE_DOWNLOADS, false);
+				return true;
 		}
 
 		return false;
@@ -225,14 +230,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 				case PAGE_CHANNEL_LIST:
 					return ChannelListFragment.getInstance();
 				case PAGE_MEDIATHEK_LIST:
-				default:
 					return MediathekListFragment.getInstance();
+				case PAGE_DOWNLOADS:
+				default:
+					return DownloadsFragment.Companion.newInstance();
 			}
 		}
 
 		@Override
 		public int getItemCount() {
-			return 2;
+			return 3;
 		}
 	}
 }

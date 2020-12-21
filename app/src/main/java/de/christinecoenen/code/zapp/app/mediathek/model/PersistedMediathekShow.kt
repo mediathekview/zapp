@@ -7,30 +7,30 @@ import androidx.room.PrimaryKey
 import org.joda.time.DateTime
 
 @Entity(indices = [Index(value = ["apiId"], unique = true)])
-class PersistedMediathekShow {
+data class PersistedMediathekShow(
 
 	@PrimaryKey(autoGenerate = true)
-	var id: Int = 0
+	var id: Int = 0,
 
-	var createdAt: DateTime = DateTime.now()
+	var createdAt: DateTime = DateTime.now(),
 
-	var downloadId = 0
+	var downloadId: Int = 0,
 
-	var downloadedAt: DateTime? = null
+	var downloadedAt: DateTime? = null,
 
-	var downloadedVideoPath: String? = null
+	var downloadedVideoPath: String? = null,
 
-	var downloadStatus: DownloadStatus = DownloadStatus.NONE
+	var downloadStatus: DownloadStatus = DownloadStatus.NONE,
 
-	var downloadProgress = 0
+	var downloadProgress: Int = 0,
 
-	var lastPlayedBackAt: DateTime? = null
+	var lastPlayedBackAt: DateTime? = null,
 
-	var playbackPosition = 0L
+	var playbackPosition: Long = 0,
 
-	var videoDuration = 0L
+	var videoDuration: Long = 0,
 
 	@Embedded
 	var mediathekShow: MediathekShow = MediathekShow()
 
-}
+)

@@ -1,5 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.repository;
 
+import androidx.paging.DataSource;
+
 import org.joda.time.DateTime;
 
 import java.util.Collections;
@@ -64,6 +66,12 @@ public class MediathekRepository {
 				}
 				return mediathekAnswer.result.results;
 			});
+	}
+
+	public DataSource.Factory<Integer, PersistedMediathekShow> getDownloads() {
+		// TODO: filter for only queued, running or finished downloads
+		// TODO: sort on date
+		return database.mediathekShowDao().getAllDownloads();
 	}
 
 	public Flowable<PersistedMediathekShow> persistOrUpdateShow(MediathekShow show) {

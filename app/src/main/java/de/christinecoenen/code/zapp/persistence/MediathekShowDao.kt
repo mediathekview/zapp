@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.persistence
 
+import androidx.paging.DataSource
 import androidx.room.*
 import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus
 import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow
@@ -14,6 +15,9 @@ interface MediathekShowDao {
 
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flowable<List<PersistedMediathekShow>>
+
+	@Query("SELECT * FROM PersistedMediathekShow")
+	fun getAllDownloads(): DataSource.Factory<Int, PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
 	fun getFromId(id: Int): Flowable<PersistedMediathekShow>
