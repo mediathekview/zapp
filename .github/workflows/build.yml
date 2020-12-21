@@ -12,10 +12,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 9
-    - name: Cache gradle and sdk
+    - name: Cache Gradle
       uses: actions/cache@v2
       env:
-        cache-name: Cache Gradle
+        cache-name: gradle-cache
       with:
         path: |
           ${{ github.workspace }}/.opt/cache/gradle/wrapper
