@@ -13,10 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -28,13 +29,13 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
 	private static final String ARG_QUERY = "ARG_QUERY";
 	private static final int PAGE_CHANNEL_LIST = 0;
 	private static final int PAGE_MEDIATHEK_LIST = 1;
 
-	private ViewPager viewPager;
+	private ViewPager2 viewPager;
 	private SearchView searchView;
 	private BottomNavigationView bottomNavigation;
 
@@ -55,8 +56,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		setSupportActionBar(binding.toolbar);
 
-		viewPager.setAdapter(new MainPageAdapter(getSupportFragmentManager()));
-		viewPager.addOnPageChangeListener(this);
+		viewPager.setAdapter(new MainPageAdapter(this));
+		viewPager.setUserInputEnabled(false);
+		viewPager.registerOnPageChangeCallback(new OnPageChangeCallback() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				MainActivity.this.onPageSelected(position);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
 
 		searchView.setOnQueryTextListener(this);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -115,29 +130,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-	}
-
-	@Override
-	public void onPageSelected(int position) {
+	private void onPageSelected(int position) {
 		searchView.clearFocus();
+		bottomNavigation.getMenu().getItem(0).setChecked(false);
+		bottomNavigation.getMenu().getItem(1).setChecked(false);
+		bottomNavigation.getMenu().getItem(2).setChecked(false);
+		bottomNavigation.getMenu().getItem(position).setChecked(true);
 
 		switch (position) {
 			case PAGE_MEDIATHEK_LIST:
-				bottomNavigation.setSelectedItemId(R.id.menu_mediathek);
 				searchView.setVisibility(View.VISIBLE);
 				break;
 			case PAGE_CHANNEL_LIST:
 			default:
-				bottomNavigation.setSelectedItemId(R.id.menu_live);
 				searchView.setVisibility(View.GONE);
 				break;
 		}
-	}
-
-	@Override
-	public void onPageScrollStateChanged(int state) {
 	}
 
 	private void handleIntent(Intent intent) {
@@ -204,20 +212,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		return true;
 	}
 
-	private static class MainPageAdapter extends FragmentPagerAdapter {
+	private static class MainPageAdapter extends FragmentStateAdapter {
 
-		MainPageAdapter(FragmentManager fragmentManager) {
-			super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-		}
-
-		@Override
-		public int getCount() {
-			return 2;
+		public MainPageAdapter(@NonNull FragmentActivity fragmentActivity) {
+			super(fragmentActivity);
 		}
 
 		@NonNull
 		@Override
-		public Fragment getItem(int position) {
+		public Fragment createFragment(int position) {
 			switch (position) {
 				case PAGE_CHANNEL_LIST:
 					return ChannelListFragment.getInstance();
@@ -225,6 +228,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 				default:
 					return MediathekListFragment.getInstance();
 			}
+		}
+
+		@Override
+		public int getItemCount() {
+			return 2;
 		}
 	}
 }
