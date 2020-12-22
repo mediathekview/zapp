@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import de.christinecoenen.code.zapp.app.ZappApplicationBase
+import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
 
-class DownloadsFragment : Fragment() {
+class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
 	companion object {
 		fun newInstance() = DownloadsFragment()
@@ -29,7 +31,7 @@ class DownloadsFragment : Fragment() {
 							  savedInstanceState: Bundle?): View? {
 		_binding = DownloadsFragmentBinding.inflate(inflater, container, false)
 
-		val downloadAdapter = DownloadListAdapter()
+		val downloadAdapter = DownloadListAdapter(this)
 		binding.list.adapter = downloadAdapter
 
 		viewModel.downloadList.observe(viewLifecycleOwner) { downloadAdapter.submitList(it) }
@@ -40,5 +42,9 @@ class DownloadsFragment : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	override fun onShowClicked(show: PersistedMediathekShow) {
+		startActivity(MediathekDetailActivity.getStartIntent(context, show.mediathekShow))
 	}
 }
