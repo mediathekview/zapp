@@ -9,7 +9,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 	RecyclerView.ViewHolder(binding.root) {
 
 	fun bindItem(show: PersistedMediathekShow) {
-		binding.title.text = show.mediathekShow.title
+		binding.title.text = show.mediathekShow.title + " - " + show.downloadStatus.toString()
 	}
 
 }

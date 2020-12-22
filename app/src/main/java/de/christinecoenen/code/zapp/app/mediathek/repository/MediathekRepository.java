@@ -69,8 +69,6 @@ public class MediathekRepository {
 	}
 
 	public DataSource.Factory<Integer, PersistedMediathekShow> getDownloads() {
-		// TODO: filter for only queued, running or finished downloads
-		// TODO: sort on date
 		return database.mediathekShowDao().getAllDownloads();
 	}
 
