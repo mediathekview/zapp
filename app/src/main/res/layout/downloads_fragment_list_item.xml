@@ -5,10 +5,33 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?android:attr/selectableItemBackground"
 	android:clickable="true"
 	android:focusable="true"
-	android:paddingVertical="8dp">
+	android:foreground="?android:attr/selectableItemBackground"
+	android:paddingVertical="8dp"
+	tools:ignore="UnusedAttribute">
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/thumbnail"
+		android:layout_width="80dp"
+		android:layout_height="0dp"
+		android:background="?colorSurface"
+		android:scaleType="centerCrop"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/icon"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
+		android:scaleType="centerCrop"
+		android:tint="?colorOnSurface"
+		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+		app:layout_constraintEnd_toEndOf="@id/thumbnail"
+		app:layout_constraintStart_toStartOf="@id/thumbnail"
+		app:layout_constraintTop_toTopOf="@id/thumbnail"
+		app:srcCompat="@drawable/ic_baseline_save_alt_24" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/topic"
@@ -22,20 +45,22 @@
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:textColor="?attr/colorOnSecondary"
-		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintStart_toEndOf="@id/thumbnail"
 		app:layout_constraintTop_toTopOf="parent"
 		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
 		style="@style/TextAppearance.MaterialComponents.Headline6"
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="2dp"
 		android:ellipsize="end"
 		android:maxLines="2"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="@id/topic"
 		app:layout_constraintTop_toBottomOf="@id/topic"
 		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
 
@@ -47,7 +72,7 @@
 		app:layout_constraintEnd_toStartOf="@id/channel_divider"
 		app:layout_constraintHorizontal_bias="0"
 		app:layout_constraintHorizontal_chainStyle="packed"
-		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintStart_toStartOf="@id/topic"
 		app:layout_constraintTop_toBottomOf="@id/title"
 		tools:text="58:59 Minuten" />
 
