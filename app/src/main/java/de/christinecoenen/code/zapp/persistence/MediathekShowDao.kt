@@ -16,7 +16,7 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flowable<List<PersistedMediathekShow>>
 
-	@Query("SELECT * FROM PersistedMediathekShow")
+	@Query("SELECT * FROM PersistedMediathekShow ORDER BY downloadedAt DESC")
 	fun getAllDownloads(): DataSource.Factory<Int, PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
