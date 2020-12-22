@@ -5,17 +5,83 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingHorizontal="@dimen/activity_horizontal_margin"
-	android:paddingVertical="@dimen/activity_vertical_margin">
+	android:paddingVertical="8dp">
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/topic"
+		style="@style/TextAppearance.MaterialComponents.Body1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="2dp"
+		android:background="?attr/colorSecondary"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:textColor="?attr/colorOnSecondary"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
 		style="@style/TextAppearance.MaterialComponents.Headline6"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginBottom="2dp"
 		android:ellipsize="end"
 		android:maxLines="2"
-		app:layout_constraintTop_toTopOf="parent"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		app:layout_constraintTop_toBottomOf="@id/topic"
 		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/duration"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		app:layout_constraintEnd_toStartOf="@id/channel_divider"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/title"
+		tools:text="58:59 Minuten" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/channel_divider"
+		style="@style/TextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/channel"
+		app:layout_constraintStart_toEndOf="@id/duration" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/channel"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/time_divider"
+		app:layout_constraintStart_toEndOf="@id/channel_divider"
+		tools:text="ZDF-tivi" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/time_divider"
+		style="@style/TextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/time"
+		app:layout_constraintStart_toEndOf="@id/channel" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/time"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/time_divider"
+		tools:text="vor 29 Minuten" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
