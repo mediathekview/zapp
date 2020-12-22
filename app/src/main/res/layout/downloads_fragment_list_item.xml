@@ -21,6 +21,33 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
 
+	<ProgressBar
+		android:id="@+id/progress_bar_animated"
+		style="?android:attr/progressBarStyleSmall"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:indeterminate="true"
+		android:indeterminateTint="?attr/colorPrimaryDark"
+		android:padding="5dp"
+		app:layout_constraintBottom_toBottomOf="@id/progress_bar"
+		app:layout_constraintEnd_toEndOf="@id/progress_bar"
+		app:layout_constraintStart_toStartOf="@id/progress_bar"
+		app:layout_constraintTop_toTopOf="@id/progress_bar" />
+
+	<ProgressBar
+		android:id="@+id/progress_bar"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:max="100"
+		android:padding="10dp"
+		android:progress="70"
+		android:progressDrawable="@drawable/circular"
+		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+		app:layout_constraintEnd_toEndOf="@id/thumbnail"
+		app:layout_constraintStart_toStartOf="@id/thumbnail"
+		app:layout_constraintTop_toTopOf="@id/thumbnail" />
+
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/icon"
 		android:layout_width="24dp"
