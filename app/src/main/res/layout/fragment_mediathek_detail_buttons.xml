@@ -28,7 +28,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_download"
-			app:icon="@drawable/ic_file_download_white_24dp" />
+			app:icon="@drawable/ic_baseline_save_alt_24" />
 
 	</RelativeLayout>
 
@@ -46,6 +46,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/fragment_mediathek_website"
-		app:icon="@drawable/ic_home_white_24dp" />
+		app:icon="@drawable/ic_outline_home_24" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -246,7 +246,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case REMOVED:
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download);
-				binding.buttons.download.setIconResource(R.drawable.ic_file_download_white_24dp);
+				binding.buttons.download.setIconResource(R.drawable.ic_baseline_save_alt_24);
 				break;
 			case ADDED:
 			case QUEUED:
@@ -264,7 +264,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case COMPLETED:
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
-				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
+				binding.buttons.download.setIconResource(R.drawable.ic_baseline_delete_outline_24);
 				updateVideoThumbnail();
 				break;
 			case FAILED:
