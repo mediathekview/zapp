@@ -31,7 +31,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 							  savedInstanceState: Bundle?): View? {
 		_binding = DownloadsFragmentBinding.inflate(inflater, container, false)
 
-		val downloadAdapter = DownloadListAdapter(this)
+		val downloadAdapter = DownloadListAdapter(this, viewModel)
 		binding.list.adapter = downloadAdapter
 
 		viewModel.downloadList.observe(viewLifecycleOwner) { downloadAdapter.submitList(it) }

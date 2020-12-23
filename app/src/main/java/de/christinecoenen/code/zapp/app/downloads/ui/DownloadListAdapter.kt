@@ -7,7 +7,10 @@ import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 
 
-class DownloadListAdapter(val listener: Listener) : PagedListAdapter<PersistedMediathekShow, DownloadViewHolder>(DownloadDiffUtilCallback()) {
+class DownloadListAdapter(
+	private val listener: Listener,
+	private val downloadsViewModel: DownloadsViewModel
+) : PagedListAdapter<PersistedMediathekShow, DownloadViewHolder>(DownloadDiffUtilCallback()) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
@@ -25,7 +28,8 @@ class DownloadListAdapter(val listener: Listener) : PagedListAdapter<PersistedMe
 
 	override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
 		getItem(position)?.let {
-			holder.bindItem(it)
+			val showFlowable = downloadsViewModel.getPersistedShowFlowable(it.id)
+			holder.bindItem(it, showFlowable)
 		}
 	}
 
