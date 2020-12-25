@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app;
+package de.christinecoenen.code.zapp.app.main;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -15,7 +15,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app
+package de.christinecoenen.code.zapp.app.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

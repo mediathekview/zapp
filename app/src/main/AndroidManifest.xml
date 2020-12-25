@@ -45,7 +45,7 @@
 			android:label="@string/activity_changelog_title"
 			android:parentActivityName=".app.about.ui.AboutActivity" />
 		<activity
-			android:name=".app.MainActivity"
+			android:name=".app.main.MainActivity"
 			android:launchMode="singleTop"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
