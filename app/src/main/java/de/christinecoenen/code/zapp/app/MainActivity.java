@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 		searchQuery = query;
 
 		Fragment currentFragment = getSupportFragmentManager()
-			.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+			.findFragmentByTag("f" + viewPager.getCurrentItem());
 
 		if (currentFragment instanceof MediathekListFragment) {
 			((MediathekListFragment) currentFragment).search(query);
