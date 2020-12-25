@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.downloads.ui
+package de.christinecoenen.code.zapp.app.downloads.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

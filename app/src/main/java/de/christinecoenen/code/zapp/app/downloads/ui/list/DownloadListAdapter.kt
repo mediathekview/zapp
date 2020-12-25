@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.downloads.ui
+package de.christinecoenen.code.zapp.app.downloads.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

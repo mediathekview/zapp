@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.downloads.ui
+package de.christinecoenen.code.zapp.app.downloads.ui.list
 
 import androidx.recyclerview.widget.DiffUtil
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow

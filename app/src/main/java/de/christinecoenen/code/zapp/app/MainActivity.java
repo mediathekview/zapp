@@ -23,7 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
-import de.christinecoenen.code.zapp.app.downloads.ui.DownloadsFragment;
+import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsFragment;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSuggestionsProvider;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
