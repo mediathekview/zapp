@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 	private static final int PAGE_MEDIATHEK_LIST = 1;
 	private static final int PAGE_DOWNLOADS = 2;
 
+	private MainViewModel viewModel;
+
 	private ViewPager2 viewPager;
 	private SearchView searchView;
 	private BottomNavigationView bottomNavigation;
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
 		ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
