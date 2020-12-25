@@ -4,6 +4,7 @@
 
 	<string name="activity_main_tab_live">Live</string>
 	<string name="activity_main_tab_mediathek">Mediathek</string>
+	<string name="activity_main_tab_downloads">Downloads</string>
 
 	<string name="activity_about_title">Über Zapp</string>
 	<string name="activity_about_summary">Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</string>
