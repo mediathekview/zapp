@@ -32,7 +32,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus;
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.models.shows.Quality;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
+import de.christinecoenen.code.zapp.repositories.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;

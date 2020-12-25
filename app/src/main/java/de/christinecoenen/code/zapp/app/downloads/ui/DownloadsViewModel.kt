@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import io.reactivex.Flowable
 
 

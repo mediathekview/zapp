@@ -24,7 +24,7 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplication;
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow;
 import de.christinecoenen.code.zapp.models.shows.Quality;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
+import de.christinecoenen.code.zapp.repositories.MediathekRepository;
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService;
 import de.christinecoenen.code.zapp.app.player.Player;
 import de.christinecoenen.code.zapp.app.player.VideoInfo;

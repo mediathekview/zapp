@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.app.ZappApplication;
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus;
 import de.christinecoenen.code.zapp.models.shows.MediathekShow;
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
+import de.christinecoenen.code.zapp.repositories.MediathekRepository;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding;
 import de.christinecoenen.code.zapp.utils.system.ImageHelper;
 import io.reactivex.Flowable;

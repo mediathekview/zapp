@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import de.christinecoenen.code.zapp.app.ZappApplication;
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
+import de.christinecoenen.code.zapp.repositories.MediathekRepository;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

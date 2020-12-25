@@ -15,7 +15,7 @@ import com.tonyodev.fetch2.util.onDownloadNotificationActionTriggered
 import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
 const val ACTION_TYPE_REPORT_ERROR = 42

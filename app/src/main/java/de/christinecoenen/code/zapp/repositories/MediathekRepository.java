@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.repository;
+package de.christinecoenen.code.zapp.repositories;
 
 import androidx.paging.DataSource;
 
