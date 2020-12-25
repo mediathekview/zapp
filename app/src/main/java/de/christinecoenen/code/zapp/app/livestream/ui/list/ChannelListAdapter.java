@@ -14,8 +14,8 @@ import java.util.WeakHashMap;
 
 import de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewBase;
 import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding;
-import de.christinecoenen.code.zapp.model.ChannelModel;
-import de.christinecoenen.code.zapp.model.IChannelList;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.IChannelList;
 
 class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 

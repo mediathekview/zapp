@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentChannelListBinding;
-import de.christinecoenen.code.zapp.model.ChannelModel;
-import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableVisibleJsonChannelList;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.ISortableChannelList;
+import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList;
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper;
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 

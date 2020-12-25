@@ -16,6 +16,10 @@
 
 		<item name="navigationViewStyle">@style/CustomNavigationViewStyle</item>
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
+		<item name="appBarLayoutStyle">@style/AppBarStyle</item>
+		<item name="bottomNavigationStyle">
+			@style/Widget.MaterialComponents.BottomNavigationView.Colored
+		</item>
 		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 		<item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 
@@ -72,6 +76,8 @@
 	</style>
 
 	<style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary" />
+
+	<style name="AppBarStyle" parent="Widget.MaterialComponents.AppBarLayout.Primary" />
 
 	<style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
 		<item name="android:textColorHint">@color/text_alwayslight_tertiary</item>

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity;
-import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
 
 /**
  * Collection of helper functions to access the ShortcutManager API

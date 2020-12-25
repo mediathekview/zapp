@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import de.christinecoenen.code.zapp.databinding.FragmentStreamPageBinding;
-import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
 import timber.log.Timber;
 
 public class StreamPageFragment extends Fragment {

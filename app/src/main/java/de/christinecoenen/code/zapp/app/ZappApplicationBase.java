@@ -14,7 +14,7 @@ import org.acra.data.StringFormat;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
+import de.christinecoenen.code.zapp.repositories.MediathekRepository;
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository;
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;

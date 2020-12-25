@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.persistence
 
 import androidx.room.TypeConverter
-import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus
+import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 
 
 class DownloadStatusConverter {

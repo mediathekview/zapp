@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.player
 
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import io.reactivex.Single
 
 class PersistedPlaybackPositionRepository(private val mediathekRepository: MediathekRepository) : IPlaybackPositionRepository {

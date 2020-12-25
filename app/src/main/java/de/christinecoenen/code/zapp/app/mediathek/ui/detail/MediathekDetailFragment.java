@@ -22,11 +22,11 @@ import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException;
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException;
-import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
-import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
+import de.christinecoenen.code.zapp.models.shows.DownloadStatus;
+import de.christinecoenen.code.zapp.models.shows.MediathekShow;
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow;
+import de.christinecoenen.code.zapp.models.shows.Quality;
+import de.christinecoenen.code.zapp.repositories.MediathekRepository;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding;
 import de.christinecoenen.code.zapp.utils.system.ImageHelper;
@@ -246,7 +246,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case REMOVED:
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download);
-				binding.buttons.download.setIconResource(R.drawable.ic_file_download_white_24dp);
+				binding.buttons.download.setIconResource(R.drawable.ic_baseline_save_alt_24);
 				break;
 			case ADDED:
 			case QUEUED:
@@ -264,7 +264,7 @@ public class MediathekDetailFragment extends Fragment implements ConfirmFileDele
 			case COMPLETED:
 				binding.buttons.downloadProgress.setVisibility(View.GONE);
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete);
-				binding.buttons.download.setIconResource(R.drawable.ic_delete_white_24dp);
+				binding.buttons.download.setIconResource(R.drawable.ic_baseline_delete_outline_24);
 				updateVideoThumbnail();
 				break;
 			case FAILED:

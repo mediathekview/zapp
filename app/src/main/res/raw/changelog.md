@@ -1,3 +1,7 @@
+# 4.0.0
+* Downloads-Tab eingeführt
+* Hauptnavigation auf Tabs umgestellt
+
 # 3.6.1
 * Untertitel in Live-Streams abgeschaltet (können über die Android-Bedienungshilfe aktiviert werden)
 * Streams von MDR repariert

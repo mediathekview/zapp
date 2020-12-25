@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 
 @Database(entities = [PersistedMediathekShow::class], version = 1, exportSchema = true)
 @TypeConverters(DownloadStatusConverter::class, DateTimeConverter::class)

@@ -13,8 +13,8 @@ import com.woxthebox.draglistview.DragListView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionBinding;
-import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableJsonChannelList;
+import de.christinecoenen.code.zapp.models.channels.ISortableChannelList;
+import de.christinecoenen.code.zapp.models.channels.json.SortableJsonChannelList;
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager;
 import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener;
 

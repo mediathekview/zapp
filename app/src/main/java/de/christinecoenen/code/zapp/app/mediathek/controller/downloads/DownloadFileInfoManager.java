@@ -21,8 +21,8 @@ import java.io.File;
 import java.util.Set;
 import java.util.UUID;
 
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
+import de.christinecoenen.code.zapp.models.shows.MediathekShow;
+import de.christinecoenen.code.zapp.models.shows.Quality;
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository;
 
 class DownloadFileInfoManager {

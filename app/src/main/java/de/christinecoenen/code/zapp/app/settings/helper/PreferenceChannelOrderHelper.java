@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
 
 
 /**

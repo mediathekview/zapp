@@ -3,7 +3,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<PreferenceCategory
-		android:icon="@drawable/ic_palette_white_24dp"
+		android:icon="@drawable/ic_outline_palette_24"
 		android:title="Aussehen">
 
 		<ListPreference
@@ -23,7 +23,7 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory
-		android:icon="@drawable/ic_network_cell_white_24dp"
+		android:icon="@drawable/ic_baseline_signal_cellular_alt_24"
 		android:title="@string/pref_header_network">
 
 		<ListPreference
@@ -61,7 +61,7 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory
-		android:icon="@drawable/ic_save_white_24dp"
+		android:icon="@drawable/ic_outline_save_24"
 		android:title="@string/pref_header_data">
 
 		<SwitchPreference

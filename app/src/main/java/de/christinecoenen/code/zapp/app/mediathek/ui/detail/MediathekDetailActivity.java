@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.models.shows.MediathekShow;
 
 public class MediathekDetailActivity extends AppCompatActivity {
 

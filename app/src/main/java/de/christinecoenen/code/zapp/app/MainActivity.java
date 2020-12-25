@@ -4,45 +4,42 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
 
-import com.google.android.material.navigation.NavigationView;
-
-import java.util.Objects;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity;
+import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsFragment;
 import de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSuggestionsProvider;
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment;
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity;
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding;
-import de.christinecoenen.code.zapp.utils.system.MenuHelper;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
 	private static final String ARG_QUERY = "ARG_QUERY";
 	private static final int PAGE_CHANNEL_LIST = 0;
 	private static final int PAGE_MEDIATHEK_LIST = 1;
+	private static final int PAGE_DOWNLOADS = 2;
 
-	private ViewPager viewPager;
+	private ViewPager2 viewPager;
 	private SearchView searchView;
-	private NavigationView navigationView;
-	private DrawerLayout drawerLayout;
+	private BottomNavigationView bottomNavigation;
 
 	private String searchQuery;
 
@@ -57,27 +54,35 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 		viewPager = binding.viewPager;
 		searchView = binding.search;
-		navigationView = binding.navView;
-		drawerLayout = binding.layoutDrawer;
+		bottomNavigation = binding.bottomNavigation;
 
 		setSupportActionBar(binding.toolbar);
 
-		ActionBar actionbar = Objects.requireNonNull(getSupportActionBar());
-		actionbar.setDisplayHomeAsUpEnabled(true);
-		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+		viewPager.setAdapter(new MainPageAdapter(this));
+		viewPager.setUserInputEnabled(false);
+		viewPager.registerOnPageChangeCallback(new OnPageChangeCallback() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
 
-		viewPager.setAdapter(new MainPageAdapter(getSupportFragmentManager()));
-		viewPager.addOnPageChangeListener(this);
+			@Override
+			public void onPageSelected(int position) {
+				MainActivity.this.onPageSelected(position);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
 
 		searchView.setOnQueryTextListener(this);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		searchView.setIconified(false);
 		searchView.setIconifiedByDefault(false);
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		searchView.clearFocus();
 		searchView.setOnQueryTextFocusChangeListener(this::onSearchQueryTextFocusChangeListener);
 
-		navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
+		binding.bottomNavigation.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
 
 		onPageSelected(viewPager.getCurrentItem());
 
@@ -104,51 +109,45 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_main_toolbar, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		Intent intent;
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				drawerLayout.openDrawer(GravityCompat.START);
+			case R.id.menu_about:
+				intent = AboutActivity.getStartIntent(this);
+				startActivity(intent);
 				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+			case R.id.menu_settings:
+				intent = SettingsActivity.getStartIntent(this);
+				startActivity(intent);
+				return true;
 		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onBackPressed() {
-		if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-			drawerLayout.closeDrawer(GravityCompat.START);
-		} else {
-			super.onBackPressed();
-		}
-	}
-
-	@Override
-	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-	}
-
-	@Override
-	public void onPageSelected(int position) {
-		MenuHelper.uncheckItems(navigationView.getMenu());
+	private void onPageSelected(int position) {
 		searchView.clearFocus();
+		bottomNavigation.getMenu().getItem(0).setChecked(false);
+		bottomNavigation.getMenu().getItem(1).setChecked(false);
+		bottomNavigation.getMenu().getItem(2).setChecked(false);
+		bottomNavigation.getMenu().getItem(position).setChecked(true);
 
 		switch (position) {
 			case PAGE_MEDIATHEK_LIST:
-				setTitle(R.string.activity_main_tab_mediathek);
 				searchView.setVisibility(View.VISIBLE);
-				navigationView.getMenu().findItem(R.id.menu_mediathek).setChecked(true);
 				break;
 			case PAGE_CHANNEL_LIST:
 			default:
-				setTitle(R.string.activity_main_tab_live);
 				searchView.setVisibility(View.GONE);
-				navigationView.getMenu().findItem(R.id.menu_live).setChecked(true);
 				break;
 		}
-	}
-
-	@Override
-	public void onPageScrollStateChanged(int state) {
 	}
 
 	private void handleIntent(Intent intent) {
@@ -172,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		searchQuery = query;
 
 		Fragment currentFragment = getSupportFragmentManager()
-			.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+			.findFragmentByTag("f" + viewPager.getCurrentItem());
 
 		if (currentFragment instanceof MediathekListFragment) {
 			((MediathekListFragment) currentFragment).search(query);
@@ -180,26 +179,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 	}
 
 	private boolean onNavigationItemSelected(MenuItem menuItem) {
-		Intent intent;
-
 		switch (menuItem.getItemId()) {
 			case R.id.menu_live:
 				viewPager.setCurrentItem(PAGE_CHANNEL_LIST, false);
-				drawerLayout.closeDrawers();
 				return true;
 			case R.id.menu_mediathek:
 				viewPager.setCurrentItem(PAGE_MEDIATHEK_LIST, false);
-				drawerLayout.closeDrawers();
 				return true;
-			case R.id.menu_about:
-				intent = AboutActivity.getStartIntent(this);
-				startActivity(intent);
-				drawerLayout.closeDrawers();
-				return true;
-			case R.id.menu_settings:
-				intent = SettingsActivity.getStartIntent(this);
-				startActivity(intent);
-				drawerLayout.closeDrawers();
+			case R.id.menu_downloads:
+				viewPager.setCurrentItem(PAGE_DOWNLOADS, false);
 				return true;
 		}
 
@@ -229,38 +217,29 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 		return true;
 	}
 
-	private class MainPageAdapter extends FragmentPagerAdapter {
+	private static class MainPageAdapter extends FragmentStateAdapter {
 
-		MainPageAdapter(FragmentManager fragmentManager) {
-			super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-		}
-
-		@Override
-		public int getCount() {
-			return 2;
+		public MainPageAdapter(@NonNull FragmentActivity fragmentActivity) {
+			super(fragmentActivity);
 		}
 
 		@NonNull
 		@Override
-		public Fragment getItem(int position) {
+		public Fragment createFragment(int position) {
 			switch (position) {
 				case PAGE_CHANNEL_LIST:
 					return ChannelListFragment.getInstance();
 				case PAGE_MEDIATHEK_LIST:
-				default:
 					return MediathekListFragment.getInstance();
+				case PAGE_DOWNLOADS:
+				default:
+					return DownloadsFragment.Companion.newInstance();
 			}
 		}
 
 		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-				case 0:
-					return getString(R.string.activity_main_tab_live);
-				case PAGE_MEDIATHEK_LIST:
-				default:
-					return getString(R.string.activity_main_tab_mediathek);
-			}
+		public int getItemCount() {
+			return 3;
 		}
 	}
 }
