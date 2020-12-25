@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.models;
+package de.christinecoenen.code.zapp.models.channels;
 
 /**
  * A sorted channel list. Channel order will be

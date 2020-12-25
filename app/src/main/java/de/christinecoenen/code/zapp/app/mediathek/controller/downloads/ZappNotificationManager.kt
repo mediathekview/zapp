@@ -14,7 +14,7 @@ import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET
 import com.tonyodev.fetch2.util.onDownloadNotificationActionTriggered
 import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 

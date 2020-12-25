@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import de.christinecoenen.code.zapp.app.ZappApplicationBase
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
 

@@ -2,9 +2,9 @@ package de.christinecoenen.code.zapp.persistence
 
 import androidx.paging.DataSource
 import androidx.room.*
-import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.DownloadStatus
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.models.json;
+package de.christinecoenen.code.zapp.models.channels.json;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -10,8 +10,8 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.christinecoenen.code.zapp.models.ChannelModel;
-import de.christinecoenen.code.zapp.models.IChannelList;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.IChannelList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;

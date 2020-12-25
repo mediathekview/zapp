@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.models.json;
+package de.christinecoenen.code.zapp.models.channels.json;
 
 
 import com.google.gson.annotations.SerializedName;

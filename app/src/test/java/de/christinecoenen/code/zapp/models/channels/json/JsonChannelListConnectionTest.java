@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.models.json;
+package de.christinecoenen.code.zapp.models.channels.json;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import de.christinecoenen.code.zapp.models.ChannelModel;
-import de.christinecoenen.code.zapp.models.IChannelList;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.IChannelList;
 
 import static org.junit.Assert.assertTrue;
 

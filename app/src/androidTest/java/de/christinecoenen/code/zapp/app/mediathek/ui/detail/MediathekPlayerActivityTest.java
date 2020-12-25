@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 
 import de.christinecoenen.code.zapp.app.ZappApplication;
 import de.christinecoenen.code.zapp.app.mediathek.MediathekData;
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow;
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow;
 
 @RunWith(AndroidJUnit4.class)
 public class MediathekPlayerActivityTest {

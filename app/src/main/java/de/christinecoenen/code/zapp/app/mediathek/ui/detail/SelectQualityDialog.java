@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import java.util.List;
 
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
-import de.christinecoenen.code.zapp.app.mediathek.model.Quality;
+import de.christinecoenen.code.zapp.models.shows.MediathekShow;
+import de.christinecoenen.code.zapp.models.shows.Quality;
 
 
 public class SelectQualityDialog extends AppCompatDialogFragment {

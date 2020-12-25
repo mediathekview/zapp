@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Set;
 
 import de.christinecoenen.code.zapp.R;
-import de.christinecoenen.code.zapp.models.ChannelModel;
-import de.christinecoenen.code.zapp.models.IChannelList;
-import de.christinecoenen.code.zapp.models.json.JsonChannelList;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.IChannelList;
+import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList;
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper;
 
 

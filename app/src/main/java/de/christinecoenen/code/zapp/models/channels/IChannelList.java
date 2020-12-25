@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.models;
+package de.christinecoenen.code.zapp.models.channels;
 
 import java.util.List;
 

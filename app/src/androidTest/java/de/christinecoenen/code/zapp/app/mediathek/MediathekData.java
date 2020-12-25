@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek;
 
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.models.shows.MediathekShow;
 
 public class MediathekData {
 

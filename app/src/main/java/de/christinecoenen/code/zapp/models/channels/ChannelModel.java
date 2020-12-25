@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.models;
+package de.christinecoenen.code.zapp.models.channels;
 
 import android.content.Intent;
 import android.net.Uri;

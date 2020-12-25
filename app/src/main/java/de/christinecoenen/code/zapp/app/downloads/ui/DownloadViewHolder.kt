@@ -6,8 +6,8 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.model.DownloadStatus
-import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.DownloadStatus
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.utils.system.ImageHelper
 import io.reactivex.Flowable

@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.model
+package de.christinecoenen.code.zapp.models.shows
 
 import androidx.room.Embedded
 import androidx.room.Entity

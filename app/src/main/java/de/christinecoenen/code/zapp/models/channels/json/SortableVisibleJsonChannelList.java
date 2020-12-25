@@ -1,12 +1,12 @@
-package de.christinecoenen.code.zapp.models.json;
+package de.christinecoenen.code.zapp.models.channels.json;
 
 
 import android.content.Context;
 
 import java.util.List;
 
-import de.christinecoenen.code.zapp.models.ChannelModel;
-import de.christinecoenen.code.zapp.models.SimpleChannelList;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.SimpleChannelList;
 
 public class SortableVisibleJsonChannelList extends SortableJsonChannelList {
 

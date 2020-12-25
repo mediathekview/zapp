@@ -25,7 +25,7 @@ import javax.net.ssl.SSLHandshakeException;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
-import de.christinecoenen.code.zapp.app.mediathek.model.MediathekShow;
+import de.christinecoenen.code.zapp.models.shows.MediathekShow;
 import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekRepository;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding;

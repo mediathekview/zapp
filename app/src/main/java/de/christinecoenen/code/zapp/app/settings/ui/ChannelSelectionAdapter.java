@@ -13,7 +13,7 @@ import com.woxthebox.draglistview.DragItemAdapter;
 
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionItemBinding;
-import de.christinecoenen.code.zapp.models.ChannelModel;
+import de.christinecoenen.code.zapp.models.channels.ChannelModel;
 
 
 class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelectionAdapter.ViewHolder> {
