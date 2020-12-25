@@ -43,6 +43,13 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::onDownloadStatusChanged, Timber::e)
 			.also(disposables::add)
+
+		showFlowable
+			.map { it.playBackPercent }
+			.startWith(0f)
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(this::onPlaybackPositionChanged, Timber::e)
+			.also(disposables::add)
 	}
 
 	private fun onDownloadProgressChanged(show: PersistedMediathekShow) {
@@ -86,6 +93,10 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 				binding.progressBarAnimated.isVisible = false
 			}
 		}
+	}
+
+	private fun onPlaybackPositionChanged(playBackPercent: Float) {
+		binding.viewingProgress.scaleX = playBackPercent
 	}
 
 	private fun loadThumbnail(show: PersistedMediathekShow) {

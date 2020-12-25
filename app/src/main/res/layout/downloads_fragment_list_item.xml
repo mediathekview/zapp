@@ -52,6 +52,17 @@
 		app:layout_constraintStart_toStartOf="@id/thumbnail"
 		app:layout_constraintTop_toTopOf="@id/thumbnail" />
 
+	<View
+		android:id="@+id/viewing_progress"
+		android:layout_width="0dp"
+		android:layout_height="4dp"
+		android:background="?attr/colorSecondary"
+		android:scaleX="0"
+		android:transformPivotX="0dp"
+		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+		app:layout_constraintEnd_toEndOf="@id/thumbnail"
+		app:layout_constraintStart_toStartOf="@id/thumbnail" />
+
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/icon"
 		android:layout_width="24dp"

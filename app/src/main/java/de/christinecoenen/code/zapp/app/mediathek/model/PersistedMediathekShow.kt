@@ -33,4 +33,9 @@ data class PersistedMediathekShow(
 	@Embedded
 	var mediathekShow: MediathekShow = MediathekShow()
 
-)
+) {
+
+	val playBackPercent
+		get() = playbackPosition.toFloat() / videoDuration
+
+}
