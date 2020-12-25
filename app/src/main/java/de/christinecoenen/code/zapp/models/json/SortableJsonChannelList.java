@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.model.json;
+package de.christinecoenen.code.zapp.models.json;
 
 
 import android.content.Context;
@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import java.util.Iterator;
 import java.util.List;
 
-import de.christinecoenen.code.zapp.model.ChannelModel;
-import de.christinecoenen.code.zapp.model.IChannelList;
-import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.SimpleChannelList;
+import de.christinecoenen.code.zapp.models.ChannelModel;
+import de.christinecoenen.code.zapp.models.IChannelList;
+import de.christinecoenen.code.zapp.models.ISortableChannelList;
+import de.christinecoenen.code.zapp.models.SimpleChannelList;
 import de.christinecoenen.code.zapp.app.settings.helper.PreferenceChannelOrderHelper;
 
 public class SortableJsonChannelList implements ISortableChannelList {

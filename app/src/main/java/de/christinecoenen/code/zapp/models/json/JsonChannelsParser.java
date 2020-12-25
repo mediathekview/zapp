@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.model.json;
+package de.christinecoenen.code.zapp.models.json;
 
 
 import android.content.Context;
@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.models.ChannelModel;
 
 /**
  * Helper class to convert a json string to a list of

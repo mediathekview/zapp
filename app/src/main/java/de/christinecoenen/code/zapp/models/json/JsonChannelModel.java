@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.model.json;
+package de.christinecoenen.code.zapp.models.json;
 
 
 import com.google.gson.annotations.SerializedName;

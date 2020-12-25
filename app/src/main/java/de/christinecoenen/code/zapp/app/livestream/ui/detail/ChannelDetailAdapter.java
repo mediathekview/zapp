@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import de.christinecoenen.code.zapp.model.ChannelModel;
-import de.christinecoenen.code.zapp.model.IChannelList;
+import de.christinecoenen.code.zapp.models.ChannelModel;
+import de.christinecoenen.code.zapp.models.IChannelList;
 
 
 class ChannelDetailAdapter extends FragmentStatePagerAdapter {

@@ -17,9 +17,9 @@ import java.util.Map;
 
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo;
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository;
-import de.christinecoenen.code.zapp.model.ChannelModel;
-import de.christinecoenen.code.zapp.model.ISortableChannelList;
-import de.christinecoenen.code.zapp.model.json.SortableVisibleJsonChannelList;
+import de.christinecoenen.code.zapp.models.ChannelModel;
+import de.christinecoenen.code.zapp.models.ISortableChannelList;
+import de.christinecoenen.code.zapp.models.json.SortableVisibleJsonChannelList;
 import io.reactivex.Single;
 import timber.log.Timber;
 

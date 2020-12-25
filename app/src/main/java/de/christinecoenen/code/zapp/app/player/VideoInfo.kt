@@ -4,7 +4,7 @@ import android.text.TextUtils
 import de.christinecoenen.code.zapp.app.mediathek.model.PersistedMediathekShow
 import de.christinecoenen.code.zapp.app.mediathek.model.Quality
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
-import de.christinecoenen.code.zapp.model.ChannelModel
+import de.christinecoenen.code.zapp.models.ChannelModel
 
 data class VideoInfo(
 	var id: Int = 0,

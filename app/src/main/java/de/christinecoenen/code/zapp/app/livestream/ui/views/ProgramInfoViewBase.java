@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow;
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository;
-import de.christinecoenen.code.zapp.model.ChannelModel;
+import de.christinecoenen.code.zapp.models.ChannelModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;

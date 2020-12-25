@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.model;
+package de.christinecoenen.code.zapp.models;
 
 
 import androidx.annotation.NonNull;
