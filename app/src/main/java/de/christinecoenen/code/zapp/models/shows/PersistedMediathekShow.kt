@@ -36,6 +36,6 @@ data class PersistedMediathekShow(
 ) {
 
 	val playBackPercent
-		get() = playbackPosition.toFloat() / videoDuration
+		get() = (playbackPosition.toFloat() / videoDuration).let { if (it.isNaN()) 0f else it }
 
 }
