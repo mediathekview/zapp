@@ -49,7 +49,6 @@ class AboutActivity : LibsActivity() {
 			.withAboutDescription(getString(string.aboutLibraries_description_text))
 			.withFields(string::class.java.fields)
 			.withAutoDetect(true)
-			.withLibraries("acra", "commonsio")
 			.withListener(buttonListener)
 			.intent(this)
 
