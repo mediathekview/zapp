@@ -18,6 +18,7 @@ import de.christinecoenen.code.zapp.app.mediathek.repository.MediathekSearchSugg
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
+import de.christinecoenen.code.zapp.utils.system.MenuHelper
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
@@ -106,12 +107,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 	private fun onPageSelected(position: Int) {
 		binding.search.clearFocus()
 
-		PageType.values().forEach {
-			binding.bottomNavigation.menu.getItem(it.ordinal).isChecked = false
-		}
+		MenuHelper.uncheckItems(binding.bottomNavigation.menu)
 		binding.bottomNavigation.menu.getItem(position).isChecked = true
 
 		val pageType = viewModel.getPageTypeAt(position)
+
 		binding.search.isVisible = when (pageType) {
 			PageType.PAGE_MEDIATHEK_LIST -> true
 			else -> false
