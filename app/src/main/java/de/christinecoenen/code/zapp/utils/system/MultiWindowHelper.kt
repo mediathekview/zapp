@@ -1,14 +1,12 @@
-package de.christinecoenen.code.zapp.utils.system;
+package de.christinecoenen.code.zapp.utils.system
 
+import android.annotation.TargetApi
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
-
-public class MultiWindowHelper {
-
+object MultiWindowHelper {
 	/**
 	 * This function can be used with any API level and will return
 	 * false if the multi window feature is not supported.
@@ -16,10 +14,11 @@ public class MultiWindowHelper {
 	 * @param activity to get access to multi window api
 	 * @return true if activity is currently displayed in multi window mode
 	 */
+	@JvmStatic
 	@TargetApi(24)
-	public static boolean isInsideMultiWindow(Activity activity) {
+	fun isInsideMultiWindow(activity: Activity): Boolean {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-			(activity.isInMultiWindowMode() || activity.isInPictureInPictureMode());
+			(activity.isInMultiWindowMode || activity.isInPictureInPictureMode)
 	}
 
 	/**
@@ -29,9 +28,10 @@ public class MultiWindowHelper {
 	 * @param activity to get access to pip api
 	 * @return true if activity is currently displayed in picture in picture mode
 	 */
+	@JvmStatic
 	@TargetApi(24)
-	public static boolean isInPictureInPictureMode(Activity activity) {
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInPictureInPictureMode();
+	fun isInPictureInPictureMode(activity: Activity): Boolean {
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInPictureInPictureMode
 	}
 
 	/**
@@ -40,10 +40,10 @@ public class MultiWindowHelper {
 	 *
 	 * @return true if the current device does support picture in picture mode
 	 */
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	public static boolean supportsPictureInPictureMode(Context context) {
-		PackageManager packageManager = context.getApplicationContext().getPackageManager();
+	@JvmStatic
+	fun supportsPictureInPictureMode(context: Context): Boolean {
+		val packageManager = context.applicationContext.packageManager
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-			packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
+			packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
 	}
 }
