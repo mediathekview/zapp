@@ -43,7 +43,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		get() = Observable.combineLatest(
 			playerEventHandler.errorResourceId,
 			playerEventHandler.isIdle,
-			{ errorResourceId, isIdle -> if (isIdle) errorResourceId else -1 })
+			{ errorResourceId: Int, isIdle: Boolean -> if (isIdle) errorResourceId else -1 })
 
 
 	private val playerEventHandler: PlayerEventHandler = PlayerEventHandler()
@@ -100,7 +100,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		mediaSession.isActive = true
 
 		// set listeners
-		networkConnectionHelper.startListenForNetworkChanges { setStreamQualityByNetworkType() }
+		networkConnectionHelper.startListenForNetworkChanges(::setStreamQualityByNetworkType)
 	}
 
 	fun setView(videoView: StyledPlayerView) {

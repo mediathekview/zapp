@@ -6,7 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="true"
-	tools:context="de.christinecoenen.code.zapp.app.MainActivity">
+	tools:context="de.christinecoenen.code.zapp.app.main.MainActivity">
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:id="@+id/layout_drawer"

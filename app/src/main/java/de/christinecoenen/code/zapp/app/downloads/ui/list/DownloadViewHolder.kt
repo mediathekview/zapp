@@ -36,20 +36,20 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 			.distinctUntilChanged { it -> it.downloadProgress }
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::onDownloadProgressChanged, Timber::e)
-			.also(disposables::add)
+			.run(disposables::add)
 
 		showFlowable
 			.distinctUntilChanged { it -> it.downloadStatus }
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::onDownloadStatusChanged, Timber::e)
-			.also(disposables::add)
+			.run(disposables::add)
 
 		showFlowable
 			.map { it.playBackPercent }
 			.startWith(0f)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::onPlaybackPositionChanged, Timber::e)
-			.also(disposables::add)
+			.run(disposables::add)
 	}
 
 	private fun onDownloadProgressChanged(show: PersistedMediathekShow) {
@@ -103,7 +103,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		ImageHelper.loadThumbnailAsync(binding.root.context, show.downloadedVideoPath)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(this::updateThumbnail, Timber::e)
-			.also(disposables::add)
+			.run(disposables::add)
 	}
 
 	private fun updateThumbnail(thumbnail: Bitmap?) {

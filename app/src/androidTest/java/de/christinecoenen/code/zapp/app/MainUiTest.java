@@ -3,9 +3,6 @@ package de.christinecoenen.code.zapp.app;
 
 import android.content.pm.ActivityInfo;
 
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.DrawerMatchers;
-import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -15,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.christinecoenen.code.zapp.R;
+import de.christinecoenen.code.zapp.app.main.MainActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
@@ -23,10 +21,9 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
-import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -44,20 +41,15 @@ public class MainUiTest {
 	 */
 	@Test
 	public void mainUiTest() throws InterruptedException {
-		// open menu
-		onView(withId(R.id.layout_drawer))
-			.perform(DrawerActions.open())
-			.check(matches(DrawerMatchers.isOpen()));
-
 		// change to mediathek
-		onView(withId(R.id.nav_view))
-			.perform(NavigationViewActions.navigateTo(R.id.menu_mediathek));
+		onView(withId(R.id.menu_mediathek))
+			.perform(click());
 
 		// scroll down and select a show
+		Thread.sleep(200);
 		onView(withId(R.id.list))
-			.perform(swipeUp())
-			.perform(swipeUp())
-			.perform(actionOnItemAtPosition(19, click()));
+			.perform(scrollToPosition(19))
+			.perform(actionOnItemAtPosition(18, click()));
 
 		// press play in detail view
 		onView(withId(R.id.play))
@@ -65,11 +57,11 @@ public class MainUiTest {
 			.perform(click());
 
 		// play pause button on video view
-		onView(withId(R.id.exo_pause))
+		onView(withId(R.id.exo_play_pause))
 			.check(matches(isDisplayed()))
 			.perform(click());
 
-		onView(withId(R.id.exo_play))
+		onView(withId(R.id.exo_play_pause))
 			.check(matches(isDisplayed()))
 			.perform(click());
 
@@ -98,40 +90,44 @@ public class MainUiTest {
 			.check(matches(isDisplayed()))
 			.perform(click());
 
-		// open menu
-		onView(withId(R.id.layout_drawer))
-			.perform(DrawerActions.open())
-			.check(matches(DrawerMatchers.isOpen()));
-
 		// go to about screen
-		onView(withId(R.id.nav_view))
-			.perform(NavigationViewActions.navigateTo(R.id.menu_about));
-		pressBack();
-
-		// open menu
-		onView(withId(R.id.layout_drawer))
-			.perform(DrawerActions.open())
-			.check(matches(DrawerMatchers.isOpen()));
-
-		// go to FAQ screen
-		onView(withId(R.id.nav_view))
-			.perform(NavigationViewActions.navigateTo(R.id.menu_about));
+		openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
+		Thread.sleep(200);
+		onView(withText(R.string.menu_about))
+			.check(matches(isDisplayed()))
+			.perform(click());
 
 		// go to changelog
 		onView(withText(R.string.activity_changelog_title))
 			.check(matches(isDisplayed()))
 			.perform(click());
+
+		// back to mediathek
 		pressBack();
+		pressBack();
+		Thread.sleep(200);
+
+		// go to about screen
+		openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
+		Thread.sleep(200);
+		onView(withText(R.string.menu_about))
+			.check(matches(isDisplayed()))
+			.perform(click());
+
+		// go to FAQ screen
+		onView(withText(R.string.activity_faq_title))
+			.check(matches(isDisplayed()))
+			.perform(click());
+		pressBack();
+		Thread.sleep(200);
 
 		// back to mediathek
 		pressBack();
 		Thread.sleep(200);
 
 		// change to live tab
-		onView(withId(R.id.list))
-			.perform(swipeRight());
-
-		Thread.sleep(200);
+		onView(withId(R.id.menu_live))
+			.perform(click());
 
 		// select a channel
 		onView(withId(R.id.gridview_channels))
@@ -144,17 +140,10 @@ public class MainUiTest {
 		// back live tab
 		pressBack();
 
-		// open menu
-		onView(withId(R.id.layout_drawer))
-			.perform(DrawerActions.open())
-			.check(matches(DrawerMatchers.isOpen()));
-
-		// go to FAQ screen
-		onView(withId(R.id.nav_view))
-			.perform(NavigationViewActions.navigateTo(R.id.menu_settings));
-
-		// open channel selection
-		onView(withText(R.string.pref_channel_selection_title))
+		// go to settings screen
+		Thread.sleep(200);
+		onView(withId(R.id.menu_settings))
+			.check(matches(isDisplayed()))
 			.perform(click());
 	}
 }
