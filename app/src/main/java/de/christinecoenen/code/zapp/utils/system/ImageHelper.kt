@@ -17,13 +17,17 @@ object ImageHelper {
 	private val THUMBNAIL_SIZE = Size(640, 240)
 
 	@JvmStatic
-	fun loadThumbnailAsync(context: Context, filePtah: String): Single<Bitmap> {
+	fun loadThumbnailAsync(context: Context, filePath: String?): Single<Bitmap> {
 		return Single
-			.fromCallable { loadThumbnail(context, filePtah) }
+			.fromCallable { loadThumbnail(context, filePath) }
 			.subscribeOn(Schedulers.computation())
 	}
 
-	private fun loadThumbnail(context: Context, filePath: String): Bitmap {
+	private fun loadThumbnail(context: Context, filePath: String?): Bitmap {
+		if (filePath == null) {
+			throw Exception("Could not generate thumbnail when filePath is null.")
+		}
+
 		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 			val contentResolver = context.contentResolver
 

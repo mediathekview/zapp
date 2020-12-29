@@ -12,17 +12,17 @@ class NetworkConnectionHelper(context: Context) {
 
 	private val networkReceiver = NetworkReceiver()
 	private val contextReference: WeakReference<Context> = WeakReference(context)
-	private var listener: Listener? = null
+	private var networkChangedCallback: (() -> Unit)? = null
 
-	fun startListenForNetworkChanges(listener: Listener?) {
-		this.listener = listener
+	fun startListenForNetworkChanges(networkChangedCallback: () -> Unit) {
+		this.networkChangedCallback = networkChangedCallback
 
 		val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
 		contextReference.get()?.registerReceiver(networkReceiver, filter)
 	}
 
 	fun endListenForNetworkChanges() {
-		listener = null
+		networkChangedCallback = null
 		contextReference.get()?.unregisterReceiver(networkReceiver)
 	}
 
@@ -38,12 +38,8 @@ class NetworkConnectionHelper(context: Context) {
 	private inner class NetworkReceiver : BroadcastReceiver() {
 
 		override fun onReceive(context: Context, intent: Intent) {
-			listener?.onNetworkChanged()
+			networkChangedCallback?.invoke()
 		}
 
-	}
-
-	interface Listener {
-		fun onNetworkChanged()
 	}
 }
