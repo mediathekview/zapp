@@ -1,9 +1,8 @@
-package de.christinecoenen.code.zapp.app.livestream.api.model;
+package de.christinecoenen.code.zapp.app.livestream.api.model
 
+@Suppress("unused")
+enum class Channel(private val id: String) {
 
-import androidx.annotation.NonNull;
-
-public enum Channel {
 	DAS_ERSTE("das_erste"),
 	BR_NORD("br_nord"),
 	BR_SUED("br_sued"),
@@ -25,40 +24,27 @@ public enum Channel {
 	ARD_ALPHA("ard_alpha"),
 	TAGESSCHAU24("tagesschau24"),
 	ONE("one"),
-
 	ARTE("arte"),
-
 	ZDF("zdf"),
 	DREISAT("dreisat"),
 	KIKA("kika"),
 	PHOENIX("phoenix"),
 	ZDF_INFO("zdf_info"),
 	ZDF_NEO("zdf_neo"),
-
 	DEUTSCHE_WELLE("deutsche_welle"),
 	DEUTSCHE_WELLE_PLUS("deutsche_welle_plus"),
-
 	PARLAMENTSFERNSEHEN_1("parlamentsfernsehen_1"),
 	PARLAMENTSFERNSEHEN_2("parlamentsfernsehen_2");
 
-	public static Channel getById(String id) {
-		for (Channel channel : Channel.values()) {
-			if (channel.id.equals(id)) {
-				return channel;
-			}
-		}
-		throw new IllegalArgumentException();
+	override fun toString(): String {
+		return id
 	}
 
-	private final String id;
+	companion object {
 
-	Channel(String id) {
-		this.id = id;
-	}
+		@JvmStatic
+		fun getById(id: String) =
+			values().find { it.id == id } ?: throw IllegalArgumentException()
 
-	@NonNull
-	@Override
-	public String toString() {
-		return id;
 	}
 }
