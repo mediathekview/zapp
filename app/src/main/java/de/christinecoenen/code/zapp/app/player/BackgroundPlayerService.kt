@@ -73,7 +73,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		errorMessageDisposable = player.errorResourceId.subscribe(this::onPlayerError)
 	}
 
-	override fun onBind(intent: Intent): IBinder? = binder
+	override fun onBind(intent: Intent): IBinder = binder
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		handleIntent(intent)
