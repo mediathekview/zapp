@@ -61,7 +61,7 @@ class ChannelRepository(private val context: Context) {
 	}
 
 	private fun getChannelInfoListFromApi(): Single<Map<String, ChannelInfo>> {
-		return ChannelInfoRepository.getInstance().channelInfoList
+		return ChannelInfoRepository.getInstance().getChannelInfoList()
 	}
 
 	@Throws(IOException::class)
