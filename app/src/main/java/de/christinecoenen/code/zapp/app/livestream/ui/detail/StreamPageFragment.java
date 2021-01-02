@@ -45,7 +45,7 @@ public class StreamPageFragment extends Fragment {
 		ChannelModel channel = (ChannelModel) args.getSerializable(ARGUMENT_CHANNEL_MODEL);
 
 		if (channel != null) {
-			ImageView logoView = binding.imageChannelLogo;
+			ImageView logoView = binding.logo;
 			logoView.setImageResource(channel.getDrawableId());
 			logoView.setContentDescription(channel.getName());
 			errorText.setBackgroundColor(channel.getColor());
@@ -53,7 +53,7 @@ public class StreamPageFragment extends Fragment {
 			errorText.setOnClickListener(view -> onErrorViewClick());
 
 			if (channel.getSubtitle() != null) {
-				TextView subtitleText = binding.textChannelSubtitle;
+				TextView subtitleText = binding.subtitle;
 				subtitleText.setText(channel.getSubtitle());
 			}
 		} else {

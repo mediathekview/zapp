@@ -15,7 +15,7 @@
 		android:padding="80dip">
 
 		<androidx.appcompat.widget.AppCompatImageView
-			android:id="@+id/image_channel_logo"
+			android:id="@+id/logo"
 			android:layout_width="wrap_content"
 			android:layout_height="0dip"
 			android:layout_gravity="center"
@@ -27,7 +27,7 @@
 			tools:ignore="ContentDescription" />
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/text_channel_subtitle"
+			android:id="@+id/subtitle"
 			style="@style/TextAppearance.MaterialComponents.Subtitle1"
 			android:layout_width="wrap_content"
 			android:layout_height="0dip"

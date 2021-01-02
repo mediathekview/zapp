@@ -26,7 +26,7 @@
 		android:orientation="vertical">
 
 		<androidx.appcompat.widget.AppCompatImageView
-			android:id="@+id/image_channel_logo"
+			android:id="@+id/logo"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
 			android:layout_weight="4"
@@ -35,7 +35,7 @@
 			tools:src="@drawable/channel_logo_das_erste" />
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/text_channel_subtitle"
+			android:id="@+id/subtitle"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
 			android:layout_weight="1"

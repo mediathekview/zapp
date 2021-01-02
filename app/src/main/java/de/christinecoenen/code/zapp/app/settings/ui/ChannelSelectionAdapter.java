@@ -56,8 +56,8 @@ class ChannelSelectionAdapter extends DragItemAdapter<ChannelModel, ChannelSelec
 			super(binding.getRoot(), R.id.image_handle, false);
 
 			handleView = binding.imageHandle;
-			logoView = binding.imageChannelLogo;
-			subtitle = binding.textChannelSubtitle;
+			logoView = binding.logo;
+			subtitle = binding.subtitle;
 		}
 
 		void setChannel(ChannelModel channel) {
