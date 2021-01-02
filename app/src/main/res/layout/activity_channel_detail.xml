@@ -31,12 +31,12 @@
 			app:use_controller="false" />
 
 		<de.christinecoenen.code.zapp.utils.view.ClickableViewPager
-			android:id="@+id/viewpager_channels"
+			android:id="@+id/viewpager"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 
 		<ProgressBar
-			android:id="@+id/progressbar_video"
+			android:id="@+id/video_progress"
 			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

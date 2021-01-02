@@ -5,13 +5,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.pm.ActivityInfo
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.view.*
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
@@ -24,7 +24,6 @@ import de.christinecoenen.code.zapp.app.player.VideoInfo.Companion.fromChannel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityChannelDetailBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import de.christinecoenen.code.zapp.models.channels.IChannelList
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper.reportShortcutUsageGuarded
@@ -51,9 +50,15 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 
 	}
 
+	private val viewModel: ChannelDetailActivityViewModel by viewModels {
+		val application = applicationContext as ZappApplicationBase
+		ChannelDetailActivityViewModelFactory(
+			application.channelRepository,
+			SettingsRepository(this)
+		)
+	}
+
 	private lateinit var binding: ActivityChannelDetailBinding
-	private lateinit var channelList: IChannelList
-	private lateinit var settings: SettingsRepository
 	private lateinit var channelDetailAdapter: ChannelDetailAdapter
 
 	private val disposable = CompositeDisposable()
@@ -130,12 +135,9 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		setSupportActionBar(binding.toolbar)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-		channelList = (application as ZappApplicationBase).channelRepository.getChannelList()
-		settings = SettingsRepository(this)
-
 		// pager
 		channelDetailAdapter = ChannelDetailAdapter(
-			supportFragmentManager, channelList, channelDetailListener)
+			supportFragmentManager, viewModel.channelList, channelDetailListener)
 
 		binding.viewpager.adapter = channelDetailAdapter
 		binding.viewpager.addOnPageChangeListener(onPageChangeListener)
@@ -170,11 +172,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 			resumeActivity()
 		}
 
-		requestedOrientation = if (settings.lockVideosInLandcapeFormat) {
-			ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-		} else {
-			ActivityInfo.SCREEN_ORIENTATION_SENSOR
-		}
+		requestedOrientation = viewModel.screenOrientation
 	}
 
 	override fun onPause() {
@@ -193,6 +191,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 
 	override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode)
+
 		if (isInPictureInPictureMode) {
 			hide()
 		}
@@ -234,11 +233,10 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	}
 
 	override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-		var handled = false
-
-		when (keyCode) {
-			KeyEvent.KEYCODE_DPAD_LEFT -> handled = prevChannel()
-			KeyEvent.KEYCODE_DPAD_RIGHT -> handled = nextChannel()
+		val handled = when (keyCode) {
+			KeyEvent.KEYCODE_DPAD_LEFT -> prevChannel()
+			KeyEvent.KEYCODE_DPAD_RIGHT -> nextChannel()
+			else -> false
 		}
 
 		return handled || super.onKeyUp(keyCode, event)
@@ -274,9 +272,11 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	}
 
 	private fun parseIntent(intent: Intent) {
-		val extras = intent.extras
-		val channelId = extras!!.getString(EXTRA_CHANNEL_ID)
-		val channelPosition = channelList.indexOf(channelId)
+
+		val channelId = intent.extras?.getString(EXTRA_CHANNEL_ID)
+				?: throw IllegalArgumentException("Channel id is not allowed to be null.")
+
+		val channelPosition = viewModel.getChannelPosition(channelId)
 
 		binding.viewpager.removeOnPageChangeListener(onPageChangeListener)
 		binding.viewpager.currentItem = channelPosition
@@ -285,6 +285,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 
 	private fun pauseActivity() {
 		disposable.clear()
+
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {
