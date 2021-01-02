@@ -16,11 +16,11 @@ data class Show(
 	}
 
 	fun toLiveShow(): LiveShow {
-		val liveShow = LiveShow()
-
-		liveShow.title = title
-		liveShow.subtitle = subtitle
-		liveShow.setDescription(description)
+		val liveShow = LiveShow(
+			title = title,
+			subtitle = subtitle,
+			description = description
+		)
 
 		if (startTime != null && endTime != null) {
 			liveShow.startTime = formatter.parseDateTime(startTime)
