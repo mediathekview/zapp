@@ -1,15 +1,16 @@
-package de.christinecoenen.code.zapp.app.downloads.ui.list
+package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
+import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 
 
 class DownloadListAdapter(
-	private val listener: Listener,
-	private val downloadsViewModel: DownloadsViewModel
+        private val listener: Listener,
+        private val downloadsViewModel: DownloadsViewModel
 ) : PagedListAdapter<PersistedMediathekShow, DownloadViewHolder>(DownloadDiffUtilCallback()) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {

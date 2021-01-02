@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import de.christinecoenen.code.zapp.app.ZappApplicationBase
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.app.downloads.ui.list.adapter.DownloadListAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 
 class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
@@ -26,9 +27,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		DownloadsViewModelFactory(application.mediathekRepository)
 	}
 
-	override fun onCreateView(inflater: LayoutInflater,
-							  container: ViewGroup?,
-							  savedInstanceState: Bundle?): View? {
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = DownloadsFragmentBinding.inflate(inflater, container, false)
 
 		val downloadAdapter = DownloadListAdapter(this, viewModel)

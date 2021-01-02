@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.downloads.ui.list
+package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 
 import android.animation.ObjectAnimator
 import android.graphics.Bitmap
