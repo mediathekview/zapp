@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.ui.detail;
+package de.christinecoenen.code.zapp.app.mediathek.ui.detail.player;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
