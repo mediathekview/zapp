@@ -71,8 +71,8 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		queryRequest = new QueryRequest()
-			.setSize(ITEM_COUNT_PER_PAGE);
+		queryRequest = new QueryRequest();
+		queryRequest.setSize(ITEM_COUNT_PER_PAGE);
 
 		ZappApplicationBase app = (ZappApplicationBase) requireContext().getApplicationContext();
 		mediathekRepository = app.getMediathekRepository();

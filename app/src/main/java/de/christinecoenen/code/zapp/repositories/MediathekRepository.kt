@@ -26,7 +26,7 @@ class MediathekRepository(private val database: Database) {
 
 	private val service: MediathekService
 
-	fun listShows(@Body queryRequest: QueryRequest?): Single<List<MediathekShow>> {
+	fun listShows(@Body queryRequest: QueryRequest): Single<List<MediathekShow>> {
 		return service.listShows(queryRequest)
 			.subscribeOn(Schedulers.io())
 			.map { mediathekAnswer: MediathekAnswer ->
