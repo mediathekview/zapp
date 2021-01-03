@@ -26,6 +26,8 @@ import de.christinecoenen.code.zapp.R;
 import de.christinecoenen.code.zapp.app.ZappApplicationBase;
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest;
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity;
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener;
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter;
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding;
 import de.christinecoenen.code.zapp.models.shows.MediathekShow;
 import de.christinecoenen.code.zapp.repositories.MediathekRepository;
@@ -34,7 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-public class MediathekListFragment extends Fragment implements MediathekItemAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
+public class MediathekListFragment extends Fragment implements ListItemListener, SwipeRefreshLayout.OnRefreshListener {
 
 	private static final int ITEM_COUNT_PER_PAGE = 30;
 
@@ -134,12 +136,12 @@ public class MediathekListFragment extends Fragment implements MediathekItemAdap
 	}
 
 	@Override
-	public void onShowClicked(MediathekShow show) {
+	public void onShowClicked(@NonNull MediathekShow show) {
 		startActivity(MediathekDetailActivity.getStartIntent(getContext(), show));
 	}
 
 	@Override
-	public void onShowLongClicked(MediathekShow show, View view) {
+	public void onShowLongClicked(@NonNull MediathekShow show, @NonNull View view) {
 		this.longClickShow = show;
 		PopupMenu menu = new PopupMenu(getContext(), view, Gravity.TOP | Gravity.END);
 		menu.inflate(R.menu.activity_mediathek_detail);

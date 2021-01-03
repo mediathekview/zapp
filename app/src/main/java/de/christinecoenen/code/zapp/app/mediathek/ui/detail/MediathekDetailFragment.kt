@@ -48,8 +48,8 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		}
 	}
 
-	private var _binding: DownloadsFragmentBinding? = null
-	private val binding: DownloadsFragmentBinding get() = _binding!!
+	private var _binding: FragmentMediathekDetailBinding? = null
+	private val binding: FragmentMediathekDetailBinding get() = _binding!!
 
 	private val createDisposables = CompositeDisposable()
 	private val createViewDisposables = CompositeDisposable()
@@ -140,14 +140,14 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		this.persistedMediathekShow = persistedMediathekShow
 
 		val show = persistedMediathekShow.mediathekShow
-		binding.texts.topic.setText(show.topic)
-		binding.texts.title.setText(show.title)
-		binding.texts.description.setText(show.description)
+		binding.texts.topic.text = show.topic
+		binding.texts.title.text = show.title
+		binding.texts.description.text = show.description
 		binding.time.text = show.formattedTimestamp
 		binding.channel.text = show.channel
 		binding.duration.text = show.formattedDuration
 		binding.subtitle.visibility = if (show.hasSubtitle()) View.VISIBLE else View.GONE
-		binding.buttons.download.setEnabled(show.hasAnyDownloadQuality())
+		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
 
 		downloadController!!
 			.getDownloadStatus(show.apiId)
@@ -172,7 +172,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 	}
 
 	private fun onDownloadProgressChanged(progress: Int) {
-		binding.buttons.downloadProgress.setProgress(progress)
+		binding.buttons.downloadProgress.progress = progress
 	}
 
 	private fun onPlayClick(view: View) {
@@ -218,34 +218,34 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 	}
 
 	private fun adjustUiToDownloadStatus(status: DownloadStatus) {
-		binding.texts.thumbnail.setVisibility(View.GONE)
+		binding.texts.thumbnail.visibility = View.GONE
 
 		when (status) {
 			DownloadStatus.NONE, DownloadStatus.CANCELLED, DownloadStatus.DELETED, DownloadStatus.PAUSED, DownloadStatus.REMOVED -> {
-				binding.buttons.downloadProgress.setVisibility(View.GONE)
+				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download)
 				binding.buttons.download.setIconResource(R.drawable.ic_baseline_save_alt_24)
 			}
 			DownloadStatus.ADDED, DownloadStatus.QUEUED -> {
-				binding.buttons.downloadProgress.setVisibility(View.VISIBLE)
-				binding.buttons.downloadProgress.setIndeterminate(true)
+				binding.buttons.downloadProgress.visibility = View.VISIBLE
+				binding.buttons.downloadProgress.isIndeterminate = true
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_running)
 				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp)
 			}
 			DownloadStatus.DOWNLOADING -> {
-				binding.buttons.downloadProgress.setVisibility(View.VISIBLE)
-				binding.buttons.downloadProgress.setIndeterminate(false)
+				binding.buttons.downloadProgress.visibility = View.VISIBLE
+				binding.buttons.downloadProgress.isIndeterminate = false
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_running)
 				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp)
 			}
 			DownloadStatus.COMPLETED -> {
-				binding.buttons.downloadProgress.setVisibility(View.GONE)
+				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete)
 				binding.buttons.download.setIconResource(R.drawable.ic_baseline_delete_outline_24)
 				updateVideoThumbnail()
 			}
 			DownloadStatus.FAILED -> {
-				binding.buttons.downloadProgress.setVisibility(View.GONE)
+				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_retry)
 				binding.buttons.download.setIconResource(R.drawable.ic_warning_white_24dp)
 			}
@@ -261,7 +261,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({ thumbnail ->
 				binding.texts.thumbnail.setImageBitmap(thumbnail)
-				binding.texts.thumbnail.setVisibility(View.VISIBLE)
+				binding.texts.thumbnail.visibility = View.VISIBLE
 			}, Timber::e)
 			.also(createViewDisposables::add)
 	}
