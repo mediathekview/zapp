@@ -1,23 +1,22 @@
-package de.christinecoenen.code.zapp.models.channels;
+package de.christinecoenen.code.zapp.models.channels
 
 /**
  * A sorted channel list. Channel order will be
  * persisted across application starts.
  */
-public interface ISortableChannelList extends IChannelList {
+interface ISortableChannelList : IChannelList {
 
-	void reload();
+	fun reload()
 
 	/**
 	 * Reloads the current channel order from disk.
 	 * Us this eg. in onResume when another activity
 	 * might have modified the channel order.
 	 */
-	void reloadChannelOrder();
+	fun reloadChannelOrder()
 
 	/**
 	 * Writes the current channel order to disk.
 	 */
-	void persistChannelOrder();
-
+	fun persistChannelOrder()
 }

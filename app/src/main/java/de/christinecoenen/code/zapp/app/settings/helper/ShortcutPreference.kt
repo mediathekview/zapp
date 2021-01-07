@@ -59,14 +59,14 @@ class ShortcutPreference @JvmOverloads constructor(
 	}
 
 	private fun loadValuesFromShortcuts() {
-		val shortcutIds = getChannelIdsOfShortcuts(context!!)
+		val shortcutIds = getChannelIdsOfShortcuts(context)
 		values = HashSet(shortcutIds)
 	}
 
 	@TargetApi(25)
 	private fun saveShortcuts(channelIds: Set<String>): Boolean {
-		val channels = channelIds.map { channelList[it] }
-		return updateShortcutsToChannels(context!!, channels)
+		val channels = channelIds.map { channelList[it]!! }
+		return updateShortcutsToChannels(context, channels)
 	}
 
 	private fun setSummaryToSelectedChannels() {
