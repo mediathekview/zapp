@@ -17,19 +17,19 @@ abstract class FullscreenActivity : AppCompatActivity() {
 	 * Whether or not the system UI should be auto-hidden after
 	 * [.autoHideUiMillis] milliseconds.
 	 */
-	private val autoHideUi = resources.getBoolean(R.bool.activity_fullscreen_auto_hide_ui)
+	private val autoHideUi by lazy { resources.getBoolean(R.bool.activity_fullscreen_auto_hide_ui) }
 
 	/**
 	 * If [.autoHideUi] is set, the number of milliseconds to wait after
 	 * user interaction before hiding the system UI.
 	 */
-	private val autoHideUiMillis = resources.getInteger(R.integer.activity_fullscreen_auto_hide_ui_millis)
+	private val autoHideUiMillis by lazy { resources.getInteger(R.integer.activity_fullscreen_auto_hide_ui_millis) }
 
 	/**
 	 * Some older devices needs a small delay between UI widget updates
 	 * and a change of the status and navigation bar.
 	 */
-	private val uiAnimationDelay = resources.getInteger(R.integer.activity_fullscreen_ui_animation_delay)
+	private val uiAnimationDelay by lazy { resources.getInteger(R.integer.activity_fullscreen_ui_animation_delay) }
 
 	protected lateinit var fullscreenContent: View
 	protected lateinit var controlsView: View

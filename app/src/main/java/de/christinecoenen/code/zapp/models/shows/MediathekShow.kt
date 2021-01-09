@@ -15,7 +15,7 @@ data class MediathekShow(
 	val apiId: String,
 	val topic: String = "",
 	val title: String,
-	val description: String?,
+	val description: String? = null,
 	val channel: String,
 	val timestamp: Int = 0,
 	val size: Long = 0,
