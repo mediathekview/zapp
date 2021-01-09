@@ -281,7 +281,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		}
 
 		startDownloadDisposable = downloadController!!
-			.startDownload(persistedMediathekShow, downloadQuality)
+			.startDownload(persistedMediathekShow!!, downloadQuality)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({}, ::onStartDownloadException)
 			.also(createViewDisposables::add)
