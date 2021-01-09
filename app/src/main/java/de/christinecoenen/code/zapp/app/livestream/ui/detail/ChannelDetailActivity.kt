@@ -141,7 +141,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 
 		binding.viewpager.adapter = channelDetailAdapter
 		binding.viewpager.addOnPageChangeListener(onPageChangeListener)
-		binding.viewpager.setOnClickListener { contentView.performClick() }
+		binding.viewpager.setOnClickListener { fullscreenContent.performClick() }
 		binding.viewpager.setOnTouchListener(::onPagerTouch)
 
 		binding.video.setTouchOverlay(binding.viewpager)
