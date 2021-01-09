@@ -293,7 +293,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 				Snackbar
 					.make(requireView(), R.string.error_mediathek_download_over_unmetered_network_only, Snackbar.LENGTH_LONG)
 					.setAction(R.string.activity_settings_title) {
-						startActivity(SettingsActivity.getStartIntent(context))
+						startActivity(SettingsActivity.getStartIntent(requireContext()))
 					}
 					.show()
 			}
