@@ -29,7 +29,7 @@ internal class ChannelDetailAdapter(
 		return channelList.size()
 	}
 
-	override fun getPageTitle(position: Int): CharSequence? {
+	override fun getPageTitle(position: Int): CharSequence {
 		return channelList[position].name
 	}
 
