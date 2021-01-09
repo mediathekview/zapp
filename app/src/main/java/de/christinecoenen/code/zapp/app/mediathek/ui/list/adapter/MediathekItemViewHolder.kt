@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
 import android.graphics.Bitmap
 import android.view.View
+import androidx.core.view.isVisible
 import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
@@ -35,8 +36,8 @@ internal class MediathekItemViewHolder(
 		binding.duration.text = show.formattedDuration
 		binding.channel.text = show.channel
 		binding.time.text = show.formattedTimestamp
-		binding.subtitle.visibility = if (show.hasSubtitle()) View.VISIBLE else View.GONE
-		binding.subtitleDivider.visibility = if (show.hasSubtitle()) View.VISIBLE else View.GONE
+		binding.subtitle.isVisible = show.hasSubtitle
+		binding.subtitleDivider.isVisible = show.hasSubtitle
 
 		val persistedShowCall = mediathekRepository
 			.getPersistedShowByApiId(show.apiId)

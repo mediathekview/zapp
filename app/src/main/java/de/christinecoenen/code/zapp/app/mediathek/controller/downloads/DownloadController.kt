@@ -66,8 +66,9 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 		fetch.addListener(this)
 	}
 
-	fun startDownload(show: PersistedMediathekShow, quality: Quality?): Completable {
+	fun startDownload(show: PersistedMediathekShow, quality: Quality): Completable {
 		val downloadUrl = show.mediathekShow.getVideoUrl(quality)
+				?: throw DownloadException("$quality is no valid download quality.")
 
 		return getDownload(show.downloadId)
 			.flatMapCompletable { download ->

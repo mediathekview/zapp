@@ -49,8 +49,9 @@ interface MediathekShowDao {
 
 		if (existingPersistedShow == null) {
 			// insert new show
-			val newPersistedShow = PersistedMediathekShow()
-			newPersistedShow.mediathekShow = show
+			val newPersistedShow = PersistedMediathekShow(
+				mediathekShow = show
+			)
 			insert(newPersistedShow).blockingAwait()
 		} else {
 			// update existing show

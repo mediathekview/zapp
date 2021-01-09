@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
@@ -18,7 +19,6 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileD
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.player.MediathekPlayerActivity
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
-import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -31,7 +31,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
-import java.util.*
 
 class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, SelectQualityDialog.Listener {
 
@@ -128,11 +127,11 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		downloadController!!.deleteDownload(persistedMediathekShow!!.id)
 	}
 
-	override fun onDownloadQualitySelected(quality: Quality?) {
+	override fun onDownloadQualitySelected(quality: Quality) {
 		download(quality)
 	}
 
-	override fun onShareQualitySelected(quality: Quality?) {
+	override fun onShareQualitySelected(quality: Quality) {
 		share(quality)
 	}
 
@@ -146,7 +145,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		binding.time.text = show.formattedTimestamp
 		binding.channel.text = show.channel
 		binding.duration.text = show.formattedDuration
-		binding.subtitle.visibility = if (show.hasSubtitle()) View.VISIBLE else View.GONE
+		binding.subtitle.isVisible = show.hasSubtitle
 		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
 
 		downloadController!!
@@ -266,7 +265,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 			.also(createViewDisposables::add)
 	}
 
-	private fun share(quality: Quality?) {
+	private fun share(quality: Quality) {
 		val videoIntent = Intent(Intent.ACTION_VIEW).apply {
 			val url = persistedMediathekShow!!.mediathekShow.getVideoUrl(quality)
 			setDataAndType(Uri.parse(url), "video/*")
@@ -275,7 +274,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)))
 	}
 
-	private fun download(downloadQuality: Quality?) {
+	private fun download(downloadQuality: Quality) {
 		if (!startDownloadDisposable.isDisposed) {
 			startDownloadDisposable.dispose()
 		}

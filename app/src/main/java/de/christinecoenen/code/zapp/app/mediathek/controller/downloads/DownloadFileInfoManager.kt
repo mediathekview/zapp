@@ -40,7 +40,7 @@ internal class DownloadFileInfoManager(
 		return !downloadFile.exists() && Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(downloadFile)
 	}
 
-	fun getDownloadFilePath(show: MediathekShow, quality: Quality?): String {
+	fun getDownloadFilePath(show: MediathekShow, quality: Quality): String {
 		val fileName = show.getDownloadFileName(quality)
 
 		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

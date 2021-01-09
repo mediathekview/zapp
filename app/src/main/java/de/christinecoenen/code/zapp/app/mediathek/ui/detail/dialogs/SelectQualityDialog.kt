@@ -79,7 +79,7 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 	}
 
 	internal interface Listener {
-		fun onDownloadQualitySelected(quality: Quality?)
-		fun onShareQualitySelected(quality: Quality?)
+		fun onDownloadQualitySelected(quality: Quality)
+		fun onShareQualitySelected(quality: Quality)
 	}
 }

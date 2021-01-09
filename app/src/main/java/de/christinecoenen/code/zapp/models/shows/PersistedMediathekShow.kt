@@ -31,7 +31,7 @@ data class PersistedMediathekShow(
 	var videoDuration: Long = 0,
 
 	@Embedded
-	var mediathekShow: MediathekShow = MediathekShow()
+	var mediathekShow: MediathekShow
 
 ) {
 
