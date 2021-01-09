@@ -16,7 +16,7 @@ internal class MainPageAdapter(
 	override fun createFragment(position: Int): Fragment =
 		when (mainViewModel.getPageTypeAt(position)) {
 			PAGE_CHANNEL_LIST -> ChannelListFragment.newInstance()
-			PAGE_MEDIATHEK_LIST -> MediathekListFragment.getInstance()
+			PAGE_MEDIATHEK_LIST -> MediathekListFragment.instance
 			PAGE_DOWNLOADS -> DownloadsFragment.newInstance()
 		}
 

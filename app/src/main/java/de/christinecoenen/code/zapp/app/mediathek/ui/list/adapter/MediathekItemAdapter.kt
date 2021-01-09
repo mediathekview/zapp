@@ -23,12 +23,14 @@ class MediathekItemAdapter(private val listener: ListItemListener?) : RecyclerVi
 		setHasStableIds(true)
 	}
 
-	fun setShows(shows: MutableList<MediathekShow>) {
+	fun setShows(shows: List<MediathekShow>) {
 		if (shows == this.shows) {
 			return
 		}
 
-		this.shows = shows
+		this.shows.clear()
+		this.shows.addAll(shows)
+
 		notifyDataSetChanged()
 	}
 
