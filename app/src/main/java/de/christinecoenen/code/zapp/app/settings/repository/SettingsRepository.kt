@@ -3,8 +3,8 @@ package de.christinecoenen.code.zapp.app.settings.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 
 class SettingsRepository(context: Context) {
