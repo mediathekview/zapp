@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -35,6 +36,7 @@ import de.christinecoenen.code.zapp.utils.view.ColorHelper.withAlpha
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
+
 
 class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener {
 
@@ -345,7 +347,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	}
 
 	private fun setColor(color: Int) {
-		binding.videoProgress.indeterminateDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+		binding.videoProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
 		binding.toolbar.setBackgroundColor(color)
 
 		window.statusBarColor = darker(color, 0.075f)
