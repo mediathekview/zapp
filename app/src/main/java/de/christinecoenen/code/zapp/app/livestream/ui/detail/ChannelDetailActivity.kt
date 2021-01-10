@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail
 
 import android.annotation.SuppressLint
-import android.app.PictureInPictureParams
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -127,6 +126,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		}
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -145,7 +145,10 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		binding.viewpager.adapter = channelDetailAdapter
 		binding.viewpager.addOnPageChangeListener(onPageChangeListener)
 		binding.viewpager.setOnClickListener { fullscreenContent.performClick() }
-		binding.viewpager.setOnTouchListener(::onPagerTouch)
+		binding.viewpager.setOnTouchListener { _, _ ->
+			delayHide()
+			false
+		}
 
 		binding.video.setTouchOverlay(binding.viewpager)
 
@@ -269,15 +272,10 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		player?.resume()
 	}
 
-	private fun onPagerTouch(view: View, motionEvent: MotionEvent): Boolean {
-		delayHide()
-		return false
-	}
-
 	private fun parseIntent(intent: Intent) {
 
 		val channelId = intent.extras?.getString(EXTRA_CHANNEL_ID)
-				?: throw IllegalArgumentException("Channel id is not allowed to be null.")
+			?: throw IllegalArgumentException("Channel id is not allowed to be null.")
 
 		val channelPosition = viewModel.getChannelPosition(channelId)
 
