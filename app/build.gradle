@@ -110,7 +110,6 @@ dependencies {
 	implementation 'androidx.preference:preference-ktx:1.1.1'
 	implementation "androidx.paging:paging-runtime-ktx:2.1.2"
 	implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-	implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
 
 	// room database
 	def room_version = "2.2.6"
