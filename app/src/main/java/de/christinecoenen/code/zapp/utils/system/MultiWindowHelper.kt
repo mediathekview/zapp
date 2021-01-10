@@ -2,9 +2,12 @@ package de.christinecoenen.code.zapp.utils.system
 
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.PictureInPictureParams
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 
 object MultiWindowHelper {
 	/**
@@ -45,5 +48,17 @@ object MultiWindowHelper {
 		val packageManager = context.applicationContext.packageManager
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
 			packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+	}
+
+	@JvmStatic
+	@RequiresApi(Build.VERSION_CODES.N)
+	fun enterPictureInPictureMode(activity: AppCompatActivity, params: PictureInPictureParams? = null) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			val nullCheckedParams = params ?: PictureInPictureParams.Builder().build()
+			activity.enterPictureInPictureMode(nullCheckedParams)
+		} else {
+			@Suppress("DEPRECATION")
+			activity.enterPictureInPictureMode()
+		}
 	}
 }

@@ -1,10 +1,12 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail
 
 import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +26,7 @@ import de.christinecoenen.code.zapp.app.player.VideoInfo.Companion.fromChannel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityChannelDetailBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
+import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper.reportShortcutUsageGuarded
@@ -189,8 +192,8 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		pauseActivity()
 	}
 
-	override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
-		super.onPictureInPictureModeChanged(isInPictureInPictureMode)
+	override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+		super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
 
 		if (isInPictureInPictureMode) {
 			hide()
@@ -220,7 +223,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 			}
 			R.id.menu_pip -> {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					enterPictureInPictureMode()
+					MultiWindowHelper.enterPictureInPictureMode(this)
 				}
 				true
 			}

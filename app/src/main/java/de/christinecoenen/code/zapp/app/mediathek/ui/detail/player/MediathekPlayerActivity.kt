@@ -29,6 +29,7 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
+import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInPictureInPictureMode
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
@@ -179,7 +180,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 			}
 			R.id.menu_pip -> {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					enterPictureInPictureMode()
+					MultiWindowHelper.enterPictureInPictureMode(this)
 				}
 				true
 			}
@@ -248,7 +249,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		binder!!.movePlaybackToForeground()
 
 		val isInPipMode = isInPictureInPictureMode(this@MediathekPlayerActivity)
-		onPictureInPictureModeChanged(isInPipMode)
+		onPictureInPictureModeChanged(isInPipMode, Configuration())
 	}
 
 	private fun onVideoError(messageResourceId: Int?) {
