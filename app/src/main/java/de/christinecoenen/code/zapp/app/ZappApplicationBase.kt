@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
-import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
+import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
@@ -69,12 +69,6 @@ abstract class ZappApplicationBase : Application() {
 	val mediathekRepository: MediathekRepository
 		get() = koin.get()
 
-	val downloadController: DownloadController
-		get() = koin.get()
-
-	val playbackPositionRepository: IPlaybackPositionRepository
-		get() = koin.get()
-
 	private lateinit var koin: Koin
 
 	fun reportError(throwable: Throwable?) {
@@ -91,17 +85,15 @@ abstract class ZappApplicationBase : Application() {
 		setUpLogging()
 		createBackgroundPlaybackChannel(this)
 
-		val settingsRepository = SettingsRepository(this)
-		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
-
 		val appModule = module {
-
 			single { ChannelRepository(androidContext()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) }
 			single { DownloadController(androidContext(), get()) }
 
+			factory { SettingsRepository(androidContext()) }
+			factory { Player(androidContext(), get()) }
 		}
 
 		koin = startKoin {
@@ -109,6 +101,9 @@ abstract class ZappApplicationBase : Application() {
 			androidContext(this@ZappApplicationBase)
 			modules(appModule)
 		}.koin
+
+		val settingsRepository = SettingsRepository(this)
+		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
 	}
 
 	protected abstract fun setUpLogging()

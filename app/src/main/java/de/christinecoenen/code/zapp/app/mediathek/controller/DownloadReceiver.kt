@@ -4,13 +4,17 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
-class DownloadReceiver : BroadcastReceiver() {
+@KoinApiExtension
+class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 
 	companion object {
 
@@ -26,14 +30,14 @@ class DownloadReceiver : BroadcastReceiver() {
 
 	}
 
+	private val mediathekRepository: MediathekRepository by inject()
+
 	@SuppressLint("CheckResult")
 	override fun onReceive(context: Context, intent: Intent) {
 		if (ACTION_NOTIFICATION_CLICKED != intent.action) {
 			return
 		}
 
-		val application = context.applicationContext as ZappApplication
-		val mediathekRepository = application.mediathekRepository
 		val downloadId = intent.getIntExtra(EXTRA_DOWNLOAD_ID, 0)
 
 		mediathekRepository

@@ -18,7 +18,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.player.Player
@@ -35,6 +34,7 @@ import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMulti
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.VisibilityListener {
@@ -52,9 +52,10 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		}
 	}
 
+	private val mediathekRepository: MediathekRepository by inject()
+	private val settings: SettingsRepository by inject()
+
 	private lateinit var binding: ActivityMediathekPlayerBinding
-	private lateinit var mediathekRepository: MediathekRepository
-	private lateinit var settings: SettingsRepository
 
 	private val pauseDisposables = CompositeDisposable()
 	private var persistedShowId = 0
@@ -92,9 +93,6 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 
 		// set to show
 		parseIntent(intent)
-
-		settings = SettingsRepository(this)
-		mediathekRepository = (applicationContext as ZappApplication).mediathekRepository
 
 		binding.video.setControllerVisibilityListener(this)
 		binding.video.requestFocus()
