@@ -3,7 +3,11 @@ package de.christinecoenen.code.zapp.app
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
+import de.christinecoenen.code.zapp.app.main.MainViewModel
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
+import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -18,10 +22,13 @@ import org.acra.annotation.AcraCore
 import org.acra.annotation.AcraDialog
 import org.acra.annotation.AcraMailSender
 import org.acra.data.StringFormat
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.Koin
 import org.koin.core.context.startKoin
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import timber.log.Timber
 
@@ -89,11 +96,15 @@ abstract class ZappApplicationBase : Application() {
 			single { ChannelRepository(androidContext()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
-			single { PersistedPlaybackPositionRepository(get()) }
+			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) }
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get()) }
+
+			viewModel { MainViewModel(androidApplication()) }
+			viewModel { ChannelDetailActivityViewModel(get(), get()) }
+			viewModel { DownloadsViewModel(get()) }
 		}
 
 		koin = startKoin {
