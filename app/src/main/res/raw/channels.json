@@ -30,7 +30,7 @@
   {
 	"id": "kika",
 	"name": "KiKA",
-	"stream_url": "https://kikade-lh.akamaihd.net/i/livetvkika_de@450035/master.m3u8",
+	"stream_url": "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
 	"logo_name": "channel_logo_kika",
 	"color": "#176563"
   },
