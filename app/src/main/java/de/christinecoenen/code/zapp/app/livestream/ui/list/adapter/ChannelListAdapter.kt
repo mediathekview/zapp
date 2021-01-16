@@ -8,13 +8,12 @@ import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 import java.util.*
 
+
 class ChannelListAdapter(
-	context: Context,
 	private val channelList: IChannelList,
 	private val listener: ListItemListener
 ) : RecyclerView.Adapter<ChannelViewHolder>() {
 
-	private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 	private val visibleViews: WeakHashMap<ChannelViewHolder, Any> = WeakHashMap()
 
 	init {
@@ -32,7 +31,8 @@ class ChannelListAdapter(
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChannelViewHolder {
-		val binding = FragmentChannelListItemBinding.inflate(inflater, parent, false)
+		val layoutInflater = LayoutInflater.from(parent.context)
+		val binding = FragmentChannelListItemBinding.inflate(layoutInflater, parent, false)
 		return ChannelViewHolder(binding, listener)
 	}
 

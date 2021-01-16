@@ -32,7 +32,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		super.onCreate(savedInstanceState)
 
 		channelList = SortableVisibleJsonChannelList(requireContext())
-		gridAdapter = ChannelListAdapter(requireContext(), channelList, this)
+		gridAdapter = ChannelListAdapter(channelList, this)
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
