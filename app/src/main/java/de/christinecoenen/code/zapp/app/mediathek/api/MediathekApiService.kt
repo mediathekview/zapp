@@ -7,10 +7,10 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface MediathekService {
+interface MediathekApiService {
 
 	@Headers("Content-Type: text/plain")
 	@POST("query")
 	fun listShows(@Body queryRequest: QueryRequest): Single<MediathekAnswer>
-	
+
 }

@@ -6,6 +6,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
+import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
@@ -96,9 +97,10 @@ abstract class ZappApplicationBase : Application() {
 		val appModule = module {
 			single { ChannelRepository(androidContext()) }
 			single { Database.getInstance(androidContext()) }
-			single { MediathekRepository(get()) }
+			single { MediathekRepository(get(), get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) }
+			single { MediathekApi() }
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get()) }
