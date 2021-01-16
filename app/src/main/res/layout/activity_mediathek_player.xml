@@ -6,7 +6,7 @@
 	android:layout_height="match_parent"
 	android:animateLayoutChanges="true"
 	android:background="@android:color/black"
-	tools:context=".app.mediathek.ui.detail.MediathekPlayerActivity">
+	tools:context=".app.mediathek.ui.detail.player.MediathekPlayerActivity">
 
 	<de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView
 		android:id="@+id/video"

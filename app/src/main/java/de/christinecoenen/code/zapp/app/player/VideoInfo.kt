@@ -26,7 +26,7 @@ data class VideoInfo(
 
 			return VideoInfo(
 				title = show.title,
-				url = show.getVideoUrl(Quality.Medium)
+				url = show.videoUrl
 			).apply {
 				id = persistedShow.id
 				urlHighestQuality = show.getVideoUrl(Quality.High)
@@ -59,7 +59,7 @@ data class VideoInfo(
 	val isOfflineVideo: Boolean
 		get() = filePath != null
 
-	fun getPlaybackUrlOrFilePath(quality: StreamQualityBucket?): String {
+	fun getPlaybackUrlOrFilePath(quality: StreamQualityBucket): String {
 		return if (isOfflineVideo) {
 			filePath!!
 		} else when (quality) {

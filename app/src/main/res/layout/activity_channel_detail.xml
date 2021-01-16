@@ -4,7 +4,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@android:color/black"
-	tools:context=".utils.view.FullscreenActivity">
+	tools:context=".utils.view.FullscreenActivity"
+	tools:ignore="Overdraw">
 
 	<!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -31,12 +32,12 @@
 			app:use_controller="false" />
 
 		<de.christinecoenen.code.zapp.utils.view.ClickableViewPager
-			android:id="@+id/viewpager_channels"
+			android:id="@+id/viewpager"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 
 		<ProgressBar
-			android:id="@+id/progressbar_video"
+			android:id="@+id/video_progress"
 			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

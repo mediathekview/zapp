@@ -16,38 +16,8 @@
 #   public *;
 #}
 
-
-## start joda-time-android 2.8.0
--dontwarn org.joda.convert.FromString
--dontwarn org.joda.convert.ToString
-## end joda-time-android 2.8.0
-
-
-## start retrofit
-
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
-
--keepclasseswithmembers class * {
-    @retrofit2.http.* <methods>;
-}
--keepclasseswithmembers interface * {
-    @retrofit2.http.* <methods>;
-}
-
--dontwarn okio.**
--dontwarn okhttp3.**
--keep class de.christinecoenen.code.zapp.app.mediathek.model.** { *; }
--keep class de.christinecoenen.code.zapp.app.mediathek.api.request.** { *; }
--keep class de.christinecoenen.code.zapp.app.mediathek.api.result.** { *; }
--keep class de.christinecoenen.code.zapp.app.livestream.api.model.** { *; }
-
-## end retrofit
-
 ## start about libraries
--keep class .R
+-keep class *.R
 -keep class **.R$* {
     <fields>;
 }
@@ -59,8 +29,12 @@
 ## end exopayer
 
 ## start fetch
+#noinspection ShrinkerUnresolvedReference
 -keep class com.tonyodev.fetch2.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep class com.tonyodev.fetch2core.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep interface com.tonyodev.fetch2.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep interface com.tonyodev.fetch2core.** { *; }
 ## end fetch

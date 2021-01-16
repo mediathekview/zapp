@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/mediathekview/zapp.svg?branch=master)](https://travis-ci.com/mediathekview/zapp)
 
-![ZAPP](app/src/main/play/de-DE/listing/featureGraphic/funktionsgrafik.jpg)
+![ZAPP](app/src/main/play/listings/de/feature-graphic/funktionsgrafik.jpg)
 
 1. [Über](#über)
 2. [FAQ](app/src/main/res/raw/faq.md)

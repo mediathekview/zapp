@@ -12,9 +12,9 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import io.reactivex.disposables.Disposable
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
@@ -47,10 +47,9 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		}
 	}
 
+	private val player: Player by inject()
 
 	private val binder = Binder()
-
-	private lateinit var player: Player
 	private lateinit var errorMessageDisposable: Disposable
 
 	private var playerNotificationManager: PlayerNotificationManager? = null
@@ -67,13 +66,10 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	override fun onCreate() {
 		super.onCreate()
 
-		val application = applicationContext as ZappApplication
-
-		player = Player(this, application.playbackPositionRepository)
 		errorMessageDisposable = player.errorResourceId.subscribe(this::onPlayerError)
 	}
 
-	override fun onBind(intent: Intent): IBinder? = binder
+	override fun onBind(intent: Intent): IBinder = binder
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		handleIntent(intent)
