@@ -13,5 +13,5 @@ class PackageUpdateReceiver : BroadcastReceiver() {
 			app.channelRepository.deleteCachedChannelInfos()
 		}
 	}
-	
+
 }

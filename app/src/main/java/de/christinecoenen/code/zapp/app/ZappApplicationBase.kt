@@ -3,11 +3,16 @@ package de.christinecoenen.code.zapp.app
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
+import de.christinecoenen.code.zapp.app.main.MainViewModel
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
+import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
-import de.christinecoenen.code.zapp.persistence.Database.Companion.getInstance
+import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
+import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper.createBackgroundPlaybackChannel
@@ -18,6 +23,14 @@ import org.acra.annotation.AcraCore
 import org.acra.annotation.AcraDialog
 import org.acra.annotation.AcraMailSender
 import org.acra.data.StringFormat
+import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.Koin
+import org.koin.core.context.startKoin
+import org.koin.dsl.bind
+import org.koin.dsl.module
 import timber.log.Timber
 
 @AcraCore(
@@ -58,17 +71,13 @@ import timber.log.Timber
 )
 abstract class ZappApplicationBase : Application() {
 
-	lateinit var channelRepository: ChannelRepository
-		private set
+	val channelRepository: ChannelRepository
+		get() = koin.get()
 
-	lateinit var mediathekRepository: MediathekRepository
-		private set
+	val mediathekRepository: MediathekRepository
+		get() = koin.get()
 
-	lateinit var downloadController: DownloadController
-		private set
-
-	lateinit var playbackPositionRepository: IPlaybackPositionRepository
-		private set
+	private lateinit var koin: Koin
 
 	fun reportError(throwable: Throwable?) {
 		if (ACRA.isInitialised()) {
@@ -84,18 +93,32 @@ abstract class ZappApplicationBase : Application() {
 		setUpLogging()
 		createBackgroundPlaybackChannel(this)
 
+		val appModule = module {
+			single { ChannelRepository(androidContext()) }
+			single { Database.getInstance(androidContext()) }
+			single { MediathekRepository(get()) }
+			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
+			single { DownloadController(androidContext(), get()) }
+
+			factory { SettingsRepository(androidContext()) }
+			factory { Player(androidContext(), get()) }
+			factory { JsonChannelList(androidContext()) }
+
+			viewModel { MainViewModel(androidApplication()) }
+			viewModel { ChannelDetailActivityViewModel(get(), get()) }
+			viewModel { DownloadsViewModel(get()) }
+		}
+
+		koin = startKoin {
+			androidLogger()
+			androidContext(this@ZappApplicationBase)
+			modules(appModule)
+		}.koin
+
 		val settingsRepository = SettingsRepository(this)
 		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
-
-		channelRepository = ChannelRepository(this)
-
-		val database = getInstance(this)
-
-		mediathekRepository = MediathekRepository(database)
-		playbackPositionRepository = PersistedPlaybackPositionRepository(mediathekRepository)
-		downloadController = DownloadController(this, mediathekRepository)
 	}
 
 	protected abstract fun setUpLogging()
-	
+
 }

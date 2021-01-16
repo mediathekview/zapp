@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -19,10 +18,11 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 import de.christinecoenen.code.zapp.utils.system.MenuHelper
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
-	private val viewModel: MainViewModel by viewModels()
+	private val viewModel: MainViewModel by viewModel()
 
 	private var _binding: ActivityMainBinding? = null
 	private val binding get() = _binding!!

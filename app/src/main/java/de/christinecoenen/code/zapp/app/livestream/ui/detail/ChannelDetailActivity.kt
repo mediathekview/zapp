@@ -13,17 +13,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.view.*
-import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.ZappApplicationBase
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo.Companion.fromChannel
-import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityChannelDetailBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
@@ -35,6 +32,7 @@ import de.christinecoenen.code.zapp.utils.view.ColorHelper.interpolate
 import de.christinecoenen.code.zapp.utils.view.ColorHelper.withAlpha
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity
 import io.reactivex.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
@@ -54,13 +52,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 
 	}
 
-	private val viewModel: ChannelDetailActivityViewModel by viewModels {
-		val application = applicationContext as ZappApplicationBase
-		ChannelDetailActivityViewModelFactory(
-			application.channelRepository,
-			SettingsRepository(this)
-		)
-	}
+	private val viewModel: ChannelDetailActivityViewModel by viewModel()
 
 	private lateinit var binding: ActivityChannelDetailBinding
 	private lateinit var channelDetailAdapter: ChannelDetailAdapter

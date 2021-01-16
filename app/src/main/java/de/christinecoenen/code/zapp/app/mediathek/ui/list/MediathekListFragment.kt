@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.ZappApplicationBase
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
@@ -19,6 +18,7 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.net.UnknownServiceException
 import javax.net.ssl.SSLHandshakeException
@@ -38,7 +38,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private val binding: FragmentMediathekListBinding
 		get() = _binding!!
 
-	private lateinit var mediathekRepository: MediathekRepository
+	private val mediathekRepository: MediathekRepository by inject()
 
 	private var queryRequest = QueryRequest()
 	private var adapter: MediathekItemAdapter? = null
@@ -58,9 +58,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		queryRequest = QueryRequest()
 		queryRequest.size = ITEM_COUNT_PER_PAGE
-
-		val app = requireContext().applicationContext as ZappApplicationBase
-		mediathekRepository = app.mediathekRepository
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

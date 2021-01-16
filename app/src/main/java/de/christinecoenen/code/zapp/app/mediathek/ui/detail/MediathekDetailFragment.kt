@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.ZappApplicationBase
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
@@ -30,6 +28,7 @@ import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, SelectQualityDialog.Listener {
@@ -50,35 +49,22 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 	private var _binding: FragmentMediathekDetailBinding? = null
 	private val binding: FragmentMediathekDetailBinding get() = _binding!!
 
+	private val downloadController: DownloadController by inject()
+	private val mediathekRepository: MediathekRepository by inject()
+
 	private val createDisposables = CompositeDisposable()
 	private val createViewDisposables = CompositeDisposable()
 	private var startDownloadDisposable: Disposable = CompositeDisposable()
-	private var mediathekRepository: MediathekRepository? = null
 	private var persistedMediathekShow: PersistedMediathekShow? = null
 	private var argumentsMediathekShow: MediathekShow? = null
-	private var downloadController: DownloadController? = null
 	private var downloadStatus = DownloadStatus.NONE
-
-	override fun onAttach(context: Context) {
-		super.onAttach(context)
-
-		val app = context.applicationContext as ZappApplicationBase
-
-		downloadController = app.downloadController
-		mediathekRepository = app.mediathekRepository
-	}
-
-	override fun onDetach() {
-		super.onDetach()
-		downloadController = null
-	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		argumentsMediathekShow = requireArguments().getSerializable(ARG_SHOW) as MediathekShow
 
-		val persistShowDisposable = mediathekRepository!!
+		val persistShowDisposable = mediathekRepository
 			.persistOrUpdateShow(argumentsMediathekShow!!)
 			.firstElement()
 			.observeOn(AndroidSchedulers.mainThread())
@@ -95,7 +81,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		binding.buttons.share.setOnClickListener(::onShareClick)
 		binding.buttons.website.setOnClickListener(::onWebsiteClick)
 
-		val viewingProgressDisposable = mediathekRepository!!
+		val viewingProgressDisposable = mediathekRepository
 			.getPlaybackPositionPercent(argumentsMediathekShow!!.apiId)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(::updatePlaybackPosition, Timber::e)
@@ -108,7 +94,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 	override fun onResume() {
 		super.onResume()
 
-		downloadController!!.deleteDownloadsWithDeletedFiles()
+		downloadController.deleteDownloadsWithDeletedFiles()
 	}
 
 	override fun onDestroyView() {
@@ -124,7 +110,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 	}
 
 	override fun onConfirmDeleteDialogOkClicked() {
-		downloadController!!.deleteDownload(persistedMediathekShow!!.id)
+		downloadController.deleteDownload(persistedMediathekShow!!.id)
 	}
 
 	override fun onDownloadQualitySelected(quality: Quality) {
@@ -148,13 +134,13 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
 
-		downloadController!!
+		downloadController
 			.getDownloadStatus(show.apiId)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(::onDownloadStatusChanged)
 			.also(createViewDisposables::add)
 
-		downloadController!!
+		downloadController
 			.getDownloadProgress(show.apiId)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(::onDownloadProgressChanged)
@@ -190,7 +176,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 			DownloadStatus.ADDED,
 			DownloadStatus.QUEUED,
 			DownloadStatus.DOWNLOADING ->
-				downloadController!!.stopDownload(persistedMediathekShow!!.id)
+				downloadController.stopDownload(persistedMediathekShow!!.id)
 			DownloadStatus.COMPLETED ->
 				showConfirmDeleteDialog()
 		}
@@ -253,7 +239,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 
 	private fun updateVideoThumbnail() {
 		// reload show for up to date file path and then update thumbnail
-		mediathekRepository!!
+		mediathekRepository
 			.getPersistedShow(persistedMediathekShow!!.id)
 			.firstOrError()
 			.flatMap { loadThumbnailAsync(requireContext(), it.downloadedVideoPath) }
@@ -279,7 +265,7 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 			startDownloadDisposable.dispose()
 		}
 
-		startDownloadDisposable = downloadController!!
+		startDownloadDisposable = downloadController
 			.startDownload(persistedMediathekShow!!, downloadQuality)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({}, ::onStartDownloadException)

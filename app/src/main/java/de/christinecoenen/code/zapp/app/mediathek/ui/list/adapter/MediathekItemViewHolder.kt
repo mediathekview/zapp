@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 import android.graphics.Bitmap
 import android.view.View
 import androidx.core.view.isVisible
-import de.christinecoenen.code.zapp.app.ZappApplication
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -11,19 +10,19 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
+@KoinApiExtension
 internal class MediathekItemViewHolder(
 	private val binding: FragmentMediathekListItemBinding
-) : BaseViewHolder(binding.root) {
+) : BaseViewHolder(binding.root), KoinComponent {
 
-	private val mediathekRepository: MediathekRepository
+	private val mediathekRepository: MediathekRepository by inject()
+
 	private val disposables = CompositeDisposable()
-
-	init {
-		val app = binding.root.context.applicationContext as ZappApplication
-		mediathekRepository = app.mediathekRepository
-	}
 
 	fun setShow(show: MediathekShow) {
 		disposables.clear()
