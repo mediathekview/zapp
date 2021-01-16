@@ -6,6 +6,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -15,8 +16,8 @@ import java.net.URL
  * Make sure to run this after adding a new channel.
  */
 @RunWith(RobolectricTestRunner::class)
-class JsonChannelListConnectionTest {
-	
+class JsonChannelListConnectionTest: AutoCloseKoinTest() {
+
 	private lateinit var channelList: IChannelList
 
 	@Before

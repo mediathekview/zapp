@@ -7,10 +7,11 @@ import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class TrackSelectorWrapperTest {
+class TrackSelectorWrapperTest: AutoCloseKoinTest() {
 
 	private lateinit var trackSelectorWrapper: TrackSelectorWrapper
 

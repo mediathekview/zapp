@@ -11,6 +11,7 @@ import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
 import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
@@ -101,6 +102,7 @@ abstract class ZappApplicationBase : Application() {
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get()) }
+			factory { JsonChannelList(androidContext()) }
 
 			viewModel { MainViewModel(androidApplication()) }
 			viewModel { ChannelDetailActivityViewModel(get(), get()) }

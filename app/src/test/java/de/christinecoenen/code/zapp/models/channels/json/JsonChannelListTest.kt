@@ -6,6 +6,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.util.*
 
@@ -13,7 +14,7 @@ import java.util.*
  * Make sure to run this after adding a new channel.
  */
 @RunWith(RobolectricTestRunner::class)
-class JsonChannelListTest {
+class JsonChannelListTest: AutoCloseKoinTest() {
 
 	private lateinit var channelList: IChannelList
 
