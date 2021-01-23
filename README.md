@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.com/mediathekview/zapp.svg?branch=master)](https://travis-ci.com/mediathekview/zapp)
 
+<a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+
 ![ZAPP](app/src/main/play/listings/de/feature-graphic/funktionsgrafik.jpg)
 
 1. [Über](#über)
@@ -11,12 +14,24 @@
 
 ## Über
 
-Zapp gibt dir schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek. Zapp macht es einfach, schnell zwischen den Sendern zu wechseln.
+Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.
+
+<b>Features:</b>
+<ul>
+	<li>Android-Client für MediathekView</li>
+	<li>Live-Streams von über 30 Sendern</li>
+	<li>Adaptives Streaming – passend zur Geschwindigkeit deiner Netzwerkverbindung</li>
+	<li>Schneller Sender-Wechsel</li>
+	<li>Aktuelle Programminformationen</li>
+	<li>Sender-Shortcuts für neuere Android-Versionen</li>
+	<li>Sendungen aus fast 20 Mediatheken zum Streamen</li>
+	<li>Bequeme Sendungssuche in der Mediathek</li>
+	<li>Zuschaltbare Untertitel für einige Mediathek-Sendungen</li>
+	<li>Teilen-Funktion für Live- und Mediathek-Videos</li>
+	<li>Hintergrund-Playback</li>
+</ul>
 
 **Achtung:** Wenn du Zapp außerhalb Deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
-
-<a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
 <img src="app/src/main/play/listings/de/phone-screenshots/02_live_video.png" width="49%" alt="video screen" /><img src="app/src/main/play/listings/de/phone-screenshots/06_mediathek_player.png" width="49%" alt="video screen" /><br>
 <img src="app/src/main/play/listings/de/phone-screenshots/01_live.png" width="33%" alt="main screen" /><img src="app/src/main/play/listings/de/phone-screenshots/04_mediathek_search.png" width="33%" alt="arrange screen" /><img src="app/src/main/play/listings/de/phone-screenshots/05_mediathek_details.png" width="33%" alt="settings screen" />
