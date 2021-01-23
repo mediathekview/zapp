@@ -38,6 +38,8 @@
 	<string name="fragment_mediathek_download_retry">Retry download</string>
 	<string name="fragment_mediathek_download_running">Downloading…</string>
 	<string name="fragment_mediathek_download_delete">Delete download</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
 
 	<!-- error messages -->
 	<string name="error_report">Report error</string>
@@ -54,7 +56,7 @@
 	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
 	<string name="error_mediathek_called_without_show">Error: No show handed over.</string>
 	<string name="error_mediathek_generic_start_download_error">The download could not be started.</string>
-    <string name="error_mediathek_download_over_unmetered_network_only">Download allowed over unmetered networks only</string>
+	<string name="error_mediathek_download_over_unmetered_network_only">Download allowed over unmetered networks only</string>
 	<string name="error_mediathek_download_no_network">No internet connection available.</string>
 
 	<string name="error_prefixed_message">Error: %s</string>
@@ -132,6 +134,4 @@
 	<string name="fetch_notification_download_paused">Paused</string>
 	<string name="fetch_notification_download_starting">Starting</string>
 	<string name="fetch_notification_download_downloading">Downloading</string>
-	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
-	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
 </resources>

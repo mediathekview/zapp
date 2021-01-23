@@ -17,16 +17,16 @@ source_lang = de
 type = GITHUBMARKDOWN
 
 [zapp-android-app.shortdescription]
-file_filter = app/src/main/play/<lang>/listing/shortdescription
-source_file = app/src/main/play/de-DE/listing/shortdescription
-trans.de_DE = app/src/main/play/de-DE/listing/shortdescription
+file_filter = app/src/main/play/listings/<lang>/short-description.txt
+source_file = app/src/main/play/listings/de/short-description.txt
+trans.de_DE = app/src/main/play/listings/de/short-description.txt
 source_lang = de
 type = TXT
 
 [zapp-android-app.fulldescription]
-file_filter = app/src/main/play/<lang>/listing/fulldescription
-source_file = app/src/main/play/de-DE/listing/fulldescription
-trans.de_DE = app/src/main/play/de-DE/listing/fulldescription
+file_filter = app/src/main/play/listings/<lang>/full-description.txt
+source_file = app/src/main/play/listings/de/full-description.txt
+trans.de_DE = app/src/main/play/listings/de/full-description.txt
 source_lang = de
 type = HTML
 
