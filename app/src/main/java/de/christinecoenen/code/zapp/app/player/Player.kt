@@ -67,6 +67,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 			exoPlayer.seekTo(millis)
 		}
 
+	private var stoppedDueToDataLimit = false
 
 	init {
 		// quality selection
@@ -209,8 +210,16 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 				exoPlayer.stop()
 				exoPlayer.removeAnalyticsListener(playerEventHandler)
 				playerEventHandler.errorResourceId.onNext(R.string.error_stream_not_in_unmetered_network)
+				stoppedDueToDataLimit = true
 			}
-			else -> trackSelectorWrapper.setStreamQuality(streamQuality)
+			else -> {
+				trackSelectorWrapper.setStreamQuality(streamQuality)
+				if (stoppedDueToDataLimit) { //prevent recursion
+					stoppedDueToDataLimit = false
+					recreate()
+					resume()
+				}
+			}
 		}
 	}
 
