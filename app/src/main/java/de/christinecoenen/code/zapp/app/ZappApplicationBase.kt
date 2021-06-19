@@ -81,8 +81,8 @@ abstract class ZappApplicationBase : Application() {
 	private lateinit var koin: Koin
 
 	fun reportError(throwable: Throwable?) {
-		if (ACRA.isInitialised()) {
-			ACRA.getErrorReporter().handleException(throwable)
+		if (ACRA.isInitialised) {
+			ACRA.errorReporter.handleException(throwable)
 		}
 
 		Timber.e(throwable)

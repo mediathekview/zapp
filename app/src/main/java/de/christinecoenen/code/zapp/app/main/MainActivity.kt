@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 	private fun handleIntent(intent: Intent) {
 		if (Intent.ACTION_SEARCH == intent.action) {
 			// called by searchView on search commit
-			val query = intent.getStringExtra(SearchManager.QUERY)
+			val query = intent.getStringExtra(SearchManager.QUERY) ?: ""
 
 			binding.search.setOnQueryTextListener(null)
 			binding.search.clearFocus()
