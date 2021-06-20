@@ -10,12 +10,10 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 
-@KoinApiExtension
 internal class MediathekItemViewHolder(
 	private val binding: FragmentMediathekListItemBinding
 ) : BaseViewHolder(binding.root), KoinComponent {

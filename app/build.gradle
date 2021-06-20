@@ -164,9 +164,7 @@ dependencies {
 	implementation "com.mikepenz:aboutlibraries:$about_libraries_version"
 
 	// koin dependency injection
-	implementation "io.insert-koin:koin-androidx-scope:$koin_version"
-	implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
-	implementation "io.insert-koin:koin-androidx-fragment:$koin_version"
+	implementation "io.insert-koin:koin-android:$koin_version"
 	androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 	testImplementation "io.insert-koin:koin-test:$koin_version"
 

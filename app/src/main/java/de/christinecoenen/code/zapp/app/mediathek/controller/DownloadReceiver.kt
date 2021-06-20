@@ -8,12 +8,10 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActiv
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 
-@KoinApiExtension
 class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 
 	companion object {
