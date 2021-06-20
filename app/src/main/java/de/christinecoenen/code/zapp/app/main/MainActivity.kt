@@ -41,7 +41,13 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 		binding.viewPager.adapter = MainPageAdapter(this, viewModel)
 		binding.viewPager.isUserInputEnabled = false
 		binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-			override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+			override fun onPageScrolled(
+				position: Int,
+				positionOffset: Float,
+				positionOffsetPixels: Int
+			) {
+			}
+
 			override fun onPageSelected(position: Int) {
 				this@MainActivity.onPageSelected(position)
 			}
@@ -157,7 +163,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 	private fun onSearchQueryTextFocusChangeListener(searchView: View, hasFocus: Boolean) {
 		if (hasFocus && !searchView.isInTouchMode) {
 			searchView.post {
-				val imm = this@MainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+				val imm =
+					this@MainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 				imm.showSoftInput(searchView.findFocus(), InputMethodManager.SHOW_FORCED)
 			}
 		}

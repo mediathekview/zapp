@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app
 
 import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
@@ -18,11 +19,12 @@ import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper.createBackgroundPlaybackChannel
 import org.acra.ACRA
+import org.acra.ACRA.init
 import org.acra.BuildConfig
 import org.acra.ReportField
-import org.acra.annotation.AcraCore
-import org.acra.annotation.AcraDialog
-import org.acra.annotation.AcraMailSender
+import org.acra.config.CoreConfigurationBuilder
+import org.acra.config.DialogConfigurationBuilder
+import org.acra.config.MailSenderConfigurationBuilder
 import org.acra.data.StringFormat
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -34,42 +36,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import timber.log.Timber
 
-@AcraCore(
-	buildConfigClass = BuildConfig::class,
-	reportFormat = StringFormat.KEY_VALUE_LIST,
-	reportContent = [
-		ReportField.REPORT_ID,
-		ReportField.USER_EMAIL,
-		ReportField.USER_COMMENT,
-		ReportField.IS_SILENT,
-		ReportField.USER_CRASH_DATE,
-		ReportField.APP_VERSION_NAME,
-		ReportField.APP_VERSION_CODE,
-		ReportField.ANDROID_VERSION,
-		ReportField.PHONE_MODEL,
-		ReportField.BRAND,
-		ReportField.SHARED_PREFERENCES,
-		ReportField.STACK_TRACE
-	],
-	excludeMatchingSharedPreferencesKeys = [
-		"default.acra.legacyAlreadyConvertedToJson",
-		"default.acra.lastVersionNr",
-		"default.acra.legacyAlreadyConvertedTo4.8.0"
-	]
-)
-@AcraMailSender(
-	mailTo = "Zapp Entwicklung <code.coenen@gmail.com>",
-	resSubject = R.string.error_app_crash_mail_subject,
-	resBody = R.string.error_app_crash_mail_body,
-	reportAsFile = false
-)
-@AcraDialog(
-	resText = R.string.error_app_crash,
-	resTitle = R.string.app_name,
-	resIcon = R.drawable.ic_sad_tv,
-	resPositiveButtonText = R.string.action_continue,
-	resTheme = R.style.ChrashDialog
-)
 abstract class ZappApplicationBase : Application() {
 
 	val channelRepository: ChannelRepository
@@ -121,6 +87,56 @@ abstract class ZappApplicationBase : Application() {
 		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
 	}
 
+	override fun attachBaseContext(base: Context?) {
+		super.attachBaseContext(base)
+		setUpCrashReporting()
+	}
+
 	protected abstract fun setUpLogging()
+
+	private fun setUpCrashReporting() {
+		val builder = CoreConfigurationBuilder(this)
+			.apply {
+				buildConfigClass = BuildConfig::class.java
+				reportFormat = StringFormat.KEY_VALUE_LIST
+				reportContent = arrayOf(
+					ReportField.REPORT_ID,
+					ReportField.USER_EMAIL,
+					ReportField.USER_COMMENT,
+					ReportField.IS_SILENT,
+					ReportField.USER_CRASH_DATE,
+					ReportField.APP_VERSION_NAME,
+					ReportField.APP_VERSION_CODE,
+					ReportField.ANDROID_VERSION,
+					ReportField.PHONE_MODEL,
+					ReportField.BRAND,
+					ReportField.SHARED_PREFERENCES,
+					ReportField.STACK_TRACE
+				)
+				excludeMatchingSharedPreferencesKeys = arrayOf(
+					"default.acra.legacyAlreadyConvertedToJson",
+					"default.acra.lastVersionNr",
+					"default.acra.legacyAlreadyConvertedTo4.8.0"
+				)
+
+				getPluginConfigurationBuilder(DialogConfigurationBuilder::class.java)
+					.withResText(R.string.error_app_crash)
+					.withResTitle(R.string.app_name)
+					.withResIcon(R.drawable.ic_sad_tv)
+					.withResPositiveButtonText(R.string.action_continue)
+					.withResTheme(R.style.ChrashDialog)
+					.withEnabled(true)
+
+
+				getPluginConfigurationBuilder(MailSenderConfigurationBuilder::class.java)
+					.withMailTo("Zapp Entwicklung <code.coenen@gmail.com>")
+					.withResSubject(R.string.error_app_crash_mail_subject)
+					.withResBody(R.string.error_app_crash_mail_body)
+					.withReportAsFile(false)
+					.withEnabled(true)
+			}
+
+		init(this, builder)
+	}
 
 }
