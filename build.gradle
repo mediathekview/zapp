@@ -6,11 +6,10 @@ buildscript {
 
 	repositories {
 		google()
-		mavenCentral()
 		maven {
+			// about libraries gradle plugin
 			url "https://plugins.gradle.org/m2/"
 		}
-		jcenter()
 	}
 
 	dependencies {
@@ -30,6 +29,9 @@ buildscript {
 allprojects {
 	repositories {
 		google()
+		mavenCentral()
+
+		// TODO: remove once androidx.tonyodev.fetch2 has migrated
 		jcenter()
 	}
 }
