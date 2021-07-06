@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
