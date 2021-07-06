@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
+import java.util.*
 
 class SettingsRepository(context: Context) {
 
@@ -21,7 +22,7 @@ class SettingsRepository(context: Context) {
 			if (quality == null) {
 				StreamQualityBucket.DISABLED
 			} else {
-				StreamQualityBucket.valueOf(quality.toUpperCase())
+				StreamQualityBucket.valueOf(quality.uppercase(Locale.ENGLISH))
 			}
 		}
 
