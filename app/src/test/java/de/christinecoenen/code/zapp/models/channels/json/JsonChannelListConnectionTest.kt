@@ -1,12 +1,12 @@
 package de.christinecoenen.code.zapp.models.channels.json
 
 import androidx.test.core.app.ApplicationProvider
+import de.christinecoenen.code.zapp.AutoCloseKoinTest
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -16,7 +16,7 @@ import java.net.URL
  * Make sure to run this after adding a new channel.
  */
 @RunWith(RobolectricTestRunner::class)
-class JsonChannelListConnectionTest: AutoCloseKoinTest() {
+class JsonChannelListConnectionTest : AutoCloseKoinTest() {
 
 	private lateinit var channelList: IChannelList
 

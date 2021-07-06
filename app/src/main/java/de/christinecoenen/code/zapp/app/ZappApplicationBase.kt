@@ -89,7 +89,11 @@ abstract class ZappApplicationBase : Application() {
 
 	override fun attachBaseContext(base: Context?) {
 		super.attachBaseContext(base)
-		setUpCrashReporting()
+
+		if (Thread.getDefaultUncaughtExceptionHandler() != null) {
+			// exclude test environments
+			setUpCrashReporting()
+		}
 	}
 
 	protected abstract fun setUpLogging()
