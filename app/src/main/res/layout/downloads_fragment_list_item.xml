@@ -28,15 +28,15 @@
 	<ProgressBar
 		android:id="@+id/progress_bar_animated"
 		style="?android:attr/progressBarStyleSmall"
-		android:layout_width="0dp"
-		android:layout_height="0dp"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
 		android:indeterminate="true"
 		android:indeterminateTint="?attr/colorPrimaryDark"
 		android:padding="5dp"
-		app:layout_constraintBottom_toBottomOf="@id/progress_bar"
-		app:layout_constraintEnd_toEndOf="@id/progress_bar"
-		app:layout_constraintStart_toStartOf="@id/progress_bar"
-		app:layout_constraintTop_toTopOf="@id/progress_bar" />
+		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+		app:layout_constraintEnd_toEndOf="@id/thumbnail"
+		app:layout_constraintStart_toStartOf="@id/thumbnail"
+		app:layout_constraintTop_toTopOf="@id/thumbnail" />
 
 	<ProgressBar
 		android:id="@+id/progress_bar"

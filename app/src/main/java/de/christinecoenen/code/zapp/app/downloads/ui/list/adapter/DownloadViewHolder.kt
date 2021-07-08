@@ -6,9 +6,9 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.utils.system.ImageHelper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,8 +21,10 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 
 	private val disposables = CompositeDisposable()
 
-	fun bindItem(show: PersistedMediathekShow,
-				 showFlowable: Flowable<PersistedMediathekShow>) {
+	fun bindItem(
+		show: PersistedMediathekShow,
+		showFlowable: Flowable<PersistedMediathekShow>
+	) {
 
 		disposables.clear()
 
@@ -56,7 +58,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		when (show.downloadStatus) {
 			DownloadStatus.DOWNLOADING -> {
 				animateToProgress(show.downloadProgress)
-				binding.progressBarAnimated.isVisible = show.downloadProgress == 0
+				setProgressBarVisibilityDuringDownload(show.downloadProgress)
 			}
 			else -> {
 			}
@@ -69,10 +71,13 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 				binding.icon.setImageDrawable(null)
 				updateThumbnail(null)
 				binding.progressBarAnimated.isVisible = true
+				binding.progressBar.isVisible = false
 			}
 			DownloadStatus.DOWNLOADING -> {
 				binding.icon.setImageDrawable(null)
 				updateThumbnail(null)
+				setProgressBarVisibilityDuringDownload(show.downloadProgress)
+				binding.progressBar.progress = show.downloadProgress
 			}
 			DownloadStatus.COMPLETED -> {
 				binding.icon.setImageDrawable(null)
@@ -113,6 +118,11 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 	private fun hideProgess() {
 		binding.progressBar.progress = 0
 		binding.progressBar.clearAnimation()
+	}
+
+	private fun setProgressBarVisibilityDuringDownload(progress: Int) {
+		binding.progressBarAnimated.isVisible = progress == 0
+		binding.progressBar.isVisible = !binding.progressBarAnimated.isVisible
 	}
 
 	private fun animateToProgress(progress: Int) {
