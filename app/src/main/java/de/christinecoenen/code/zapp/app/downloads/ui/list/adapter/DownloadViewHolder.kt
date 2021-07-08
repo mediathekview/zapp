@@ -118,6 +118,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 	private fun hideProgess() {
 		binding.progressBar.progress = 0
 		binding.progressBar.clearAnimation()
+		binding.progressBar.isVisible = false
 	}
 
 	private fun setProgressBarVisibilityDuringDownload(progress: Int) {
