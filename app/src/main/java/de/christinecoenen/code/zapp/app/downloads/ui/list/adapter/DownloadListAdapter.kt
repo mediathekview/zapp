@@ -2,16 +2,16 @@ package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 
 
 class DownloadListAdapter(
-        private val listener: Listener,
-        private val downloadsViewModel: DownloadsViewModel
-) : PagedListAdapter<PersistedMediathekShow, DownloadViewHolder>(DownloadDiffUtilCallback()) {
+	private val listener: Listener,
+	private val downloadsViewModel: DownloadsViewModel
+) : PagingDataAdapter<PersistedMediathekShow, DownloadViewHolder>(DownloadDiffUtilCallback()) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
@@ -19,7 +19,7 @@ class DownloadListAdapter(
 		val holder = DownloadViewHolder(binding)
 
 		binding.root.setOnClickListener {
-			getItem(holder.adapterPosition)?.let {
+			getItem(holder.bindingAdapterPosition)?.let {
 				listener.onShowClicked(it)
 			}
 		}

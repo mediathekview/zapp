@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.repositories
 
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
@@ -19,7 +19,7 @@ class MediathekRepository(
 	private val database: Database
 ) {
 
-	val downloads: DataSource.Factory<Int, PersistedMediathekShow>
+	val downloads: PagingSource<Int, PersistedMediathekShow>
 		get() = database.mediathekShowDao().getAllDownloads()
 
 	fun listShows(@Body queryRequest: QueryRequest) = mediathekApi.listShows(queryRequest)
@@ -71,7 +71,8 @@ class MediathekRepository(
 	}
 
 	fun getPersistedShowByDownloadId(downloadId: Int): Flowable<PersistedMediathekShow> {
-		return database.mediathekShowDao().getFromDownloadId(downloadId).subscribeOn(Schedulers.io())
+		return database.mediathekShowDao().getFromDownloadId(downloadId)
+			.subscribeOn(Schedulers.io())
 	}
 
 	fun getDownloadStatus(apiId: String): Flowable<DownloadStatus> {

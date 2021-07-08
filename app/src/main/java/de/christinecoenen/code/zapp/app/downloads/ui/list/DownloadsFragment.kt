@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.app.downloads.ui.list.adapter.DownloadListAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
@@ -29,7 +30,11 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		val downloadAdapter = DownloadListAdapter(this, viewModel)
 		binding.list.adapter = downloadAdapter
 
-		viewModel.downloadList.observe(viewLifecycleOwner) { downloadAdapter.submitList(it) }
+		viewModel.downloadList.observe(viewLifecycleOwner) {
+			lifecycleScope.launchWhenCreated {
+				downloadAdapter.submitData(it)
+			}
+		}
 
 		return binding.root
 	}

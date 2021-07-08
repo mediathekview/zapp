@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.persistence
 
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.*
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -17,7 +17,7 @@ interface MediathekShowDao {
 	fun getAll(): Flowable<List<PersistedMediathekShow>>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus!=0 AND downloadStatus!=7 AND downloadStatus!=8 ORDER BY downloadedAt DESC")
-	fun getAllDownloads(): DataSource.Factory<Int, PersistedMediathekShow>
+	fun getAllDownloads(): PagingSource<Int, PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
 	fun getFromId(id: Int): Flowable<PersistedMediathekShow>
@@ -70,7 +70,12 @@ interface MediathekShowDao {
 	fun updateDownloadedVideoPath(downloadId: Int, videoPath: String): Completable
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
-	fun setPlaybackPosition(id: Int, positionMillis: Long, durationMillis: Long, lastPlayedBackAt: DateTime): Completable
+	fun setPlaybackPosition(
+		id: Int,
+		positionMillis: Long,
+		durationMillis: Long,
+		lastPlayedBackAt: DateTime
+	): Completable
 
 	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
 	fun getPlaybackPosition(id: Int): Single<Long>
