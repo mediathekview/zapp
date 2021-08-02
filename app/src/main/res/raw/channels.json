@@ -72,7 +72,7 @@
   {
 	"id": "deutsche_welle",
 	"name": "Deutsche Welle",
-	"stream_url": "http://dwstream72-lh.akamaihd.net/i/dwstream72_live@123556/master.m3u8",
+	"stream_url": "https://dwamdstream106.akamaized.net/hls/live/2017965/dwstream106/index.m3u8",
 	"logo_name": "channel_logo_deutsche_welle",
 	"subtitle": "Deutsch",
 	"color": "#012D5B"
@@ -80,7 +80,7 @@
   {
 	"id": "deutsche_welle_plus",
 	"name": "Deutsche Welle+",
-	"stream_url": "https://dwstream52-lh.akamaihd.net/i/dwstream52_live@500528/index_1_av-p.m3u8",
+	"stream_url": "https://dwamdstream105.akamaized.net/hls/live/2015531/dwstream105/index.m3u8",
 	"logo_name": "channel_logo_deutsche_welle",
 	"subtitle": "Deutsch+",
 	"color": "#012D5B"
@@ -88,7 +88,7 @@
   {
 	"id": "one",
 	"name": "ONE",
-	"stream_url": "http://onelivestream-lh.akamaihd.net/i/one_livestream@568814/master.m3u8",
+	"stream_url": "https://mcdn.one.ard.de/ardone/hls/master.m3u8",
 	"logo_name": "channel_logo_one",
 	"color": "#D6004F"
   },
@@ -174,7 +174,7 @@
   {
 	"id": "rbb_berlin",
 	"name": "rbb Fernsehen Berlin",
-	"stream_url": "https://rbblive-lh.akamaihd.net/i/rbb_berlin@144674/master.m3u8",
+	"stream_url": "https://rbb-hls-berlin.akamaized.net/hls/live/2017824/rbb_berlin/index.m3u8",
 	"logo_name": "channel_logo_rbb",
 	"subtitle": "Berlin",
 	"color": "#E31818"
@@ -182,7 +182,7 @@
   {
 	"id": "rbb_brandenburg",
 	"name": "rbb Fernsehen Brandenburg",
-	"stream_url": "https://rbblive-lh.akamaihd.net/i/rbb_brandenburg@349369/master.m3u8",
+	"stream_url": "https://rbb-hls-brandenburg.akamaized.net/hls/live/2017825/rbb_brandenburg/index.m3u8",
 	"logo_name": "channel_logo_rbb",
 	"subtitle": "Brandenburg",
 	"color": "#E31818"
