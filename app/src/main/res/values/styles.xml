@@ -16,6 +16,7 @@
 
 		<item name="navigationViewStyle">@style/CustomNavigationViewStyle</item>
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
+		<item name="actionBarSize">48dp</item>
 		<item name="appBarLayoutStyle">@style/AppBarStyle</item>
 		<item name="bottomNavigationStyle">
 			@style/Widget.MaterialComponents.BottomNavigationView.Colored
@@ -84,6 +85,10 @@
 		<item name="android:textColor">?attr/colorOnSurface</item>
 		<item name="android:textColorPrimary">?attr/colorOnPrimary</item>
 		<item name="android:textColorSecondary">?attr/colorOnPrimary</item>
+	</style>
+
+	<style name="BottomNavigationTextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">
+		<item name="android:textSize">10sp</item>
 	</style>
 
 	<style name="ShowProgress" parent="Theme.MaterialComponents.DayNight">
