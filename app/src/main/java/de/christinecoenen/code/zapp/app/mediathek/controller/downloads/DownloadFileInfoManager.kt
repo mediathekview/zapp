@@ -161,13 +161,19 @@ internal class DownloadFileInfoManager(
 		val uri = Uri.parse(path)
 		val projection = arrayOf(MediaStore.Video.Media._ID)
 
-		val cursor = applicationContext.contentResolver
-			.query(uri, projection, null, null, null, null)
+		try {
+			val cursor = applicationContext.contentResolver
+				.query(uri, projection, null, null, null, null)
 
-		if (cursor != null && cursor.count == 1) {
-			// item is still there - do not delete!
-			cursor.close()
-			return false
+			if (cursor != null && cursor.count == 1) {
+				// item is still there - do not delete!
+				cursor.close()
+				return false
+			}
+		} catch (e: IllegalArgumentException) {
+			// IllegalArgumentException due to storage no longer existing - mark as deleted.
+			// In future we might want to indicate an error instead.
+			return true
 		}
 
 		return true
