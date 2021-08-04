@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
@@ -107,12 +108,20 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 	private fun loadThumbnail(show: PersistedMediathekShow) {
 		ImageHelper.loadThumbnailAsync(binding.root.context, show.downloadedVideoPath)
 			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::updateThumbnail, Timber::e)
+			.subscribe(this::updateThumbnail) { onLoadThumbnailError() }
 			.run(disposables::add)
+	}
+
+	private fun onLoadThumbnailError() {
+		binding.thumbnail.setImageResource(R.drawable.ic_sad_tv)
+		binding.thumbnail.imageAlpha = 28
+		binding.thumbnail.scaleType = ImageView.ScaleType.CENTER_INSIDE
 	}
 
 	private fun updateThumbnail(thumbnail: Bitmap?) {
 		binding.thumbnail.setImageBitmap(thumbnail)
+		binding.thumbnail.imageAlpha = 255
+		binding.thumbnail.scaleType = ImageView.ScaleType.CENTER_CROP
 	}
 
 	private fun hideProgess() {

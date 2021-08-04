@@ -32,11 +32,21 @@ object ImageHelper {
 			val contentResolver = context.contentResolver
 
 			try {
+				// with api level this high we can use content resolver to generate thumbnails
 				contentResolver.loadThumbnail(Uri.parse(filePath), THUMBNAIL_SIZE, null)
+
 			} catch (e: IOException) {
-				ThumbnailUtils.createVideoThumbnail(File(filePath), THUMBNAIL_SIZE, null)
+				try {
+					// fall back to ThumbnailUtils when content resolver failed
+					ThumbnailUtils.createVideoThumbnail(File(filePath), THUMBNAIL_SIZE, null)
+
+				} catch (e: IOException) {
+					// complete failure
+					throw Exception("Could not generate thumbnail for file $filePath")
+				}
 			}
 		} else {
+			// old method of loading thumbnails
 			@Suppress("DEPRECATION")
 			ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.FULL_SCREEN_KIND)
 				?: throw Exception("Could not generate thumbnail for file $filePath")
