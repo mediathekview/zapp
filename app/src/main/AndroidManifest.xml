@@ -51,7 +51,8 @@
 		<activity
 			android:name=".app.main.MainActivity"
 			android:launchMode="singleTop"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme.NoActionBar"
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -72,7 +73,8 @@
 		<activity
 			android:name=".app.settings.ui.ChannelSelectionActivity"
 			android:label="@string/activity_channel_selection_title"
-			android:parentActivityName=".app.settings.ui.SettingsActivity">
+			android:parentActivityName=".app.settings.ui.SettingsActivity"
+			android:exported="false">
 			<intent-filter>
 				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 

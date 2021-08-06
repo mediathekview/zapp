@@ -34,9 +34,11 @@ class AboutActivity : LibsActivity() {
 					true
 				}
 				SpecialButton.SPECIAL3 -> {
-					IntentHelper.sendMail(this@AboutActivity,
+					IntentHelper.sendMail(
+						this@AboutActivity,
 						getString(string.support_mail),
-						getString(string.activity_about_feedback_mail_subject))
+						getString(string.activity_about_feedback_mail_subject)
+					)
 					true
 				}
 				else -> super.onExtraClicked(v, specialButton)
@@ -44,6 +46,8 @@ class AboutActivity : LibsActivity() {
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
 		val intent = LibsBuilder()
 			.withActivityTitle(getString(string.activity_about_title))
 			.withAboutDescription(getString(string.aboutLibraries_description_text))
@@ -53,7 +57,5 @@ class AboutActivity : LibsActivity() {
 			.intent(this)
 
 		setIntent(intent)
-
-		super.onCreate(savedInstanceState)
 	}
 }
