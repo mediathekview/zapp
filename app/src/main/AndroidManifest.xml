@@ -28,6 +28,10 @@
 			android:name="com.samsung.android.icon_container.has_icon_container"
 			android:value="true" />
 
+		<property
+			android:name="android.content.MEDIA_CAPABILITIES"
+			android:resource="@xml/media_capabilities" />
+
 		<activity
 			android:name=".app.livestream.ui.detail.ChannelDetailActivity"
 			android:autoRemoveFromRecents="true"
@@ -124,7 +128,6 @@
 			android:name=".app.mediathek.controller.DownloadReceiver"
 			android:enabled="true"
 			android:exported="false" />
-
 	</application>
 
 </manifest>
