@@ -152,7 +152,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 	override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
 
-		binding.video.useController = !isInPictureInPictureMode
+		handlePictureInPictureModeChanged(isInPictureInPictureMode)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -247,7 +247,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		binder!!.movePlaybackToForeground()
 
 		val isInPipMode = isInPictureInPictureMode(this@MediathekPlayerActivity)
-		onPictureInPictureModeChanged(isInPipMode, Configuration())
+		handlePictureInPictureModeChanged(isInPipMode)
 	}
 
 	private fun onVideoError(messageResourceId: Int?) {
@@ -282,6 +282,10 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 	private fun resumeActivity() {
 		hideError()
 		bind(this, backgroundPlayerServiceConnection)
+	}
+
+	private fun handlePictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
+		binding.video.useController = !isInPictureInPictureMode
 	}
 
 	private fun showError(messageResId: Int) {
