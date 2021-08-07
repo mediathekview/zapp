@@ -175,7 +175,7 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 			NetworkType.ALL
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && connectivityManager.activeNetwork == null) {
+		if (connectivityManager.activeNetwork == null) {
 			throw NoNetworkException("No active network available.")
 		}
 		if (settingsRepository.downloadOverUnmeteredNetworkOnly && connectivityManager.isActiveNetworkMetered) {

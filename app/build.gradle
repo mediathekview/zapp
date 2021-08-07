@@ -11,7 +11,7 @@ android {
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
-		minSdkVersion 21
+		minSdkVersion 23
 		targetSdkVersion 30
 		versionCode 47
 		versionName "3.6.1"
