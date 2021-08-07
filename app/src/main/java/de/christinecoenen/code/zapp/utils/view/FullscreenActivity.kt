@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.utils.view
 
 import android.annotation.SuppressLint
 import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,7 @@ abstract class FullscreenActivity : AppCompatActivity() {
 	protected lateinit var controlsView: View
 
 	private var isUiShown = false
-	private val hideHandler = Handler()
+	private val hideHandler = Handler(Looper.getMainLooper())
 
 	private val hidePart2Runnable = Runnable { // Delayed removal of status and navigation bar
 
@@ -59,7 +60,7 @@ abstract class FullscreenActivity : AppCompatActivity() {
 
 	override fun setContentView(rootView: View) {
 		fullscreenContent = rootView.findViewById(R.id.fullscreen_content)
-		fullscreenContent.setOnClickListener(View.OnClickListener(::onFullscreenContentClick))
+		fullscreenContent.setOnClickListener { onFullscreenContentClick() }
 
 		controlsView = rootView.findViewById(R.id.fullscreen_content_controls)
 
@@ -127,7 +128,7 @@ abstract class FullscreenActivity : AppCompatActivity() {
 		delayHide()
 	}
 
-	private fun onFullscreenContentClick(view: View) {
+	private fun onFullscreenContentClick() {
 		// Set up the user interaction to manually show or hide the system UI.
 		toggle()
 	}

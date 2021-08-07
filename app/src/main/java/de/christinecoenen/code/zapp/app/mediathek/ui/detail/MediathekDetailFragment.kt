@@ -76,10 +76,10 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentMediathekDetailBinding.inflate(inflater, container, false)
 
-		binding.play.setOnClickListener(::onPlayClick)
-		binding.buttons.download.setOnClickListener(::onDownloadClick)
-		binding.buttons.share.setOnClickListener(::onShareClick)
-		binding.buttons.website.setOnClickListener(::onWebsiteClick)
+		binding.play.setOnClickListener { onPlayClick() }
+		binding.buttons.download.setOnClickListener { onDownloadClick() }
+		binding.buttons.share.setOnClickListener { onShareClick() }
+		binding.buttons.website.setOnClickListener { onWebsiteClick() }
 
 		val viewingProgressDisposable = mediathekRepository
 			.getPlaybackPositionPercent(argumentsMediathekShow!!.apiId)
@@ -160,11 +160,11 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		binding.buttons.downloadProgress.progress = progress
 	}
 
-	private fun onPlayClick(view: View) {
+	private fun onPlayClick() {
 		startActivity(MediathekPlayerActivity.getStartIntent(context, persistedMediathekShow!!.id))
 	}
 
-	private fun onDownloadClick(view: View) {
+	private fun onDownloadClick() {
 		when (downloadStatus) {
 			DownloadStatus.NONE,
 			DownloadStatus.CANCELLED,
@@ -182,11 +182,11 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener, 
 		}
 	}
 
-	private fun onShareClick(view: View) {
+	private fun onShareClick() {
 		showSelectQualityDialog(SelectQualityDialog.Mode.SHARE)
 	}
 
-	private fun onWebsiteClick(view: View) {
+	private fun onWebsiteClick() {
 		openUrl(requireContext(), persistedMediathekShow!!.mediathekShow.websiteUrl)
 	}
 

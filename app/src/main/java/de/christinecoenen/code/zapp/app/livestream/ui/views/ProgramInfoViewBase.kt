@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -27,7 +28,7 @@ abstract class ProgramInfoViewBase @JvmOverloads constructor(
 	attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
-	private val uiHandler = Handler()
+	private val uiHandler = Handler(Looper.getMainLooper())
 
 	private val updateShowInfoIntervalSeconds =
 		resources.getInteger(R.integer.view_program_info_update_show_info_interval_seconds)
@@ -73,7 +74,7 @@ abstract class ProgramInfoViewBase @JvmOverloads constructor(
 
 		currentShow = null
 		currentChannel = channel
-		
+
 		showTitleView.text = ""
 		showSubtitleView.text = ""
 		showTimeView.text = ""

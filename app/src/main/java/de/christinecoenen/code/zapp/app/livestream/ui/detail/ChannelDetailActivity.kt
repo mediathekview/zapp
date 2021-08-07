@@ -8,10 +8,7 @@ import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.IBinder
+import android.os.*
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -59,7 +56,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 
 	private val disposable = CompositeDisposable()
 	private val playRunnable = Runnable { play() }
-	private val playHandler = Handler()
+	private val playHandler = Handler(Looper.getMainLooper())
 
 	private var playStreamDelayMillis = 0
 	private var currentChannel: ChannelModel? = null

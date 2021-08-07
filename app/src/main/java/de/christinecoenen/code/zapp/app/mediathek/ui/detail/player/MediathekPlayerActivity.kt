@@ -96,7 +96,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 
 		binding.video.setControllerVisibilityListener(this)
 		binding.video.requestFocus()
-		binding.error.setOnClickListener(::onErrorViewClick)
+		binding.error.setOnClickListener { onErrorViewClick() }
 	}
 
 	override fun onNewIntent(intent: Intent) {
@@ -106,7 +106,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		parseIntent(intent)
 	}
 
-	private fun onErrorViewClick(view: View) {
+	private fun onErrorViewClick() {
 		hideError()
 
 		player?.recreate()

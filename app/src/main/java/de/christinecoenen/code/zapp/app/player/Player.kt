@@ -120,7 +120,8 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		currentVideoInfo = videoInfo
 
 		val mediaItem = getMediaItem(videoInfo)
-		exoPlayer.stop(true)
+		exoPlayer.stop()
+		exoPlayer.clearMediaItems()
 		exoPlayer.addAnalyticsListener(playerEventHandler)
 		exoPlayer.addMediaItem(mediaItem)
 

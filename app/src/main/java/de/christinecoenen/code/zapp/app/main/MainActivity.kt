@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 		binding.search.clearFocus()
 		binding.search.setOnQueryTextFocusChangeListener(::onSearchQueryTextFocusChangeListener)
 
-		binding.bottomNavigation.setOnNavigationItemSelectedListener(::onNavigationItemSelected)
+		binding.bottomNavigation.setOnItemSelectedListener(::onNavigationItemSelected)
 		onPageSelected(binding.viewPager.currentItem)
 		handleIntent(intent)
 	}
