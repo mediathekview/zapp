@@ -1,6 +1,9 @@
 # 4.0.0
 * Downloads-Tab eingeführt
 * Hauptnavigation auf Tabs umgestellt
+* Absturz beim Entfernen der SD-Karte behoben
+* Abstürze auf älteren Android-Geräten behoben
+* Mindestanforderung auf Android N angehoben
 
 # 3.6.1
 * Untertitel in Live-Streams abgeschaltet (können über die Android-Bedienungshilfe aktiviert werden)
