@@ -46,7 +46,6 @@ class AboutActivity : LibsActivity() {
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
 
 		val intent = LibsBuilder()
 			.withActivityTitle(getString(string.activity_about_title))
@@ -57,5 +56,7 @@ class AboutActivity : LibsActivity() {
 			.intent(this)
 
 		setIntent(intent)
+
+		super.onCreate(savedInstanceState)
 	}
 }
