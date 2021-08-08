@@ -32,3 +32,18 @@ Es kommt öfter vor, dass die gleiche Sendung in den Mediatheken verschiedener S
 ## Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?
 
 Manchmal werden Untertitel von den Mediatheken in einem unerwarteten Format ausgeliefert, sodass Zapp sie nicht darstellen kann. Leider gibt es keinen Weg, diese Fehler vorher zu erkennen. Oft reicht es aber schon aus, ein bisschen zu warten, bis die Untertitel fertig geladen haben.
+
+
+## Kann Zapp die Untertitel der Live-Streams anzeigen?
+
+Manche Sender wie das ZDF bieten Untertitel in einigen Sendungen der Live-Streams. Zapp zeigt die Untertitel automatisch an, wenn sie Systemweit in den Android-Einstellungen aktiviert wurden. Hier kann auf manchen Systemen auch das Aussehen der Untertitel angepasst werden.
+
+
+## Warum wird in einem Sender immer der gleiche Videoschnipsel angezeigt?
+
+Der Sender ist nicht mehr unter der Adresse erreichbar, die Zapp erwartet und muss aktualisiert werden. Bitte wende dich an die Entwickler, damit das Problem gelöst werden kann.
+
+
+## Kann ich Sendungen nach Sender oder Länge filtern?
+
+Einen Sendungsfilter gibt es aktuell noch nicht, ist aber in Planung.
