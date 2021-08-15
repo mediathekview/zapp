@@ -105,22 +105,31 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 			val pendingIntent = PendingIntent.getActivity(
 				this, 0,
 				foregroundActivityIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT)
+				PendingIntent.FLAG_UPDATE_CURRENT
+			)
 
-			val errorMessage = getString(R.string.error_prefixed_message, getString(messageResourceId))
+			val errorMessage =
+				getString(R.string.error_prefixed_message, getString(messageResourceId))
 
-			val builder = NotificationCompat.Builder(this, NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK)
-				.setContentTitle(player.currentVideoInfo!!.title)
-				.setContentText(errorMessage)
-				.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
-				.setSmallIcon(R.drawable.ic_sad_tv)
-				.setStyle(NotificationCompat.BigTextStyle().bigText(getString(messageResourceId)))
-				.setOnlyAlertOnce(true)
-				.setAutoCancel(true)
-				.setContentIntent(pendingIntent)
+			val builder =
+				NotificationCompat.Builder(this, NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK)
+					.setContentTitle(player.currentVideoInfo!!.title)
+					.setContentText(errorMessage)
+					.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+					.setSmallIcon(R.drawable.ic_sad_tv)
+					.setStyle(
+						NotificationCompat.BigTextStyle().bigText(getString(messageResourceId))
+					)
+					.setOnlyAlertOnce(true)
+					.setAutoCancel(true)
+					.setContentIntent(pendingIntent)
 
-			val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-			notificationManager.notify(NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID, builder.build())
+			val notificationManager =
+				getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+			notificationManager.notify(
+				NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
+				builder.build()
+			)
 		}
 	}
 
@@ -166,16 +175,19 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	private fun handleStartInBackground() {
 		isPlaybackInBackground = true
 
-		playerNotificationManager = PlayerNotificationManager(this,
-			NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
-			NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
-			this,
-			this)
-
-		playerNotificationManager!!.setSmallIcon(R.drawable.ic_zapp_tv)
-		playerNotificationManager!!.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
-		playerNotificationManager!!.setPlayer(player.exoPlayer)
-		playerNotificationManager!!.setMediaSessionToken(player.mediaSession.sessionToken)
+		playerNotificationManager = PlayerNotificationManager
+			.Builder(
+				this,
+				NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
+				NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK
+			)
+			.build()
+			.also {
+				it.setSmallIcon(R.drawable.ic_zapp_tv)
+				it.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+				it.setPlayer(player.exoPlayer)
+				it.setMediaSessionToken(player.mediaSession.sessionToken)
+			}
 	}
 
 	override fun getCurrentContentTitle(player: com.google.android.exoplayer2.Player): String {
@@ -186,17 +198,27 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		Timber.i("createCurrentContentIntent: %s", foregroundActivityIntent!!.component)
 
 		// a notification click will bring us back to the activity that launched it
-		return PendingIntent.getActivity(this,
+		return PendingIntent.getActivity(
+			this,
 			0,
 			foregroundActivityIntent,
-			PendingIntent.FLAG_UPDATE_CURRENT)
+			PendingIntent.FLAG_UPDATE_CURRENT
+		)
 	}
 
-	override fun getCurrentContentText(player: com.google.android.exoplayer2.Player): String? = this.player.currentVideoInfo!!.subtitle
+	override fun getCurrentContentText(player: com.google.android.exoplayer2.Player): String? =
+		this.player.currentVideoInfo!!.subtitle
 
-	override fun getCurrentLargeIcon(player: com.google.android.exoplayer2.Player, callback: BitmapCallback): Bitmap? = null
+	override fun getCurrentLargeIcon(
+		player: com.google.android.exoplayer2.Player,
+		callback: BitmapCallback
+	): Bitmap? = null
 
-	override fun onNotificationPosted(notificationId: Int, notification: Notification, ongoing: Boolean) {
+	override fun onNotificationPosted(
+		notificationId: Int,
+		notification: Notification,
+		ongoing: Boolean
+	) {
 		if (ongoing) {
 			startForeground(notificationId, notification)
 		} else {
@@ -204,7 +226,8 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		}
 	}
 
-	override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) = movePlaybackToForeground()
+	override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) =
+		movePlaybackToForeground()
 
 	inner class Binder : android.os.Binder() {
 		/**
@@ -212,8 +235,10 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		 */
 		fun getPlayer(): Player {
 			if (foregroundActivityIntent == null) {
-				throw RuntimeException("Using player without an intent is not allowed. " +
-					"Use BackgroundPlayerService.setForegroundActivityIntent.")
+				throw RuntimeException(
+					"Using player without an intent is not allowed. " +
+						"Use BackgroundPlayerService.setForegroundActivityIntent."
+				)
 			}
 			return player
 		}

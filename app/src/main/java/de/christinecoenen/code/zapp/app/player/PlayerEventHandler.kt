@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.player
 
-import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.analytics.AnalyticsListener.EventTime
@@ -29,19 +29,21 @@ internal class PlayerEventHandler : AnalyticsListener {
 		this.isIdle.onNext(isReady)
 	}
 
-	override fun onPlayerError(eventTime: EventTime, error: ExoPlaybackException) {
+	override fun onPlayerError(eventTime: EventTime, error: PlaybackException) {
 		val errorMessageResourceId =
-			when (error.type) {
-				ExoPlaybackException.TYPE_SOURCE -> {
-					Timber.e(error, "exo player error TYPE_SOURCE")
+			when (error.errorCode) {
+				in PlaybackException.ERROR_CODE_IO_UNSPECIFIED until
+					PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED -> {
+					Timber.e(error, "exo player error %s", error.errorCodeName)
 					R.string.error_stream_io
 				}
-				ExoPlaybackException.TYPE_RENDERER -> {
-					Timber.e(error, "exo player error TYPE_RENDERER")
+				in PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED until
+					PlaybackException.ERROR_CODE_DRM_UNSPECIFIED -> {
+					Timber.e(error, "exo player error %s", error.errorCodeName)
 					R.string.error_stream_unsupported
 				}
 				else -> {
-					Timber.e(error, "exo player error %s", error.type)
+					Timber.e(error, "exo player error %s", error.errorCodeName)
 					R.string.error_stream_unknown
 				}
 			}

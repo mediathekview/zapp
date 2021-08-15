@@ -158,15 +158,11 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 	}
 
 	fun rewind() {
-		exoPlayer.seekTo(
-			(exoPlayer.currentPosition - DefaultControlDispatcher.DEFAULT_REWIND_MS).coerceAtLeast(0)
-		)
+		exoPlayer.seekBack()
 	}
 
 	fun fastForward() {
-		exoPlayer.seekTo(
-			(exoPlayer.currentPosition + DefaultControlDispatcher.DEFAULT_FAST_FORWARD_MS).coerceAtMost(exoPlayer.duration)
-		)
+		exoPlayer.seekForward()
 	}
 
 	fun destroy() {

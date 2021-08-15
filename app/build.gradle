@@ -138,7 +138,7 @@ dependencies {
 	implementation 'androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.5'
 
 	// exo player
-	def exoplayer_version = "2.14.2"
+	def exoplayer_version = "2.15.0"
 	implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
