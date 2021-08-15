@@ -41,6 +41,9 @@
 	<string name="fragment_mediathek_confirm_delete_dialog_title">Datei wirklich löschen?</string>
 	<string name="fragment_mediathek_confirm_delete_dialog_text">Die Video-Datei wird gelöscht und kann später nochmals herunter geladen werden.</string>
 
+	<!-- downloads -->
+	<string name="fragment_downloads_no_results">keine Downloads vorhanden</string>
+
 	<!-- error messages -->
 	<string name="error_report">Fehler melden</string>
 	<string name="error_app_crash">Entschuldigung, es gab einen Fehler.\nMöchtest du per Mail einen Fehlerbericht an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
