@@ -16,8 +16,10 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -39,7 +41,7 @@ abstract class ProgramInfoViewBase @JvmOverloads constructor(
 	private var currentShow: LiveShow? = null
 	private var currentChannel: ChannelModel? = null
 	private var timer: Timer? = null
-	private var showDisposable: Disposable? = null
+	private var showJob: Job? = null
 
 	private val showTitleView: TextView by lazy {
 		rootView.findViewById(R.id.text_show_title)
@@ -189,16 +191,20 @@ abstract class ProgramInfoViewBase @JvmOverloads constructor(
 		progressBarView.isEnabled = true
 		progressBarView.isIndeterminate = true
 
-		showDisposable = ChannelInfoRepository
-			.getInstance()
-			.getShows(currentChannel!!.id)
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(::onRequestSuccess, ::onRequestError)
+		showJob = GlobalScope.launch(Dispatchers.Main) {
+			try {
+				val show = ChannelInfoRepository.getInstance().getShows(currentChannel!!.id)
+				onRequestSuccess(show)
+			} catch (e: Exception) {
+				onRequestError(e)
+			}
+		}
 	}
 
 	private fun chancelProgramGuideLoading() {
 		progressBarView.isIndeterminate = false
-		showDisposable?.dispose()
+		showJob?.cancel()
+		showJob = null
 	}
 
 	private fun setShowProgressBar(value: Int) {

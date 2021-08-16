@@ -8,7 +8,8 @@ import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
-import io.reactivex.Single
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.commons.io.IOUtils
 import timber.log.Timber
 import java.io.IOException
@@ -60,7 +61,7 @@ class ChannelRepository(private val context: Context) {
 		}
 	}
 
-	private fun getChannelInfoListFromApi(): Single<Map<String, ChannelInfo>> {
+	private suspend fun getChannelInfoListFromApi(): Map<String, ChannelInfo> {
 		return ChannelInfoRepository.getInstance().getChannelInfoList()
 	}
 
@@ -90,8 +91,15 @@ class ChannelRepository(private val context: Context) {
 	init {
 		channelList = SortableVisibleJsonChannelList(context)
 
-		getChannelInfoListFromApi()
-			.onErrorReturn { getChannelInfoListFromDisk() }
-			.subscribe(::onChannelInfoListSuccess, Timber::w)
+		GlobalScope.launch {
+
+			val channelList = try {
+				getChannelInfoListFromApi()
+			} catch (e: Exception) {
+				getChannelInfoListFromDisk()
+			}
+
+			onChannelInfoListSuccess(channelList)
+		}
 	}
 }
