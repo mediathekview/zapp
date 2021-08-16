@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Build
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2.Fetch.Impl.getInstance
 import com.tonyodev.fetch2.database.DownloadInfo
