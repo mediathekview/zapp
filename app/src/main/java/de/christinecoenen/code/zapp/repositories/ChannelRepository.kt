@@ -16,7 +16,10 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 @SuppressLint("CheckResult")
-class ChannelRepository(private val context: Context) {
+class ChannelRepository(
+	private val context: Context,
+	private val channelInfoRepository: ChannelInfoRepository
+) {
 
 	companion object {
 
@@ -62,7 +65,7 @@ class ChannelRepository(private val context: Context) {
 	}
 
 	private suspend fun getChannelInfoListFromApi(): Map<String, ChannelInfo> {
-		return ChannelInfoRepository.getInstance().getChannelInfoList()
+		return channelInfoRepository.getChannelInfoList()
 	}
 
 	@Throws(IOException::class)
@@ -78,10 +81,11 @@ class ChannelRepository(private val context: Context) {
 
 	@Throws(IOException::class)
 	private fun writeChannelInfoListToDisk(channelInfoList: Map<String, ChannelInfo>) {
-		context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE).use { fileOutputStream ->
-			val json = gson.toJson(channelInfoList)
-			IOUtils.write(json, fileOutputStream, StandardCharsets.UTF_8)
-		}
+		context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE)
+			.use { fileOutputStream ->
+				val json = gson.toJson(channelInfoList)
+				IOUtils.write(json, fileOutputStream, StandardCharsets.UTF_8)
+			}
 	}
 
 	private fun deleteChannelInfoListFromDisk() {

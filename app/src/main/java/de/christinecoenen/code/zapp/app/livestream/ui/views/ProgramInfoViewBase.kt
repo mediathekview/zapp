@@ -20,6 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -28,7 +30,9 @@ import kotlin.math.roundToInt
 abstract class ProgramInfoViewBase @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
+) : LinearLayout(context, attrs), KoinComponent {
+
+	private val channelInfoRepository: ChannelInfoRepository by inject()
 
 	private val uiHandler = Handler(Looper.getMainLooper())
 
@@ -193,7 +197,7 @@ abstract class ProgramInfoViewBase @JvmOverloads constructor(
 
 		showJob = GlobalScope.launch(Dispatchers.Main) {
 			try {
-				val show = ChannelInfoRepository.getInstance().getShows(currentChannel!!.id)
+				val show = channelInfoRepository.getShows(currentChannel!!.id)
 				onRequestSuccess(show)
 			} catch (e: Exception) {
 				onRequestError(e)

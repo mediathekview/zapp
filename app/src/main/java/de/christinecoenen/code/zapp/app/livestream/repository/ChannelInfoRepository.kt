@@ -12,22 +12,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ChannelInfoRepository private constructor() {
+class ChannelInfoRepository {
 
-	companion object {
-
-		private var instance: ChannelInfoRepository? = null
-
-		@JvmStatic
-		fun getInstance(): ChannelInfoRepository {
-			if (instance == null) {
-				instance = ChannelInfoRepository()
-			}
-			return instance!!
-		}
-	}
-
-
+	
 	private val cache: Cache = Cache()
 	private val service: ChannelInfoService
 
