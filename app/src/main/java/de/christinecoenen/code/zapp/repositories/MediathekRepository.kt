@@ -22,7 +22,7 @@ class MediathekRepository(
 	val downloads: PagingSource<Int, PersistedMediathekShow>
 		get() = database.mediathekShowDao().getAllDownloads()
 
-	fun listShows(@Body queryRequest: QueryRequest) = mediathekApi.listShows(queryRequest)
+	suspend fun listShows(@Body queryRequest: QueryRequest) = mediathekApi.listShows(queryRequest)
 
 	fun persistOrUpdateShow(show: MediathekShow): Flowable<PersistedMediathekShow> {
 		return Completable.fromAction { database.mediathekShowDao().insertOrUpdate(show) }
