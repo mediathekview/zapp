@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Build
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2.Fetch.Impl.getInstance
 import com.tonyodev.fetch2.database.DownloadInfo
@@ -17,22 +16,29 @@ import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import org.joda.time.DateTime
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class DownloadController(applicationContext: Context, private val mediathekRepository: MediathekRepository) : FetchListener {
+class DownloadController(
+	applicationContext: Context,
+	private val mediathekRepository: MediathekRepository
+) : FetchListener {
 
 	private lateinit var fetch: Fetch
-	private val connectivityManager: ConnectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+	private val connectivityManager: ConnectivityManager =
+		applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 	private val settingsRepository: SettingsRepository = SettingsRepository(applicationContext)
-	private val downloadFileInfoManager: DownloadFileInfoManager = DownloadFileInfoManager(applicationContext, settingsRepository)
+	private val downloadFileInfoManager: DownloadFileInfoManager =
+		DownloadFileInfoManager(applicationContext, settingsRepository)
 
 	init {
 		val cookieManager = CookieManager()
@@ -49,7 +55,8 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 			.build()
 
 		val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(applicationContext)
-			.setNotificationManager(object : ZappNotificationManager(applicationContext, mediathekRepository) {
+			.setNotificationManager(object :
+				ZappNotificationManager(applicationContext, mediathekRepository) {
 				override fun getFetchInstanceForNamespace(namespace: String): Fetch {
 					return fetch
 				}
@@ -66,52 +73,50 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 		fetch.addListener(this)
 	}
 
-	fun startDownload(show: PersistedMediathekShow, quality: Quality): Completable {
+	suspend fun startDownload(show: PersistedMediathekShow, quality: Quality) {
 		val downloadUrl = show.mediathekShow.getVideoUrl(quality)
-				?: throw DownloadException("$quality is no valid download quality.")
+			?: throw DownloadException("$quality is no valid download quality.")
 
-		return getDownload(show.downloadId)
-			.flatMapCompletable { download ->
-				if (download.id != 0 && download.url == downloadUrl) {
-					// same quality as existing download
-					// save new settings to request
-					applySettingsToRequest(download.request)
-					fetch.updateRequest(download.id, download.request, false, null, null)
+		val download = getDownload(show.downloadId)
 
-					// update show properties
-					show.downloadedAt = DateTime.now()
-					show.downloadProgress = 0
+		if (download.id != 0 && download.url == downloadUrl) {
+			// same quality as existing download
+			// save new settings to request
+			applySettingsToRequest(download.request)
+			fetch.updateRequest(download.id, download.request, false, null, null)
 
-					mediathekRepository.updateShow(show)
+			// update show properties
+			show.downloadedAt = DateTime.now()
+			show.downloadProgress = 0
 
-					// retry
-					fetch.retry(show.downloadId)
-				} else {
-					// delete old file with wrong quality
-					fetch.delete(show.downloadId)
+			mediathekRepository.updateShow(show)
 
-					val filePath = downloadFileInfoManager.getDownloadFilePath(show.mediathekShow, quality)
+			// retry
+			fetch.retry(show.downloadId)
+		} else {
+			// delete old file with wrong quality
+			fetch.delete(show.downloadId)
 
-					val request: Request
-					try {
-						request = Request(downloadUrl, filePath)
-						request.identifier = show.id.toLong()
-					} catch (e: Exception) {
-						throw DownloadException("Constructing download request failed.", e)
-					}
+			val filePath =
+				downloadFileInfoManager.getDownloadFilePath(show.mediathekShow, quality)
 
-					// update show properties
-					show.downloadId = request.id
-					show.downloadedAt = DateTime.now()
-					show.downloadProgress = 0
-
-					mediathekRepository.updateShow(show)
-
-					enqueueDownload(request)
-				}
-
-				Completable.complete()
+			val request: Request
+			try {
+				request = Request(downloadUrl, filePath)
+				request.identifier = show.id.toLong()
+			} catch (e: Exception) {
+				throw DownloadException("Constructing download request failed.", e)
 			}
+
+			// update show properties
+			show.downloadId = request.id
+			show.downloadedAt = DateTime.now()
+			show.downloadProgress = 0
+
+			mediathekRepository.updateShow(show)
+
+			enqueueDownload(request)
+		}
 	}
 
 	fun stopDownload(id: Int) {
@@ -130,11 +135,11 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 		}
 	}
 
-	fun getDownloadStatus(apiId: String): Flowable<DownloadStatus> {
+	fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
 		return mediathekRepository.getDownloadStatus(apiId)
 	}
 
-	fun getDownloadProgress(apiId: String): Flowable<Int> {
+	fun getDownloadProgress(apiId: String): Flow<Int> {
 		return mediathekRepository.getDownloadProgress(apiId)
 	}
 
@@ -151,14 +156,12 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 	/**
 	 * @return download with the given id or empty download with id of 0
 	 */
-	private fun getDownload(downloadId: Int): Single<Download> {
-		return Single.create { emitter ->
-			fetch.getDownload(downloadId) { download ->
-				if (download == null) {
-					emitter.onSuccess(DownloadInfo())
-				} else {
-					emitter.onSuccess(download)
-				}
+	private suspend fun getDownload(downloadId: Int): Download = suspendCoroutine { continuation ->
+		fetch.getDownload(downloadId) { download ->
+			if (download == null) {
+				continuation.resume(DownloadInfo())
+			} else {
+				continuation.resume(download)
 			}
 		}
 	}
@@ -183,69 +186,106 @@ class DownloadController(applicationContext: Context, private val mediathekRepos
 		}
 	}
 
-	private fun updateDownloadStatus(download: Download) {
+	private suspend fun updateDownloadStatus(download: Download) {
 		val downloadStatus = DownloadStatus.values()[download.status.value]
 		mediathekRepository.updateDownloadStatus(download.id, downloadStatus)
 	}
 
-	private fun updateDownloadProgress(download: Download, progress: Int) {
+	private suspend fun updateDownloadProgress(download: Download, progress: Int) {
 		mediathekRepository.updateDownloadProgress(download.id, progress)
 	}
 
 	override fun onAdded(download: Download) {
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 
 	override fun onCancelled(download: Download) {
-		fetch.delete(download.id)
-		updateDownloadStatus(download)
-		updateDownloadProgress(download, 0)
+		GlobalScope.launch {
+			fetch.delete(download.id)
+			updateDownloadStatus(download)
+			updateDownloadProgress(download, 0)
+		}
 	}
 
 	override fun onCompleted(download: Download) {
-		updateDownloadStatus(download)
-		mediathekRepository.updateDownloadedVideoPath(download.id, download.file)
-		downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+			mediathekRepository.updateDownloadedVideoPath(download.id, download.file)
+			downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
+		}
 	}
 
 	override fun onDeleted(download: Download) {
-		updateDownloadStatus(download)
-		updateDownloadProgress(download, 0)
-		downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+			updateDownloadProgress(download, 0)
+			downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
+		}
 	}
 
-	override fun onDownloadBlockUpdated(download: Download, downloadBlock: DownloadBlock, totalBlocks: Int) {}
+	override fun onDownloadBlockUpdated(
+		download: Download,
+		downloadBlock: DownloadBlock,
+		totalBlocks: Int
+	) {
+	}
 
 	override fun onError(download: Download, error: Error, throwable: Throwable?) {
-		downloadFileInfoManager.deleteDownloadFile(download)
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			downloadFileInfoManager.deleteDownloadFile(download)
+			updateDownloadStatus(download)
+		}
 	}
 
 	override fun onPaused(download: Download) {
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 
-	override fun onProgress(download: Download, etaInMilliSeconds: Long, downloadedBytesPerSecond: Long) {
-		updateDownloadProgress(download, download.progress)
+	override fun onProgress(
+		download: Download,
+		etaInMilliSeconds: Long,
+		downloadedBytesPerSecond: Long
+	) {
+		GlobalScope.launch {
+			updateDownloadProgress(download, download.progress)
+		}
 	}
 
 	override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 
 	override fun onRemoved(download: Download) {
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 
 	override fun onResumed(download: Download) {
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 
-	override fun onStarted(download: Download, downloadBlocks: List<DownloadBlock>, totalBlocks: Int) {
-		updateDownloadStatus(download)
+	override fun onStarted(
+		download: Download,
+		downloadBlocks: List<DownloadBlock>,
+		totalBlocks: Int
+	) {
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 
 	override fun onWaitingNetwork(download: Download) {
-		updateDownloadStatus(download)
+		GlobalScope.launch {
+			updateDownloadStatus(download)
+		}
 	}
 }

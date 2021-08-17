@@ -14,6 +14,8 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescripti
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -86,8 +88,11 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	override fun onDestroy() {
 		movePlaybackToForeground()
 
-		player.destroy()
 		errorMessageDisposable.dispose()
+
+		GlobalScope.launch {
+			player.destroy()
+		}
 
 		super.onDestroy()
 	}

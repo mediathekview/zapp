@@ -7,10 +7,9 @@ import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.persistence.Database
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import retrofit2.http.Body
 
@@ -22,92 +21,107 @@ class MediathekRepository(
 	val downloads: PagingSource<Int, PersistedMediathekShow>
 		get() = database.mediathekShowDao().getAllDownloads()
 
-	suspend fun listShows(@Body queryRequest: QueryRequest) = mediathekApi.listShows(queryRequest)
+	suspend fun listShows(@Body queryRequest: QueryRequest): List<MediathekShow> =
+		withContext(Dispatchers.IO) {
+			mediathekApi
+				.listShows(queryRequest)
+		}
 
-	fun persistOrUpdateShow(show: MediathekShow): Flowable<PersistedMediathekShow> {
-		return Completable.fromAction { database.mediathekShowDao().insertOrUpdate(show) }
-			.andThen(database.mediathekShowDao().getFromApiId(show.apiId))
-			.subscribeOn(Schedulers.io())
-	}
+	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
+		withContext(Dispatchers.IO) {
+			database
+				.mediathekShowDao()
+				.insertOrUpdate(show)
 
-	fun updateShow(show: PersistedMediathekShow?) {
-		database.mediathekShowDao()
+			database
+				.mediathekShowDao()
+				.getFromApiId(show.apiId)
+				.flowOn(Dispatchers.IO)
+		}
+
+	suspend fun updateShow(show: PersistedMediathekShow?) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
 			.update(show!!)
-			.subscribeOn(Schedulers.io())
-			.subscribe()
 	}
 
-	fun updateDownloadStatus(downloadId: Int, downloadStatus: DownloadStatus?) {
-		database.mediathekShowDao()
-			.updateDownloadStatus(downloadId, downloadStatus!!)
-			.subscribeOn(Schedulers.io())
-			.subscribe()
-	}
+	suspend fun updateDownloadStatus(downloadId: Int, downloadStatus: DownloadStatus?) =
+		withContext(Dispatchers.IO) {
+			database
+				.mediathekShowDao()
+				.updateDownloadStatus(downloadId, downloadStatus!!)
+		}
 
-	fun updateDownloadProgress(downloadId: Int, progress: Int) {
-		database.mediathekShowDao()
-			.updateDownloadProgress(downloadId, progress)
-			.subscribeOn(Schedulers.io())
-			.subscribe()
-	}
+	suspend fun updateDownloadProgress(downloadId: Int, progress: Int) =
+		withContext(Dispatchers.IO) {
+			database
+				.mediathekShowDao()
+				.updateDownloadProgress(downloadId, progress)
+		}
 
-	fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?) {
-		database.mediathekShowDao()
-			.updateDownloadedVideoPath(downloadId, videoPath!!)
-			.subscribeOn(Schedulers.io())
-			.subscribe()
-	}
+	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?) =
+		withContext(Dispatchers.IO) {
+			database
+				.mediathekShowDao()
+				.updateDownloadedVideoPath(downloadId, videoPath!!)
+		}
 
-	fun getPersistedShow(id: Int): Flowable<PersistedMediathekShow> {
-		return database.mediathekShowDao()
+	fun getPersistedShow(id: Int): Flow<PersistedMediathekShow> {
+		return database
+			.mediathekShowDao()
 			.getFromId(id)
-			.subscribeOn(Schedulers.io())
+			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPersistedShowByApiId(apiId: String): Flowable<PersistedMediathekShow> {
-		return database.mediathekShowDao()
+	fun getPersistedShowByApiId(apiId: String): Flow<PersistedMediathekShow> {
+		return database
+			.mediathekShowDao()
 			.getFromApiId(apiId)
-			.subscribeOn(Schedulers.io())
+			.filterNotNull()
+			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPersistedShowByDownloadId(downloadId: Int): Flowable<PersistedMediathekShow> {
-		return database.mediathekShowDao().getFromDownloadId(downloadId)
-			.subscribeOn(Schedulers.io())
+	fun getPersistedShowByDownloadId(downloadId: Int): Flow<PersistedMediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getFromDownloadId(downloadId)
+			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloadStatus(apiId: String): Flowable<DownloadStatus> {
+	fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
 		return database
 			.mediathekShowDao()
 			.getDownloadStatus(apiId)
-			.startWith(DownloadStatus.NONE)
-			.subscribeOn(Schedulers.io())
+			.onStart { emit(DownloadStatus.NONE) }
+			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloadProgress(apiId: String): Flowable<Int> {
+	fun getDownloadProgress(apiId: String): Flow<Int> {
 		return database
 			.mediathekShowDao()
 			.getDownloadProgress(apiId)
-			.subscribeOn(Schedulers.io())
+			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPlaybackPosition(showId: Int): Single<Long> {
-		return database.mediathekShowDao()
+	suspend fun getPlaybackPosition(showId: Int): Long = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
 			.getPlaybackPosition(showId)
-			.subscribeOn(Schedulers.io())
 	}
 
-	fun setPlaybackPosition(showId: Int, positionMillis: Long, durationMillis: Long) {
-		database.mediathekShowDao()
-			.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
-			.subscribeOn(Schedulers.io())
-			.subscribe()
-	}
+	suspend fun setPlaybackPosition(showId: Int, positionMillis: Long, durationMillis: Long) =
+		withContext(Dispatchers.IO) {
+			database
+				.mediathekShowDao()
+				.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
+		}
 
-	fun getPlaybackPositionPercent(apiId: String): Flowable<Float> {
-		return database.mediathekShowDao()
+	fun getPlaybackPositionPercent(apiId: String): Flow<Float> {
+		return database
+			.mediathekShowDao()
 			.getPlaybackPositionPercent(apiId)
-			.startWith(0f)
-			.distinct()
-			.subscribeOn(Schedulers.io())
+			.filterNotNull()
+			.onStart { emit(0f) }
+			.flowOn(Dispatchers.IO)
 	}
 }

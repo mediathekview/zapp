@@ -7,8 +7,8 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 
@@ -17,11 +17,10 @@ object ImageHelper {
 	private val THUMBNAIL_SIZE = Size(640, 240)
 
 	@JvmStatic
-	fun loadThumbnailAsync(context: Context, filePath: String?): Single<Bitmap> {
-		return Single
-			.fromCallable { loadThumbnail(context, filePath) }
-			.subscribeOn(Schedulers.computation())
-	}
+	suspend fun loadThumbnailAsync(context: Context, filePath: String?): Bitmap =
+		withContext(Dispatchers.Default) {
+			loadThumbnail(context, filePath)
+		}
 
 	private fun loadThumbnail(context: Context, filePath: String?): Bitmap {
 		if (filePath == null) {
@@ -48,7 +47,10 @@ object ImageHelper {
 		} else {
 			// old method of loading thumbnails
 			@Suppress("DEPRECATION")
-			ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.FULL_SCREEN_KIND)
+			ThumbnailUtils.createVideoThumbnail(
+				filePath,
+				MediaStore.Images.Thumbnails.FULL_SCREEN_KIND
+			)
 				?: throw Exception("Could not generate thumbnail for file $filePath")
 		}
 	}

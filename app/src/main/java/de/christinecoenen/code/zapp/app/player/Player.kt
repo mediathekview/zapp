@@ -3,8 +3,10 @@ package de.christinecoenen.code.zapp.app.player
 import android.content.Context
 import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -15,11 +17,14 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import timber.log.Timber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class Player(context: Context, private val playbackPositionRepository: IPlaybackPositionRepository) {
+class Player(
+	context: Context,
+	private val playbackPositionRepository: IPlaybackPositionRepository
+) {
 
 	companion object {
 
@@ -71,12 +76,14 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 	init {
 		// quality selection
 		val trackSelector = DefaultTrackSelector(context).apply {
-			setParameters(this
-				.buildUponParameters()
-				.setPreferredAudioLanguage(LANGUAGE_GERMAN)
-				.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings(context)
-				.setSelectUndeterminedTextLanguage(true)
-				.setDisabledTextTrackSelectionFlags(C.SELECTION_FLAG_DEFAULT))
+			setParameters(
+				this
+					.buildUponParameters()
+					.setPreferredAudioLanguage(LANGUAGE_GERMAN)
+					.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings(context)
+					.setSelectUndeterminedTextLanguage(true)
+					.setDisabledTextTrackSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+			)
 		}
 		trackSelectorWrapper = TrackSelectorWrapper(trackSelector)
 
@@ -107,9 +114,9 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		videoView.player = exoPlayer
 	}
 
-	fun load(videoInfo: VideoInfo) {
+	suspend fun load(videoInfo: VideoInfo) = withContext(Dispatchers.Main)  {
 		if (videoInfo == currentVideoInfo) {
-			return
+			return@withContext
 		}
 
 		if (currentVideoInfo != null) {
@@ -128,18 +135,11 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		exoPlayer.prepare()
 
 		if (videoInfo.hasDuration) {
-			val loadPositionDisposable = playbackPositionRepository
-				.getPlaybackPosition(currentVideoInfo!!)
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe({ this.millis = it }) { Timber.e(it) }
-
-			disposables.add(loadPositionDisposable)
+			millis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo!!)
 		}
-
-		setStreamQualityByNetworkType()
 	}
 
-	fun recreate() {
+	suspend fun recreate() = withContext(Dispatchers.Main)  {
 		val oldVideoInfo = currentVideoInfo
 		val oldPosition = millis
 
@@ -165,7 +165,7 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		exoPlayer.seekForward()
 	}
 
-	fun destroy() {
+	suspend fun destroy() = withContext(Dispatchers.Main) {
 		saveCurrentPlaybackPosition()
 		disposables.clear()
 		networkConnectionHelper.endListenForNetworkChanges()
@@ -174,11 +174,15 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 		mediaSession.release()
 	}
 
-	private fun saveCurrentPlaybackPosition() {
+	private suspend fun saveCurrentPlaybackPosition() {
 		if (currentVideoInfo == null) {
 			return
 		}
-		playbackPositionRepository.savePlaybackPosition(currentVideoInfo!!, millis, exoPlayer.duration)
+		playbackPositionRepository.savePlaybackPosition(
+			currentVideoInfo!!,
+			millis,
+			exoPlayer.duration
+		)
 	}
 
 	private fun getMediaItem(videoInfo: VideoInfo?): MediaItem {
@@ -192,7 +196,8 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 				Uri.parse(videoInfo.subtitleUrl),
 				videoInfo.subtitleUrl!!.toSubtitleMimeType(),
 				LANGUAGE_GERMAN,
-				C.SELECTION_FLAG_AUTOSELECT)
+				C.SELECTION_FLAG_AUTOSELECT
+			)
 
 			mediaItemBuilder.setSubtitles(listOf(subtitle))
 		}

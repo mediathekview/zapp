@@ -11,6 +11,7 @@ import android.graphics.PorterDuffColorFilter
 import android.os.*
 import android.view.*
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import de.christinecoenen.code.zapp.R
@@ -55,7 +56,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	private lateinit var channelDetailAdapter: ChannelDetailAdapter
 
 	private val disposable = CompositeDisposable()
-	private val playRunnable = Runnable { play() }
+	private val playRunnable = Runnable { lifecycleScope.launchWhenCreated { play() } }
 	private val playHandler = Handler(Looper.getMainLooper())
 
 	private var playStreamDelayMillis = 0
@@ -63,29 +64,35 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	private var player: Player? = null
 	private var binder: BackgroundPlayerService.Binder? = null
 
-	private val channelDetailListener: ChannelDetailAdapter.Listener = object : ChannelDetailAdapter.Listener {
-		override fun onItemSelected(channel: ChannelModel) {
-			currentChannel = channel
-			title = channel.name
+	private val channelDetailListener: ChannelDetailAdapter.Listener =
+		object : ChannelDetailAdapter.Listener {
+			override fun onItemSelected(channel: ChannelModel) {
+				currentChannel = channel
+				title = channel.name
 
-			setColor(channel.color)
-			playDelayed()
+				setColor(channel.color)
+				playDelayed()
 
-			binding.programInfo.setChannel(channel)
+				binding.programInfo.setChannel(channel)
 
-			reportShortcutUsageGuarded(this@ChannelDetailActivity, channel.id)
+				reportShortcutUsageGuarded(this@ChannelDetailActivity, channel.id)
+			}
 		}
-	}
 
 	private val onPageChangeListener: OnPageChangeListener = object : SimpleOnPageChangeListener() {
-		override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+		override fun onPageScrolled(
+			position: Int,
+			positionOffset: Float,
+			positionOffsetPixels: Int
+		) {
 			val currentChannelColor = channelDetailAdapter.getChannel(position).color
 
 			if (positionOffset == 0f) {
 				setColor(currentChannelColor)
 			} else {
 				val nextChannelColor = channelDetailAdapter.getChannel(position + 1).color
-				val interpolatedColor = interpolate(positionOffset, currentChannelColor, nextChannelColor)
+				val interpolatedColor =
+					interpolate(positionOffset, currentChannelColor, nextChannelColor)
 				setColor(interpolatedColor)
 			}
 		}
@@ -124,14 +131,16 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		binding = ActivityChannelDetailBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		playStreamDelayMillis = resources.getInteger(R.integer.activity_channel_detail_play_stream_delay_millis)
+		playStreamDelayMillis =
+			resources.getInteger(R.integer.activity_channel_detail_play_stream_delay_millis)
 
 		setSupportActionBar(binding.toolbar)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 		// pager
 		channelDetailAdapter = ChannelDetailAdapter(
-			supportFragmentManager, viewModel.channelList, channelDetailListener)
+			supportFragmentManager, viewModel.channelList, channelDetailListener
+		)
 
 		binding.viewpager.adapter = channelDetailAdapter
 		binding.viewpager.addOnPageChangeListener(onPageChangeListener)
@@ -186,7 +195,10 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		pauseActivity()
 	}
 
-	override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+	override fun onPictureInPictureModeChanged(
+		isInPictureInPictureMode: Boolean,
+		newConfig: Configuration
+	) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
 
 		if (isInPictureInPictureMode) {
@@ -207,7 +219,12 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
 			R.id.menu_share -> {
-				startActivity(Intent.createChooser(currentChannel!!.videoShareIntent, getString(R.string.action_share)))
+				startActivity(
+					Intent.createChooser(
+						currentChannel!!.videoShareIntent,
+						getString(R.string.action_share)
+					)
+				)
 				true
 			}
 			R.id.menu_play_in_background -> {
@@ -259,8 +276,10 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	}
 
 	override fun onErrorViewClicked() {
-		player?.recreate()
-		player?.resume()
+		lifecycleScope.launchWhenResumed {
+			player?.recreate()
+			player?.resume()
+		}
 	}
 
 	private fun parseIntent(intent: Intent) {
@@ -298,7 +317,7 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 		playHandler.postDelayed(playRunnable, playStreamDelayMillis.toLong())
 	}
 
-	private fun play() {
+	private suspend fun play() {
 		if (currentChannel == null || binder == null) {
 			return
 		}
@@ -336,7 +355,8 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	}
 
 	private fun setColor(color: Int) {
-		binding.videoProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+		binding.videoProgress.indeterminateDrawable.colorFilter =
+			PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
 		binding.toolbar.setBackgroundColor(color)
 
 		window.statusBarColor = darker(color, 0.075f)

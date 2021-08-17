@@ -8,7 +8,7 @@ import androidx.paging.cachedIn
 import androidx.paging.liveData
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
 
 
 class DownloadsViewModel(private val mediathekRepository: MediathekRepository) : ViewModel() {
@@ -19,7 +19,7 @@ class DownloadsViewModel(private val mediathekRepository: MediathekRepository) :
 		.liveData
 		.cachedIn(viewModelScope)
 
-	fun getPersistedShowFlowable(id: Int): Flowable<PersistedMediathekShow> {
+	fun getPersistedShow(id: Int): Flow<PersistedMediathekShow> {
 		return mediathekRepository.getPersistedShow(id)
 	}
 

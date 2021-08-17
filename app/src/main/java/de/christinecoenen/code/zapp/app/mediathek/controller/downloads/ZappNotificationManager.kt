@@ -17,20 +17,28 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 const val ACTION_TYPE_REPORT_ERROR = 42
 
-abstract class ZappNotificationManager(context: Context, private val mediathekRepository: MediathekRepository) : FetchNotificationManager {
+abstract class ZappNotificationManager(
+	context: Context,
+	private val mediathekRepository: MediathekRepository
+) : FetchNotificationManager {
 
 	private val application: ZappApplication = context.applicationContext as ZappApplication
 	private val context: Context = context.applicationContext
-	private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+	private val notificationManager =
+		context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 	private val downloadNotificationsMap = mutableMapOf<Int, DownloadNotification>()
 	private val downloadNotificationsBuilderMap = mutableMapOf<Int, NotificationCompat.Builder>()
 	private val errorMap = mutableMapOf<Int, Error>()
 	private val downloadNotificationExcludeSet = mutableSetOf<Int>()
 
-	override val notificationManagerAction: String = "DEFAULT_FETCH2_NOTIFICATION_MANAGER_ACTION_" + System.currentTimeMillis()
+	override val notificationManagerAction: String =
+		"DEFAULT_FETCH2_NOTIFICATION_MANAGER_ACTION_" + System.currentTimeMillis()
 
 	override val broadcastReceiver: BroadcastReceiver
 		get() = object : BroadcastReceiver() {
@@ -42,7 +50,8 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 				// handled by zapp - may be error report intent
 				if (intent != null) {
 					val actionType = intent.getIntExtra(EXTRA_ACTION_TYPE, ACTION_TYPE_INVALID)
-					val notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_ID_INVALID)
+					val notificationId =
+						intent.getIntExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_ID_INVALID)
 
 					if (actionType == ACTION_TYPE_REPORT_ERROR && notificationId != NOTIFICATION_ID_INVALID) {
 						val error = errorMap[notificationId]
@@ -70,7 +79,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		context.unregisterReceiver(broadcastReceiver)
 	}
 
-	override fun createNotificationChannels(context: Context, notificationManager: NotificationManager) {
+	override fun createNotificationChannels(
+		context: Context,
+		notificationManager: NotificationManager
+	) {
 		NotificationHelper.createDownloadEventChannel(context)
 		NotificationHelper.createDownloadProgressChannel(context)
 	}
@@ -87,10 +99,12 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		}
 	}
 
-	override fun updateGroupSummaryNotification(groupId: Int,
-												notificationBuilder: NotificationCompat.Builder,
-												downloadNotifications: List<DownloadNotification>,
-												context: Context): Boolean {
+	override fun updateGroupSummaryNotification(
+		groupId: Int,
+		notificationBuilder: NotificationCompat.Builder,
+		downloadNotifications: List<DownloadNotification>,
+		context: Context
+	): Boolean {
 		val style = NotificationCompat.InboxStyle()
 
 		for (downloadNotification in downloadNotifications) {
@@ -110,9 +124,11 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		return false
 	}
 
-	override fun updateNotification(notificationBuilder: NotificationCompat.Builder,
-									downloadNotification: DownloadNotification,
-									context: Context) {
+	override fun updateNotification(
+		notificationBuilder: NotificationCompat.Builder,
+		downloadNotification: DownloadNotification,
+		context: Context
+	) {
 		val smallIcon = if (downloadNotification.isDownloading) {
 			android.R.drawable.stat_sys_download
 		} else {
@@ -135,7 +151,8 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		} else {
 			val progressIndeterminate = downloadNotification.progressIndeterminate
 			val maxProgress = if (downloadNotification.progressIndeterminate) 0 else 100
-			val progress = if (downloadNotification.progress < 0) 0 else downloadNotification.progress
+			val progress =
+				if (downloadNotification.progress < 0) 0 else downloadNotification.progress
 			notificationBuilder.setProgress(maxProgress, progress, progressIndeterminate)
 			notificationBuilder.setAutoCancel(false)
 		}
@@ -143,27 +160,44 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		when {
 			downloadNotification.isDownloading -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
-					.addAction(R.drawable.fetch_notification_cancel,
+					.addAction(
+						R.drawable.fetch_notification_cancel,
 						context.getString(R.string.fetch_notification_download_cancel),
-						getActionPendingIntent(downloadNotification, DownloadNotification.ActionType.CANCEL))
+						getActionPendingIntent(
+							downloadNotification,
+							DownloadNotification.ActionType.CANCEL
+						)
+					)
 			}
 			downloadNotification.isPaused -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
-					.addAction(R.drawable.fetch_notification_resume,
+					.addAction(
+						R.drawable.fetch_notification_resume,
 						context.getString(R.string.fetch_notification_download_resume),
-						getActionPendingIntent(downloadNotification, DownloadNotification.ActionType.RESUME))
-					.addAction(R.drawable.fetch_notification_cancel,
+						getActionPendingIntent(
+							downloadNotification,
+							DownloadNotification.ActionType.RESUME
+						)
+					)
+					.addAction(
+						R.drawable.fetch_notification_cancel,
 						context.getString(R.string.fetch_notification_download_cancel),
-						getActionPendingIntent(downloadNotification, DownloadNotification.ActionType.CANCEL))
+						getActionPendingIntent(
+							downloadNotification,
+							DownloadNotification.ActionType.CANCEL
+						)
+					)
 			}
 			downloadNotification.isQueued -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
 			}
 			downloadNotification.isFailed -> {
 				notificationBuilder.setTimeoutAfter(getNotificationTimeOutMillis())
-					.addAction(R.drawable.fetch_notification_cancel,
+					.addAction(
+						R.drawable.fetch_notification_cancel,
 						context.getString(de.christinecoenen.code.zapp.R.string.error_report),
-						getReportPendingIntent(downloadNotification))
+						getReportPendingIntent(downloadNotification)
+					)
 			}
 			else -> {
 				notificationBuilder.setTimeoutAfter(DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET)
@@ -171,8 +205,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		}
 	}
 
-	override fun getActionPendingIntent(downloadNotification: DownloadNotification,
-										actionType: DownloadNotification.ActionType): PendingIntent {
+	override fun getActionPendingIntent(
+		downloadNotification: DownloadNotification,
+		actionType: DownloadNotification.ActionType
+	): PendingIntent {
 		synchronized(downloadNotificationsMap) {
 			val intent = Intent(notificationManagerAction)
 			intent.putExtra(EXTRA_NAMESPACE, downloadNotification.namespace)
@@ -191,13 +227,20 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			}
 
 			intent.putExtra(EXTRA_ACTION_TYPE, action)
-			return PendingIntent.getBroadcast(context, downloadNotification.notificationId + action, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			return PendingIntent.getBroadcast(
+				context,
+				downloadNotification.notificationId + action,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+			)
 		}
 	}
 
-	override fun getGroupActionPendingIntent(groupId: Int,
-											 downloadNotifications: List<DownloadNotification>,
-											 actionType: DownloadNotification.ActionType): PendingIntent {
+	override fun getGroupActionPendingIntent(
+		groupId: Int,
+		downloadNotifications: List<DownloadNotification>,
+		actionType: DownloadNotification.ActionType
+	): PendingIntent {
 		synchronized(downloadNotificationsMap) {
 			val intent = Intent(notificationManagerAction)
 			intent.putExtra(EXTRA_NOTIFICATION_GROUP_ID, groupId)
@@ -214,7 +257,12 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			}
 
 			intent.putExtra(EXTRA_ACTION_TYPE, action)
-			return PendingIntent.getBroadcast(context, groupId + action, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			return PendingIntent.getBroadcast(
+				context,
+				groupId + action,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+			)
 		}
 	}
 
@@ -252,9 +300,15 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	override fun notify(groupId: Int) {
 		synchronized(downloadNotificationsMap) {
-			val groupedDownloadNotifications = downloadNotificationsMap.values.filter { it.groupId == groupId }
+			val groupedDownloadNotifications =
+				downloadNotificationsMap.values.filter { it.groupId == groupId }
 			val groupSummaryNotificationBuilder = getNotificationBuilder(groupId, groupId)
-			val useGroupNotification = updateGroupSummaryNotification(groupId, groupSummaryNotificationBuilder, groupedDownloadNotifications, context)
+			val useGroupNotification = updateGroupSummaryNotification(
+				groupId,
+				groupSummaryNotificationBuilder,
+				groupedDownloadNotifications,
+				context
+			)
 			var notificationId: Int
 			var notificationBuilder: NotificationCompat.Builder
 
@@ -291,16 +345,23 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	@SuppressLint("CheckResult")
 	override fun postDownloadUpdate(download: Download): Boolean {
-		mediathekRepository
-			.getPersistedShowByDownloadId(download.id)
-			.firstElement()
-			.subscribe { persistedShow -> postDownloadUpdate(download, persistedShow) }
+
+		GlobalScope.launch {
+			val persistedShow = mediathekRepository
+				.getPersistedShowByDownloadId(download.id)
+				.first()
+
+			postDownloadUpdate(download, persistedShow)
+		}
 
 		return true
 	}
 
 	@SuppressLint("RestrictedApi")
-	override fun getNotificationBuilder(notificationId: Int, groupId: Int): NotificationCompat.Builder {
+	override fun getNotificationBuilder(
+		notificationId: Int,
+		groupId: Int
+	): NotificationCompat.Builder {
 		synchronized(downloadNotificationsMap) {
 			val notificationBuilder = downloadNotificationsBuilderMap[notificationId]
 				?: NotificationCompat.Builder(context, getChannelId(notificationId, context))
@@ -338,7 +399,10 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	abstract override fun getFetchInstanceForNamespace(namespace: String): Fetch
 
-	override fun getSubtitleText(context: Context, downloadNotification: DownloadNotification): String {
+	override fun getSubtitleText(
+		context: Context,
+		downloadNotification: DownloadNotification
+	): String {
 		return when {
 			downloadNotification.isCompleted -> context.getString(R.string.fetch_notification_download_complete)
 			downloadNotification.isFailed -> context.getString(R.string.fetch_notification_download_failed)
@@ -361,7 +425,12 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			val action = ACTION_TYPE_REPORT_ERROR
 
 			intent.putExtra(EXTRA_ACTION_TYPE, action)
-			return PendingIntent.getBroadcast(context, downloadNotification.notificationId + action, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			return PendingIntent.getBroadcast(
+				context,
+				downloadNotification.notificationId + action,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+			)
 		}
 	}
 
@@ -398,11 +467,15 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 			}
 
 			if (downloadNotificationExcludeSet.contains(downloadNotification.notificationId)
-				&& !downloadNotification.isFailed && !downloadNotification.isCompleted) {
+				&& !downloadNotification.isFailed && !downloadNotification.isCompleted
+			) {
 				downloadNotificationExcludeSet.remove(downloadNotification.notificationId)
 			}
 
-			if (downloadNotification.isCancelledNotification || shouldCancelNotification(downloadNotification)) {
+			if (downloadNotification.isCancelledNotification || shouldCancelNotification(
+					downloadNotification
+				)
+			) {
 				cancelNotification(downloadNotification.notificationId)
 			} else {
 				notify(download.group)
@@ -412,8 +485,16 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 
 	private fun getContentIntent(downloadNotification: DownloadNotification): PendingIntent {
 		synchronized(downloadNotificationsMap) {
-			val intent = DownloadReceiver.getNotificationClickedIntent(context, downloadNotification.notificationId)
-			return PendingIntent.getBroadcast(context, downloadNotification.notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+			val intent = DownloadReceiver.getNotificationClickedIntent(
+				context,
+				downloadNotification.notificationId
+			)
+			return PendingIntent.getBroadcast(
+				context,
+				downloadNotification.notificationId,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+			)
 		}
 	}
 
@@ -425,8 +506,17 @@ abstract class ZappNotificationManager(context: Context, private val mediathekRe
 		seconds -= (minutes * 60)
 
 		return when {
-			hours > 0 -> context.getString(R.string.fetch_notification_download_eta_hrs, hours, minutes, seconds)
-			minutes > 0 -> context.getString(R.string.fetch_notification_download_eta_min, minutes, seconds)
+			hours > 0 -> context.getString(
+				R.string.fetch_notification_download_eta_hrs,
+				hours,
+				minutes,
+				seconds
+			)
+			minutes > 0 -> context.getString(
+				R.string.fetch_notification_download_eta_min,
+				minutes,
+				seconds
+			)
 			else -> context.getString(R.string.fetch_notification_download_eta_sec, seconds)
 		}
 	}

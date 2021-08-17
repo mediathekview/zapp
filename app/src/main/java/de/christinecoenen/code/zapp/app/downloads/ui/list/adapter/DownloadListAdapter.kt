@@ -6,6 +6,8 @@ import androidx.paging.PagingDataAdapter
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class DownloadListAdapter(
@@ -29,8 +31,11 @@ class DownloadListAdapter(
 
 	override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
 		getItem(position)?.let {
-			val showFlowable = downloadsViewModel.getPersistedShowFlowable(it.id)
-			holder.bindItem(it, showFlowable)
+			val showFlowable = downloadsViewModel.getPersistedShow(it.id)
+
+			GlobalScope.launch {
+				holder.bindItem(it, showFlowable)
+			}
 		}
 	}
 

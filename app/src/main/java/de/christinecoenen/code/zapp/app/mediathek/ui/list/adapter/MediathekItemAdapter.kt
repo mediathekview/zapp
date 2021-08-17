@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class MediathekItemAdapter(private val listener: ListItemListener?) : RecyclerView.Adapter<BaseViewHolder>() {
+class MediathekItemAdapter(private val listener: ListItemListener?) :
+	RecyclerView.Adapter<BaseViewHolder>() {
 
 	companion object {
 		private const val VIEW_TYPE_ITEM = 0
@@ -66,7 +69,8 @@ class MediathekItemAdapter(private val listener: ListItemListener?) : RecyclerVi
 				MediathekItemViewHolder(binding)
 			}
 			VIEW_TYPE_FOOTER -> {
-				val view = inflater.inflate(R.layout.fragment_mediathek_list_item_footer, parent, false)
+				val view =
+					inflater.inflate(R.layout.fragment_mediathek_list_item_footer, parent, false)
 				progressBar = view.findViewById(R.id.progress)
 				BaseViewHolder(view)
 			}
@@ -81,18 +85,21 @@ class MediathekItemAdapter(private val listener: ListItemListener?) : RecyclerVi
 		}
 
 		val show = shows[position]
-		val itemHodler = holder as MediathekItemViewHolder
+		val itemHolder = holder as MediathekItemViewHolder
 
-		itemHodler.setShow(show)
+		GlobalScope.launch {
 
-		itemHodler.itemView.setOnClickListener { listener?.onShowClicked(show) }
-		itemHodler.itemView.setOnLongClickListener { view ->
-			if (listener != null) {
-				listener.onShowLongClicked(show, view)
-				true
-			} else {
-				false
+			itemHolder.itemView.setOnClickListener { listener?.onShowClicked(show) }
+			itemHolder.itemView.setOnLongClickListener { view ->
+				if (listener != null) {
+					listener.onShowLongClicked(show, view)
+					true
+				} else {
+					false
+				}
 			}
+
+			itemHolder.setShow(show)
 		}
 	}
 }
