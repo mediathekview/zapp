@@ -38,7 +38,11 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		binding.list.adapter = downloadAdapter
 
 		downloadAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-			override fun onChanged() {
+			override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+				updateNoDownloadsVisibility()
+			}
+
+			override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
 				updateNoDownloadsVisibility()
 			}
 		})
@@ -48,8 +52,6 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 				downloadAdapter.submitData(it)
 			}
 		}
-
-		updateNoDownloadsVisibility()
 
 		return binding.root
 	}
