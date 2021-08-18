@@ -31,10 +31,10 @@ class DownloadListAdapter(
 
 	override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
 		getItem(position)?.let {
-			val showFlowable = downloadsViewModel.getPersistedShow(it.id)
+			val showFlow = downloadsViewModel.getPersistedShow(it.id)
 
 			GlobalScope.launch {
-				holder.bindItem(it, showFlowable)
+				holder.bindItem(it, showFlow)
 			}
 		}
 	}

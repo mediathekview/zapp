@@ -12,7 +12,7 @@ class DownloadDiffUtilCallback : DiffUtil.ItemCallback<PersistedMediathekShow>()
 	): Boolean = old.id == new.id
 
 	/**
-	 * We react to changed content via Flowables, so we only compare ids here.
+	 * We react to changed content via flows, so we only compare ids here.
 	 */
 	override fun areContentsTheSame(
             old: PersistedMediathekShow,
