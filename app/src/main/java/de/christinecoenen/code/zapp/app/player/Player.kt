@@ -16,9 +16,8 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
 class Player(
@@ -38,17 +37,19 @@ class Player(
 	var currentVideoInfo: VideoInfo? = null
 		private set
 
-	val isBuffering: Observable<Boolean>
-		get() = playerEventHandler.isBuffering.distinctUntilChanged()
+	val isBuffering: StateFlow<Boolean>
+		get() = playerEventHandler.isBuffering
 
 	val isIdle: Boolean
 		get() = exoPlayer.playbackState == Player.STATE_IDLE
 
-	val errorResourceId: Observable<Int?>
-		get() = Observable.combineLatest(
-			playerEventHandler.errorResourceId,
-			playerEventHandler.isIdle,
-			{ errorResourceId: Int, isIdle: Boolean -> if (isIdle) errorResourceId else -1 })
+	val errorResourceId: Flow<Int?>
+		get() = playerEventHandler
+			.errorResourceId
+			.combine(playerEventHandler.isIdle) { errorResourceId, isIdle ->
+				if (isIdle) errorResourceId else -1
+			}
+			.distinctUntilChanged()
 
 
 	private val playerEventHandler: PlayerEventHandler = PlayerEventHandler()
@@ -56,7 +57,6 @@ class Player(
 	private val networkConnectionHelper: NetworkConnectionHelper = NetworkConnectionHelper(context)
 
 	private val trackSelectorWrapper: TrackSelectorWrapper
-	private val disposables = CompositeDisposable()
 
 
 	private val requiredStreamQualityBucket: StreamQualityBucket
@@ -114,7 +114,7 @@ class Player(
 		videoView.player = exoPlayer
 	}
 
-	suspend fun load(videoInfo: VideoInfo) = withContext(Dispatchers.Main)  {
+	suspend fun load(videoInfo: VideoInfo) = withContext(Dispatchers.Main) {
 		if (videoInfo == currentVideoInfo) {
 			return@withContext
 		}
@@ -123,7 +123,7 @@ class Player(
 			saveCurrentPlaybackPosition()
 		}
 
-		playerEventHandler.errorResourceId.onNext(-1)
+		playerEventHandler.errorResourceId.emit(-1)
 		currentVideoInfo = videoInfo
 
 		val mediaItem = getMediaItem(videoInfo)
@@ -139,7 +139,7 @@ class Player(
 		}
 	}
 
-	suspend fun recreate() = withContext(Dispatchers.Main)  {
+	suspend fun recreate() = withContext(Dispatchers.Main) {
 		val oldVideoInfo = currentVideoInfo
 		val oldPosition = millis
 
@@ -167,7 +167,6 @@ class Player(
 
 	suspend fun destroy() = withContext(Dispatchers.Main) {
 		saveCurrentPlaybackPosition()
-		disposables.clear()
 		networkConnectionHelper.endListenForNetworkChanges()
 		exoPlayer.removeAnalyticsListener(playerEventHandler)
 		exoPlayer.release()
@@ -210,7 +209,7 @@ class Player(
 			StreamQualityBucket.DISABLED -> {
 				exoPlayer.stop()
 				exoPlayer.removeAnalyticsListener(playerEventHandler)
-				playerEventHandler.errorResourceId.onNext(R.string.error_stream_not_in_unmetered_network)
+				playerEventHandler.errorResourceId.tryEmit(R.string.error_stream_not_in_unmetered_network)
 			}
 			else -> trackSelectorWrapper.setStreamQuality(streamQuality)
 		}

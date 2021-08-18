@@ -8,20 +8,25 @@ import android.graphics.Bitmap
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ServiceLifecycleDispatcher
+import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	MediaDescriptionAdapter,
-	PlayerNotificationManager.NotificationListener {
+	PlayerNotificationManager.NotificationListener,
+	LifecycleOwner {
 
 
 	companion object {
@@ -52,7 +57,8 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	private val player: Player by inject()
 
 	private val binder = Binder()
-	private lateinit var errorMessageDisposable: Disposable
+
+	private val lifecycleDispatcher: ServiceLifecycleDispatcher = ServiceLifecycleDispatcher(this)
 
 	private var playerNotificationManager: PlayerNotificationManager? = null
 	private var foregroundActivityIntent: Intent? = null
@@ -66,12 +72,25 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	 * So is is save to aquire locks and release them in [.onDestroy]
 	 */
 	override fun onCreate() {
+		lifecycleDispatcher.onServicePreSuperOnCreate()
 		super.onCreate()
 
-		errorMessageDisposable = player.errorResourceId.subscribe(this::onPlayerError)
+		lifecycleScope.launchWhenCreated {
+			player.errorResourceId.collect(::onPlayerError)
+		}
 	}
 
-	override fun onBind(intent: Intent): IBinder = binder
+	override fun onBind(intent: Intent): IBinder {
+		lifecycleDispatcher.onServicePreSuperOnBind()
+		super.onBind(intent)
+
+		return binder
+	}
+
+	override fun onStart(intent: Intent?, startId: Int) {
+		lifecycleDispatcher.onServicePreSuperOnStart()
+		super.onStart(intent, startId)
+	}
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		handleIntent(intent)
@@ -79,6 +98,10 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	}
 
 	override fun onHandleIntent(intent: Intent?) {}
+
+	override fun getLifecycle(): Lifecycle {
+		return lifecycleDispatcher.lifecycle
+	}
 
 	override fun onTaskRemoved(rootIntent: Intent) {
 		super.onTaskRemoved(rootIntent)
@@ -88,12 +111,11 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	override fun onDestroy() {
 		movePlaybackToForeground()
 
-		errorMessageDisposable.dispose()
-
 		GlobalScope.launch {
 			player.destroy()
 		}
 
+		lifecycleDispatcher.onServicePreSuperOnDestroy()
 		super.onDestroy()
 	}
 

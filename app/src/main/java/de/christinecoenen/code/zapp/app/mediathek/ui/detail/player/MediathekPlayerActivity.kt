@@ -33,7 +33,6 @@ import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInPictureInPictureMode
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
@@ -60,7 +59,6 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 
 	private lateinit var binding: ActivityMediathekPlayerBinding
 
-	private val pauseDisposables = CompositeDisposable()
 	private var persistedShowId = 0
 	private var persistedShow: PersistedMediathekShow? = null
 	private var player: Player? = null
@@ -250,9 +248,9 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		player!!.load(videoInfo)
 		player!!.resume()
 
-		player!!.errorResourceId
-			.subscribe(::onVideoError, Timber::e)
-			.also(pauseDisposables::add)
+		lifecycleScope.launchWhenResumed {
+			player!!.errorResourceId.collect(::onVideoError)
+		}
 
 		binder!!.movePlaybackToForeground()
 
@@ -269,8 +267,6 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 	}
 
 	private fun pauseActivity() {
-		pauseDisposables.clear()
-
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {

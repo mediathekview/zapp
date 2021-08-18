@@ -29,7 +29,7 @@ import de.christinecoenen.code.zapp.utils.view.ColorHelper.darker
 import de.christinecoenen.code.zapp.utils.view.ColorHelper.interpolate
 import de.christinecoenen.code.zapp.utils.view.ColorHelper.withAlpha
 import de.christinecoenen.code.zapp.utils.view.FullscreenActivity
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -55,7 +55,6 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	private lateinit var binding: ActivityChannelDetailBinding
 	private lateinit var channelDetailAdapter: ChannelDetailAdapter
 
-	private val disposable = CompositeDisposable()
 	private val playRunnable = Runnable { lifecycleScope.launchWhenCreated { play() } }
 	private val playHandler = Handler(Looper.getMainLooper())
 
@@ -106,13 +105,13 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 			player = binder!!.getPlayer()
 			player!!.setView(binding.video)
 
-			player!!.isBuffering
-				.subscribe(::onBufferingChanged, Timber::e)
-				.also(disposable::add)
+			lifecycleScope.launchWhenResumed {
+				player!!.isBuffering.collect(::onBufferingChanged)
+			}
 
-			player!!.errorResourceId
-				.subscribe(::onVideoError, Timber::e)
-				.also(disposable::add)
+			lifecycleScope.launchWhenResumed {
+				player!!.errorResourceId.collect(::onVideoError)
+			}
 
 			channelDetailListener.onItemSelected(currentChannel!!)
 
@@ -295,8 +294,6 @@ class ChannelDetailActivity : FullscreenActivity(), StreamPageFragment.Listener 
 	}
 
 	private fun pauseActivity() {
-		disposable.clear()
-
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {
