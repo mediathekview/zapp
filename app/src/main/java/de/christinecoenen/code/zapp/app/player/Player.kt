@@ -184,7 +184,14 @@ class Player(context: Context, private val playbackPositionRepository: IPlayback
 	private fun getMediaItem(videoInfo: VideoInfo?): MediaItem {
 		val quality = requiredStreamQualityBucket
 		val uri = videoInfo!!.getPlaybackUrlOrFilePath(quality)
-		val mediaItemBuilder = MediaItem.Builder().setUri(uri)
+		val mediaItemBuilder = MediaItem.Builder()
+			.setUri(uri)
+			.setMediaMetadata(
+				MediaMetadata.Builder()
+					.setTitle(videoInfo.title)
+					.setArtist(videoInfo.subtitle)
+					.build()
+			)
 
 		// add subtitles if present
 		if (videoInfo.hasSubtitles) {
