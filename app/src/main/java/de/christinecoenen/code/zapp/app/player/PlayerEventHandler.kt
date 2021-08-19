@@ -8,7 +8,7 @@ import com.google.android.exoplayer2.source.LoadEventInfo
 import com.google.android.exoplayer2.source.MediaLoadData
 import com.google.android.exoplayer2.upstream.HttpDataSource.HttpDataSourceException
 import de.christinecoenen.code.zapp.R
-import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import java.io.IOException
 
@@ -17,16 +17,16 @@ import java.io.IOException
  */
 internal class PlayerEventHandler : AnalyticsListener {
 
-	val isBuffering = BehaviorSubject.create<Boolean>()
-	val isIdle = BehaviorSubject.create<Boolean>()
-	val errorResourceId = BehaviorSubject.create<Int>()
+	val isBuffering = MutableStateFlow(false)
+	val isIdle = MutableStateFlow(false)
+	val errorResourceId = MutableStateFlow(0)
 
 	override fun onPlaybackStateChanged(eventTime: EventTime, playbackState: Int) {
 		val isBuffering = playbackState == Player.STATE_BUFFERING
-		this.isBuffering.onNext(isBuffering)
+		this.isBuffering.tryEmit(isBuffering)
 
 		val isReady = playbackState == Player.STATE_IDLE
-		this.isIdle.onNext(isReady)
+		this.isIdle.tryEmit(isReady)
 	}
 
 	override fun onPlayerError(eventTime: EventTime, error: PlaybackException) {
@@ -48,10 +48,16 @@ internal class PlayerEventHandler : AnalyticsListener {
 				}
 			}
 
-		errorResourceId.onNext(errorMessageResourceId)
+		this.errorResourceId.tryEmit(errorMessageResourceId)
 	}
 
-	override fun onLoadError(eventTime: EventTime, loadEventInfo: LoadEventInfo, mediaLoadData: MediaLoadData, error: IOException, wasCanceled: Boolean) {
+	override fun onLoadError(
+		eventTime: EventTime,
+		loadEventInfo: LoadEventInfo,
+		mediaLoadData: MediaLoadData,
+		error: IOException,
+		wasCanceled: Boolean
+	) {
 		if (wasCanceled) {
 			return
 		}
@@ -59,9 +65,9 @@ internal class PlayerEventHandler : AnalyticsListener {
 		Timber.e(error, "exo player onLoadError")
 
 		if (error is HttpDataSourceException) {
-			errorResourceId.onNext(R.string.error_stream_io)
+			this.errorResourceId.tryEmit(R.string.error_stream_io)
 		} else {
-			errorResourceId.onNext(R.string.error_stream_unknown)
+			this.errorResourceId.tryEmit(R.string.error_stream_unknown)
 		}
 	}
 }

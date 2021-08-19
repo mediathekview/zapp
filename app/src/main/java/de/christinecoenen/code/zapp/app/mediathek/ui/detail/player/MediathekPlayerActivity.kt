@@ -16,6 +16,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService
@@ -32,15 +33,16 @@ import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInPictureInPictureMode
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.VisibilityListener {
 
 	companion object {
-		private const val EXTRA_PERSISTED_SHOW_ID = "de.christinecoenen.code.zapp.EXTRA_PERSISTED_SHOW_ID"
+		private const val EXTRA_PERSISTED_SHOW_ID =
+			"de.christinecoenen.code.zapp.EXTRA_PERSISTED_SHOW_ID"
 
 		@JvmStatic
 		fun getStartIntent(context: Context?, persistedShowId: Int): Intent {
@@ -57,7 +59,6 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 
 	private lateinit var binding: ActivityMediathekPlayerBinding
 
-	private val pauseDisposables = CompositeDisposable()
 	private var persistedShowId = 0
 	private var persistedShow: PersistedMediathekShow? = null
 	private var player: Player? = null
@@ -72,10 +73,12 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 			player = binder!!.getPlayer()
 			player!!.setView(binding.video)
 
-			mediathekRepository.getPersistedShow(persistedShowId)
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(::onShowLoaded, Timber::e)
-				.also(pauseDisposables::add)
+			lifecycleScope.launchWhenResumed {
+				mediathekRepository
+					.getPersistedShow(persistedShowId)
+					.catch { excepion -> Timber.e(excepion) }
+					.collect(::onShowLoaded)
+			}
 		}
 
 		override fun onServiceDisconnected(componentName: ComponentName) {
@@ -109,7 +112,9 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 	private fun onErrorViewClick() {
 		hideError()
 
-		player?.recreate()
+		lifecycleScope.launchWhenResumed {
+			player?.recreate()
+		}
 	}
 
 	override fun onStart() {
@@ -149,7 +154,10 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		pauseActivity()
 	}
 
-	override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+	override fun onPictureInPictureModeChanged(
+		isInPictureInPictureMode: Boolean,
+		newConfig: Configuration
+	) {
 		super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
 
 		handlePictureInPictureModeChanged(isInPictureInPictureMode)
@@ -228,7 +236,7 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		}
 	}
 
-	private fun onShowLoaded(persistedMediathekShow: PersistedMediathekShow) {
+	private suspend fun onShowLoaded(persistedMediathekShow: PersistedMediathekShow) {
 		persistedShow = persistedMediathekShow
 
 		if (supportActionBar != null) {
@@ -240,9 +248,9 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		player!!.load(videoInfo)
 		player!!.resume()
 
-		player!!.errorResourceId
-			.subscribe(::onVideoError, Timber::e)
-			.also(pauseDisposables::add)
+		lifecycleScope.launchWhenResumed {
+			player!!.errorResourceId.collect(::onVideoError)
+		}
 
 		binder!!.movePlaybackToForeground()
 
@@ -259,8 +267,6 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 	}
 
 	private fun pauseActivity() {
-		pauseDisposables.clear()
-
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {
@@ -271,7 +277,8 @@ class MediathekPlayerActivity : AppCompatActivity(), StyledPlayerControlView.Vis
 		persistedShowId = intent.extras!!.getInt(EXTRA_PERSISTED_SHOW_ID, 0)
 
 		if (persistedShowId == 0) {
-			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG).show()
+			Toast.makeText(this, R.string.error_mediathek_called_without_show, Toast.LENGTH_LONG)
+				.show()
 			finish()
 			return
 		}

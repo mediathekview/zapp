@@ -109,15 +109,16 @@ dependencies {
 	implementation 'androidx.recyclerview:recyclerview:1.2.1'
 	implementation 'androidx.preference:preference-ktx:1.1.1'
 	implementation "androidx.paging:paging-runtime-ktx:3.0.1"
-	implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+
+	def lifecycle_version = "2.3.1"
+	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
 	// room database
 	def room_version = "2.3.0"
 	implementation "androidx.room:room-runtime:$room_version"
 	kapt "androidx.room:room-compiler:$room_version"
 	implementation "androidx.room:room-ktx:$room_version"
-	implementation "androidx.room:room-rxjava2:$room_version"
-
 
 	// helper
 	implementation 'com.google.code.gson:gson:2.8.7'
@@ -147,7 +148,6 @@ dependencies {
 	// retrofit rest client
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
 	// ACRA crash reporting
 	def acra_version = "5.8.4"
@@ -159,10 +159,6 @@ dependencies {
 
 	// joda time
 	implementation 'joda-time:joda-time:2.10.10'
-
-	// rxjava
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-	implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 	// about libraries view
 	implementation "com.mikepenz:aboutlibraries:$about_libraries_version"

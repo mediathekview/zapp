@@ -11,23 +11,30 @@ import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.utils.system.ImageHelper
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
 class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 	RecyclerView.ViewHolder(binding.root) {
 
-	private val disposables = CompositeDisposable()
+	private var loadThumbnailJob: Job? = null
+	private var downloadProgressJob: Job? = null
+	private var downloadStatusJob: Job? = null
+	private var playbackPositionJob: Job? = null
 
-	fun bindItem(
+	suspend fun bindItem(
 		show: PersistedMediathekShow,
-		showFlowable: Flowable<PersistedMediathekShow>
+		showFlow: Flow<PersistedMediathekShow>
 	) {
-
-		disposables.clear()
+		loadThumbnailJob?.cancel()
+		downloadProgressJob?.cancel()
+		downloadStatusJob?.cancel()
+		playbackPositionJob?.cancel()
 
 		binding.topic.text = show.mediathekShow.topic
 		binding.title.text = show.mediathekShow.title
@@ -35,24 +42,30 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.channel.text = show.mediathekShow.channel
 		binding.time.text = show.mediathekShow.formattedTimestamp
 
-		showFlowable
-			.distinctUntilChanged { it -> it.downloadProgress }
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::onDownloadProgressChanged, Timber::e)
-			.run(disposables::add)
+		coroutineScope {
 
-		showFlowable
-			.distinctUntilChanged { it -> it.downloadStatus }
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::onDownloadStatusChanged, Timber::e)
-			.run(disposables::add)
+			downloadProgressJob = launch(Dispatchers.Main) {
+				showFlow
+					.distinctUntilChangedBy { it.downloadProgress }
+					.catch { exception -> Timber.e(exception) }
+					.collect(::onDownloadProgressChanged)
+			}
 
-		showFlowable
-			.map { it.playBackPercent }
-			.startWith(0f)
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::onPlaybackPositionChanged, Timber::e)
-			.run(disposables::add)
+			downloadStatusJob = launch(Dispatchers.Main) {
+				showFlow
+					.distinctUntilChangedBy { it.downloadStatus }
+					.catch { exception -> Timber.e(exception) }
+					.collect(::onDownloadStatusChanged)
+			}
+
+			playbackPositionJob = launch(Dispatchers.Main) {
+				showFlow
+					.map { it.playBackPercent }
+					.onStart { emit(0f) }
+					.catch { exception -> Timber.e(exception) }
+					.collect(::onPlaybackPositionChanged)
+			}
+		}
 	}
 
 	private fun onDownloadProgressChanged(show: PersistedMediathekShow) {
@@ -66,7 +79,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		}
 	}
 
-	private fun onDownloadStatusChanged(show: PersistedMediathekShow) {
+	private suspend fun onDownloadStatusChanged(show: PersistedMediathekShow) {
 		when (show.downloadStatus) {
 			DownloadStatus.ADDED, DownloadStatus.QUEUED -> {
 				binding.icon.setImageDrawable(null)
@@ -105,11 +118,17 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.viewingProgress.scaleX = playBackPercent
 	}
 
-	private fun loadThumbnail(show: PersistedMediathekShow) {
-		ImageHelper.loadThumbnailAsync(binding.root.context, show.downloadedVideoPath)
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(this::updateThumbnail) { onLoadThumbnailError() }
-			.run(disposables::add)
+	private suspend fun loadThumbnail(show: PersistedMediathekShow) = coroutineScope {
+		loadThumbnailJob = launch(Dispatchers.Main) {
+			try {
+				val thumbnail =
+					ImageHelper.loadThumbnailAsync(binding.root.context, show.downloadedVideoPath)
+				updateThumbnail(thumbnail)
+
+			} catch (e: Exception) {
+				onLoadThumbnailError()
+			}
+		}
 	}
 
 	private fun onLoadThumbnailError() {

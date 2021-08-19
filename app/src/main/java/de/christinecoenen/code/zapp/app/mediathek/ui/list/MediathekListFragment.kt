@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import de.christinecoenen.code.zapp.R
@@ -16,8 +17,7 @@ import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Job
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.net.UnknownServiceException
@@ -44,7 +44,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private var adapter: MediathekItemAdapter? = null
 	private var scrollListener: InfiniteScrollListener? = null
 	private var longClickShow: MediathekShow? = null
-	private var getShowsCall: Disposable? = null
+	private var getShowsJob: Job? = null
 
 	fun search(query: String?) {
 		queryRequest.setSimpleSearch(query)
@@ -60,7 +60,11 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		queryRequest.size = ITEM_COUNT_PER_PAGE
 	}
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
 		_binding = FragmentMediathekListBinding.inflate(inflater, container, false)
 
 		val layoutManager = LinearLayoutManager(binding.root.context)
@@ -88,7 +92,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		super.onDestroyView()
 
 		_binding = null
-		getShowsCall?.dispose()
+		getShowsJob?.cancel()
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -128,7 +132,12 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_share -> {
-				startActivity(Intent.createChooser(longClickShow!!.shareIntentPlain, getString(R.string.action_share)))
+				startActivity(
+					Intent.createChooser(
+						longClickShow!!.shareIntentPlain,
+						getString(R.string.action_share)
+					)
+				)
 				return true
 			}
 		}
@@ -138,17 +147,21 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private fun loadItems(startWith: Int, replaceItems: Boolean) {
 		Timber.d("loadItems: %s", startWith)
 
-		getShowsCall?.dispose()
+		getShowsJob?.cancel()
 
 		binding.noShows.visibility = View.GONE
 		adapter?.setLoading(true)
 
 		queryRequest.offset = startWith
 
-		getShowsCall = mediathekRepository
-			.listShows(queryRequest)
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe({ shows -> onMediathekLoadSuccess(shows, replaceItems) }, ::onMediathekLoadError)
+		getShowsJob = lifecycleScope.launchWhenCreated {
+			try {
+				val shows = mediathekRepository.listShows(queryRequest)
+				onMediathekLoadSuccess(shows, replaceItems)
+			} catch (e: Exception) {
+				onMediathekLoadError(e)
+			}
+		}
 	}
 
 	private fun showError(messageResId: Int) {

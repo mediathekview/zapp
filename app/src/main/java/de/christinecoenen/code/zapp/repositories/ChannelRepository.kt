@@ -8,14 +8,18 @@ import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
-import io.reactivex.Single
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.commons.io.IOUtils
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 @SuppressLint("CheckResult")
-class ChannelRepository(private val context: Context) {
+class ChannelRepository(
+	private val context: Context,
+	private val channelInfoRepository: ChannelInfoRepository
+) {
 
 	companion object {
 
@@ -60,8 +64,8 @@ class ChannelRepository(private val context: Context) {
 		}
 	}
 
-	private fun getChannelInfoListFromApi(): Single<Map<String, ChannelInfo>> {
-		return ChannelInfoRepository.getInstance().getChannelInfoList()
+	private suspend fun getChannelInfoListFromApi(): Map<String, ChannelInfo> {
+		return channelInfoRepository.getChannelInfoList()
 	}
 
 	@Throws(IOException::class)
@@ -77,10 +81,11 @@ class ChannelRepository(private val context: Context) {
 
 	@Throws(IOException::class)
 	private fun writeChannelInfoListToDisk(channelInfoList: Map<String, ChannelInfo>) {
-		context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE).use { fileOutputStream ->
-			val json = gson.toJson(channelInfoList)
-			IOUtils.write(json, fileOutputStream, StandardCharsets.UTF_8)
-		}
+		context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE)
+			.use { fileOutputStream ->
+				val json = gson.toJson(channelInfoList)
+				IOUtils.write(json, fileOutputStream, StandardCharsets.UTF_8)
+			}
 	}
 
 	private fun deleteChannelInfoListFromDisk() {
@@ -90,8 +95,15 @@ class ChannelRepository(private val context: Context) {
 	init {
 		channelList = SortableVisibleJsonChannelList(context)
 
-		getChannelInfoListFromApi()
-			.onErrorReturn { getChannelInfoListFromDisk() }
-			.subscribe(::onChannelInfoListSuccess, Timber::w)
+		GlobalScope.launch {
+
+			val channelList = try {
+				getChannelInfoListFromApi()
+			} catch (e: Exception) {
+				getChannelInfoListFromDisk()
+			}
+
+			onChannelInfoListSuccess(channelList)
+		}
 	}
 }

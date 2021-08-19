@@ -5,46 +5,44 @@ import androidx.room.*
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 import org.joda.time.DateTime
 
 @Dao
 interface MediathekShowDao {
 
 	@Query("SELECT * FROM PersistedMediathekShow")
-	fun getAll(): Flowable<List<PersistedMediathekShow>>
+	fun getAll(): Flow<List<PersistedMediathekShow>>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus!=0 AND downloadStatus!=7 AND downloadStatus!=8 ORDER BY downloadedAt DESC")
 	fun getAllDownloads(): PagingSource<Int, PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
-	fun getFromId(id: Int): Flowable<PersistedMediathekShow>
+	fun getFromId(id: Int): Flow<PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getFromApiId(apiId: String): Flowable<PersistedMediathekShow>
+	fun getFromApiId(apiId: String): Flow<PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getFromApiIdSync(apiId: String): PersistedMediathekShow?
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadId=:downloadId")
-	fun getFromDownloadId(downloadId: Int): Flowable<PersistedMediathekShow>
+	fun getFromDownloadId(downloadId: Int): Flow<PersistedMediathekShow>
 
 	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getDownloadStatus(apiId: String): Flowable<DownloadStatus>
+	fun getDownloadStatus(apiId: String): Flow<DownloadStatus>
 
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getDownloadProgress(apiId: String): Flowable<Int>
+	fun getDownloadProgress(apiId: String): Flow<Int>
 
 	@Insert
-	fun insert(vararg show: PersistedMediathekShow): Completable
+	suspend fun insert(vararg show: PersistedMediathekShow)
 
 	@Update
-	fun update(vararg show: PersistedMediathekShow): Completable
+	suspend fun update(vararg show: PersistedMediathekShow)
 
 	@Transaction
-	fun insertOrUpdate(show: MediathekShow) {
+	suspend fun insertOrUpdate(show: MediathekShow) {
 		val existingPersistedShow = getFromApiIdSync(show.apiId)
 
 		if (existingPersistedShow == null) {
@@ -52,37 +50,37 @@ interface MediathekShowDao {
 			val newPersistedShow = PersistedMediathekShow(
 				mediathekShow = show
 			)
-			insert(newPersistedShow).blockingAwait()
+			insert(newPersistedShow)
 		} else {
 			// update existing show
 			existingPersistedShow.mediathekShow = show
-			update(existingPersistedShow).blockingAwait()
+			update(existingPersistedShow)
 		}
 	}
 
 	@Query("UPDATE PersistedMediathekShow SET downloadStatus=:downloadStatus WHERE downloadId=:downloadId")
-	fun updateDownloadStatus(downloadId: Int, downloadStatus: DownloadStatus): Completable
+	suspend fun updateDownloadStatus(downloadId: Int, downloadStatus: DownloadStatus)
 
 	@Query("UPDATE PersistedMediathekShow SET downloadProgress=:progress WHERE downloadId=:downloadId")
-	fun updateDownloadProgress(downloadId: Int, progress: Int): Completable
+	suspend fun updateDownloadProgress(downloadId: Int, progress: Int)
 
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
-	fun updateDownloadedVideoPath(downloadId: Int, videoPath: String): Completable
+	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String)
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
-	fun setPlaybackPosition(
+	suspend fun setPlaybackPosition(
 		id: Int,
 		positionMillis: Long,
 		durationMillis: Long,
 		lastPlayedBackAt: DateTime
-	): Completable
+	)
 
 	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
-	fun getPlaybackPosition(id: Int): Single<Long>
+	suspend fun getPlaybackPosition(id: Int): Long
 
 	@Query("SELECT (CAST(playbackPosition AS FLOAT) / videoDuration) FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getPlaybackPositionPercent(apiId: String): Flowable<Float>
+	fun getPlaybackPositionPercent(apiId: String): Flow<Float>
 
 	@Delete
-	fun delete(show: PersistedMediathekShow): Completable
+	suspend fun delete(show: PersistedMediathekShow)
 }

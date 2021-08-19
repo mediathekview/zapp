@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
+import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
@@ -61,12 +62,13 @@ abstract class ZappApplicationBase : Application() {
 		createBackgroundPlaybackChannel(this)
 
 		val appModule = module {
-			single { ChannelRepository(androidContext()) }
+			single { ChannelRepository(androidContext(), get()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get(), get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) }
 			single { MediathekApi() }
+			single { ChannelInfoRepository() }
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get()) }

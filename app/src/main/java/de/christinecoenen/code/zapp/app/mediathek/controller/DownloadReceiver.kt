@@ -7,16 +7,18 @@ import android.content.Intent
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 
 class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 
 	companion object {
 
-		private const val ACTION_NOTIFICATION_CLICKED = "de.christinecoenen.code.zapp.NOTIFICATION_CLICKED"
+		private const val ACTION_NOTIFICATION_CLICKED =
+			"de.christinecoenen.code.zapp.NOTIFICATION_CLICKED"
 		private const val EXTRA_DOWNLOAD_ID = "EXTRA_DOWNLOAD_ID"
 
 		fun getNotificationClickedIntent(context: Context?, downloadId: Int): Intent {
@@ -38,11 +40,13 @@ class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 
 		val downloadId = intent.getIntExtra(EXTRA_DOWNLOAD_ID, 0)
 
-		mediathekRepository
-			.getPersistedShowByDownloadId(downloadId)
-			.firstElement()
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe({ show -> onShowLoaded(context, show) }, Timber::e)
+		GlobalScope.launch {
+			val persistedShow = mediathekRepository
+				.getPersistedShowByDownloadId(downloadId)
+				.first()
+
+			onShowLoaded(context, persistedShow)
+		}
 	}
 
 	private fun onShowLoaded(context: Context, persistedMediathekShow: PersistedMediathekShow) {

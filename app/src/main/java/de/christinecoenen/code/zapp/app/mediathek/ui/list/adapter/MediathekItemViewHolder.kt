@@ -8,8 +8,8 @@ import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -20,10 +20,12 @@ internal class MediathekItemViewHolder(
 
 	private val mediathekRepository: MediathekRepository by inject()
 
-	private val disposables = CompositeDisposable()
+	private var thumbnailJob: Job? = null
+	private var playbackPositionJob: Job? = null
 
-	fun setShow(show: MediathekShow) {
-		disposables.clear()
+	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
+		thumbnailJob?.cancel()
+		playbackPositionJob?.cancel()
 
 		binding.imageHolder.visibility = View.GONE
 		binding.thumbnail.setImageBitmap(null)
@@ -36,23 +38,29 @@ internal class MediathekItemViewHolder(
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.subtitleDivider.isVisible = show.hasSubtitle
 
-		val persistedShowCall = mediathekRepository
+		coroutineScope {
+			thumbnailJob = launch { loadThumbnailFlow(show) }
+			thumbnailJob = launch { updatePlaybackPositionFlow(show) }
+		}
+	}
+
+	private suspend fun loadThumbnailFlow(show: MediathekShow) {
+		mediathekRepository
 			.getPersistedShowByApiId(show.apiId)
-
-		persistedShowCall
 			.filter { it.downloadStatus === DownloadStatus.COMPLETED }
-			.firstOrError()
-			.flatMap { loadThumbnailAsync(binding.root.context, it.downloadedVideoPath) }
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(::updatethumbnail, Timber::e)
-			.also(disposables::add)
+			.map { it.downloadedVideoPath }
+			.filterNotNull()
+			.distinctUntilChanged()
+			.map { loadThumbnailAsync(binding.root.context, it) }
+			.catch { e -> Timber.e(e) }
+			.collectLatest(::updatethumbnail)
+	}
 
+	private suspend fun updatePlaybackPositionFlow(show: MediathekShow) {
 		mediathekRepository
 			.getPlaybackPositionPercent(show.apiId)
 			.filter { it > 0 }
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(::updatePlaybackPosition, Timber::e)
-			.also(disposables::add)
+			.collectLatest(::updatePlaybackPosition)
 	}
 
 	private fun updatePlaybackPosition(progressPercent: Float) {
