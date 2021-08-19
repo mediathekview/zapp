@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.ui.DefaultMediaDescriptionAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ServiceLifecycleDispatcher
@@ -113,6 +114,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 
 		GlobalScope.launch {
 			player.destroy()
+			playerNotificationManager?.setPlayer(null)
 		}
 
 		lifecycleDispatcher.onServicePreSuperOnDestroy()
@@ -129,11 +131,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		movePlaybackToForeground()
 
 		if (wasPlayingInBackground) {
-			val pendingIntent = PendingIntent.getActivity(
-				this, 0,
-				foregroundActivityIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT
-			)
+			val pendingIntent = getNotificationCLickedPendingIntent()
 
 			val errorMessage =
 				getString(R.string.error_prefixed_message, getString(messageResourceId))
@@ -202,16 +200,26 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	private fun handleStartInBackground() {
 		isPlaybackInBackground = true
 
+		val mediaDescriptionAdapter =
+			DefaultMediaDescriptionAdapter(getNotificationCLickedPendingIntent())
+
 		playerNotificationManager = PlayerNotificationManager
 			.Builder(
 				this,
 				NotificationHelper.BACKGROUND_PLAYBACK_NOTIFICATION_ID,
-				NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK
+				NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			)
+			.setMediaDescriptionAdapter(mediaDescriptionAdapter)
 			.build()
 			.also {
+				it.setUsePlayPauseActions(true)
+				it.setUseFastForwardAction(true)
+				it.setUseFastForwardActionInCompactView(true)
+				it.setUseRewindAction(true)
+				it.setUseRewindActionInCompactView(true)
 				it.setSmallIcon(R.drawable.ic_zapp_tv)
 				it.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+				it.setColorized(true)
 				it.setPlayer(player.exoPlayer)
 				it.setMediaSessionToken(player.mediaSession.sessionToken)
 			}
@@ -225,12 +233,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		Timber.i("createCurrentContentIntent: %s", foregroundActivityIntent!!.component)
 
 		// a notification click will bring us back to the activity that launched it
-		return PendingIntent.getActivity(
-			this,
-			0,
-			foregroundActivityIntent,
-			PendingIntent.FLAG_UPDATE_CURRENT
-		)
+		return getNotificationCLickedPendingIntent()
 	}
 
 	override fun getCurrentContentText(player: com.google.android.exoplayer2.Player): String? =
@@ -255,6 +258,15 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 
 	override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) =
 		movePlaybackToForeground()
+
+	private fun getNotificationCLickedPendingIntent(): PendingIntent {
+		return PendingIntent.getActivity(
+			this,
+			0,
+			foregroundActivityIntent,
+			PendingIntent.FLAG_UPDATE_CURRENT
+		)
+	}
 
 	inner class Binder : android.os.Binder() {
 		/**

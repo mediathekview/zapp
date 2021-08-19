@@ -45,7 +45,6 @@ data class VideoInfo(
 				url = channel.streamUrl
 			).apply {
 				url = channel.streamUrl
-				subtitle = channel.subtitle
 				hasDuration = false
 			}
 		}

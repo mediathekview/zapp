@@ -45,6 +45,10 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 			override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
 				updateNoDownloadsVisibility()
 			}
+
+			override fun onStateRestorationPolicyChanged() {
+				updateNoDownloadsVisibility()
+			}
 		})
 
 		viewModel.downloadList.observe(viewLifecycleOwner) {
