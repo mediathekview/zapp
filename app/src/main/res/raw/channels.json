@@ -51,7 +51,7 @@
   {
 	"id": "ard_alpha",
 	"name": "ARD-alpha",
-	"stream_url": "http://livestreams.br.de/i/bralpha_germany@119899/master.m3u8",
+	"stream_url": "https://mcdn.br.de/br/fs/ard_alpha/hls/de/master.m3u8",
 	"logo_name": "channel_logo_ard_alpha",
 	"color": "#DB502B"
   },
@@ -95,7 +95,7 @@
   {
 	"id": "br_nord",
 	"name": "BR Nord",
-	"stream_url": "http://livestreams.br.de/i/bfsnord_germany@119898/master.m3u8",
+	"stream_url": "https://mcdn.br.de/br/fs/bfs_nord/hls/de/master.m3u8",
 	"logo_name": "channel_logo_br",
 	"subtitle": "Nord",
 	"color": "#35B6E5"
@@ -103,7 +103,7 @@
   {
 	"id": "br_sued",
 	"name": "BR Süd",
-	"stream_url": "http://livestreams.br.de/i/bfssued_germany@119890/master.m3u8",
+	"stream_url": "https://mcdn.br.de/br/fs/bfs_sued/hls/de/master.m3u8",
 	"logo_name": "channel_logo_br",
 	"subtitle": "Süd",
 	"color": "#35B6E5"
