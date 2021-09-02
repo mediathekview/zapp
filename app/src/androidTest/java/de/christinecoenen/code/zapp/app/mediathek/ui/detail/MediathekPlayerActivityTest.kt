@@ -9,6 +9,8 @@ import de.christinecoenen.code.zapp.app.mediathek.MediathekData
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.player.MediathekPlayerActivity
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,9 +25,11 @@ class MediathekPlayerActivityTest : KoinTest {
 
 	@Before
 	fun setup() {
-		persistedShow = mediathekRepository
-			.persistOrUpdateShow(MediathekData.testShow)
-			.blockingFirst()
+		runBlocking {
+			persistedShow = mediathekRepository
+				.persistOrUpdateShow(MediathekData.testShow)
+				.first()
+		}
 	}
 
 	@Test
