@@ -3,10 +3,8 @@ package de.christinecoenen.code.zapp.app.player
 import android.content.Context
 import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
