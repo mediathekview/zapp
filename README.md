@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/mediathekview/zapp.svg?branch=master)](https://travis-ci.com/mediathekview/zapp)
-
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
