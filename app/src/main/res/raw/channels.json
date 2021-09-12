@@ -16,7 +16,7 @@
   {
 	"id": "arte",
 	"name": "ARTE",
-	"stream_url": "https://artelive-lh.akamaihd.net/i/artelive_de@393591/master.m3u8",
+	"stream_url": "https://artesimulcast.akamaized.net/hls/live/2030993/artelive_de/index.m3u8",
 	"logo_name": "channel_logo_arte",
 	"color": "#fa481c"
   },
@@ -220,7 +220,7 @@
   {
 	"id": "wdr",
 	"name": "WDR",
-	"stream_url": "http://wdrfsgeo-lh.akamaihd.net/i/wdrfs_geogeblockt@530016/master.m3u8",
+	"stream_url": "https://mcdn.wdr.de/wdr/wdrfs/de/master.m3u8",
 	"logo_name": "channel_logo_wdr",
 	"color": "#18365B"
   },
