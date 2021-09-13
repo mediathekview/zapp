@@ -1,3 +1,6 @@
-* Fehler beim Download auf SD-Karte behoben
-* Fehler-Melden-Button in Download-Benachrichtigung eingebaut
-* Downloads bei instabiler Internet-Verbindung verbessert
+* added downloads tab
+* changed main navigation to tabs
+* fixed crash upon sd card removal
+* fixed crash on older Android devices
+* require at least Android N
+* extended FAQ

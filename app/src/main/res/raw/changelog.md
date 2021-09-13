@@ -4,6 +4,7 @@
 * Absturz beim Entfernen der SD-Karte behoben
 * Abstürze auf älteren Android-Geräten behoben
 * Mindestanforderung auf Android N angehoben
+* FAQ erweitert
 
 # 3.6.1
 * Untertitel in Live-Streams abgeschaltet (können über die Android-Bedienungshilfe aktiviert werden)

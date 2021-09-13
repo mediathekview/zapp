@@ -1,3 +1,6 @@
-* Fehler beim Download auf SD-Karte behoben
-* Fehler-Melden-Button in Download-Benachrichtigung eingebaut
-* Downloads bei instabiler Internet-Verbindung verbessert
+* Downloads-Tab eingeführt
+* Hauptnavigation auf Tabs umgestellt
+* Absturz beim Entfernen der SD-Karte behoben
+* Abstürze auf älteren Android-Geräten behoben
+* Mindestanforderung auf Android N angehoben
+* FAQ erweitert
