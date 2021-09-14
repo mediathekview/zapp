@@ -1,8 +1,10 @@
 package de.christinecoenen.code.zapp.app.livestream.api.model
 
+import androidx.annotation.Keep
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import org.joda.time.format.ISODateTimeFormat
 
+@Keep
 data class Show(
 	private val title: String,
 	private val subtitle: String? = null,

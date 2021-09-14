@@ -1,5 +1,8 @@
 package de.christinecoenen.code.zapp.app.livestream.api.model
 
+import androidx.annotation.Keep
+
+@Keep
 class ShowResponse {
 
 	private val shows: List<Show>? = null

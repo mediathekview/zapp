@@ -1,8 +1,10 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request
 
 import android.text.TextUtils
+import androidx.annotation.Keep
 import java.io.Serializable
 
+@Keep
 class QueryRequest : Serializable {
 
 	companion object {

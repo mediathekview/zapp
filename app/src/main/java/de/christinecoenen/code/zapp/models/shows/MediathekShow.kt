@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.models.shows
 import android.content.Intent
 import android.text.TextUtils
 import android.text.format.DateUtils
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import org.apache.commons.io.FilenameUtils
 import org.joda.time.DateTimeZone
@@ -10,6 +11,7 @@ import org.joda.time.Duration
 import org.joda.time.format.PeriodFormatterBuilder
 import java.io.Serializable
 
+@Keep
 data class MediathekShow(
 	@SerializedName("id")
 	val apiId: String,
