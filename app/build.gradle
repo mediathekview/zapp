@@ -33,10 +33,6 @@ android {
 		}
 	}
 
-	packagingOptions {
-		exclude 'META-INF/library-core_release.kotlin_module'
-	}
-
 	buildFeatures {
 		viewBinding {
 			enabled = true
@@ -69,11 +65,6 @@ android {
 			}
 		}
 	}
-}
-
-configurations {
-	cleanedAnnotations
-	compile.exclude group: 'org.jetbrains', module: 'annotations'
 }
 
 dependencies {
