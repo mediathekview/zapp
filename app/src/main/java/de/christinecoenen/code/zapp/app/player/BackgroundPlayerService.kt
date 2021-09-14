@@ -18,11 +18,14 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	MediaDescriptionAdapter,
@@ -112,7 +115,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	override fun onDestroy() {
 		movePlaybackToForeground()
 
-		GlobalScope.launch {
+		GlobalScope.launch(Dispatchers.Main) {
 			player.destroy()
 			playerNotificationManager?.setPlayer(null)
 		}
