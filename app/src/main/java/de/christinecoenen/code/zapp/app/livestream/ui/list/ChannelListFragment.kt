@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.databinding.FragmentChannelListBinding
@@ -81,7 +82,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 	}
 
 	override fun onItemClick(channel: ChannelModel) {
-		val intent = ChannelDetailActivity.getStartIntent(context, channel.id)
+		val intent = ChannelPlayerActivity.getStartIntent(context, channel.id)
 		startActivity(intent)
 	}
 
