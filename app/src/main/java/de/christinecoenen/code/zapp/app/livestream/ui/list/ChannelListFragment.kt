@@ -7,7 +7,6 @@ import android.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener

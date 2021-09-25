@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
@@ -80,7 +79,6 @@ abstract class ZappApplicationBase : Application() {
 			viewModel { MainViewModel(androidApplication()) }
 			viewModel { AbstractPlayerActivityViewModel(get()) }
 			viewModel { ChannelPlayerActivityViewModel(get()) }
-			viewModel { ChannelDetailActivityViewModel(get(), get()) }
 			viewModel { DownloadsViewModel(get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
 		}

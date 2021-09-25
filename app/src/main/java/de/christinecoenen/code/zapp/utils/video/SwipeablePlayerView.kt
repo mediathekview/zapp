@@ -74,10 +74,6 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		}
 	}
 
-	fun setTouchOverlay(view: View) {
-		view.setOnTouchListener(this)
-	}
-
 	fun toggleControls() {
 		if (isControllerFullyVisible) {
 			hideController()

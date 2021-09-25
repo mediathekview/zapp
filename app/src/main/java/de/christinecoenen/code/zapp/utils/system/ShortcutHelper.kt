@@ -6,7 +6,7 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.Build
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 
 /**
@@ -35,7 +35,7 @@ object ShortcutHelper {
 			.setShortLabel(channel.name)
 			.setLongLabel(channel.name)
 			.setIcon(Icon.createWithResource(context, channel.drawableId))
-			.setIntent(ChannelDetailActivity.getStartIntent(context, channel.id))
+			.setIntent(ChannelPlayerActivity.getStartIntent(context, channel.id))
 			.build()
 
 		return try {
