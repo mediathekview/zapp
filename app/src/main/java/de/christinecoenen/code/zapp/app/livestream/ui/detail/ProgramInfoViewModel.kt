@@ -33,7 +33,7 @@ class ProgramInfoViewModel(
 			channelInfoRepository.getShows(channelId)
 		}.catch {
 			emit(LiveShow(application.getString(R.string.activity_channel_detail_info_error)))
-		}
+		}.distinctUntilChanged()
 
 	val title = liveShow
 		.map { liveShow -> liveShow.title }
