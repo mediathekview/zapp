@@ -8,6 +8,7 @@ import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
@@ -81,6 +82,7 @@ abstract class ZappApplicationBase : Application() {
 			viewModel { ChannelPlayerActivityViewModel(get()) }
 			viewModel { ChannelDetailActivityViewModel(get(), get()) }
 			viewModel { DownloadsViewModel(get()) }
+			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
 		}
 
 		koin = startKoin {

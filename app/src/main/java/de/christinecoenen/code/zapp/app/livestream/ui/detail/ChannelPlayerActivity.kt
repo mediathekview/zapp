@@ -27,11 +27,13 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	}
 
 	private val viewModel: ChannelPlayerActivityViewModel by viewModel()
+	private val programInfoViewModel: ProgramInfoViewModel by viewModel()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		viewModel.channel.observe(this, ::onChannelLoaded)
+		programInfoViewModel.title.observe(this, ::onShowTitleChanged)
 	}
 
 	override fun onShareMenuItemClicked() {
@@ -47,6 +49,8 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 			?: throw IllegalArgumentException("Channel id is not allowed to be null.")
 
 		val channel = viewModel.setChannelId(channelId)
+		programInfoViewModel.setChannelId(channelId)
+
 		return VideoInfo.fromChannel(channel)
 	}
 
@@ -55,6 +59,12 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 		// TODO: display program information
 		title = channel.name
 		setColor(channel.color)
+	}
+
+	private fun onShowTitleChanged(sshowTitle: String) {
+		supportActionBar?.let {
+			it.subtitle = sshowTitle
+		}
 	}
 
 	private fun setColor(color: Int) {
