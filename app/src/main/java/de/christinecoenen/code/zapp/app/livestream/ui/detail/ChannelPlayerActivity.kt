@@ -7,6 +7,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
+import de.christinecoenen.code.zapp.utils.system.ShortcutHelper
 import de.christinecoenen.code.zapp.utils.view.ColorHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,6 +48,8 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	override suspend fun getVideoInfoFromIntent(intent: Intent): VideoInfo {
 		val channelId = intent.extras?.getString(EXTRA_CHANNEL_ID)
 			?: throw IllegalArgumentException("Channel id is not allowed to be null.")
+
+		ShortcutHelper.reportShortcutUsageGuarded(this, channelId)
 
 		val channel = viewModel.setChannelId(channelId)
 		programInfoViewModel.setChannelId(channelId)
