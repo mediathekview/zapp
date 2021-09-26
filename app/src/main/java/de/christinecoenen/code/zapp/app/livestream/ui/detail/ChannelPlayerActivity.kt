@@ -3,6 +3,8 @@ package de.christinecoenen.code.zapp.app.livestream.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
@@ -35,6 +37,26 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 
 		viewModel.channel.observe(this, ::onChannelLoaded)
 		programInfoViewModel.title.observe(this, ::onShowTitleChanged)
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu): Boolean {
+		super.onCreateOptionsMenu(menu)
+
+		menuInflater.inflate(R.menu.activity_channel_player, menu)
+
+		return true
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		when (item.itemId) {
+			R.id.menu_program_info -> {
+				val modalBottomSheet = ProgramInfoSheetDialogFragment(programInfoViewModel)
+				modalBottomSheet.show(supportFragmentManager, ProgramInfoSheetDialogFragment.TAG)
+				return true
+			}
+		}
+
+		return super.onOptionsItemSelected(item)
 	}
 
 	override fun onShareMenuItemClicked() {

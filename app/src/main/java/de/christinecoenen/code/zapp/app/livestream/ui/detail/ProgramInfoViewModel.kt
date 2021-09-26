@@ -19,14 +19,19 @@ class ProgramInfoViewModel(
 
 	private val channelId = MutableSharedFlow<String>(replay = 1)
 
-	private val updateLiveShowTicker: Flow<Int> = (0..Int.MAX_VALUE)
-		.asSequence()
-		.asFlow()
-		.onEach { tick ->
-			if (tick > 0) {
-				delay(1000L * 60)
-			}
+	private val updateLiveShowTicker: Flow<Unit> = flow {
+		while (true) {
+			emit(Unit)
+			delay(1000L * UPDATE_PROGRAM_INFO_INTERVAL_SECONDS)
 		}
+	}
+
+	private val updateShowProgressTicker: Flow<Unit> = flow {
+		while (true) {
+			emit(Unit)
+			delay(1000L * UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS)
+		}
+	}
 
 	private val liveShow =
 		updateLiveShowTicker.combine(channelId) { _, channelId ->
@@ -43,6 +48,10 @@ class ProgramInfoViewModel(
 		.map { liveShow -> liveShow.subtitle }
 		.asLiveData(viewModelScope.coroutineContext)
 
+	val description = liveShow
+		.map { liveShow -> liveShow.description }
+		.asLiveData(viewModelScope.coroutineContext)
+
 	val time = liveShow
 		.map { liveShow ->
 			if (liveShow.hasDuration()) {
@@ -55,11 +64,26 @@ class ProgramInfoViewModel(
 		}
 		.asLiveData(viewModelScope.coroutineContext)
 
+	val progressPercent = updateShowProgressTicker
+		.combine(liveShow) { _, liveShow ->
+			if (liveShow.hasDuration()) {
+				liveShow.progressPercent
+			} else {
+				null
+			}
+		}
+		.asLiveData(viewModelScope.coroutineContext)
+
 	suspend fun setChannelId(channelId: String) {
 		this.channelId.emit(channelId)
 	}
 
 	private fun getTimeString(time: DateTime): String {
 		return DateUtils.formatDateTime(getApplication(), time.millis, DateUtils.FORMAT_SHOW_TIME)
+	}
+
+	companion object {
+		private const val UPDATE_PROGRAM_INFO_INTERVAL_SECONDS = 60
+		private const val UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS = 1
 	}
 }
