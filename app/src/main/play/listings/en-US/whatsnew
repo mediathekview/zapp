@@ -1,6 +1,1 @@
-* added downloads tab
-* changed main navigation to tabs
-* fixed crash upon sd card removal
-* fixed crash on older Android devices
-* require at least Android N
-* extended FAQ
+* Fixed crash when starting Zapp without network connection

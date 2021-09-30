@@ -1,3 +1,6 @@
+# 4.0.1
+* Absturz beim Starten ohne Internetverbindung behoben
+
 # 4.0.0
 * Downloads-Tab eingeführt
 * Hauptnavigation auf Tabs umgestellt

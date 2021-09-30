@@ -1,6 +1,1 @@
-* Downloads-Tab eingeführt
-* Hauptnavigation auf Tabs umgestellt
-* Absturz beim Entfernen der SD-Karte behoben
-* Abstürze auf älteren Android-Geräten behoben
-* Mindestanforderung auf Android N angehoben
-* FAQ erweitert
+* Absturz beim Starten ohne Internetverbindung behoben
