@@ -80,8 +80,6 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	}
 
 	private fun onChannelLoaded(channel: ChannelModel) {
-		// TODO: display channel logo
-		// TODO: display program information
 		title = channel.name
 		setColor(channel.color)
 	}
