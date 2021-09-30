@@ -97,13 +97,20 @@ class ChannelRepository(
 
 		GlobalScope.launch {
 
-			val channelList = try {
+			try {
+				// load fresh urls from api
 				getChannelInfoListFromApi()
 			} catch (e: Exception) {
-				getChannelInfoListFromDisk()
+				// if api does not work, load cached list
+				try {
+					getChannelInfoListFromDisk()
+				} catch (e: Exception) {
+					// refresh failed - use bundled channel list
+					null
+				}
+			}?.let {
+				onChannelInfoListSuccess(it)
 			}
-
-			onChannelInfoListSuccess(channelList)
 		}
 	}
 }
