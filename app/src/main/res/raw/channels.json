@@ -67,7 +67,7 @@
 	"name": "ZDFneo",
 	"stream_url": "https://zdf-hls-16.akamaized.net/hls/live/2016499/de/high/master.m3u8",
 	"logo_name": "channel_logo_zdf_neo",
-	"color": "#000000"
+	"color": "#D1195C"
   },
   {
 	"id": "deutsche_welle",
