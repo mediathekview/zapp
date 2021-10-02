@@ -94,6 +94,7 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	private fun setColor(color: Int) {
 		binding.toolbar.setBackgroundColor(color)
 		binding.error.setBackgroundColor(color)
+		binding.video.setPrimaryColor(color)
 
 		window.statusBarColor = ColorHelper.darker(color, 0.075f)
 	}
