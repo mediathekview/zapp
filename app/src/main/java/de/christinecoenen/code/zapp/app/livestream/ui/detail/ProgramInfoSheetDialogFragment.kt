@@ -83,7 +83,7 @@ class ProgramInfoSheetDialogFragment(
 	 */
 	private fun updatePeekHeight() {
 		val behavior = (dialog as BottomSheetDialog).behavior
-		behavior.peekHeight = binding.progressbarShowProgress.bottom
+		behavior.peekHeight = binding.progressbarShowProgress.bottom + 20
 	}
 
 	companion object {

@@ -30,15 +30,14 @@
 		android:layout_height="wrap_content"
 		tools:text="20:15 – 20:45 Uhr" />
 
-	<ProgressBar
+	<com.google.android.material.progressindicator.LinearProgressIndicator
 		android:id="@+id/progressbar_show_progress"
-		style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+		style="@style/ShowProgressDetail"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="8dp"
 		android:indeterminate="false"
 		android:max="1000"
-		android:theme="@style/ShowProgressDetail"
 		tools:progress="300" />
 
 	<androidx.core.widget.NestedScrollView

@@ -95,8 +95,12 @@
 		<item name="colorAccent">@android:color/darker_gray</item>
 	</style>
 
-	<style name="ShowProgressDetail" parent="ShowProgress">
-		<item name="colorAccent">#bbffffff</item>
+	<style name="ShowProgressDetail" parent="Widget.MaterialComponents.LinearProgressIndicator">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.ShowProgressDetail</item>
+	</style>
+
+	<style name="ThemeOverlay.ShowProgressDetail" parent="">
+		<item name="colorPrimary">?attr/colorOnSurface</item>
 	</style>
 
 	<style name="ChrashDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
