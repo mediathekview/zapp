@@ -23,6 +23,8 @@ class ChannelViewHolder(
 	private var currentViewModel: ProgramInfoViewModel? = null
 
 	init {
+		recycle()
+		
 		binding.root.setOnLongClickListener(this)
 		binding.root.setOnClickListener(this)
 	}
