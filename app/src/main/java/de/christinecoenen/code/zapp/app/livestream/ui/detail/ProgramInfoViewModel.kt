@@ -24,21 +24,20 @@ class ProgramInfoViewModel(
 			emit(Unit)
 			delay(1000L * UPDATE_PROGRAM_INFO_INTERVAL_SECONDS)
 		}
-	}.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+	}
 
 	private val updateShowProgressTicker = flow {
 		while (true) {
 			emit(Unit)
 			delay(1000L * UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS)
 		}
-	}.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+	}
 
-	private val liveShow =
-		updateLiveShowTicker.combine(channelId) { _, channelId ->
-			channelInfoRepository.getShows(channelId)
-		}.catch {
-			emit(LiveShow(application.getString(R.string.activity_channel_detail_info_error)))
-		}.distinctUntilChanged()
+	private val liveShow = updateLiveShowTicker
+		.combine(channelId) { _, channelId -> channelInfoRepository.getShows(channelId) }
+		.catch { emit(LiveShow(application.getString(R.string.activity_channel_detail_info_error))) }
+		.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+		.distinctUntilChanged()
 
 	val title = liveShow
 		.map { liveShow -> liveShow.title }
@@ -83,7 +82,7 @@ class ProgramInfoViewModel(
 	}
 
 	companion object {
-		private const val UPDATE_PROGRAM_INFO_INTERVAL_SECONDS = 60
+		private const val UPDATE_PROGRAM_INFO_INTERVAL_SECONDS = 20
 		private const val UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS = 1
 	}
 }
