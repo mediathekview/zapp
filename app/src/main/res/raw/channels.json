@@ -111,7 +111,7 @@
   {
 	"id": "hr",
 	"name": "HR",
-	"stream_url": "http://livestream-1.hr.de/i/hr_fernsehen@75910/master.m3u8",
+	"stream_url": "https://hrhls.akamaized.net/hls/live/2024525/hrhls/index.m3u8",
 	"logo_name": "channel_logo_hr",
 	"color": "#64002C"
   },
@@ -190,7 +190,7 @@
   {
 	"id": "rb",
 	"name": "Radio Bremen",
-	"stream_url": "https://rbfs-lh.akamaihd.net/i/rb_fs@438960/master.m3u8",
+	"stream_url": "https://rbhlslive.akamaized.net/hls/live/2020435/rbfs/master.m3u8",
 	"logo_name": "channel_logo_rb",
 	"color": "#CC030C"
   },
