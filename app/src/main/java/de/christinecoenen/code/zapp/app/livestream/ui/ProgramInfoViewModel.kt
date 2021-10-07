@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.livestream.ui.detail
+package de.christinecoenen.code.zapp.app.livestream.ui
 
 import android.app.Application
 import android.text.format.DateUtils

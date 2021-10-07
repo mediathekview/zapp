@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 import org.koin.core.component.KoinComponent

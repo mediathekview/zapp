@@ -8,6 +8,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.databinding.ProgramInfoSheetDialogFragmentBinding
 import kotlin.math.roundToInt
 
