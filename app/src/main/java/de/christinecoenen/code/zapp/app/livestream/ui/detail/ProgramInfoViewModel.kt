@@ -19,19 +19,19 @@ class ProgramInfoViewModel(
 
 	private val channelId = MutableSharedFlow<String>(replay = 1)
 
-	private val updateLiveShowTicker: Flow<Unit> = flow {
+	private val updateLiveShowTicker = flow {
 		while (true) {
 			emit(Unit)
 			delay(1000L * UPDATE_PROGRAM_INFO_INTERVAL_SECONDS)
 		}
-	}
+	}.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
-	private val updateShowProgressTicker: Flow<Unit> = flow {
+	private val updateShowProgressTicker = flow {
 		while (true) {
 			emit(Unit)
 			delay(1000L * UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS)
 		}
-	}
+	}.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
 	private val liveShow =
 		updateLiveShowTicker.combine(channelId) { _, channelId ->
