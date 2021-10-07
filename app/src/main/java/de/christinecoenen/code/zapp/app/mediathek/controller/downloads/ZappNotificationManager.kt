@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER
@@ -231,7 +232,7 @@ abstract class ZappNotificationManager(
 				context,
 				downloadNotification.notificationId + action,
 				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT
+				getPendingIntentFlags()
 			)
 		}
 	}
@@ -261,7 +262,7 @@ abstract class ZappNotificationManager(
 				context,
 				groupId + action,
 				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT
+				getPendingIntentFlags()
 			)
 		}
 	}
@@ -429,7 +430,7 @@ abstract class ZappNotificationManager(
 				context,
 				downloadNotification.notificationId + action,
 				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT
+				getPendingIntentFlags()
 			)
 		}
 	}
@@ -493,7 +494,7 @@ abstract class ZappNotificationManager(
 				context,
 				downloadNotification.notificationId,
 				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT
+				getPendingIntentFlags()
 			)
 		}
 	}
@@ -519,5 +520,9 @@ abstract class ZappNotificationManager(
 			)
 			else -> context.getString(R.string.fetch_notification_download_eta_sec, seconds)
 		}
+	}
+
+	private fun getPendingIntentFlags(): Int {
+		return PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
 	}
 }
