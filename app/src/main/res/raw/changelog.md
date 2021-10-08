@@ -1,3 +1,13 @@
+# next
+* Swipen zwischen den Sendern entfernt (zur besseren Warbarkeit und Fehlerreduktion)
+* Neues Layout beim Abspielen von Live-Streams
+* Sprachwechsel für wenige Live-Streams verfügbar
+* Untertitel in Live-Stream schnell ein- und ausschaltbar
+* Seeken in Live-Streams
+* Pausieren von Live-Streams
+* Wiedergabegeschwindigkeit in Live-Streams anpassbar
+* Fehler beim Wechsel zwischen Bild-in-Bild-Modus und Normal-Modus behoben
+
 # 4.0.1
 * Absturz beim Starten ohne Internetverbindung behoben
 
