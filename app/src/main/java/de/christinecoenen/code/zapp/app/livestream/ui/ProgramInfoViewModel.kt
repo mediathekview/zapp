@@ -82,7 +82,7 @@ class ProgramInfoViewModel(
 	}
 
 	companion object {
-		private const val UPDATE_PROGRAM_INFO_INTERVAL_SECONDS = 20
+		private const val UPDATE_PROGRAM_INFO_INTERVAL_SECONDS = 60
 		private const val UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS = 1
 	}
 }
