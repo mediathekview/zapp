@@ -19,10 +19,6 @@ data class LiveShow(
 			return runningDuration.standardSeconds.toFloat() / showDuration.standardSeconds
 		}
 
-	fun hasSubtitle(): Boolean {
-		return !TextUtils.isEmpty(subtitle)
-	}
-
 	fun hasDuration(): Boolean {
 		return startTime != null && endTime != null
 	}
