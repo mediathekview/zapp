@@ -7,7 +7,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController

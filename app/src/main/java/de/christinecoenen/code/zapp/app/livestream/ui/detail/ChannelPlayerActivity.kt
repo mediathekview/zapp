@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.models.channels.ChannelModel

@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import kotlinx.coroutines.Job
@@ -23,6 +23,8 @@ class ChannelViewHolder(
 	private var currentViewModel: ProgramInfoViewModel? = null
 
 	init {
+		recycle()
+
 		binding.root.setOnLongClickListener(this)
 		binding.root.setOnClickListener(this)
 	}
