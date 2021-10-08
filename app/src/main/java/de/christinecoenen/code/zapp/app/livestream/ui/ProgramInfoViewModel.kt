@@ -36,7 +36,7 @@ class ProgramInfoViewModel(
 	private val liveShow = updateLiveShowTicker
 		.combine(channelId) { _, channelId -> channelInfoRepository.getShows(channelId) }
 		.catch { emit(LiveShow(application.getString(R.string.activity_channel_detail_info_error))) }
-		.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+		.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 		.distinctUntilChanged()
 
 	val title = liveShow
