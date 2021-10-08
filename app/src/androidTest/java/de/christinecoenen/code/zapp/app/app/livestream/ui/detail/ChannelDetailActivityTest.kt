@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivity
 import org.junit.Test
 import org.junit.runner.RunWith
 

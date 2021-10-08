@@ -1,17 +1,13 @@
-package de.christinecoenen.code.zapp.app.livestream.ui.detail
+package de.christinecoenen.code.zapp.app.player
 
 import android.content.pm.ActivityInfo
 import androidx.lifecycle.ViewModel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
-import de.christinecoenen.code.zapp.repositories.ChannelRepository
 
 
-class ChannelDetailActivityViewModel(
-	channelRepository: ChannelRepository,
+class AbstractPlayerActivityViewModel(
 	private val settingsRepository: SettingsRepository
 ) : ViewModel() {
-
-	val channelList = channelRepository.getChannelList()
 
 	val screenOrientation: Int
 		get() = if (settingsRepository.lockVideosInLandcapeFormat) {
@@ -19,7 +15,5 @@ class ChannelDetailActivityViewModel(
 		} else {
 			ActivityInfo.SCREEN_ORIENTATION_SENSOR
 		}
-
-	fun getChannelPosition(channelId: String) = channelList.indexOf(channelId)
 
 }

@@ -35,12 +35,6 @@ class Player(
 	var currentVideoInfo: VideoInfo? = null
 		private set
 
-	val isBuffering: StateFlow<Boolean>
-		get() = playerEventHandler.isBuffering
-
-	val isIdle: Boolean
-		get() = exoPlayer.playbackState == Player.STATE_IDLE
-
 	val errorResourceId: Flow<Int?>
 		get() = playerEventHandler
 			.errorResourceId

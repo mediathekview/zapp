@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelDetailActivityViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
+import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.Player
@@ -75,8 +77,10 @@ abstract class ZappApplicationBase : Application() {
 			factory { JsonChannelList(androidContext()) }
 
 			viewModel { MainViewModel(androidApplication()) }
-			viewModel { ChannelDetailActivityViewModel(get(), get()) }
+			viewModel { AbstractPlayerActivityViewModel(get()) }
+			viewModel { ChannelPlayerActivityViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
+			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
 		}
 
 		koin = startKoin {

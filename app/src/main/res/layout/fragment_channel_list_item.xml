@@ -3,6 +3,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="120dp"
+	android:animateLayoutChanges="true"
 	android:background="?android:attr/selectableItemBackground"
 	android:clickable="true"
 	android:focusable="true"
@@ -39,11 +40,48 @@
 
 	</androidx.appcompat.widget.LinearLayoutCompat>
 
-	<de.christinecoenen.code.zapp.app.livestream.ui.views.ProgramInfoViewOverview
-		android:id="@+id/program_info"
+	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
-		tools:ignore="RtlSymmetry" />
+		android:gravity="center_vertical"
+		android:orientation="vertical"
+		android:paddingEnd="@dimen/activity_horizontal_margin">
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/text_show_title"
+			style="@style/TextAppearance.MaterialComponents.Headline6"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:maxLines="2"
+			tools:text="Very very long and complicated show title" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/text_show_subtitle"
+			style="@style/TextAppearance.MaterialComponents.Subtitle1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/view_program_info_subtitle_margin_bottom"
+			android:ellipsize="end"
+			android:maxLines="1"
+			tools:text="Show subtitle" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/text_show_time"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			tools:text="20:15 – 20:45 Uhr" />
+
+		<ProgressBar
+			android:id="@+id/progressbar_show_progress"
+			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:indeterminate="false"
+			android:max="1000"
+			android:theme="@style/ShowProgress"
+			tools:progress="300" />
+
+	</androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
