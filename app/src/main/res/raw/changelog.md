@@ -1,3 +1,6 @@
+# next
+* Fehlenden Ladeindikator bei Mediathekvideos wieder sichbar gemacht
+
 # 4.0.1
 * Absturz beim Starten ohne Internetverbindung behoben
 
