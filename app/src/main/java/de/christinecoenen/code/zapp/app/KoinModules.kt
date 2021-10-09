@@ -1,8 +1,8 @@
 package de.christinecoenen.code.zapp.app
 
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
-import de.christinecoenen.code.zapp.app.livestream.api.ZappBackendApiServiceFactory
 import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
+import de.christinecoenen.code.zapp.app.livestream.api.ZappBackendApiServiceFactory
 import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoRepository
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
@@ -43,7 +43,9 @@ class KoinModules {
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) }
 			single { MediathekApi() }
-			single { ZappBackendApiServiceFactory.get(get()) } bind IZappBackendApiService::class
+			single {
+				ZappBackendApiServiceFactory(androidContext(), get()).create()
+			} bind IZappBackendApiService::class
 			single { ProgramInfoRepository(get()) }
 
 			factory { SettingsRepository(androidContext()) }
