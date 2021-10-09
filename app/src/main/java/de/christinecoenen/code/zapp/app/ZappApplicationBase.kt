@@ -4,20 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
-import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
-import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
-import de.christinecoenen.code.zapp.app.main.MainViewModel
-import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
-import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
-import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
-import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
-import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
-import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
-import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper.createBackgroundPlaybackChannel
@@ -29,14 +16,10 @@ import org.acra.config.CoreConfigurationBuilder
 import org.acra.config.DialogConfigurationBuilder
 import org.acra.config.MailSenderConfigurationBuilder
 import org.acra.data.StringFormat
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.Koin
 import org.koin.core.context.startKoin
-import org.koin.dsl.bind
-import org.koin.dsl.module
 import timber.log.Timber
 
 abstract class ZappApplicationBase : Application() {
@@ -63,30 +46,10 @@ abstract class ZappApplicationBase : Application() {
 		setUpLogging()
 		createBackgroundPlaybackChannel(this)
 
-		val appModule = module {
-			single { ChannelRepository(androidContext(), get()) }
-			single { Database.getInstance(androidContext()) }
-			single { MediathekRepository(get(), get()) }
-			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
-			single { DownloadController(androidContext(), get()) }
-			single { MediathekApi() }
-			single { ChannelInfoRepository() }
-
-			factory { SettingsRepository(androidContext()) }
-			factory { Player(androidContext(), get()) }
-			factory { JsonChannelList(androidContext()) }
-
-			viewModel { MainViewModel(androidApplication()) }
-			viewModel { AbstractPlayerActivityViewModel(get()) }
-			viewModel { ChannelPlayerActivityViewModel(get()) }
-			viewModel { DownloadsViewModel(get()) }
-			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
-		}
-
 		koin = startKoin {
 			androidLogger()
 			androidContext(this@ZappApplicationBase)
-			modules(appModule)
+			modules(KoinModules.AppModule)
 		}.koin
 
 		val settingsRepository = SettingsRepository(this)
