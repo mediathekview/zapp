@@ -1,6 +1,8 @@
 package de.christinecoenen.code.zapp.app
 
 import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
+import de.christinecoenen.code.zapp.app.livestream.api.ChannelInfoServiceFactory
+import de.christinecoenen.code.zapp.app.livestream.api.IChannelInfoService
 import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
@@ -16,6 +18,8 @@ import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
 import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,13 +31,20 @@ class KoinModules {
 	companion object {
 
 		val AppModule = module {
+			single {
+				OkHttpClient.Builder()
+					.addInterceptor(UserAgentInterceptor())
+					.build()
+			}
+
 			single { ChannelRepository(androidContext(), get()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get(), get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) }
 			single { MediathekApi() }
-			single { ChannelInfoRepository() }
+			single { ChannelInfoServiceFactory.get(get()) } bind IChannelInfoService::class
+			single { ChannelInfoRepository(get()) }
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get()) }
