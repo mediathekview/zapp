@@ -6,11 +6,11 @@ import org.joda.time.format.ISODateTimeFormat
 
 @Keep
 data class Show(
-	private val title: String,
-	private val subtitle: String? = null,
-	private val description: String? = null,
-	private val startTime: String? = null,
-	private val endTime: String? = null,
+	val title: String,
+	val subtitle: String? = null,
+	val description: String? = null,
+	val startTime: String? = null,
+	val endTime: String? = null,
 ) {
 
 	companion object {
