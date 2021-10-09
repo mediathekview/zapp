@@ -8,6 +8,7 @@ import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.commons.io.IOUtils
@@ -95,7 +96,7 @@ class ChannelRepository(
 	init {
 		channelList = SortableVisibleJsonChannelList(context)
 
-		GlobalScope.launch {
+		GlobalScope.launch(Dispatchers.IO) {
 
 			try {
 				// load fresh urls from api
