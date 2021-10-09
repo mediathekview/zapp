@@ -10,20 +10,20 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class CacheTest {
+class ProgramInfoCacheTest {
 
-	private lateinit var cache: Cache
+	private lateinit var programInfoCache: ProgramInfoCache
 
 	@Before
 	fun setup() {
-		cache = Cache()
+		programInfoCache = ProgramInfoCache()
 	}
 
 	@Test
 	fun testEmtyCacheReturnsNull() {
-		Assert.assertNull(cache.getShow(Channel.ARD_ALPHA))
-		Assert.assertNull(cache.getShow(Channel.ARTE))
-		Assert.assertNull(cache.getShow(Channel.DEUTSCHE_WELLE))
+		Assert.assertNull(programInfoCache.getShow(Channel.ARD_ALPHA))
+		Assert.assertNull(programInfoCache.getShow(Channel.ARTE))
+		Assert.assertNull(programInfoCache.getShow(Channel.DEUTSCHE_WELLE))
 	}
 
 	@Test
@@ -36,9 +36,9 @@ class CacheTest {
 		)
 
 		// act
-		cache.save(Channel.ARTE, upToDateShow)
-		val cachedShow1 = cache.getShow(Channel.ARTE)
-		val cachedShow2 = cache.getShow(Channel.ARTE)
+		programInfoCache.save(Channel.ARTE, upToDateShow)
+		val cachedShow1 = programInfoCache.getShow(Channel.ARTE)
+		val cachedShow2 = programInfoCache.getShow(Channel.ARTE)
 
 		// assert
 		Assert.assertEquals(upToDateShow, cachedShow1)
@@ -55,8 +55,8 @@ class CacheTest {
 		)
 
 		// act
-		cache.save(Channel.ARTE, oldShow)
-		val cachedShow = cache.getShow(Channel.ARTE)
+		programInfoCache.save(Channel.ARTE, oldShow)
+		val cachedShow = programInfoCache.getShow(Channel.ARTE)
 
 		// assert
 		Assert.assertNull(cachedShow)

@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 
 class ProgramInfoRepository(private val zappApi: IZappBackendApiService) {
 
-	private val cache: Cache = Cache()
+	private val cache = ProgramInfoCache()
 
 	suspend fun getShows(channelId: String): LiveShow = withContext(Dispatchers.IO) {
 		return@withContext try {
