@@ -1,20 +1,23 @@
 package de.christinecoenen.code.zapp.repositories
 
 import androidx.paging.PagingSource
-import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
+import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.persistence.Database
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import retrofit2.http.Body
 
 class MediathekRepository(
-	private val mediathekApi: MediathekApi,
+	private val mediathekApi: IMediathekApiService,
 	private val database: Database
 ) {
 
@@ -23,8 +26,13 @@ class MediathekRepository(
 
 	suspend fun listShows(@Body queryRequest: QueryRequest): List<MediathekShow> =
 		withContext(Dispatchers.IO) {
-			mediathekApi
-				.listShows(queryRequest)
+			val mediathekAnswer = mediathekApi.listShows(queryRequest)
+
+			if (mediathekAnswer.result == null || mediathekAnswer.err != null) {
+				throw RuntimeException("Empty result")
+			}
+
+			mediathekAnswer.result.results
 		}
 
 	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =

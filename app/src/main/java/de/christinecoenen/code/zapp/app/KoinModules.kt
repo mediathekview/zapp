@@ -7,7 +7,8 @@ import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoReposit
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.main.MainViewModel
-import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApi
+import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
+import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApiServiceFactory
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
@@ -42,10 +43,12 @@ class KoinModules {
 			single { MediathekRepository(get(), get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) }
-			single { MediathekApi() }
 			single {
 				ZappBackendApiServiceFactory(androidContext(), get()).create()
 			} bind IZappBackendApiService::class
+			single {
+				MediathekApiServiceFactory(androidContext(), get()).create()
+			} bind IMediathekApiService::class
 			single { ProgramInfoRepository(get()) }
 
 			factory { SettingsRepository(androidContext()) }

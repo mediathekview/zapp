@@ -2,4 +2,5 @@
 <resources>
 	<string name="support_mail" translatable="false">code.coenen@gmail.com</string>
 	<string name="zapp_backend_url" translatable="false">https://api.zapp.mediathekview.de/v1/</string>
+	<string name="mediathek_backend_url" translatable="false">https://mediathekviewweb.de/api/</string>
 </resources>
