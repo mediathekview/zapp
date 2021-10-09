@@ -9,14 +9,14 @@
 	android:paddingTop="@dimen/activity_vertical_margin">
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/text_show_title"
+		android:id="@+id/title"
 		style="@style/TextAppearance.MaterialComponents.Headline6"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		tools:text="Very very long and complicated show title" />
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/text_show_subtitle"
+		android:id="@+id/subtitle"
 		style="@style/TextAppearance.MaterialComponents.Body1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -24,14 +24,14 @@
 		tools:text="Show subtitle" />
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/text_show_time"
+		android:id="@+id/time"
 		style="@style/TextAppearance.MaterialComponents.Body2"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		tools:text="20:15 – 20:45 Uhr" />
 
 	<com.google.android.material.progressindicator.LinearProgressIndicator
-		android:id="@+id/progressbar_show_progress"
+		android:id="@+id/show_progress"
 		style="@style/ShowProgressDetail"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
 		android:layout_marginTop="@dimen/activity_vertical_margin">
 
 		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/text_show_description"
+			android:id="@+id/description"
 			style="@style/TextAppearance.MaterialComponents.Body2"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

@@ -43,39 +43,39 @@ class ProgramInfoSheetDialogFragment(
 	}
 
 	private fun onTitleChanged(title: String) {
-		binding.textShowTitle.text = title
+		binding.title.text = title
 	}
 
 	private fun onSubtitleChanged(subtitle: String?) {
-		binding.textShowSubtitle.isVisible = !subtitle.isNullOrEmpty()
-		binding.textShowSubtitle.text = subtitle
+		binding.subtitle.isVisible = !subtitle.isNullOrEmpty()
+		binding.subtitle.text = subtitle
 	}
 
 	private fun onDescriptionChanged(description: String?) {
 		if (description.isNullOrEmpty()) {
-			binding.textShowDescription.isVisible = false
+			binding.description.isVisible = false
 			return
 		}
 
 		val htmldescription = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-		binding.textShowDescription.text = htmldescription
-		binding.textShowDescription.isVisible = true
+		binding.description.text = htmldescription
+		binding.description.isVisible = true
 	}
 
 	private fun onTimeChanged(time: String?) {
-		binding.textShowTime.isVisible = !time.isNullOrEmpty()
-		binding.textShowTime.text = time
+		binding.time.isVisible = !time.isNullOrEmpty()
+		binding.time.text = time
 	}
 
 	private fun onProgressPercentChanged(progressPercent: Float?) {
 		if (progressPercent == null) {
-			binding.progressbarShowProgress.visibility = View.INVISIBLE
+			binding.showProgress.visibility = View.INVISIBLE
 			return
 		}
 
-		binding.progressbarShowProgress.progress =
-			(progressPercent * binding.progressbarShowProgress.max).roundToInt()
-		binding.progressbarShowProgress.visibility = View.VISIBLE
+		binding.showProgress.progress =
+			(progressPercent * binding.showProgress.max).roundToInt()
+		binding.showProgress.visibility = View.VISIBLE
 	}
 
 	/**
@@ -83,7 +83,7 @@ class ProgramInfoSheetDialogFragment(
 	 */
 	private fun updatePeekHeight() {
 		val behavior = (dialog as BottomSheetDialog).behavior
-		behavior.peekHeight = binding.progressbarShowProgress.bottom + 20
+		behavior.peekHeight = binding.showProgress.bottom + 20
 	}
 
 	companion object {
