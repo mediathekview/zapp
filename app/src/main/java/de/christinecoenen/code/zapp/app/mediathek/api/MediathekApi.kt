@@ -13,7 +13,7 @@ import retrofit2.http.Body
 
 class MediathekApi {
 
-	private val apiService: MediathekApiService
+	private val apiService: IMediathekApiService
 
 	init {
 		// workaround to avoid SSLHandshakeException on Android 7 devices
@@ -33,7 +33,7 @@ class MediathekApi {
 			.addConverterFactory(GsonConverterFactory.create())
 			.build()
 
-		apiService = retrofit.create(MediathekApiService::class.java)
+		apiService = retrofit.create(IMediathekApiService::class.java)
 	}
 
 	suspend fun listShows(@Body queryRequest: QueryRequest): List<MediathekShow> {
