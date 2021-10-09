@@ -4,17 +4,17 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ChannelInfoServiceFactory {
+class ZappBackendApiServiceFactory {
 
 	companion object {
 
-		fun get(client: OkHttpClient): IChannelInfoService {
+		fun get(client: OkHttpClient): IZappBackendApiService {
 			return Retrofit.Builder()
 				.baseUrl("https://api.zapp.mediathekview.de/v1/")
 				.client(client)
 				.addConverterFactory(GsonConverterFactory.create())
 				.build()
-				.create(IChannelInfoService::class.java)
+				.create(IZappBackendApiService::class.java)
 		}
 
 	}
