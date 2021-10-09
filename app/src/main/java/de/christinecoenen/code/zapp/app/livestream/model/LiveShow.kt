@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.livestream.model
 
-import android.text.TextUtils
 import org.joda.time.DateTime
 import org.joda.time.Duration
 
