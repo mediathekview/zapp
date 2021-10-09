@@ -11,17 +11,17 @@ class ProgramInfoRepository(private val zappApi: IZappBackendApiService) {
 
 	private val cache = ProgramInfoCache()
 
-	suspend fun getShows(channelId: String): LiveShow = withContext(Dispatchers.IO) {
+	suspend fun getShow(channelId: String): LiveShow = withContext(Dispatchers.IO) {
 		return@withContext try {
 			val newChannel = getById(channelId)
-			getShows(newChannel)
+			getShow(newChannel)
 
 		} catch (e: IllegalArgumentException) {
 			throw Exception("%s is no valid channel id", e)
 		}
 	}
 
-	private suspend fun getShows(channel: Channel): LiveShow {
+	private suspend fun getShow(channel: Channel): LiveShow {
 		val cachedShow = cache.getShow(channel)
 
 		if (cachedShow != null) {
