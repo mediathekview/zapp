@@ -7,6 +7,7 @@
 * Pausieren von Live-Streams
 * Wiedergabegeschwindigkeit in Live-Streams anpassbar
 * Fehler beim Wechsel zwischen Bild-in-Bild-Modus und Normal-Modus behoben
+* Gerät darf bei pausierten Videos in den Ruhezustand gehen
 
 # 4.0.1
 * Absturz beim Starten ohne Internetverbindung behoben
