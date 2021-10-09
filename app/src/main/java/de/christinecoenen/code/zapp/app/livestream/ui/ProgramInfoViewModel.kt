@@ -7,14 +7,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
-import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
+import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import org.joda.time.DateTime
 
 class ProgramInfoViewModel(
 	application: Application,
-	private val channelInfoRepository: ChannelInfoRepository
+	private val programInfoRepository: ProgramInfoRepository
 ) : AndroidViewModel(application) {
 
 	private val channelId = MutableSharedFlow<String>(replay = 1)
@@ -34,7 +34,7 @@ class ProgramInfoViewModel(
 	}
 
 	private val liveShow = updateLiveShowTicker
-		.combine(channelId) { _, channelId -> channelInfoRepository.getShows(channelId) }
+		.combine(channelId) { _, channelId -> programInfoRepository.getShows(channelId) }
 		.catch { emit(LiveShow(application.getString(R.string.activity_channel_detail_info_error))) }
 		.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 		.distinctUntilChanged()

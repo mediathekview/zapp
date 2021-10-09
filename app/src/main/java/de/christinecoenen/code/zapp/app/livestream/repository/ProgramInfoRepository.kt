@@ -3,12 +3,11 @@ package de.christinecoenen.code.zapp.app.livestream.repository
 import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.model.Channel
 import de.christinecoenen.code.zapp.app.livestream.api.model.Channel.Companion.getById
-import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ChannelInfoRepository(private val api: IZappBackendApiService) {
+class ProgramInfoRepository(private val zappApi: IZappBackendApiService) {
 
 	private val cache: Cache = Cache()
 
@@ -22,10 +21,6 @@ class ChannelInfoRepository(private val api: IZappBackendApiService) {
 		}
 	}
 
-	suspend fun getChannelInfoList(): Map<String, ChannelInfo> = withContext(Dispatchers.IO) {
-		return@withContext api.getChannelInfoList()
-	}
-
 	private suspend fun getShows(channel: Channel): LiveShow {
 		val cachedShow = cache.getShow(channel)
 
@@ -33,7 +28,7 @@ class ChannelInfoRepository(private val api: IZappBackendApiService) {
 			return cachedShow
 		}
 
-		val showResponse = api.getShows(channel.toString())
+		val showResponse = zappApi.getShows(channel.toString())
 
 		if (!showResponse.isSuccess) {
 			throw RuntimeException("Show response was empty")
