@@ -14,8 +14,10 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.AspectRatioListener
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import de.christinecoenen.code.zapp.utils.view.ColorHelper
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -27,6 +29,9 @@ class SwipeablePlayerView @JvmOverloads constructor(
 	companion object {
 		private const val INDICATOR_WIDTH = 300
 	}
+
+	private val bufferingView: LinearProgressIndicator =
+		findViewById(com.google.android.exoplayer2.ui.R.id.exo_buffering)
 
 	private var volumeIndicator = SwipeIndicatorView(context)
 	private var brightnessIndicator = SwipeIndicatorView(context)
@@ -80,6 +85,13 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		} else {
 			showController()
 		}
+	}
+
+	fun setPrimaryColor(color: Int) {
+		volumeIndicator.setColor(color)
+		brightnessIndicator.setColor(color)
+		bufferingView.setIndicatorColor(color)
+		bufferingView.trackColor = ColorHelper.darker(color, 0.7f)
 	}
 
 	override fun setPlayer(player: Player?) {
@@ -170,7 +182,12 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			return super.onDown(e)
 		}
 
-		override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+		override fun onScroll(
+			e1: MotionEvent,
+			e2: MotionEvent,
+			distanceX: Float,
+			distanceY: Float
+		): Boolean {
 			if (!canUseWipeControls) {
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}
