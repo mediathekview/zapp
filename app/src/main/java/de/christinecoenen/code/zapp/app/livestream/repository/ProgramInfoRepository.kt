@@ -11,14 +11,13 @@ class ProgramInfoRepository(private val zappApi: IZappBackendApiService) {
 
 	private val cache = ProgramInfoCache()
 
+	/**
+	 * @throws IllegalArgumentException if a wrong channel id is passed
+	 * @throws RuntimeException if api response is empty and no show in cache
+	 */
 	suspend fun getShow(channelId: String): LiveShow = withContext(Dispatchers.IO) {
-		return@withContext try {
-			val newChannel = getById(channelId)
-			getShow(newChannel)
-
-		} catch (e: IllegalArgumentException) {
-			throw Exception("%s is no valid channel id", e)
-		}
+		val newChannel = getById(channelId)
+		return@withContext getShow(newChannel)
 	}
 
 	private suspend fun getShow(channel: Channel): LiveShow {

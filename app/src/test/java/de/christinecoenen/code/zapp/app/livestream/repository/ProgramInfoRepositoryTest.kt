@@ -6,7 +6,6 @@ import de.christinecoenen.code.zapp.app.livestream.api.model.Show
 import de.christinecoenen.code.zapp.app.livestream.api.model.ShowResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.joda.time.DateTime
 import org.junit.Assert
 import org.junit.Before
@@ -28,9 +27,10 @@ class ProgramInfoRepositoryTest {
 		programInfoRepository = ProgramInfoRepository(zappApi)
 	}
 
-	@Test(expected = Exception::class)
-	fun testGetShowWithInvalidChannelThrows() = runBlockingTest {
+	@Test(expected = IllegalArgumentException::class)
+	fun testGetShowWithInvalidChannelThrows() = runBlocking {
 		programInfoRepository.getShow("invalid-channel-id")
+		Unit
 	}
 
 	@Test(expected = RuntimeException::class)
