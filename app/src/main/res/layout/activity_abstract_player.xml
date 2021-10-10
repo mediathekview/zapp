@@ -14,7 +14,6 @@
 		android:layout_height="match_parent"
 		android:layout_gravity="center"
 		android:animateLayoutChanges="true"
-		android:keepScreenOn="true"
 		app:auto_show="true"
 		app:hide_on_touch="true"
 		app:show_buffering="always"

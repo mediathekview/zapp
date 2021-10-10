@@ -17,14 +17,10 @@ import java.io.IOException
  */
 internal class PlayerEventHandler : AnalyticsListener {
 
-	val isBuffering = MutableStateFlow(false)
 	val isIdle = MutableStateFlow(false)
 	val errorResourceId = MutableStateFlow(0)
 
 	override fun onPlaybackStateChanged(eventTime: EventTime, playbackState: Int) {
-		val isBuffering = playbackState == Player.STATE_BUFFERING
-		this.isBuffering.tryEmit(isBuffering)
-
 		val isReady = playbackState == Player.STATE_IDLE
 		this.isIdle.tryEmit(isReady)
 	}

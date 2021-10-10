@@ -6,7 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface MediathekApiService {
+interface IMediathekApiService {
 
 	@Headers("Content-Type: text/plain")
 	@POST("query")

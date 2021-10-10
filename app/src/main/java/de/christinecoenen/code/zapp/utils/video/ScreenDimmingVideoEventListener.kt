@@ -12,10 +12,20 @@ internal class ScreenDimmingVideoEventListener(viewToKeepScreenOn: View) : Playe
 
 	private val viewToKeepScreenOn: WeakReference<View> = WeakReference(viewToKeepScreenOn)
 
+	private var isIdleOrEnded = false
+	private var isPaused = false
+
 	override fun onPlaybackStateChanged(playbackState: Int) {
-		// This prevents the screen from getting dim/lock
-		viewToKeepScreenOn.get()?.keepScreenOn =
-			playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED
+		isIdleOrEnded = playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED
+		applyScreenDimming()
 	}
 
+	override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+		isPaused = !playWhenReady
+		applyScreenDimming()
+	}
+
+	private fun applyScreenDimming() {
+		viewToKeepScreenOn.get()?.keepScreenOn = !(isPaused || isIdleOrEnded)
+	}
 }

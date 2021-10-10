@@ -5,7 +5,7 @@ import de.christinecoenen.code.zapp.app.livestream.api.model.ShowResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface ChannelInfoService {
+interface IZappBackendApiService {
 
 	@GET("shows/{channelName}")
 	suspend fun getShows(@Path("channelName") channelName: String): ShowResponse

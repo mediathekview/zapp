@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Cache for currently running show on any channel.
  */
-internal class Cache {
+internal class ProgramInfoCache {
 
 	private val shows: MutableMap<Channel, LiveShow> = EnumMap(Channel::class.java)
 

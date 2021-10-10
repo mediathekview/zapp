@@ -47,7 +47,8 @@ enum class Channel(private val id: String) {
 
 		@JvmStatic
 		fun getById(id: String) =
-			values().find { it.id == id } ?: throw IllegalArgumentException()
+			values().find { it.id == id }
+				?: throw IllegalArgumentException("$id is no valid channel id")
 
 	}
 }

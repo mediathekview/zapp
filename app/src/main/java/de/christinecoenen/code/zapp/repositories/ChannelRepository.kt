@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo
-import de.christinecoenen.code.zapp.app.livestream.repository.ChannelInfoRepository
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.commons.io.IOUtils
@@ -18,7 +19,7 @@ import java.nio.charset.StandardCharsets
 @SuppressLint("CheckResult")
 class ChannelRepository(
 	private val context: Context,
-	private val channelInfoRepository: ChannelInfoRepository
+	private val zappApi: IZappBackendApiService
 ) {
 
 	companion object {
@@ -65,7 +66,7 @@ class ChannelRepository(
 	}
 
 	private suspend fun getChannelInfoListFromApi(): Map<String, ChannelInfo> {
-		return channelInfoRepository.getChannelInfoList()
+		return zappApi.getChannelInfoList()
 	}
 
 	@Throws(IOException::class)
@@ -95,7 +96,7 @@ class ChannelRepository(
 	init {
 		channelList = SortableVisibleJsonChannelList(context)
 
-		GlobalScope.launch {
+		GlobalScope.launch(Dispatchers.IO) {
 
 			try {
 				// load fresh urls from api

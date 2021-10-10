@@ -3,7 +3,7 @@
 <a href="https://f-droid.org/repository/browse/?fdid=de.christinecoenen.code.zapp" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
-![ZAPP](app/src/main/play/listings/de/feature-graphic/funktionsgrafik.jpg)
+![ZAPP](app/src/main/play/listings/en-US/graphics/feature-graphic/funktionsgrafik.jpg)
 
 1. [Über](#über)
 2. [FAQ](app/src/main/res/raw/faq.md)
