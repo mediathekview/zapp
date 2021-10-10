@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener {
+class MediathekDetailFragment : Fragment() {
 
 	companion object {
 
@@ -97,10 +97,6 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener {
 		super.onResume()
 
 		downloadController.deleteDownloadsWithDeletedFiles()
-	}
-
-	override fun onConfirmDeleteDialogOkClicked() {
-		downloadController.deleteDownload(persistedMediathekShow!!.id)
 	}
 
 	private fun onShowLoaded(persistedMediathekShow: PersistedMediathekShow) {
@@ -174,7 +170,11 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener {
 
 	private fun showConfirmDeleteDialog() {
 		val dialog = ConfirmFileDeletionDialog()
-		dialog.setTargetFragment(this, 0)
+
+		setFragmentResultListener(ConfirmFileDeletionDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
+			downloadController.deleteDownload(persistedMediathekShow!!.id)
+		}
+
 		dialog.show(parentFragmentManager, null)
 	}
 
