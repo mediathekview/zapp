@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
@@ -31,8 +32,7 @@ import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener,
-	SelectQualityDialog.Listener {
+class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener {
 
 	companion object {
 
@@ -101,14 +101,6 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener,
 
 	override fun onConfirmDeleteDialogOkClicked() {
 		downloadController.deleteDownload(persistedMediathekShow!!.id)
-	}
-
-	override fun onDownloadQualitySelected(quality: Quality) {
-		download(quality)
-	}
-
-	override fun onShareQualitySelected(quality: Quality) {
-		share(quality)
 	}
 
 	private fun onShowLoaded(persistedMediathekShow: PersistedMediathekShow) {
@@ -188,7 +180,15 @@ class MediathekDetailFragment : Fragment(), ConfirmFileDeletionDialog.Listener,
 
 	private fun showSelectQualityDialog(mode: SelectQualityDialog.Mode) {
 		val dialog = SelectQualityDialog.newInstance(persistedMediathekShow!!.mediathekShow, mode)
-		dialog.setTargetFragment(this, 0)
+
+		setFragmentResultListener(SelectQualityDialog.REQUEST_KEY_SELECT_QUALITY) { _, bundle ->
+			val quality = SelectQualityDialog.getSelectedQuality(bundle)
+			when (mode) {
+				SelectQualityDialog.Mode.DOWNLOAD -> download(quality)
+				SelectQualityDialog.Mode.SHARE -> share(quality)
+			}
+		}
+
 		dialog.show(parentFragmentManager, null)
 	}
 

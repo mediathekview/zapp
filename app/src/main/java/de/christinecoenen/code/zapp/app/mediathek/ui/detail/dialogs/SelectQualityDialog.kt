@@ -1,11 +1,11 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.setFragmentResult
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
@@ -14,6 +14,8 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 
 	companion object {
 
+		const val REQUEST_KEY_SELECT_QUALITY = "REQUEST_KEY_SELECT_QUALITY"
+		private const val REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY = "REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY"
 		private const val ARGUMENT_MEDIATHEK_SHOW = "ARGUMENT_MEDIATHEK_SHOW"
 		private const val ARGUMENT_MODE = "ARGUMENT_MODE"
 
@@ -27,12 +29,15 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 			}
 		}
 
+		@JvmStatic
+		fun getSelectedQuality(bundle: Bundle): Quality {
+			return bundle.getSerializable(REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY) as Quality
+		}
 	}
 
 	private lateinit var mode: Mode
 	private lateinit var qualities: List<Quality>
 	private lateinit var qualityLabels: List<String>
-	private lateinit var listener: Listener
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -49,15 +54,6 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 		qualityLabels = qualities.map { getString(it.labelResId) }
 	}
 
-	override fun onAttach(context: Context) {
-		super.onAttach(context)
-		listener = if (targetFragment is Listener) {
-			targetFragment as Listener
-		} else {
-			throw IllegalArgumentException("Parent fragment must implement ConfirmFileDeletionDialog.Listener interface.")
-		}
-	}
-
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 		return AlertDialog.Builder(requireActivity())
 			.setTitle(R.string.fragment_mediathek_qualities_title)
@@ -68,18 +64,14 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 
 	private fun onItemSelected(dialogInterface: DialogInterface, i: Int) {
 		val quality = qualities[i]
-		when (mode) {
-			Mode.DOWNLOAD -> listener.onDownloadQualitySelected(quality)
-			Mode.SHARE -> listener.onShareQualitySelected(quality)
+		val bundle = Bundle().apply {
+			putSerializable(REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY, quality)
 		}
+
+		setFragmentResult(REQUEST_KEY_SELECT_QUALITY, bundle)
 	}
 
 	enum class Mode {
 		DOWNLOAD, SHARE
-	}
-
-	internal interface Listener {
-		fun onDownloadQualitySelected(quality: Quality)
-		fun onShareQualitySelected(quality: Quality)
 	}
 }
