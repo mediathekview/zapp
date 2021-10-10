@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -15,7 +14,8 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 	companion object {
 
 		const val REQUEST_KEY_SELECT_QUALITY = "REQUEST_KEY_SELECT_QUALITY"
-		private const val REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY = "REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY"
+		private const val REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY =
+			"REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY"
 		private const val ARGUMENT_MEDIATHEK_SHOW = "ARGUMENT_MEDIATHEK_SHOW"
 		private const val ARGUMENT_MODE = "ARGUMENT_MODE"
 
@@ -57,13 +57,14 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 		return AlertDialog.Builder(requireActivity())
 			.setTitle(R.string.fragment_mediathek_qualities_title)
-			.setItems(qualityLabels.toTypedArray(), ::onItemSelected)
+			.setItems(qualityLabels.toTypedArray()) { _, i ->
+				onItemSelected(qualities[i])
+			}
 			.setNegativeButton(android.R.string.cancel, null)
 			.create()
 	}
 
-	private fun onItemSelected(dialogInterface: DialogInterface, i: Int) {
-		val quality = qualities[i]
+	private fun onItemSelected(quality: Quality) {
 		val bundle = Bundle().apply {
 			putSerializable(REQUEST_KEY_SELECT_QUALITY_KEY_QUALITY, quality)
 		}
