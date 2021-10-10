@@ -1,45 +1,77 @@
 package de.christinecoenen.code.zapp.utils.system
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.os.Handler
+import android.os.Looper
 import androidx.core.net.ConnectivityManagerCompat
-import java.lang.ref.WeakReference
 
+/**
+ * Detects changes in network status (metered or unmetered).
+ * Call startListenForNetworkChanges to get callbacks whenever isConnectedToUnmeteredNetwork
+ * changes.
+ * Listeners will be called on main thread.
+ */
 class NetworkConnectionHelper(context: Context) {
 
-	private val networkReceiver = NetworkReceiver()
-	private val contextReference: WeakReference<Context> = WeakReference(context)
+	var isConnectedToUnmeteredNetwork: Boolean = true
+		private set
+
+	private var wasConnectedToUnmeteredNetwork = false
+
+	private val mainThreadHandler = Handler(Looper.getMainLooper())
+	private val connectivityManager =
+		context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 	private var networkChangedCallback: (() -> Unit)? = null
+
+	private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+		override fun onAvailable(network: Network) {
+			onNetworkChanged()
+		}
+
+		override fun onLost(network: Network) {
+			onNetworkChanged()
+		}
+
+		override fun onUnavailable() {
+			onNetworkChanged()
+		}
+
+		override fun onCapabilitiesChanged(
+			network: Network,
+			networkCapabilities: NetworkCapabilities
+		) {
+			onNetworkChanged()
+		}
+	}
 
 	fun startListenForNetworkChanges(networkChangedCallback: () -> Unit) {
 		this.networkChangedCallback = networkChangedCallback
 
-		val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-		contextReference.get()?.registerReceiver(networkReceiver, filter)
+		connectivityManager.registerNetworkCallback(
+			NetworkRequest.Builder().build(),
+			networkCallback
+		)
 	}
 
 	fun endListenForNetworkChanges() {
 		networkChangedCallback = null
-		contextReference.get()?.unregisterReceiver(networkReceiver)
+		connectivityManager.unregisterNetworkCallback(networkCallback)
 	}
 
-	val isConnectedToUnmeteredNetwork: Boolean
-		get() {
-			val context = contextReference.get() ?: return false
+	private fun onNetworkChanged() {
+		this.isConnectedToUnmeteredNetwork =
+			!ConnectivityManagerCompat.isActiveNetworkMetered(connectivityManager)
 
-			val connectionManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-			return !ConnectivityManagerCompat.isActiveNetworkMetered(connectionManager)
+		if (isConnectedToUnmeteredNetwork != wasConnectedToUnmeteredNetwork) {
+			wasConnectedToUnmeteredNetwork = this.isConnectedToUnmeteredNetwork
+
+			mainThreadHandler.post {
+				networkChangedCallback?.invoke()
+			}
 		}
-
-
-	private inner class NetworkReceiver : BroadcastReceiver() {
-
-		override fun onReceive(context: Context, intent: Intent) {
-			networkChangedCallback?.invoke()
-		}
-
 	}
 }
