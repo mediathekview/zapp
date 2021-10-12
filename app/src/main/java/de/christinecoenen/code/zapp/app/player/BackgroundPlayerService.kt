@@ -267,7 +267,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 			this,
 			0,
 			foregroundActivityIntent,
-			PendingIntent.FLAG_UPDATE_CURRENT
+			PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
 		)
 	}
 
