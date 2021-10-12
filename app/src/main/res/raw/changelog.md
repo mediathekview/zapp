@@ -9,6 +9,7 @@
 * Fehler beim Wechsel zwischen Bild-in-Bild-Modus und Normal-Modus behoben
 * Gerät darf bei pausierten Videos in den Ruhezustand gehen
 * Fehlenden Ladeindikator bei Mediathekvideos wieder sichbar gemacht
+* Unterstützung für Android 12
 
 # 4.0.1
 * Absturz beim Starten ohne Internetverbindung behoben
