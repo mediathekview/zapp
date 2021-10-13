@@ -1,4 +1,4 @@
-# next
+# 5.0.0
 * Swipen zwischen den Sendern entfernt (zur besseren Warbarkeit und Fehlerreduktion)
 * Neues Layout beim Abspielen von Live-Streams
 * Sprachwechsel für wenige Live-Streams verfügbar
