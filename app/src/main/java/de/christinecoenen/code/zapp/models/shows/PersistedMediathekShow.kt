@@ -6,6 +6,9 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.joda.time.DateTime
 
+/**
+ * [MediathekShow] persisted to the database, because it has been accessed by the user in any way.
+ */
 @Entity(indices = [Index(value = ["apiId"], unique = true)])
 data class PersistedMediathekShow(
 
@@ -14,6 +17,9 @@ data class PersistedMediathekShow(
 
 	var createdAt: DateTime = DateTime.now(),
 
+	/**
+	 * Id used for download handling only - should not be used in any interface.
+	 */
 	var downloadId: Int = 0,
 
 	var downloadedAt: DateTime? = null,
