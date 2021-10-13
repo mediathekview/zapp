@@ -12,7 +12,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
@@ -50,7 +50,7 @@ class MediathekDetailFragment : Fragment() {
 	private var _binding: FragmentMediathekDetailBinding? = null
 	private val binding: FragmentMediathekDetailBinding get() = _binding!!
 
-	private val downloadController: DownloadController by inject()
+	private val downloadController: IDownloadController by inject()
 	private val mediathekRepository: MediathekRepository by inject()
 
 	private var startDownloadJob: Job? = null

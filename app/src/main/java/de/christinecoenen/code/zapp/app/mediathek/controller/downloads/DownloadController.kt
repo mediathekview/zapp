@@ -31,7 +31,7 @@ import kotlin.coroutines.suspendCoroutine
 class DownloadController(
 	applicationContext: Context,
 	private val mediathekRepository: MediathekRepository
-) : FetchListener {
+) : FetchListener, IDownloadController {
 
 	private lateinit var fetch: Fetch
 	private val connectivityManager: ConnectivityManager =
@@ -73,7 +73,7 @@ class DownloadController(
 		fetch.addListener(this)
 	}
 
-	suspend fun startDownload(show: PersistedMediathekShow, quality: Quality) {
+	override suspend fun startDownload(show: PersistedMediathekShow, quality: Quality) {
 		val downloadUrl = show.mediathekShow.getVideoUrl(quality)
 			?: throw DownloadException("$quality is no valid download quality.")
 
@@ -119,7 +119,7 @@ class DownloadController(
 		}
 	}
 
-	fun stopDownload(id: Int) {
+	override fun stopDownload(id: Int) {
 		fetch.getDownloadsByRequestIdentifier(id.toLong()) { downloadList ->
 			for (download in downloadList) {
 				fetch.cancel(download.id)
@@ -127,7 +127,7 @@ class DownloadController(
 		}
 	}
 
-	fun deleteDownload(id: Int) {
+	override fun deleteDownload(id: Int) {
 		fetch.getDownloadsByRequestIdentifier(id.toLong()) { downloadList ->
 			for (download in downloadList) {
 				fetch.delete(download.id)
@@ -135,15 +135,15 @@ class DownloadController(
 		}
 	}
 
-	fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
+	override fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
 		return mediathekRepository.getDownloadStatus(apiId)
 	}
 
-	fun getDownloadProgress(apiId: String): Flow<Int> {
+	override fun getDownloadProgress(apiId: String): Flow<Int> {
 		return mediathekRepository.getDownloadProgress(apiId)
 	}
 
-	fun deleteDownloadsWithDeletedFiles() {
+	override fun deleteDownloadsWithDeletedFiles() {
 		fetch.getDownloadsWithStatus(Status.COMPLETED) { downloads ->
 			for (download in downloads) {
 				if (downloadFileInfoManager.shouldDeleteDownload(download)) {
