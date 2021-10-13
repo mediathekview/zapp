@@ -29,11 +29,11 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadId=:downloadId")
 	fun getFromDownloadId(downloadId: Int): Flow<PersistedMediathekShow>
 
-	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getDownloadStatus(apiId: String): Flow<DownloadStatus>
+	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE id=:id")
+	fun getDownloadStatus(id: Int): Flow<DownloadStatus>
 
-	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getDownloadProgress(apiId: String): Flow<Int>
+	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE id=:id")
+	fun getDownloadProgress(id: Int): Flow<Int>
 
 	@Insert
 	suspend fun insert(vararg show: PersistedMediathekShow)

@@ -96,18 +96,18 @@ class MediathekRepository(
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
+	fun getDownloadStatus(id: Int): Flow<DownloadStatus> {
 		return database
 			.mediathekShowDao()
-			.getDownloadStatus(apiId)
+			.getDownloadStatus(id)
 			.onStart { emit(DownloadStatus.NONE) }
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloadProgress(apiId: String): Flow<Int> {
+	fun getDownloadProgress(id: Int): Flow<Int> {
 		return database
 			.mediathekShowDao()
-			.getDownloadProgress(apiId)
+			.getDownloadProgress(id)
 			.flowOn(Dispatchers.IO)
 	}
 

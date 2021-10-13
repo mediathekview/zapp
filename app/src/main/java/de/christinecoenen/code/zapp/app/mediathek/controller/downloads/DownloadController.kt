@@ -119,28 +119,28 @@ class DownloadController(
 		}
 	}
 
-	override fun stopDownload(id: Int) {
-		fetch.getDownloadsByRequestIdentifier(id.toLong()) { downloadList ->
+	override fun stopDownload(persistedShowId: Int) {
+		fetch.getDownloadsByRequestIdentifier(persistedShowId.toLong()) { downloadList ->
 			for (download in downloadList) {
 				fetch.cancel(download.id)
 			}
 		}
 	}
 
-	override fun deleteDownload(id: Int) {
-		fetch.getDownloadsByRequestIdentifier(id.toLong()) { downloadList ->
+	override fun deleteDownload(persistedShowId: Int) {
+		fetch.getDownloadsByRequestIdentifier(persistedShowId.toLong()) { downloadList ->
 			for (download in downloadList) {
 				fetch.delete(download.id)
 			}
 		}
 	}
 
-	override fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
-		return mediathekRepository.getDownloadStatus(apiId)
+	override fun getDownloadStatus(persistedShowId: Int): Flow<DownloadStatus> {
+		return mediathekRepository.getDownloadStatus(persistedShowId)
 	}
 
-	override fun getDownloadProgress(apiId: String): Flow<Int> {
-		return mediathekRepository.getDownloadProgress(apiId)
+	override fun getDownloadProgress(persistedShowId: Int): Flow<Int> {
+		return mediathekRepository.getDownloadProgress(persistedShowId)
 	}
 
 	override fun deleteDownloadsWithDeletedFiles() {

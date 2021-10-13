@@ -114,13 +114,13 @@ class MediathekDetailFragment : Fragment() {
 
 		lifecycleScope.launchWhenCreated {
 			downloadController
-				.getDownloadStatus(show.apiId)
+				.getDownloadStatus(persistedMediathekShow.id)
 				.collect(::onDownloadStatusChanged)
 		}
 
 		lifecycleScope.launchWhenCreated {
 			downloadController
-				.getDownloadProgress(show.apiId)
+				.getDownloadProgress(persistedMediathekShow.id)
 				.collect(::onDownloadProgressChanged)
 		}
 	}

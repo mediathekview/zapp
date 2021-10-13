@@ -15,7 +15,7 @@ interface IDownloadController {
 	 * Triggers the download of the given show in the given [Quality].
 	 * This method is responsible to update download information of the given [PersistedMediathekShow]
 	 * inside the [MediathekRepository], including [PersistedMediathekShow.downloadId] and
-	 * [PersistedMediathekShow.downloadStatus].
+	 * [PersistedMediathekShow.downloadProgress].
 	 *
 	 * @throws DownloadException When the given quality is not available or on other errors.
 	 * @throws WrongNetworkConditionException When user has prohibited downloads for the network type currently used.
@@ -26,12 +26,12 @@ interface IDownloadController {
 	/**
 	 * Cancels the download with the given id and deletes all related (partly) downloaded files.
 	 */
-	fun stopDownload(id: Int)
+	fun stopDownload(persistedShowId: Int)
 
 	/**
 	 * Deletes a fully downloaded show with all related files.
 	 */
-	fun deleteDownload(id: Int)
+	fun deleteDownload(persistedShowId: Int)
 
 	/**
 	 * Queries all fully downloaded shows and removes them from the database when their corresponding
@@ -39,10 +39,10 @@ interface IDownloadController {
 	 */
 	fun deleteDownloadsWithDeletedFiles()
 
-	fun getDownloadStatus(apiId: String): Flow<DownloadStatus>
+	fun getDownloadStatus(persistedShowId: Int): Flow<DownloadStatus>
 
 	/**
 	 * Download progress so far in percent (between 0 and including 100).
 	 */
-	fun getDownloadProgress(apiId: String): Flow<Int>
+	fun getDownloadProgress(persistedShowId: Int): Flow<Int>
 }
