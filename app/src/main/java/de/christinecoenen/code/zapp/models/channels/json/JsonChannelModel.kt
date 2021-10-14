@@ -1,10 +1,12 @@
 package de.christinecoenen.code.zapp.models.channels.json
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 /**
  * Transitional model to store parsed json data.
  */
+@Keep
 internal data class JsonChannelModel(
 	@SerializedName("id")
 	var id: String,
