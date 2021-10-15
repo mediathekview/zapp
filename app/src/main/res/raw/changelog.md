@@ -1,3 +1,6 @@
+# 5.0.2
+* Download-Abbrüche behoben
+
 # 5.0.1
 * Download-Abbrüche behoben
 
