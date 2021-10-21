@@ -20,38 +20,15 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:fitsSystemWindows="true"
-			app:layout_constraintTop_toTopOf="parent"
-			app:liftOnScroll="true">
+			app:layout_constraintTop_toTopOf="parent">
 
-			<com.google.android.material.appbar.CollapsingToolbarLayout
+			<com.google.android.material.appbar.MaterialToolbar
+				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:fitsSystemWindows="true"
-				app:layout_scrollFlags="scroll|enterAlways">
-
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical">
-
-					<com.google.android.material.appbar.MaterialToolbar
-						android:id="@+id/toolbar"
-						android:layout_width="match_parent"
-						android:layout_height="?attr/actionBarSize"
-						android:elevation="8dp"
-						app:logo="@drawable/ic_zapp_tv_small"
-						app:titleMarginStart="32dp" />
-
-					<androidx.appcompat.widget.SearchView
-						android:id="@+id/search"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:theme="@style/SearchViewStyle"
-						app:layout_collapseMode="pin" />
-
-				</LinearLayout>
-
-			</com.google.android.material.appbar.CollapsingToolbarLayout>
+				android:layout_height="?attr/actionBarSize"
+				android:elevation="8dp"
+				app:logo="@drawable/ic_zapp_tv_small"
+				app:titleMarginStart="32dp" />
 
 		</com.google.android.material.appbar.AppBarLayout>
 

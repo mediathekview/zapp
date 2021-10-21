@@ -1,69 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	tools:context=".app.mediathek.ui.list.MediathekListFragment">
-
-	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/error"
-		style="@style/TextAppearance.AppCompat.Body1"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="?attr/colorSecondary"
-		android:drawableStart="@drawable/ic_warning_white_24dp"
-		android:drawablePadding="@dimen/activity_horizontal_margin"
-		android:elevation="3dp"
-		android:paddingStart="@dimen/activity_horizontal_margin"
-		android:paddingTop="@dimen/activity_vertical_margin"
-		android:paddingEnd="@dimen/activity_horizontal_margin"
-		android:paddingBottom="@dimen/activity_vertical_margin"
-		android:text="@string/error_mediathek_info_not_available"
-		android:textColor="?attr/colorOnSecondary"
-		android:visibility="gone"
-		tools:ignore="UnusedAttribute"
-		tools:visibility="visible" />
+	android:layout_height="match_parent">
 
 	<androidx.appcompat.widget.LinearLayoutCompat
-		android:id="@+id/no_shows"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:gravity="center"
-		android:orientation="vertical"
-		tools:ignore="UseCompoundDrawables">
-
-		<androidx.appcompat.widget.AppCompatImageView
-			android:layout_width="match_parent"
-			android:layout_height="100dp"
-			android:contentDescription="@null"
-			android:src="@drawable/ic_sad_tv"
-			android:tint="#bebebe" />
+		android:orientation="vertical">
 
 		<com.google.android.material.textview.MaterialTextView
-			style="@style/TextAppearance.MaterialComponents.Headline4"
+			android:id="@+id/error"
+			style="@style/TextAppearance.AppCompat.Body1"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:background="?attr/colorSecondary"
+			android:drawableStart="@drawable/ic_warning_white_24dp"
+			android:drawablePadding="@dimen/activity_horizontal_margin"
+			android:elevation="3dp"
+			android:paddingStart="@dimen/activity_horizontal_margin"
+			android:paddingTop="@dimen/activity_vertical_margin"
+			android:paddingEnd="@dimen/activity_horizontal_margin"
+			android:paddingBottom="@dimen/activity_vertical_margin"
+			android:text="@string/error_mediathek_info_not_available"
+			android:textColor="?attr/colorOnSecondary"
+			android:visibility="gone"
+			tools:ignore="UnusedAttribute"
+			tools:visibility="visible" />
+
+		<androidx.appcompat.widget.LinearLayoutCompat
+			android:id="@+id/no_shows"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			android:gravity="center"
-			android:text="@string/fragment_mediathek_no_results" />
+			android:orientation="vertical"
+			tools:ignore="UseCompoundDrawables">
+
+			<androidx.appcompat.widget.AppCompatImageView
+				android:layout_width="match_parent"
+				android:layout_height="100dp"
+				android:contentDescription="@null"
+				android:src="@drawable/ic_sad_tv"
+				android:tint="#bebebe" />
+
+			<com.google.android.material.textview.MaterialTextView
+				style="@style/TextAppearance.MaterialComponents.Headline4"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="@string/fragment_mediathek_no_results" />
+
+		</androidx.appcompat.widget.LinearLayoutCompat>
+
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+				android:id="@+id/refresh_layout"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/list"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:scrollbars="vertical"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					tools:listitem="@layout/fragment_mediathek_list_item" />
+
+			</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+		</FrameLayout>
 
 	</androidx.appcompat.widget.LinearLayoutCompat>
 
-	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-		android:id="@+id/refresh_layout"
+	<androidx.core.widget.NestedScrollView
+		style="?attr/bottomSheetStyle"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="wrap_content"
+		android:background="@color/colorBackground"
+		android:clipToPadding="false"
+		android:elevation="8dp"
+		app:behavior_peekHeight="60dp"
+		app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/list"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scrollbars="vertical"
-			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-			tools:listitem="@layout/fragment_mediathek_list_item" />
+		<include layout="@layout/mediathek_filter_content" />
 
-	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+	</androidx.core.widget.NestedScrollView>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
