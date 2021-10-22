@@ -22,6 +22,7 @@
 
 		<!-- TODO: give cursor(s) the right color: https://github.com/material-components/material-components-android/issues/820 -->
 		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/search"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/search_query_hint_mediathek"

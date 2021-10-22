@@ -85,7 +85,9 @@
 		app:behavior_peekHeight="46dp"
 		app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-		<include layout="@layout/mediathek_filter_content" />
+		<include
+			android:id="@+id/filter"
+			layout="@layout/mediathek_filter_content" />
 
 	</androidx.core.widget.NestedScrollView>
 

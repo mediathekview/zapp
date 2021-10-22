@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -76,6 +77,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			}
 		}
 
+		// TODO: debounce
+		binding.filter.search.addTextChangedListener { editable -> search(editable.toString()) }
 		binding.list.addOnScrollListener(scrollListener!!)
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
