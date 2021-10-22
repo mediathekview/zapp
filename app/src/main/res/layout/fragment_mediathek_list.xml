@@ -82,12 +82,34 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/colorBackground"
-		app:behavior_peekHeight="46dp"
+		app:behavior_peekHeight="48dp"
 		app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-		<include
-			android:id="@+id/filter"
-			layout="@layout/mediathek_filter_content" />
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<include
+				android:id="@+id/filter"
+				layout="@layout/mediathek_filter_content"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<com.google.android.material.imageview.ShapeableImageView
+				android:id="@+id/handle"
+				android:layout_width="match_parent"
+				android:layout_height="10dp"
+				android:layout_gravity="center"
+				android:src="@drawable/ic_baseline_drag_handle_24"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:tint="#ccffffff" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
 	</androidx.core.widget.NestedScrollView>
 

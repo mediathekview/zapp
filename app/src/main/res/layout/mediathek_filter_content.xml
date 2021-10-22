@@ -17,6 +17,7 @@
 		app:endIconMode="clear_text"
 		app:endIconTint="?colorOnPrimarySurface"
 		app:hintEnabled="false"
+		android:paddingTop="2dp"
 		app:startIconDrawable="@drawable/ic_baseline_search_24"
 		app:startIconTint="?colorOnPrimarySurface">
 
