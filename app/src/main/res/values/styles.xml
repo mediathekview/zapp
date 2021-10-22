@@ -18,9 +18,7 @@
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
 		<item name="actionBarSize">48dp</item>
 		<item name="appBarLayoutStyle">@style/AppBarStyle</item>
-		<item name="bottomNavigationStyle">
-			@style/Widget.MaterialComponents.BottomNavigationView.Colored
-		</item>
+		<item name="bottomNavigationStyle">@style/BottomNavigationViewStyle</item>
 		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 		<item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 
@@ -87,6 +85,10 @@
 		<item name="android:textColor">?attr/colorOnSurface</item>
 		<item name="android:textColorPrimary">?attr/colorOnPrimary</item>
 		<item name="android:textColorSecondary">?attr/colorOnPrimary</item>
+	</style>
+
+	<style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+		<item name="android:background">?attr/colorPrimaryDark</item>
 	</style>
 
 	<style name="BottomNavigationTextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">

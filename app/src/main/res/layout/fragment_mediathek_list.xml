@@ -82,9 +82,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/colorBackground"
-		android:clipToPadding="false"
-		android:elevation="8dp"
-		app:behavior_peekHeight="60dp"
+		app:behavior_peekHeight="46dp"
 		app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 		<include layout="@layout/mediathek_filter_content" />
