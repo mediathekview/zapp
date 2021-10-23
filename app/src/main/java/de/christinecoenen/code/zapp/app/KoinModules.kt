@@ -11,6 +11,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApiServiceFactory
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
@@ -61,6 +62,7 @@ class KoinModules {
 			viewModel { ChannelPlayerActivityViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
+			viewModel { MediathekListFragmentViewModel(get()) }
 		}
 
 	}

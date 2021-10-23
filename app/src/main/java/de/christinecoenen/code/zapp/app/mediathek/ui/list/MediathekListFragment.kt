@@ -4,22 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener
-import kotlinx.coroutines.Job
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.net.UnknownServiceException
 import javax.net.ssl.SSLHandshakeException
@@ -27,8 +24,6 @@ import javax.net.ssl.SSLHandshakeException
 class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 	companion object {
-
-		private const val ITEM_COUNT_PER_PAGE = 30
 
 		val instance
 			get() = MediathekListFragment()
@@ -39,26 +34,16 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private val binding: FragmentMediathekListBinding
 		get() = _binding!!
 
-	private val mediathekRepository: MediathekRepository by inject()
+	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 
-	private var queryRequest = QueryRequest()
 	private var adapter: MediathekItemAdapter? = null
 	private var scrollListener: InfiniteScrollListener? = null
 	private var longClickShow: MediathekShow? = null
-	private var getShowsJob: Job? = null
-
-	fun search(query: String?) {
-		queryRequest.setSimpleSearch(query)
-		loadItems(0, true)
-	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		setHasOptionsMenu(true)
-
-		queryRequest = QueryRequest()
-		queryRequest.size = ITEM_COUNT_PER_PAGE
 	}
 
 	override fun onCreateView(
@@ -73,12 +58,13 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		scrollListener = object : InfiniteScrollListener(layoutManager) {
 			public override fun onLoadMore(totalItemCount: Int) {
-				loadItems(totalItemCount, false)
+				viewmodel.loadItems(totalItemCount, false)
 			}
 		}
 
-		// TODO: debounce
-		binding.filter.search.addTextChangedListener { editable -> search(editable.toString()) }
+		binding.filter.search.addTextChangedListener { editable ->
+			viewmodel.search(editable.toString())
+		}
 		binding.list.addOnScrollListener(scrollListener!!)
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
@@ -86,7 +72,11 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		adapter = MediathekItemAdapter(this@MediathekListFragment)
 		binding.list.adapter = adapter
 
-		loadItems(0, true)
+		viewmodel.isLoading.observe(viewLifecycleOwner, ::onIsLoadingChanged)
+		viewmodel.mediathekLoadError.observe(viewLifecycleOwner, ::onMediathekLoadErrorChanged)
+		viewmodel.mediathekLoadResult.observe(viewLifecycleOwner, ::onMediathekLoadResultChanged)
+
+		viewmodel.loadItems(0, true)
 
 		return binding.root
 	}
@@ -95,7 +85,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		super.onDestroyView()
 
 		_binding = null
-		getShowsJob?.cancel()
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -128,8 +117,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	override fun onRefresh() {
-		binding.refreshLayout.isRefreshing = true
-		loadItems(0, true)
+		viewmodel.loadItems(0, true)
 	}
 
 	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
@@ -147,52 +135,30 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		return false
 	}
 
-	private fun loadItems(startWith: Int, replaceItems: Boolean) {
-		Timber.d("loadItems: %s", startWith)
+	private fun onIsLoadingChanged(isLoading: Boolean) {
+		adapter?.setLoading(isLoading)
+		binding.refreshLayout.isRefreshing = isLoading
 
-		getShowsJob?.cancel()
-
-		binding.noShows.visibility = View.GONE
-		adapter?.setLoading(true)
-
-		queryRequest.offset = startWith
-
-		getShowsJob = lifecycleScope.launchWhenCreated {
-			try {
-				val shows = mediathekRepository.listShows(queryRequest)
-				onMediathekLoadSuccess(shows, replaceItems)
-			} catch (e: Exception) {
-				onMediathekLoadError(e)
-			}
+		if (!isLoading) {
+			scrollListener?.setLoadingFinished()
 		}
 	}
 
-	private fun showError(messageResId: Int) {
-		binding.error.setText(messageResId)
-		binding.error.visibility = View.VISIBLE
-	}
-
-	private fun onMediathekLoadSuccess(shows: List<MediathekShow>, replaceItems: Boolean) {
-		adapter?.setLoading(false)
-		scrollListener?.setLoadingFinished()
-
-		binding.refreshLayout.isRefreshing = false
-		binding.error.visibility = View.GONE
-
-		if (replaceItems) {
-			adapter?.setShows(shows)
+	private fun onMediathekLoadResultChanged(mediathekLoadResult: MediathekListFragmentViewModel.MediathekLoadResult) {
+		if (mediathekLoadResult.replaceItems) {
+			adapter?.setShows(mediathekLoadResult.shows)
 		} else {
-			adapter?.addShows(shows)
+			adapter?.addShows(mediathekLoadResult.shows)
 		}
 
-		if (adapter?.itemCount == 1) {
-			binding.noShows.visibility = View.VISIBLE
-		}
+		binding.noShows.isVisible = adapter?.itemCount == 1
 	}
 
-	private fun onMediathekLoadError(e: Throwable) {
-		adapter?.setLoading(false)
-		binding.refreshLayout.isRefreshing = false
+	private fun onMediathekLoadErrorChanged(e: Throwable?) {
+		if (e == null) {
+			binding.error.visibility = View.GONE
+			return
+		}
 
 		Timber.e(e)
 
@@ -201,5 +167,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		} else {
 			showError(R.string.error_mediathek_info_not_available)
 		}
+	}
+
+	private fun showError(messageResId: Int) {
+		binding.error.setText(messageResId)
+		binding.error.visibility = View.VISIBLE
 	}
 }
