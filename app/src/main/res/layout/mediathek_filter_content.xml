@@ -2,6 +2,7 @@
 
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
@@ -13,11 +14,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="?colorPrimary"
+		android:paddingTop="2dp"
 		app:boxBackgroundMode="none"
 		app:endIconMode="clear_text"
 		app:endIconTint="?colorOnPrimarySurface"
 		app:hintEnabled="false"
-		android:paddingTop="2dp"
 		app:startIconDrawable="@drawable/ic_baseline_search_24"
 		app:startIconTint="?colorOnPrimarySurface">
 
@@ -36,14 +37,14 @@
 
 	</com.google.android.material.textfield.TextInputLayout>
 
-	<com.google.android.material.textview.MaterialTextView
+	<!--com.google.android.material.textview.MaterialTextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
 		android:text="Sendungslänge" />
 
-	<!--com.google.android.material.chip.ChipGroup
+	<com.google.android.material.chip.ChipGroup
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
@@ -82,7 +83,7 @@
 			android:checked="true"
 			android:text=">60min" />
 
-	</com.google.android.material.chip.ChipGroup-->
+	</com.google.android.material.chip.ChipGroup>
 
 	<com.google.android.material.chip.ChipGroup
 		android:layout_width="match_parent"
@@ -125,7 +126,7 @@
 			android:checked="true"
 			android:text="Sehr lang" />
 
-	</com.google.android.material.chip.ChipGroup>
+	</com.google.android.material.chip.ChipGroup-->
 
 	<com.google.android.material.textview.MaterialTextView
 		android:layout_width="match_parent"
@@ -135,150 +136,16 @@
 		android:text="Sender" />
 
 	<com.google.android.material.chip.ChipGroup
+		android:id="@+id/channels"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
 		app:selectionRequired="true">
 
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="ARD" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="ZDF" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="ARTE" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="KiKa" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="BR" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="HR" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Deutsche Welle" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="WDR" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="3sat" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="ARD" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="ZDF" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="ARTE" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="KiKa" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="BR" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="HR" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Deutsche Welle" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="WDR" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="3sat" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="3sat" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="3sat" />
+		<include
+			layout="@layout/view_mediathek_filter_channel_chip"
+			android:visibility="gone"
+			tools:visibility="visible" />
 
 	</com.google.android.material.chip.ChipGroup>
 

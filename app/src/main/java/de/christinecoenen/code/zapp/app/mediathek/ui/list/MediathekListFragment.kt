@@ -9,7 +9,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
@@ -20,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.net.UnknownServiceException
 import javax.net.ssl.SSLHandshakeException
+
 
 class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
@@ -68,6 +71,16 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.list.addOnScrollListener(scrollListener!!)
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
+
+		for (channel in MediathekChannel.values()) {
+			val chip = inflater.inflate(
+				R.layout.view_mediathek_filter_channel_chip,
+				binding.filter.channels,
+				false
+			) as Chip
+			chip.text = channel.apiId
+			binding.filter.channels.addView(chip)
+		}
 
 		adapter = MediathekItemAdapter(this@MediathekListFragment)
 		binding.list.adapter = adapter
