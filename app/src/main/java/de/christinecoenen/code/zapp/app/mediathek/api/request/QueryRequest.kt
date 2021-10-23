@@ -8,28 +8,7 @@ import java.io.Serializable
 class QueryRequest : Serializable {
 
 	companion object {
-		private val AllowedChannels = arrayOf(
-			"ARD",
-			"ZDF",
-			"SWR",
-			"NDR",
-			"BR",
-			"ARTE.DE",
-			"DW",
-			"3Sat",
-			"SRF",
-			"MDR",
-			"SR",
-			"KiKA",
-			"HR",
-			"RBB",
-			"ORF",
-			"WDR",
-			"rbtv",
-			"PHOENIX",
-			"ZDF-tivi",
-			"SRF.Podcast"
-		)
+		private val AllowedChannels = MediathekChannel.values().map { channel -> channel.apiId }
 	}
 
 	@Suppress("unused")
