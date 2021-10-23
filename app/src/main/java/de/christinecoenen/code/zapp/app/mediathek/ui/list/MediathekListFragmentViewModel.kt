@@ -3,21 +3,28 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@OptIn(FlowPreview::class)
 class MediathekListFragmentViewModel(
 	private val mediathekRepository: MediathekRepository
 ) : ViewModel() {
 
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
+		private const val DEBOUNCE_TIME_MILLIS = 300L
 	}
 
 	private val _mediathekLoadError = MutableStateFlow<Throwable?>(null)
@@ -26,7 +33,7 @@ class MediathekListFragmentViewModel(
 	private val _mediathekLoadResult = MutableStateFlow(MediathekLoadResult())
 	val mediathekLoadResult = _mediathekLoadResult.asLiveData()
 
-	private val _isLoading = MutableStateFlow(false)
+	private val _isLoading = MutableStateFlow(true)
 	val isLoading = _isLoading.asLiveData()
 
 	private var getShowsJob: Job? = null
@@ -34,10 +41,28 @@ class MediathekListFragmentViewModel(
 		size = ITEM_COUNT_PER_PAGE
 	}
 
-	// TODO: debounce
-	fun search(query: String?) {
-		queryRequest.setSimpleSearch(query)
-		loadItems(0, true)
+	private val _triggerLoadFlow = MutableSharedFlow<Unit>(1)
+
+	init {
+		viewModelScope.launch {
+			// debounce filter to avoid hitting the api too often when typing
+			_triggerLoadFlow.debounce(DEBOUNCE_TIME_MILLIS).collect {
+				loadItems(0, true)
+			}
+		}
+	}
+
+	// TODO: retain filter state when rotating device
+	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {
+		queryRequest.setChannel(channel, isEnabled)
+		_isLoading.tryEmit(true)
+		_triggerLoadFlow.tryEmit(Unit)
+	}
+
+	fun setSearchQueryFilter(query: String?) {
+		queryRequest.setQueryString(query)
+		_isLoading.tryEmit(true)
+		_triggerLoadFlow.tryEmit(Unit)
 	}
 
 	fun loadItems(startWith: Int, replaceItems: Boolean) {
@@ -70,7 +95,7 @@ class MediathekListFragmentViewModel(
 		getShowsJob?.cancel()
 	}
 
-	data class MediathekLoadResult(
+	class MediathekLoadResult(
 		val shows: List<MediathekShow> = emptyList(),
 		val replaceItems: Boolean = true
 	)

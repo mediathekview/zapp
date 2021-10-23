@@ -66,12 +66,13 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		}
 
 		binding.filter.search.addTextChangedListener { editable ->
-			viewmodel.search(editable.toString())
+			viewmodel.setSearchQueryFilter(editable.toString())
 		}
 		binding.list.addOnScrollListener(scrollListener!!)
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
+		// TODO: move to function
 		for (channel in MediathekChannel.values()) {
 			val chip = inflater.inflate(
 				R.layout.view_mediathek_filter_channel_chip,
@@ -79,19 +80,26 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 				false
 			) as Chip
 			chip.text = channel.apiId
+			viewmodel.setChannelFilter(channel, chip.isChecked)
+			// TODO: disable all others on long press
+			chip.setOnCheckedChangeListener { _, isChecked ->
+				viewmodel.setChannelFilter(channel, isChecked)
+			}
 			binding.filter.channels.addView(chip)
 		}
 
-		adapter = MediathekItemAdapter(this@MediathekListFragment)
-		binding.list.adapter = adapter
+		return binding.root
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
 
 		viewmodel.isLoading.observe(viewLifecycleOwner, ::onIsLoadingChanged)
 		viewmodel.mediathekLoadError.observe(viewLifecycleOwner, ::onMediathekLoadErrorChanged)
 		viewmodel.mediathekLoadResult.observe(viewLifecycleOwner, ::onMediathekLoadResultChanged)
 
-		viewmodel.loadItems(0, true)
-
-		return binding.root
+		adapter = MediathekItemAdapter(this@MediathekListFragment)
+		binding.list.adapter = adapter
 	}
 
 	override fun onDestroyView() {

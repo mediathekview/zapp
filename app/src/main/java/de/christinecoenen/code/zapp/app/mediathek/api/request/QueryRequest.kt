@@ -7,10 +7,6 @@ import java.io.Serializable
 @Keep
 class QueryRequest : Serializable {
 
-	companion object {
-		private val AllowedChannels = MediathekChannel.values().map { channel -> channel.apiId }
-	}
-
 	@Suppress("unused")
 	private val sortBy: String = "timestamp"
 
@@ -26,28 +22,46 @@ class QueryRequest : Serializable {
 	private val queries: MutableList<Query> = mutableListOf()
 
 	@Transient
-	private val alowedChannelsQueries: MutableList<Query> = mutableListOf()
+	private val channels = MediathekChannel.values().toMutableSet()
+
+	@Transient
+	private var queryString: String? = null
 
 	init {
-		for (allowedChannel in AllowedChannels) {
-			alowedChannelsQueries.add(Query(allowedChannel, "channel"))
-		}
-
 		resetQueries()
 	}
 
-	fun setSimpleSearch(queryString: String?): QueryRequest {
+	fun setChannel(channel: MediathekChannel, enabled: Boolean): QueryRequest {
+		if (enabled) {
+			channels.add(channel)
+		} else {
+			channels.remove(channel)
+		}
+
 		resetQueries()
 
-		if (!TextUtils.isEmpty(queryString)) {
-			queries.add(Query(queryString!!, "title", "topic"))
-		}
+		return this
+	}
+
+	fun setQueryString(queryString: String?): QueryRequest {
+		this.queryString = queryString
+
+		resetQueries()
 
 		return this
 	}
 
 	private fun resetQueries() {
 		queries.clear()
-		queries.addAll(alowedChannelsQueries)
+
+		// set search query
+		if (!TextUtils.isEmpty(this.queryString)) {
+			queries.add(Query(this.queryString!!, "title", "topic"))
+		}
+
+		// set all currently allowed channels
+		for (allowedChannel in channels) {
+			queries.add(Query(allowedChannel.apiId, "channel"))
+		}
 	}
 }
