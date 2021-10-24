@@ -1,27 +1,25 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request
 
-// TODO: choose correctly formatted enum names
-// TODO: add translation string resources
 enum class MediathekChannel(val apiId: String) {
 
-	ARD("ARD"),
-	ZDF("ZDF"),
-	SWR("SWR"),
-	NDR("NDR"),
-	BR("BR"),
-	ARTE("ARTE.DE"),
-	DW("DW"),
+	Ard("ARD"),
+	Zdf("ZDF"),
+	Swr("SWR"),
+	Ndr("NDR"),
+	Br("BR"),
+	Arte("ARTE.DE"),
+	Dw("DW"),
 	DreiSat("3Sat"),
-	SRF("SRF"),
-	MDR("MDR"),
-	KiKA("KiKA"),
-	HR("HR"),
-	RBB("RBB"),
-	ORF("ORF"),
-	WDR("WDR"),
-	rbtv("rbtv"),
-	PHOENIX("PHOENIX"),
-	ZDFTivi("ZDF-tivi"),
-	SRFPodcast("SRF.Podcast")
+	Srf("SRF"),
+	Mdr("MDR"),
+	KiKa("KiKA"),
+	Hr("HR"),
+	Rbb("RBB"),
+	Orf("ORF"),
+	Wdr("WDR"),
+	RbTv("rbtv"),
+	Phoenix("PHOENIX"),
+	ZdfTivi("ZDF-tivi"),
+	SrfPodcast("SRF.Podcast")
 
 }
