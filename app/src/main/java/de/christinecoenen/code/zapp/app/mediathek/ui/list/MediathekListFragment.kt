@@ -163,6 +163,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		if (!isLoading) {
 			scrollListener?.setLoadingFinished()
 		}
+
+		updateNoShowsMessage()
 	}
 
 	private fun onMediathekLoadResultChanged(mediathekLoadResult: MediathekListFragmentViewModel.MediathekLoadResult) {
@@ -172,7 +174,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			adapter?.addShows(mediathekLoadResult.shows)
 		}
 
-		binding.noShows.isVisible = adapter?.itemCount == 1
+		updateNoShowsMessage()
 	}
 
 	private fun onMediathekLoadErrorChanged(e: Throwable?) {
@@ -193,5 +195,11 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private fun showError(messageResId: Int) {
 		binding.error.setText(messageResId)
 		binding.error.visibility = View.VISIBLE
+	}
+
+	private fun updateNoShowsMessage() {
+		val isAdapterEmpty = adapter?.itemCount == 1
+		val isLoading = viewmodel.isLoading.value == true
+		binding.noShows.isVisible = isAdapterEmpty && !isLoading
 	}
 }
