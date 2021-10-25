@@ -72,21 +72,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
-		// TODO: move to function
-		for (channel in MediathekChannel.values()) {
-			val chip = inflater.inflate(
-				R.layout.view_mediathek_filter_channel_chip,
-				binding.filter.channels,
-				false
-			) as Chip
-			chip.text = channel.apiId
-			viewmodel.setChannelFilter(channel, chip.isChecked)
-			// TODO: disable all others on long press
-			chip.setOnCheckedChangeListener { _, isChecked ->
-				viewmodel.setChannelFilter(channel, isChecked)
-			}
-			binding.filter.channels.addView(chip)
-		}
+		createChannelFilterView(inflater)
 
 		return binding.root
 	}
@@ -201,5 +187,47 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		val isAdapterEmpty = adapter?.itemCount == 1
 		val isLoading = viewmodel.isLoading.value == true
 		binding.noShows.isVisible = isAdapterEmpty && !isLoading
+	}
+
+	private fun createChannelFilterView(inflater: LayoutInflater) {
+		for (channel in MediathekChannel.values()) {
+			// create view
+			val chip = inflater.inflate(
+				R.layout.view_mediathek_filter_channel_chip,
+				binding.filter.channels,
+				false
+			) as Chip
+
+			// view properties
+			chip.text = channel.apiId
+
+			// ui listeners
+			chip.setOnCheckedChangeListener { _, isChecked ->
+				onChannelFilterCheckChanged(channel, isChecked)
+			}
+			chip.setOnLongClickListener {
+				onChannelFilterLongClick(channel)
+				true
+			}
+
+			// viewmodel listener
+			viewmodel.channelFilter.getValue(channel).observe(viewLifecycleOwner) { isChecked ->
+				chip.isChecked = isChecked
+			}
+
+			// add to hierarchy
+			binding.filter.channels.addView(chip)
+		}
+	}
+
+	private fun onChannelFilterCheckChanged(channel: MediathekChannel, isChecked: Boolean) {
+		viewmodel.setChannelFilter(channel, isChecked)
+	}
+
+	private fun onChannelFilterLongClick(clickedChannel: MediathekChannel) {
+		for (channel in MediathekChannel.values()) {
+			val isChecked = clickedChannel == channel
+			viewmodel.setChannelFilter(channel, isChecked)
+		}
 	}
 }

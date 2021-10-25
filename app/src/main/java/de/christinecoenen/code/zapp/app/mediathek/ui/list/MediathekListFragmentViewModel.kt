@@ -36,6 +36,12 @@ class MediathekListFragmentViewModel(
 	private val _isLoading = MutableStateFlow(true)
 	val isLoading = _isLoading.asLiveData()
 
+	private val _channelFilter = MediathekChannel.values()
+		.map { it to MutableStateFlow(false) }
+		.toMap()
+	val channelFilter = _channelFilter
+		.mapValues { it.value.asLiveData() }
+
 	private var getShowsJob: Job? = null
 	private var queryRequest = QueryRequest().apply {
 		size = ITEM_COUNT_PER_PAGE
@@ -52,8 +58,8 @@ class MediathekListFragmentViewModel(
 		}
 	}
 
-	// TODO: retain filter state when rotating device
 	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {
+		_channelFilter.getValue(channel).tryEmit(isEnabled)
 		queryRequest.setChannel(channel, isEnabled)
 		_isLoading.tryEmit(true)
 		_triggerLoadFlow.tryEmit(Unit)
