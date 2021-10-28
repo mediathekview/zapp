@@ -103,11 +103,12 @@
 				android:layout_width="match_parent"
 				android:layout_height="10dp"
 				android:layout_gravity="center"
+				android:alpha="0.4"
 				android:src="@drawable/ic_baseline_drag_handle_24"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
-				app:tint="#ccffffff" />
+				app:tint="?colorOnSurface" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

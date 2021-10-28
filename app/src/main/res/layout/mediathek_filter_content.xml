@@ -10,19 +10,12 @@
 
 	<com.google.android.material.textfield.TextInputLayout
 		android:id="@+id/textField"
-		style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="?colorPrimary"
-		android:paddingTop="2dp"
-		app:boxBackgroundMode="none"
 		app:endIconMode="clear_text"
-		app:endIconTint="?colorOnPrimarySurface"
 		app:hintEnabled="false"
-		app:startIconDrawable="@drawable/ic_baseline_search_24"
-		app:startIconTint="?colorOnPrimarySurface">
+		app:startIconDrawable="@drawable/ic_baseline_search_24">
 
-		<!-- TODO: give cursor(s) the right color: https://github.com/material-components/material-components-android/issues/820 -->
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/search"
 			android:layout_width="match_parent"
@@ -31,9 +24,7 @@
 			android:imeOptions="actionSearch"
 			android:inputType="textFilter"
 			android:maxLines="1"
-			android:paddingVertical="0dp"
-			android:textColor="?colorOnPrimarySurface"
-			android:textColorHint="#66ffffff" />
+			android:paddingVertical="0dp" />
 
 	</com.google.android.material.textfield.TextInputLayout>
 
