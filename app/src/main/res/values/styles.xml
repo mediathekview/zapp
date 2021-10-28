@@ -21,6 +21,7 @@
 		<item name="bottomNavigationStyle">@style/BottomNavigationViewStyle</item>
 		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 		<item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
+		<item name="chipStyle">@style/Widget.App.Chip</item>
 
 		<item name="android:textAllCaps">false</item>
 	</style>
@@ -80,11 +81,9 @@
 
 	<style name="AppBarStyle" parent="Widget.MaterialComponents.AppBarLayout.Primary" />
 
-	<style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-		<item name="android:textColorHint">@color/text_alwayslight_tertiary</item>
-		<item name="android:textColor">?attr/colorOnSurface</item>
-		<item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-		<item name="android:textColorSecondary">?attr/colorOnPrimary</item>
+	<style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+		<item name="chipBackgroundColor">@color/chip_background</item>
+		<item name="android:textColor">@color/chip_text</item>
 	</style>
 
 	<style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
