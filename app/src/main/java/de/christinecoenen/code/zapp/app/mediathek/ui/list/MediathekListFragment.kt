@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
@@ -37,7 +39,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private val binding: FragmentMediathekListBinding
 		get() = _binding!!
 
+	private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.filterBottomSheet) }
+
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
+	private lateinit var backPressedCallback: OnBackPressedCallback
 
 	private var adapter: MediathekItemAdapter? = null
 	private var scrollListener: InfiniteScrollListener? = null
@@ -47,6 +52,15 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		super.onCreate(savedInstanceState)
 
 		setHasOptionsMenu(true)
+
+		// close bottom sheet first, before using system back button setting
+		backPressedCallback = object : OnBackPressedCallback(false) {
+			override fun handleOnBackPressed() {
+				bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+			}
+		}
+
+		requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
 	}
 
 	override fun onCreateView(
@@ -73,6 +87,16 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
 		createChannelFilterView(inflater)
+
+		// only consume backPressedCallback when bottom sheet is not collapsed
+		bottomSheetBehavior.addBottomSheetCallback(object :
+			BottomSheetBehavior.BottomSheetCallback() {
+			override fun onStateChanged(bottomSheet: View, newState: Int) {
+				backPressedCallback.isEnabled = newState != BottomSheetBehavior.STATE_COLLAPSED
+			}
+
+			override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+		})
 
 		return binding.root
 	}

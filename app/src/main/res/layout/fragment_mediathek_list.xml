@@ -78,6 +78,7 @@
 	</androidx.appcompat.widget.LinearLayoutCompat>
 
 	<androidx.core.widget.NestedScrollView
+		android:id="@+id/filter_bottom_sheet"
 		style="?attr/bottomSheetStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
