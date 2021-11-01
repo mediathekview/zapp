@@ -10,10 +10,7 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -42,6 +39,10 @@ class MediathekListFragmentViewModel(
 	val channelFilter = _channelFilter
 		.mapValues { it.value.asLiveData() }
 
+	val isFilterApplied = combine(_channelFilter.values) { channelsSelectors ->
+		channelsSelectors.contains(true)
+	}.asLiveData()
+
 	private var getShowsJob: Job? = null
 	private var queryRequest = QueryRequest().apply {
 		size = ITEM_COUNT_PER_PAGE
@@ -56,6 +57,10 @@ class MediathekListFragmentViewModel(
 				loadItems(0, true)
 			}
 		}
+	}
+
+	fun clearFilter() {
+		_channelFilter.forEach { it.value.tryEmit(false) }
 	}
 
 	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {

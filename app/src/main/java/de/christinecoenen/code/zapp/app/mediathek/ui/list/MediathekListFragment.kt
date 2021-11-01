@@ -104,6 +104,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 		viewmodel.isLoading.observe(viewLifecycleOwner, ::onIsLoadingChanged)
 		viewmodel.mediathekLoadError.observe(viewLifecycleOwner, ::onMediathekLoadErrorChanged)
 		viewmodel.mediathekLoadResult.observe(viewLifecycleOwner, ::onMediathekLoadResultChanged)
@@ -123,8 +124,24 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		inflater.inflate(R.menu.fragment_mediathek_list, menu)
 	}
 
+	override fun onPrepareOptionsMenu(menu: Menu) {
+		super.onPrepareOptionsMenu(menu)
+
+		val filterIconResId = if (viewmodel.isFilterApplied.value == true) {
+			R.drawable.ic_sharp_filter_list_off_24
+		} else {
+			R.drawable.ic_sharp_filter_list_24
+		}
+		val filterItem = menu.findItem(R.id.menu_filter)
+		filterItem.setIcon(filterIconResId)
+	}
+
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
+			R.id.menu_filter -> {
+				onFilterMenuClicked()
+				true
+			}
 			R.id.menu_refresh -> {
 				onRefresh()
 				true
@@ -151,6 +168,14 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		viewmodel.loadItems(0, true)
 	}
 
+	private fun onFilterMenuClicked() {
+		if (viewmodel.isFilterApplied.value == true) {
+			viewmodel.clearFilter()
+		} else {
+			toggleFilterBottomSheet()
+		}
+	}
+
 	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_share -> {
@@ -164,6 +189,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			}
 		}
 		return false
+	}
+
+	private fun onIsFilterAppliedChanged() {
+		requireActivity().invalidateOptionsMenu()
 	}
 
 	private fun onIsLoadingChanged(isLoading: Boolean) {
@@ -199,6 +228,14 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			showError(R.string.error_mediathek_ssl_error)
 		} else {
 			showError(R.string.error_mediathek_info_not_available)
+		}
+	}
+
+	private fun toggleFilterBottomSheet() {
+		if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+			bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+		} else {
+			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 		}
 	}
 
