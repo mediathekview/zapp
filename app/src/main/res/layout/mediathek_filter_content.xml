@@ -124,7 +124,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:text="Sender" />
+		android:text="@string/fragment_mediathek_channel" />
 
 	<com.google.android.material.chip.ChipGroup
 		android:id="@+id/channels"
