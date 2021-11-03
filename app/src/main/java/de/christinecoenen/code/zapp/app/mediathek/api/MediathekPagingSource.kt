@@ -11,7 +11,7 @@ import java.io.IOException
 class MediathekPagingSource(
 	private val mediathekApi: IMediathekApiService,
 	val query: QueryRequest
-): PagingSource<Int, MediathekShow>() {
+) : PagingSource<Int, MediathekShow>() {
 
 	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
 		// Try to find the page key of the closest page to anchorPosition, from
@@ -38,11 +38,12 @@ class MediathekPagingSource(
 			val response = mediathekApi.listShows(query)
 
 			val showList = response.result?.results ?: throw Error(response.err)
+			val nextKey = if (showList.isEmpty()) null else nextPageNumber.plus(1)
 
 			LoadResult.Page(
 				data = showList,
 				prevKey = null, // Only paging forward.
-				nextKey = nextPageNumber.plus(1)
+				nextKey = nextKey
 			)
 		} catch (e: IOException) {
 			// IOException for network failures.
