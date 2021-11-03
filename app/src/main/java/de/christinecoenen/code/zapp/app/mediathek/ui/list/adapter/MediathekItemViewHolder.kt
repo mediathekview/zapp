@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 import android.graphics.Bitmap
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -14,9 +15,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 
-internal class MediathekItemViewHolder(
+class MediathekItemViewHolder(
 	private val binding: FragmentMediathekListItemBinding
-) : BaseViewHolder(binding.root), KoinComponent {
+) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
 	private val mediathekRepository: MediathekRepository by inject()
 

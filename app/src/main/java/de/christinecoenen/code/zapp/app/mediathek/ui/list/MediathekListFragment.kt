@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -17,9 +18,11 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.net.UnknownServiceException
@@ -43,9 +46,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 	private lateinit var backPressedCallback: OnBackPressedCallback
+	private lateinit var adapter: MediathekItemAdapter
 
-	private var adapter: MediathekItemAdapter? = null
-	private var scrollListener: InfiniteScrollListener? = null
 	private var longClickShow: MediathekShow? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,16 +75,9 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
 
-		scrollListener = object : InfiniteScrollListener(layoutManager) {
-			public override fun onLoadMore(totalItemCount: Int) {
-				viewmodel.loadItems(totalItemCount, false)
-			}
-		}
-
 		binding.filter.search.addTextChangedListener { editable ->
 			viewmodel.setSearchQueryFilter(editable.toString())
 		}
-		binding.list.addOnScrollListener(scrollListener!!)
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
@@ -105,12 +100,28 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		super.onViewCreated(view, savedInstanceState)
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
-		viewmodel.isLoading.observe(viewLifecycleOwner, ::onIsLoadingChanged)
-		viewmodel.mediathekLoadError.observe(viewLifecycleOwner, ::onMediathekLoadErrorChanged)
-		viewmodel.mediathekLoadResult.observe(viewLifecycleOwner, ::onMediathekLoadResultChanged)
 
-		adapter = MediathekItemAdapter(this@MediathekListFragment)
+		// TODO: display loading footer
+		adapter = MediathekItemAdapter(MediathekShowComparator, this@MediathekListFragment)
 		binding.list.adapter = adapter
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewmodel.flow.collectLatest { pagingData ->
+				adapter.submitData(pagingData)
+				updateNoShowsMessage()
+			}
+		}
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			adapter.loadStateFlow.collectLatest { loadStates ->
+				binding.refreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
+
+				// TODO: display errors
+				if (loadStates.refresh is LoadState.Error) {
+
+				}
+			}
+		}
 	}
 
 	override fun onDestroyView() {
@@ -165,7 +176,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	override fun onRefresh() {
-		viewmodel.loadItems(0, true)
+		adapter.refresh()
 	}
 
 	private fun onFilterMenuClicked() {
@@ -193,27 +204,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 	private fun onIsFilterAppliedChanged() {
 		requireActivity().invalidateOptionsMenu()
-	}
-
-	private fun onIsLoadingChanged(isLoading: Boolean) {
-		adapter?.setLoading(isLoading)
-		binding.refreshLayout.isRefreshing = isLoading
-
-		if (!isLoading) {
-			scrollListener?.setLoadingFinished()
-		}
-
-		updateNoShowsMessage()
-	}
-
-	private fun onMediathekLoadResultChanged(mediathekLoadResult: MediathekListFragmentViewModel.MediathekLoadResult) {
-		if (mediathekLoadResult.replaceItems) {
-			adapter?.setShows(mediathekLoadResult.shows)
-		} else {
-			adapter?.addShows(mediathekLoadResult.shows)
-		}
-
-		updateNoShowsMessage()
 	}
 
 	private fun onMediathekLoadErrorChanged(e: Throwable?) {
@@ -244,10 +234,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.error.visibility = View.VISIBLE
 	}
 
+	// FIXME
 	private fun updateNoShowsMessage() {
-		val isAdapterEmpty = adapter?.itemCount == 1
-		val isLoading = viewmodel.isLoading.value == true
-		binding.noShows.isVisible = isAdapterEmpty && !isLoading
+		val isAdapterEmpty = adapter.itemCount == 1
+		//binding.noShows.isVisible = isAdapterEmpty
 	}
 
 	private fun createChannelFilterView(inflater: LayoutInflater) {
