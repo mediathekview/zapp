@@ -59,6 +59,13 @@ class QueryRequest : Serializable {
 			queries.add(Query(this.queryString!!, "title", "topic"))
 		}
 
+		// We do not allow an empty channel Filter as the result would always be empty.
+		// Instead we filter for all available channels. This also excludes all channels
+		// not defined in MediathekChannel enum (like ARTE.FR).
+		if (channels.isEmpty()) {
+			channels.addAll(MediathekChannel.values().toMutableSet())
+		}
+
 		// set all currently allowed channels
 		for (allowedChannel in channels) {
 			queries.add(Query(allowedChannel.apiId, "channel"))
