@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -16,6 +17,7 @@ import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
@@ -102,9 +104,9 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 
-		// TODO: display loading footer
 		adapter = MediathekItemAdapter(MediathekShowComparator, this@MediathekListFragment)
-		binding.list.adapter = adapter
+
+		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewmodel.flow.collectLatest { pagingData ->
@@ -117,7 +119,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 				binding.refreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
 				updateNoShowsMessage(loadStates.refresh)
 
-				// TODO: display errors
+				// TODO: display errors for refresh actions
 				if (loadStates.refresh is LoadState.Error) {
 
 				}

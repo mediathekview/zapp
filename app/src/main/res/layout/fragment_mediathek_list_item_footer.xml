@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?android:attr/selectableItemBackground"
 	android:orientation="vertical"
-	android:paddingBottom="8dp"
-	android:paddingEnd="@dimen/activity_horizontal_margin"
-	android:paddingStart="@dimen/activity_horizontal_margin"
-	android:paddingTop="8dp"
-	android:textAppearance="?attr/textAppearanceListItem">
+	android:padding="32dp">
 
-	<ProgressBar
+	<com.google.android.material.progressindicator.CircularProgressIndicator
 		android:id="@+id/progress"
+		style="@style/Widget.MaterialComponents.CircularProgressIndicator"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:indeterminate="true" />
+		android:indeterminate="true"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/error_message"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		app:layout_constraintBottom_toTopOf="@id/retry_button"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="@string/error_mediathek_info_not_available" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/retry_button"
+		style="@style/ColorlessOutlinedButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:text="@string/menu_retry"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/error_message" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
