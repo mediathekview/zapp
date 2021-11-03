@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -22,6 +22,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowC
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -108,13 +109,13 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewmodel.flow.collectLatest { pagingData ->
 				adapter.submitData(pagingData)
-				updateNoShowsMessage()
 			}
 		}
 
 		viewLifecycleOwner.lifecycleScope.launch {
-			adapter.loadStateFlow.collectLatest { loadStates ->
+			adapter.loadStateFlow.drop(1).collectLatest { loadStates ->
 				binding.refreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
+				updateNoShowsMessage(loadStates.refresh)
 
 				// TODO: display errors
 				if (loadStates.refresh is LoadState.Error) {
@@ -234,10 +235,14 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.error.visibility = View.VISIBLE
 	}
 
-	// FIXME
-	private fun updateNoShowsMessage() {
-		val isAdapterEmpty = adapter.itemCount == 1
-		//binding.noShows.isVisible = isAdapterEmpty
+	private fun updateNoShowsMessage(loadState: LoadState) {
+		Timber.d(
+			"updateNoShowsMessage: adapter.itemCount %d - loadState %s",
+			adapter.itemCount,
+			loadState
+		)
+		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
+		binding.noShows.isVisible = isAdapterEmpty
 	}
 
 	private fun createChannelFilterView(inflater: LayoutInflater) {

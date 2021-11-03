@@ -9,8 +9,8 @@
 	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical"
-		android:layout_marginBottom="48dp">
+		android:layout_marginBottom="48dp"
+		android:orientation="vertical">
 
 		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/error"
@@ -31,12 +31,13 @@
 			tools:ignore="UnusedAttribute"
 			tools:visibility="visible" />
 
-		<!--androidx.appcompat.widget.LinearLayoutCompat
+		<androidx.appcompat.widget.LinearLayoutCompat
 			android:id="@+id/no_shows"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:gravity="center"
 			android:orientation="vertical"
+			android:visibility="gone"
 			tools:ignore="UseCompoundDrawables">
 
 			<androidx.appcompat.widget.AppCompatImageView
@@ -53,7 +54,7 @@
 				android:gravity="center"
 				android:text="@string/fragment_mediathek_no_results" />
 
-		</androidx.appcompat.widget.LinearLayoutCompat-->
+		</androidx.appcompat.widget.LinearLayoutCompat>
 
 		<FrameLayout
 			android:layout_width="match_parent"
