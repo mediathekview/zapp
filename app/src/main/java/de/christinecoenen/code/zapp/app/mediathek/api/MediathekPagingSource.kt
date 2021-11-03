@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 
 class MediathekPagingSource(
@@ -28,12 +27,11 @@ class MediathekPagingSource(
 	}
 
 	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediathekShow> {
-		Timber.d("load: %d", params.key)
 		return try {
 			// Start refresh at page 1 if undefined.
 			val nextPageNumber = params.key ?: 1
 			query.size = params.loadSize
-			query.offset = nextPageNumber * params.loadSize
+			query.offset = nextPageNumber.minus(1) * params.loadSize
 
 			val response = mediathekApi.listShows(query)
 

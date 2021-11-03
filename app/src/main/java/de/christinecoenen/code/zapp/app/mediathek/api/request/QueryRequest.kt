@@ -64,4 +64,8 @@ class QueryRequest : Serializable {
 			queries.add(Query(allowedChannel.apiId, "channel"))
 		}
 	}
+
+	override fun toString(): String {
+		return "QueryRequest(sortBy='$sortBy', sortOrder='$sortOrder', future=$future, offset=$offset, size=$size, queries=$queries)"
+	}
 }
