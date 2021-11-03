@@ -10,10 +10,11 @@ import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 
-@OptIn(FlowPreview::class)
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class MediathekListFragmentViewModel(
 	private val mediathekApi: IMediathekApiService
 ) : ViewModel() {
@@ -34,13 +35,11 @@ class MediathekListFragmentViewModel(
 	}.asLiveData()
 
 
-	// TODO: fix experimental warning
 	private val _queryRequest = MutableSharedFlow<QueryRequest>(1)
 	val flow = _queryRequest
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
 			Pager(PagingConfig(pageSize = ITEM_COUNT_PER_PAGE)) {
-				// TODO: check if debouncing works
 				MediathekPagingSource(mediathekApi, queryRequest)
 			}.flow
 		}.cachedIn(viewModelScope)
