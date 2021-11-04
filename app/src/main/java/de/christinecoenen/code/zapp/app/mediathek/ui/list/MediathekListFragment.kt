@@ -46,24 +46,21 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.filterBottomSheet) }
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
-	private lateinit var backPressedCallback: OnBackPressedCallback
 	private lateinit var adapter: MediathekItemAdapter
 
 	private var longClickShow: MediathekShow? = null
+
+	private val backPressedCallback = object : OnBackPressedCallback(false) {
+		override fun handleOnBackPressed() {
+			// close bottom sheet first, before using system back button setting
+			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+		}
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		setHasOptionsMenu(true)
-
-		// close bottom sheet first, before using system back button setting
-		backPressedCallback = object : OnBackPressedCallback(false) {
-			override fun handleOnBackPressed() {
-				bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-			}
-		}
-
-		requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
 	}
 
 	override fun onCreateView(
@@ -131,9 +128,18 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		}
 	}
 
+	override fun onResume() {
+		super.onResume()
+		requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+	}
+
+	override fun onPause() {
+		super.onPause()
+		backPressedCallback.remove()
+	}
+
 	override fun onDestroyView() {
 		super.onDestroyView()
-
 		_binding = null
 	}
 
