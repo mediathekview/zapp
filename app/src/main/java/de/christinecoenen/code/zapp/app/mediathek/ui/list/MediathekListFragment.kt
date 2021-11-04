@@ -24,6 +24,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowC
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -115,15 +116,22 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		}
 
 		viewLifecycleOwner.lifecycleScope.launch {
-			adapter.loadStateFlow.drop(1).collectLatest { loadStates ->
-				binding.refreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
-				updateNoShowsMessage(loadStates.refresh)
+			adapter.loadStateFlow
+				.drop(1)
+				.distinctUntilChangedBy { it.refresh }
+				.collectLatest { loadStates ->
+					binding.refreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
+					updateNoShowsMessage(loadStates.refresh)
 
-				// TODO: display errors for refresh actions
-				if (loadStates.refresh is LoadState.Error) {
-
+					when (loadStates.refresh) {
+						is LoadState.Error -> {
+							// TODO: display errors for refresh actions
+						}
+						is LoadState.NotLoading -> binding.list.scrollToPosition(0)
+						is LoadState.Loading -> {
+						}
+					}
 				}
-			}
 		}
 	}
 
