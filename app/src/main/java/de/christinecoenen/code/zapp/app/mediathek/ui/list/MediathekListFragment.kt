@@ -23,9 +23,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemA
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -118,18 +116,17 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		viewLifecycleOwner.lifecycleScope.launch {
 			adapter.loadStateFlow
 				.drop(1)
-				.distinctUntilChangedBy { it.refresh }
-				.collectLatest { loadStates ->
-					binding.refreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
-					updateNoShowsMessage(loadStates.refresh)
+				.map { it.refresh }
+				.distinctUntilChanged()
+				.collectLatest { refreshState ->
+					binding.refreshLayout.isRefreshing = refreshState is LoadState.Loading
+					binding.error.isVisible = refreshState is LoadState.Error
+					updateNoShowsMessage(refreshState)
 
-					when (loadStates.refresh) {
-						is LoadState.Error -> {
-							// TODO: display errors for refresh actions
-						}
+					when (refreshState) {
+						is LoadState.Error -> onMediathekLoadErrorChanged(refreshState.error)
 						is LoadState.NotLoading -> binding.list.scrollToPosition(0)
-						is LoadState.Loading -> {
-						}
+						is LoadState.Loading -> Unit
 					}
 				}
 		}
@@ -217,14 +214,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		requireActivity().invalidateOptionsMenu()
 	}
 
-	private fun onMediathekLoadErrorChanged(e: Throwable?) {
-		if (e == null) {
-			binding.error.visibility = View.GONE
-			return
-		}
-
-		Timber.e(e)
-
+	private fun onMediathekLoadErrorChanged(e: Throwable) {
 		if (e is SSLHandshakeException || e is UnknownServiceException) {
 			showError(R.string.error_mediathek_ssl_error)
 		} else {

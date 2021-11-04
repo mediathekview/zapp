@@ -4,8 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import kotlinx.coroutines.delay
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 class MediathekPagingSource(
@@ -39,8 +39,6 @@ class MediathekPagingSource(
 			val showList = response.result?.results ?: throw Error(response.err)
 			val nextKey = if (showList.isEmpty()) null else nextPageNumber.plus(1)
 
-			delay(2000)
-
 			LoadResult.Page(
 				data = showList,
 				prevKey = null, // Only paging forward.
@@ -48,9 +46,11 @@ class MediathekPagingSource(
 			)
 		} catch (e: IOException) {
 			// IOException for network failures.
+			Timber.e(e)
 			return LoadResult.Error(e)
 		} catch (e: HttpException) {
 			// HttpException for any non-2xx HTTP status codes.
+			Timber.e(e)
 			return LoadResult.Error(e)
 		}
 
