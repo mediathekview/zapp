@@ -20,6 +20,5 @@ enum class MediathekChannel(val apiId: String) {
 	RbTv("rbtv"),
 	Phoenix("PHOENIX"),
 	ZdfTivi("ZDF-tivi"),
-	SrfPodcast("SRF.Podcast")
 
 }
