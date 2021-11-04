@@ -107,7 +107,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
 		viewLifecycleOwner.lifecycleScope.launch {
-			viewmodel.flow.collectLatest { pagingData ->
+			viewmodel.pageFlow.collectLatest { pagingData ->
 				adapter.submitData(pagingData)
 			}
 		}
@@ -240,6 +240,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	private fun createChannelFilterView(inflater: LayoutInflater) {
+		val chipMap = mutableMapOf<MediathekChannel, Chip>()
+
 		for (channel in MediathekChannel.values()) {
 			// create view
 			val chip = inflater.inflate(
@@ -260,13 +262,21 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 				true
 			}
 
-			// viewmodel listener
-			viewmodel.channelFilter.getValue(channel).observe(viewLifecycleOwner) { isChecked ->
-				chip.isChecked = isChecked
-			}
-
 			// add to hierarchy
 			binding.filter.channels.addView(chip)
+
+			// cache for listeners
+			chipMap[channel] = chip
+		}
+
+		// viewmodel listener
+		viewmodel.channelFilter.observe(viewLifecycleOwner) { channelFilter ->
+			channelFilter.onEach {
+				val chip = chipMap[it.key]!!
+				if (chip.isChecked != it.value) {
+					chip.isChecked = it.value
+				}
+			}
 		}
 	}
 

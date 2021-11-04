@@ -24,19 +24,21 @@ class MediathekListFragmentViewModel(
 		private const val DEBOUNCE_TIME_MILLIS = 300L
 	}
 
-	private val _channelFilter = MediathekChannel.values()
-		.map { it to MutableStateFlow(false) }
-		.toMap()
-	val channelFilter = _channelFilter
-		.mapValues { it.value.asLiveData() }
+	private val _searchQuery = MutableStateFlow<String?>(null)
 
-	val isFilterApplied = combine(_channelFilter.values) { channelsSelectors ->
-		channelsSelectors.contains(true)
-	}.asLiveData()
+	private val _channelFilter = MutableStateFlow(
+		MediathekChannel.values()
+			.map { it to false }
+			.toMap()
+			.toMutableMap()
+	)
+	val channelFilter = _channelFilter.asLiveData()
 
+	val isFilterApplied = _channelFilter.map { it.containsValue(true) }.asLiveData()
 
-	private val _queryRequest = MutableSharedFlow<QueryRequest>(1)
-	val flow = _queryRequest
+	val pageFlow = combine(_searchQuery, _channelFilter) { searchQuery, channelFilter ->
+		createQueryRequest(searchQuery, channelFilter)
+	}
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
 			Pager(PagingConfig(pageSize = ITEM_COUNT_PER_PAGE)) {
@@ -44,22 +46,33 @@ class MediathekListFragmentViewModel(
 			}.flow
 		}.cachedIn(viewModelScope)
 
-	private var currentQueryRequest = QueryRequest().apply {
-		size = ITEM_COUNT_PER_PAGE
-	}
 
 	fun clearFilter() {
-		_channelFilter.forEach { it.value.tryEmit(false) }
+		val filter = _channelFilter.value.toMutableMap()
+		filter.forEach { filter[it.key] = false }
+		_channelFilter.tryEmit(filter)
 	}
 
 	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {
-		_channelFilter.getValue(channel).tryEmit(isEnabled)
-		currentQueryRequest.setChannel(channel, isEnabled)
-		_queryRequest.tryEmit(currentQueryRequest)
+		val filter = _channelFilter.value.toMutableMap()
+		if (filter[channel] != isEnabled) {
+			filter[channel] = isEnabled
+			_channelFilter.tryEmit(filter)
+		}
 	}
 
 	fun setSearchQueryFilter(query: String?) {
-		currentQueryRequest.setQueryString(query)
-		_queryRequest.tryEmit(currentQueryRequest)
+		_searchQuery.tryEmit(query)
+	}
+
+	private fun createQueryRequest(
+		searchQuery: String?,
+		channelFilter: Map<MediathekChannel, Boolean>
+	): QueryRequest {
+		return QueryRequest().apply {
+			size = ITEM_COUNT_PER_PAGE
+			setQueryString(searchQuery)
+			channelFilter.onEach { setChannel(it.key, it.value) }
+		}
 	}
 }
