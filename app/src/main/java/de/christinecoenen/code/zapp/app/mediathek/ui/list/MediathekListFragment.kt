@@ -79,6 +79,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
+		val showLengthLabelFormatter =
+			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
+		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
+
 		createChannelFilterView(inflater)
 
 		// only consume backPressedCallback when bottom sheet is not collapsed
