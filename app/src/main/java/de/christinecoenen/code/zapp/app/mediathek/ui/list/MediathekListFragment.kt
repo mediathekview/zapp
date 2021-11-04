@@ -26,7 +26,6 @@ import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.net.UnknownServiceException
 import javax.net.ssl.SSLHandshakeException
 
@@ -236,11 +235,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	private fun updateNoShowsMessage(loadState: LoadState) {
-		Timber.d(
-			"updateNoShowsMessage: adapter.itemCount %d - loadState %s",
-			adapter.itemCount,
-			loadState
-		)
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
 		binding.noShows.isVisible = isAdapterEmpty
 	}
