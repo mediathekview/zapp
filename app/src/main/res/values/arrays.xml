@@ -30,7 +30,7 @@
 	</string-array>
 
 	<array name="mediathek_filter_show_length_slider_initial_values">
-		<item>0</item>
-		<item>120</item>
+		<item>@fraction/mediathek_filter_min_duration</item>
+		<item>@fraction/mediathek_filter_max_duration</item>
 	</array>
 </resources>

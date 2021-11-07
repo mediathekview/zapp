@@ -62,8 +62,8 @@
 		android:layout_height="wrap_content"
 		android:layout_weight="5"
 		android:stepSize="5.0"
-		android:valueFrom="0"
-		android:valueTo="120"
+		android:valueFrom="@fraction/mediathek_filter_min_duration"
+		android:valueTo="@fraction/mediathek_filter_max_duration"
 		app:labelBehavior="gone"
 		app:values="@array/mediathek_filter_show_length_slider_initial_values" />
 
