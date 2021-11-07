@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.mediathek.api.request
 
 import android.text.TextUtils
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 @Keep
@@ -18,6 +19,12 @@ class QueryRequest : Serializable {
 
 	var offset: Int = 0
 	var size: Int = 30
+
+	@SerializedName("duration_min")
+	var minDurationSeconds: Int = 0
+
+	@SerializedName("duration_max")
+	var maxDurationSeconds: Int? = null
 
 	private val queries: MutableList<Query> = mutableListOf()
 

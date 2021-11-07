@@ -10,9 +10,15 @@ import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.ChannelFilter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.LengthFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlin.math.roundToInt
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class MediathekListFragmentViewModel(
@@ -26,18 +32,23 @@ class MediathekListFragmentViewModel(
 
 	private val _searchQuery = MutableStateFlow<String?>(null)
 
-	private val _channelFilter = MutableStateFlow(
-		MediathekChannel.values()
-			.map { it to false }
-			.toMap()
-			.toMutableMap()
-	)
+	private val _lengthFilter = MutableStateFlow(LengthFilter())
+	val lengthFilter = _lengthFilter.asLiveData()
+
+	private val _channelFilter = MutableStateFlow(ChannelFilter())
 	val channelFilter = _channelFilter.asLiveData()
 
-	val isFilterApplied = _channelFilter.map { it.containsValue(true) }.asLiveData()
+	val isFilterApplied = combine(_lengthFilter, _channelFilter) { lengthFilter, channelFilter ->
+		channelFilter.isApplied || lengthFilter.isApplied
+	}
+		.asLiveData()
 
-	val pageFlow = combine(_searchQuery, _channelFilter) { searchQuery, channelFilter ->
-		createQueryRequest(searchQuery, channelFilter)
+	val pageFlow = combine(
+		_searchQuery,
+		_lengthFilter,
+		_channelFilter
+	) { searchQuery, lengthFilter, channelFilter ->
+		createQueryRequest(searchQuery, lengthFilter, channelFilter)
 	}
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
@@ -48,15 +59,20 @@ class MediathekListFragmentViewModel(
 
 
 	fun clearFilter() {
-		val filter = _channelFilter.value.toMutableMap()
-		filter.forEach { filter[it.key] = false }
-		_channelFilter.tryEmit(filter)
+		_channelFilter.tryEmit(ChannelFilter())
+		_lengthFilter.tryEmit(LengthFilter())
+	}
+
+	fun setLengthFilter(minLengthSeconds: Float?, maxLengthSeconds: Float?) {
+		val min = minLengthSeconds?.roundToInt() ?: 0
+		val max = maxLengthSeconds?.roundToInt()
+		_lengthFilter.tryEmit(LengthFilter(min, max))
 	}
 
 	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {
-		val filter = _channelFilter.value.toMutableMap()
-		if (filter[channel] != isEnabled) {
-			filter[channel] = isEnabled
+		val filter = _channelFilter.value.copy()
+		val hasChanged = filter.setEnabled(channel, isEnabled)
+		if (hasChanged) {
 			_channelFilter.tryEmit(filter)
 		}
 	}
@@ -67,12 +83,17 @@ class MediathekListFragmentViewModel(
 
 	private fun createQueryRequest(
 		searchQuery: String?,
-		channelFilter: Map<MediathekChannel, Boolean>
+		lengthFilter: LengthFilter,
+		channelFilter: ChannelFilter
 	): QueryRequest {
 		return QueryRequest().apply {
 			size = ITEM_COUNT_PER_PAGE
+			minDurationSeconds = lengthFilter.minDurationSeconds
+			maxDurationSeconds = lengthFilter.maxDurationSeconds
 			setQueryString(searchQuery)
-			channelFilter.onEach { setChannel(it.key, it.value) }
+			for (filterItem in channelFilter) {
+				setChannel(filterItem.key, filterItem.value)
+			}
 		}
 	}
 }

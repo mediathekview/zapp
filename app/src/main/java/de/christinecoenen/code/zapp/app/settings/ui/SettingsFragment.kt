@@ -9,7 +9,6 @@ import androidx.preference.PreferenceFragmentCompat
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
-import java.util.*
 
 /**
  * Use the [SettingsFragment.newInstance] factory method to
@@ -68,17 +67,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		shortcutPreference.onPreferenceChangeListener = null
 		uiModePreference.onPreferenceChangeListener = null
-	}
-
-	override fun onDisplayPreferenceDialog(preference: Preference) {
-
-		if (preference is DeleteSearchQueriesPreference) {
-			val dialogFragment = DeleteSearchQueriesPreferenceDialog.newInstance(preference.getKey())
-			dialogFragment.setTargetFragment(this, 0)
-			dialogFragment.show(Objects.requireNonNull(parentFragmentManager), null)
-			return
-		}
-
-		super.onDisplayPreferenceDialog(preference)
 	}
 }

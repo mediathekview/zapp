@@ -79,6 +79,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
+		setUpLengthFilter()
 		createChannelFilterView(inflater)
 
 		// only consume backPressedCallback when bottom sheet is not collapsed
@@ -245,6 +246,34 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.noShows.isVisible = isAdapterEmpty
 	}
 
+	private fun setUpLengthFilter() {
+		val showLengthLabelFormatter =
+			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
+
+		updateLengthFilterLabels(showLengthLabelFormatter)
+		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
+
+		// from ui to viewmodel
+		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, fromUser ->
+
+			updateLengthFilterLabels(showLengthLabelFormatter)
+
+			if (fromUser) {
+				val min = rangeSlider.values[0] * 60
+				val max =
+					if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
+				viewmodel.setLengthFilter(min, max)
+			}
+		}
+
+		// from viewmodel to ui
+		viewmodel.lengthFilter.observe(viewLifecycleOwner) { lengthFilter ->
+			val min = lengthFilter.minDurationMinutes
+			val max = lengthFilter.maxDurationMinutes ?: binding.filter.showLengthSlider.valueTo
+			binding.filter.showLengthSlider.setValues(min, max)
+		}
+	}
+
 	private fun createChannelFilterView(inflater: LayoutInflater) {
 		val chipMap = mutableMapOf<MediathekChannel, Chip>()
 
@@ -277,10 +306,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		// viewmodel listener
 		viewmodel.channelFilter.observe(viewLifecycleOwner) { channelFilter ->
-			channelFilter.onEach {
-				val chip = chipMap[it.key]!!
-				if (chip.isChecked != it.value) {
-					chip.isChecked = it.value
+			for (filterItem in channelFilter) {
+				val chip = chipMap[filterItem.key]!!
+				if (chip.isChecked != filterItem.value) {
+					chip.isChecked = filterItem.value
 				}
 			}
 		}
@@ -295,5 +324,12 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			val isChecked = clickedChannel == channel
 			viewmodel.setChannelFilter(channel, isChecked)
 		}
+	}
+
+	private fun updateLengthFilterLabels(formatter: ShowLengthLabelFormatter) {
+		binding.filter.showLengthLabelMin.text =
+			formatter.getFormattedValue(binding.filter.showLengthSlider.values[0])
+		binding.filter.showLengthLabelMax.text =
+			formatter.getFormattedValue(binding.filter.showLengthSlider.values[1])
 	}
 }

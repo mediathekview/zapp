@@ -70,11 +70,6 @@
 			android:summary="@string/pref_download_to_sd_card_summary"
 			android:title="@string/pref_download_to_sd_card_title" />
 
-		<de.christinecoenen.code.zapp.app.settings.ui.DeleteSearchQueriesPreference
-			android:dialogMessage="@string/pref_delete_search_queries_dialog_message"
-			android:key="@string/pref_key_delete_search_queries"
-			android:title="@string/pref_delete_search_queries_title" />
-
 	</PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

@@ -42,7 +42,7 @@ class KoinModules {
 
 			single { ChannelRepository(androidContext(), get()) }
 			single { Database.getInstance(androidContext()) }
-			single { MediathekRepository(get(), get()) }
+			single { MediathekRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single { DownloadController(androidContext(), get()) } bind IDownloadController::class
 			single {

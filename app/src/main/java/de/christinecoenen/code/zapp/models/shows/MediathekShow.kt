@@ -5,10 +5,9 @@ import android.text.TextUtils
 import android.text.format.DateUtils
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import de.christinecoenen.code.zapp.utils.view.ShowDurationFormatter
 import org.apache.commons.io.FilenameUtils
 import org.joda.time.DateTimeZone
-import org.joda.time.Duration
-import org.joda.time.format.PeriodFormatterBuilder
 import java.io.Serializable
 
 @Keep
@@ -65,10 +64,7 @@ data class MediathekShow(
 				return "?"
 			}
 
-			val period = Duration.standardSeconds(duration.toLong()).toPeriod()
-			val formatter = if (period.hours > 0) hourPeriodFormatter else secondsPeriodFormatter
-
-			return period.toString(formatter)
+			return ShowDurationFormatter.formatSeconds(duration)
 		}
 
 	val hasSubtitle
@@ -121,7 +117,8 @@ data class MediathekShow(
 
 		// needed for samsung devices
 		val maxFileNameLength = 120
-		var fileName = if (title.length <= maxFileNameLength) title else title.substring(0, maxFileNameLength)
+		var fileName =
+			if (title.length <= maxFileNameLength) title else title.substring(0, maxFileNameLength)
 
 		// replace characters that may crash download manager
 		fileName = fileName.replace("[\\\\/:*?\"<>|%]".toRegex(), "-")
@@ -136,23 +133,5 @@ data class MediathekShow(
 
 	private fun isValidDownloadUrl(url: String?): Boolean {
 		return !TextUtils.isEmpty(url) && !url!!.endsWith("m3u8") && !url.endsWith("csmil")
-	}
-
-	companion object {
-
-		private val hourPeriodFormatter = PeriodFormatterBuilder()
-			.appendHours()
-			.appendSeparatorIfFieldsBefore("h ")
-			.appendMinutes()
-			.appendSeparatorIfFieldsBefore("m")
-			.toFormatter()
-
-		private val secondsPeriodFormatter = PeriodFormatterBuilder()
-			.appendMinutes()
-			.appendSeparatorIfFieldsBefore("m ")
-			.appendSeconds()
-			.appendSeparatorIfFieldsBefore("s")
-			.toFormatter()
-
 	}
 }

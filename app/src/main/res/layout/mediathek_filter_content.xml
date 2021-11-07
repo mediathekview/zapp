@@ -28,97 +28,6 @@
 
 	</com.google.android.material.textfield.TextInputLayout>
 
-	<!--com.google.android.material.textview.MaterialTextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/activity_vertical_margin"
-		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:text="Sendungslänge" />
-
-	<com.google.android.material.chip.ChipGroup
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="4min" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="4-15min" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="16-35min" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="36-60min" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text=">60min" />
-
-	</com.google.android.material.chip.ChipGroup>
-
-	<com.google.android.material.chip.ChipGroup
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		app:selectionRequired="true">
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Schnipsel" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Kurz" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Mittel" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Lang" />
-
-		<com.google.android.material.chip.Chip
-			style="@style/Widget.MaterialComponents.Chip.Choice"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:checked="true"
-			android:text="Sehr lang" />
-
-	</com.google.android.material.chip.ChipGroup-->
-
 	<com.google.android.material.textview.MaterialTextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -139,5 +48,52 @@
 			tools:visibility="visible" />
 
 	</com.google.android.material.chip.ChipGroup>
+
+	<com.google.android.material.textview.MaterialTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:paddingHorizontal="@dimen/activity_horizontal_margin"
+		android:text="@string/fragment_mediathek_duration" />
+
+	<com.google.android.material.slider.RangeSlider
+		android:id="@+id/show_length_slider"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="5"
+		android:stepSize="5.0"
+		android:valueFrom="@fraction/mediathek_filter_min_duration"
+		android:valueTo="@fraction/mediathek_filter_max_duration"
+		app:labelBehavior="gone"
+		app:values="@array/mediathek_filter_show_length_slider_initial_values" />
+
+	<androidx.appcompat.widget.LinearLayoutCompat
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="-8dp"
+		android:orientation="horizontal">
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/show_length_label_min"
+			style="@style/TextAppearance.MaterialComponents.Subtitle2"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:labelFor="@id/show_length_slider"
+			android:paddingHorizontal="@dimen/activity_horizontal_margin"
+			tools:text="0m" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/show_length_label_max"
+			style="@style/TextAppearance.MaterialComponents.Subtitle2"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:gravity="end"
+			android:labelFor="@id/show_length_slider"
+			android:paddingHorizontal="@dimen/activity_horizontal_margin"
+			tools:text="∞" />
+
+	</androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
