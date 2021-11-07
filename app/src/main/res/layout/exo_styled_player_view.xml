@@ -12,7 +12,8 @@
 <!-- Overwritten layout for StyledPlayerView.
      Original can be found at: https://github.com/google/ExoPlayer/blob/release-v2/library/ui/src/main/res/layout/exo_styled_player_view.xml
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 		android:id="@id/exo_content_frame"
@@ -32,7 +33,8 @@
 			android:id="@id/exo_artwork"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:scaleType="fitXY" />
+			android:scaleType="fitXY"
+			tools:ignore="ContentDescription" />
 
 		<com.google.android.exoplayer2.ui.SubtitleView
 			android:id="@id/exo_subtitles"
@@ -77,5 +79,5 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
 		android:indeterminate="true" />
-	
+
 </merge>

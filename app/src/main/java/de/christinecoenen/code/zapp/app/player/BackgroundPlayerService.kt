@@ -8,24 +8,22 @@ import android.graphics.Bitmap
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.google.android.exoplayer2.ui.DefaultMediaDescriptionAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ServiceLifecycleDispatcher
 import androidx.lifecycle.lifecycleScope
+import com.google.android.exoplayer2.ui.DefaultMediaDescriptionAdapter
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
 class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	MediaDescriptionAdapter,
@@ -232,7 +230,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 		return this.player.currentVideoInfo!!.title
 	}
 
-	override fun createCurrentContentIntent(player: com.google.android.exoplayer2.Player): PendingIntent? {
+	override fun createCurrentContentIntent(player: com.google.android.exoplayer2.Player): PendingIntent {
 		Timber.i("createCurrentContentIntent: %s", foregroundActivityIntent!!.component)
 
 		// a notification click will bring us back to the activity that launched it
