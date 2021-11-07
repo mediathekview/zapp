@@ -118,9 +118,6 @@
 	<string name="pref_download_to_sd_card_title">Downloads auf SD-Karte</string>
 	<string name="pref_download_to_sd_card_summary">Wenn verfügbar, werden Video-Dateien auf die SD-Karte gespeichert.</string>
 
-	<string name="pref_delete_search_queries_title">Suchanfragen löschen</string>
-	<string name="pref_delete_search_queries_dialog_message">Wirklich alle vergangenen Suchanfragen löschen?</string>
-
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>
 	<string name="notification_channel_name_download_progress">Download Fortschritt</string>

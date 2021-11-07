@@ -110,11 +110,6 @@
 			android:name=".app.player.BackgroundPlayerService"
 			android:exported="false" />
 
-		<provider
-			android:name=".app.mediathek.repository.MediathekSearchSuggestionsProvider"
-			android:authorities="de.christinecoenen.code.zapp.MediathekSearchSuggestionsProvider"
-			android:exported="false" />
-
 		<receiver
 			android:name=".utils.system.PackageUpdateReceiver"
 			android:enabled="true"
