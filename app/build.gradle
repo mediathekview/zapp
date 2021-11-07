@@ -74,7 +74,7 @@ dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
 	// kotlin
-	implementation 'androidx.core:core-ktx:1.6.0'
+	implementation 'androidx.core:core-ktx:1.7.0'
 
 	// tests
 	debugImplementation 'androidx.test:core:1.4.0'
@@ -105,7 +105,7 @@ dependencies {
 	implementation 'androidx.preference:preference-ktx:1.1.1'
 	implementation "androidx.paging:paging-runtime-ktx:3.0.1"
 
-	def lifecycle_version = "2.3.1"
+	def lifecycle_version = "2.4.0"
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
