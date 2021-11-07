@@ -79,16 +79,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
-		val showLengthLabelFormatter =
-			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
-		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
-		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, _ ->
-			val min = rangeSlider.values[0] * 60
-			val max =
-				if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
-			viewmodel.setLengthFilter(min, max)
-		}
-
+		setUpLengthFilter()
 		createChannelFilterView(inflater)
 
 		// only consume backPressedCallback when bottom sheet is not collapsed
@@ -253,6 +244,31 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private fun updateNoShowsMessage(loadState: LoadState) {
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
 		binding.noShows.isVisible = isAdapterEmpty
+	}
+
+	private fun setUpLengthFilter() {
+		val showLengthLabelFormatter =
+			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
+		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
+
+		// from ui to viewmodel
+		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, fromUser ->
+			if (!fromUser) {
+				return@addOnChangeListener
+			}
+
+			val min = rangeSlider.values[0] * 60
+			val max =
+				if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
+			viewmodel.setLengthFilter(min, max)
+		}
+
+		// from viewmodel to ui
+		viewmodel.lengthFilter.observe(viewLifecycleOwner) { lengthFilter ->
+			val min = lengthFilter.minDurationMinutes
+			val max = lengthFilter.maxDurationMinutes ?: binding.filter.showLengthSlider.valueTo
+			binding.filter.showLengthSlider.setValues(min, max)
+		}
 	}
 
 	private fun createChannelFilterView(inflater: LayoutInflater) {

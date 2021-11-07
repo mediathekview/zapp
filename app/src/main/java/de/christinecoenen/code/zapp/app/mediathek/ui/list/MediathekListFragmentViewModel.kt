@@ -31,7 +31,9 @@ class MediathekListFragmentViewModel(
 	}
 
 	private val _searchQuery = MutableStateFlow<String?>(null)
+
 	private val _lengthFilter = MutableStateFlow(LengthFilter())
+	val lengthFilter = _lengthFilter.asLiveData()
 
 	private val _channelFilter = MutableStateFlow(ChannelFilter())
 	val channelFilter = _channelFilter.asLiveData()
