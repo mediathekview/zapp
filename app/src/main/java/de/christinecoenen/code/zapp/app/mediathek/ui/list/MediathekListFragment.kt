@@ -287,10 +287,10 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		// viewmodel listener
 		viewmodel.channelFilter.observe(viewLifecycleOwner) { channelFilter ->
-			channelFilter.onEach {
-				val chip = chipMap[it.key]!!
-				if (chip.isChecked != it.value) {
-					chip.isChecked = it.value
+			for (filterItem in channelFilter) {
+				val chip = chipMap[filterItem.key]!!
+				if (chip.isChecked != filterItem.value) {
+					chip.isChecked = filterItem.value
 				}
 			}
 		}
