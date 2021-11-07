@@ -249,18 +249,21 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private fun setUpLengthFilter() {
 		val showLengthLabelFormatter =
 			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
+
+		updateLengthFilterLabels(showLengthLabelFormatter)
 		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
 
 		// from ui to viewmodel
 		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, fromUser ->
-			if (!fromUser) {
-				return@addOnChangeListener
-			}
 
-			val min = rangeSlider.values[0] * 60
-			val max =
-				if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
-			viewmodel.setLengthFilter(min, max)
+			updateLengthFilterLabels(showLengthLabelFormatter)
+
+			if (fromUser) {
+				val min = rangeSlider.values[0] * 60
+				val max =
+					if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
+				viewmodel.setLengthFilter(min, max)
+			}
 		}
 
 		// from viewmodel to ui
@@ -321,5 +324,12 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			val isChecked = clickedChannel == channel
 			viewmodel.setChannelFilter(channel, isChecked)
 		}
+	}
+
+	private fun updateLengthFilterLabels(formatter: ShowLengthLabelFormatter) {
+		binding.filter.showLengthLabelMin.text =
+			formatter.getFormattedValue(binding.filter.showLengthSlider.values[0])
+		binding.filter.showLengthLabelMax.text =
+			formatter.getFormattedValue(binding.filter.showLengthSlider.values[1])
 	}
 }

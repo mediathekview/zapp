@@ -7,7 +7,7 @@ class ShowLengthLabelFormatter(private val maxValue: Float) : LabelFormatter {
 
 	override fun getFormattedValue(value: Float): String {
 		if (value.compareTo(0) == 0) {
-			return "0"
+			return "0m"
 		}
 		if (value.compareTo(maxValue) == 0) {
 			return "∞"

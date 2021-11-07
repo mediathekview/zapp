@@ -60,9 +60,40 @@
 		android:id="@+id/show_length_slider"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:stepSize="1"
+		android:layout_weight="5"
+		android:stepSize="5.0"
 		android:valueFrom="0"
 		android:valueTo="120"
+		app:labelBehavior="gone"
 		app:values="@array/mediathek_filter_show_length_slider_initial_values" />
+
+	<androidx.appcompat.widget.LinearLayoutCompat
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="-8dp"
+		android:orientation="horizontal">
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/show_length_label_min"
+			style="@style/TextAppearance.MaterialComponents.Subtitle2"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:labelFor="@id/show_length_slider"
+			android:paddingHorizontal="@dimen/activity_horizontal_margin"
+			tools:text="0m" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/show_length_label_max"
+			style="@style/TextAppearance.MaterialComponents.Subtitle2"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:gravity="end"
+			android:labelFor="@id/show_length_slider"
+			android:paddingHorizontal="@dimen/activity_horizontal_margin"
+			tools:text="∞" />
+
+	</androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
