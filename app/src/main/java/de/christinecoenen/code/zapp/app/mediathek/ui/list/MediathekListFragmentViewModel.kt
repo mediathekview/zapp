@@ -12,7 +12,10 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlin.math.roundToInt
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -36,7 +39,10 @@ class MediathekListFragmentViewModel(
 	)
 	val channelFilter = _channelFilter.asLiveData()
 
-	val isFilterApplied = _channelFilter.map { it.containsValue(true) }.asLiveData()
+	val isFilterApplied = combine(_lengthFilter, _channelFilter) { lengthFilter, channelFilter ->
+		channelFilter.containsValue(true) || lengthFilter.first != 0 || lengthFilter.second != null
+	}
+		.asLiveData()
 
 	val pageFlow = combine(
 		_searchQuery,
@@ -57,6 +63,7 @@ class MediathekListFragmentViewModel(
 		val filter = _channelFilter.value.toMutableMap()
 		filter.forEach { filter[it.key] = false }
 		_channelFilter.tryEmit(filter)
+		_lengthFilter.tryEmit(Pair(0, null))
 	}
 
 	fun setLengthFilter(minLengthSeconds: Float?, maxLengthSeconds: Float?) {
