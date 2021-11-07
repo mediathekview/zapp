@@ -13,6 +13,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import kotlin.math.roundToInt
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class MediathekListFragmentViewModel(
@@ -25,6 +26,7 @@ class MediathekListFragmentViewModel(
 	}
 
 	private val _searchQuery = MutableStateFlow<String?>(null)
+	private val _lengthFilter = MutableStateFlow(Pair<Int?, Int?>(null, null))
 
 	private val _channelFilter = MutableStateFlow(
 		MediathekChannel.values()
@@ -36,8 +38,12 @@ class MediathekListFragmentViewModel(
 
 	val isFilterApplied = _channelFilter.map { it.containsValue(true) }.asLiveData()
 
-	val pageFlow = combine(_searchQuery, _channelFilter) { searchQuery, channelFilter ->
-		createQueryRequest(searchQuery, channelFilter)
+	val pageFlow = combine(
+		_searchQuery,
+		_lengthFilter,
+		_channelFilter
+	) { searchQuery, lengthFilter, channelFilter ->
+		createQueryRequest(searchQuery, lengthFilter, channelFilter)
 	}
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
@@ -51,6 +57,10 @@ class MediathekListFragmentViewModel(
 		val filter = _channelFilter.value.toMutableMap()
 		filter.forEach { filter[it.key] = false }
 		_channelFilter.tryEmit(filter)
+	}
+
+	fun setLengthFilter(minLengthSeconds: Float?, maxLengthSeconds: Float?) {
+		_lengthFilter.tryEmit(Pair(minLengthSeconds?.roundToInt(), maxLengthSeconds?.roundToInt()))
 	}
 
 	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {
@@ -67,10 +77,13 @@ class MediathekListFragmentViewModel(
 
 	private fun createQueryRequest(
 		searchQuery: String?,
+		lengthFilter: Pair<Int?, Int?>,
 		channelFilter: Map<MediathekChannel, Boolean>
 	): QueryRequest {
 		return QueryRequest().apply {
 			size = ITEM_COUNT_PER_PAGE
+			minDurationSeconds = lengthFilter.first ?: 0
+			maxDurationSeconds = lengthFilter.second
 			setQueryString(searchQuery)
 			channelFilter.onEach { setChannel(it.key, it.value) }
 		}

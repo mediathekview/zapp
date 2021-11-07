@@ -82,6 +82,12 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		val showLengthLabelFormatter =
 			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
 		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
+		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, _ ->
+			val min = rangeSlider.values[0] * 60
+			val max =
+				if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
+			viewmodel.setLengthFilter(min, max)
+		}
 
 		createChannelFilterView(inflater)
 
