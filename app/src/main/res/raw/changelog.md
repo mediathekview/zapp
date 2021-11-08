@@ -1,3 +1,7 @@
+# v-next
+* Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
+* Suchvorschläge entfernt
+
 # 5.0.2
 * Download-Abbrüche behoben
 

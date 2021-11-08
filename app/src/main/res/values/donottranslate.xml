@@ -8,6 +8,5 @@
 	<string name="pref_key_shortcuts">pref_shortcuts</string>
 	<string name="pref_key_player_zoomed">pref_key_player_zoomed</string>
 	<string name="pref_key_download_to_sd_card">pref_key_download_to_sd_card</string>
-	<string name="pref_key_delete_search_queries">pref_key_delete_search_queries</string>
 
 </resources>

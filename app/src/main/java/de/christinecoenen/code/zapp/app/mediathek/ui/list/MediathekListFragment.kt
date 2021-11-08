@@ -4,30 +4,35 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import de.christinecoenen.code.zapp.utils.view.InfiniteScrollListener
-import kotlinx.coroutines.Job
-import org.koin.android.ext.android.inject
-import timber.log.Timber
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownServiceException
 import javax.net.ssl.SSLHandshakeException
+
 
 class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 	companion object {
-
-		private const val ITEM_COUNT_PER_PAGE = 30
 
 		val instance
 			get() = MediathekListFragment()
@@ -38,26 +43,24 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private val binding: FragmentMediathekListBinding
 		get() = _binding!!
 
-	private val mediathekRepository: MediathekRepository by inject()
+	private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.filterBottomSheet) }
 
-	private var queryRequest = QueryRequest()
-	private var adapter: MediathekItemAdapter? = null
-	private var scrollListener: InfiniteScrollListener? = null
+	private val viewmodel: MediathekListFragmentViewModel by viewModel()
+	private lateinit var adapter: MediathekItemAdapter
+
 	private var longClickShow: MediathekShow? = null
-	private var getShowsJob: Job? = null
 
-	fun search(query: String?) {
-		queryRequest.setSimpleSearch(query)
-		loadItems(0, true)
+	private val backPressedCallback = object : OnBackPressedCallback(false) {
+		override fun handleOnBackPressed() {
+			// close bottom sheet first, before using system back button setting
+			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+		}
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		setHasOptionsMenu(true)
-
-		queryRequest = QueryRequest()
-		queryRequest.size = ITEM_COUNT_PER_PAGE
 	}
 
 	override fun onCreateView(
@@ -70,29 +73,75 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
 
-		scrollListener = object : InfiniteScrollListener(layoutManager) {
-			public override fun onLoadMore(totalItemCount: Int) {
-				loadItems(totalItemCount, false)
-			}
+		binding.filter.search.addTextChangedListener { editable ->
+			viewmodel.setSearchQueryFilter(editable.toString())
 		}
-
-		binding.list.addOnScrollListener(scrollListener!!)
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
-		adapter = MediathekItemAdapter(this@MediathekListFragment)
-		binding.list.adapter = adapter
+		setUpLengthFilter()
+		createChannelFilterView(inflater)
 
-		loadItems(0, true)
+		// only consume backPressedCallback when bottom sheet is not collapsed
+		bottomSheetBehavior.addBottomSheetCallback(object :
+			BottomSheetBehavior.BottomSheetCallback() {
+			override fun onStateChanged(bottomSheet: View, newState: Int) {
+				backPressedCallback.isEnabled = newState != BottomSheetBehavior.STATE_COLLAPSED
+			}
+
+			override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+		})
 
 		return binding.root
 	}
 
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
+
+		adapter = MediathekItemAdapter(MediathekShowComparator, this@MediathekListFragment)
+
+		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewmodel.pageFlow.collectLatest { pagingData ->
+				adapter.submitData(pagingData)
+			}
+		}
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			adapter.loadStateFlow
+				.drop(1)
+				.map { it.refresh }
+				.distinctUntilChanged()
+				.collectLatest { refreshState ->
+					binding.refreshLayout.isRefreshing = refreshState is LoadState.Loading
+					binding.error.isVisible = refreshState is LoadState.Error
+					updateNoShowsMessage(refreshState)
+
+					when (refreshState) {
+						is LoadState.Error -> onMediathekLoadErrorChanged(refreshState.error)
+						is LoadState.NotLoading -> binding.list.scrollToPosition(0)
+						is LoadState.Loading -> Unit
+					}
+				}
+		}
+	}
+
+	override fun onResume() {
+		super.onResume()
+		requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+	}
+
+	override fun onPause() {
+		super.onPause()
+		backPressedCallback.remove()
+	}
+
 	override fun onDestroyView() {
 		super.onDestroyView()
-
 		_binding = null
-		getShowsJob?.cancel()
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -100,8 +149,24 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		inflater.inflate(R.menu.fragment_mediathek_list, menu)
 	}
 
+	override fun onPrepareOptionsMenu(menu: Menu) {
+		super.onPrepareOptionsMenu(menu)
+
+		val filterIconResId = if (viewmodel.isFilterApplied.value == true) {
+			R.drawable.ic_sharp_filter_list_off_24
+		} else {
+			R.drawable.ic_sharp_filter_list_24
+		}
+		val filterItem = menu.findItem(R.id.menu_filter)
+		filterItem.setIcon(filterIconResId)
+	}
+
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
+			R.id.menu_filter -> {
+				onFilterMenuClicked()
+				true
+			}
 			R.id.menu_refresh -> {
 				onRefresh()
 				true
@@ -125,8 +190,15 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	override fun onRefresh() {
-		binding.refreshLayout.isRefreshing = true
-		loadItems(0, true)
+		adapter.refresh()
+	}
+
+	private fun onFilterMenuClicked() {
+		if (viewmodel.isFilterApplied.value == true) {
+			viewmodel.clearFilter()
+		} else {
+			toggleFilterBottomSheet()
+		}
 	}
 
 	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
@@ -144,23 +216,23 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		return false
 	}
 
-	private fun loadItems(startWith: Int, replaceItems: Boolean) {
-		Timber.d("loadItems: %s", startWith)
+	private fun onIsFilterAppliedChanged() {
+		requireActivity().invalidateOptionsMenu()
+	}
 
-		getShowsJob?.cancel()
+	private fun onMediathekLoadErrorChanged(e: Throwable) {
+		if (e is SSLHandshakeException || e is UnknownServiceException) {
+			showError(R.string.error_mediathek_ssl_error)
+		} else {
+			showError(R.string.error_mediathek_info_not_available)
+		}
+	}
 
-		binding.noShows.visibility = View.GONE
-		adapter?.setLoading(true)
-
-		queryRequest.offset = startWith
-
-		getShowsJob = lifecycleScope.launchWhenCreated {
-			try {
-				val shows = mediathekRepository.listShows(queryRequest)
-				onMediathekLoadSuccess(shows, replaceItems)
-			} catch (e: Exception) {
-				onMediathekLoadError(e)
-			}
+	private fun toggleFilterBottomSheet() {
+		if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+			bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+		} else {
+			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 		}
 	}
 
@@ -169,34 +241,95 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		binding.error.visibility = View.VISIBLE
 	}
 
-	private fun onMediathekLoadSuccess(shows: List<MediathekShow>, replaceItems: Boolean) {
-		adapter?.setLoading(false)
-		scrollListener?.setLoadingFinished()
+	private fun updateNoShowsMessage(loadState: LoadState) {
+		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
+		binding.noShows.isVisible = isAdapterEmpty
+	}
 
-		binding.refreshLayout.isRefreshing = false
-		binding.error.visibility = View.GONE
+	private fun setUpLengthFilter() {
+		val showLengthLabelFormatter =
+			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
 
-		if (replaceItems) {
-			adapter?.setShows(shows)
-		} else {
-			adapter?.addShows(shows)
+		updateLengthFilterLabels(showLengthLabelFormatter)
+		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
+
+		// from ui to viewmodel
+		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, fromUser ->
+
+			updateLengthFilterLabels(showLengthLabelFormatter)
+
+			if (fromUser) {
+				val min = rangeSlider.values[0] * 60
+				val max =
+					if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
+				viewmodel.setLengthFilter(min, max)
+			}
 		}
 
-		if (adapter?.itemCount == 1) {
-			binding.noShows.visibility = View.VISIBLE
+		// from viewmodel to ui
+		viewmodel.lengthFilter.observe(viewLifecycleOwner) { lengthFilter ->
+			val min = lengthFilter.minDurationMinutes
+			val max = lengthFilter.maxDurationMinutes ?: binding.filter.showLengthSlider.valueTo
+			binding.filter.showLengthSlider.setValues(min, max)
 		}
 	}
 
-	private fun onMediathekLoadError(e: Throwable) {
-		adapter?.setLoading(false)
-		binding.refreshLayout.isRefreshing = false
+	private fun createChannelFilterView(inflater: LayoutInflater) {
+		val chipMap = mutableMapOf<MediathekChannel, Chip>()
 
-		Timber.e(e)
+		for (channel in MediathekChannel.values()) {
+			// create view
+			val chip = inflater.inflate(
+				R.layout.view_mediathek_filter_channel_chip,
+				binding.filter.channels,
+				false
+			) as Chip
 
-		if (e is SSLHandshakeException || e is UnknownServiceException) {
-			showError(R.string.error_mediathek_ssl_error)
-		} else {
-			showError(R.string.error_mediathek_info_not_available)
+			// view properties
+			chip.text = channel.apiId
+
+			// ui listeners
+			chip.setOnCheckedChangeListener { _, isChecked ->
+				onChannelFilterCheckChanged(channel, isChecked)
+			}
+			chip.setOnLongClickListener {
+				onChannelFilterLongClick(channel)
+				true
+			}
+
+			// add to hierarchy
+			binding.filter.channels.addView(chip)
+
+			// cache for listeners
+			chipMap[channel] = chip
 		}
+
+		// viewmodel listener
+		viewmodel.channelFilter.observe(viewLifecycleOwner) { channelFilter ->
+			for (filterItem in channelFilter) {
+				val chip = chipMap[filterItem.key]!!
+				if (chip.isChecked != filterItem.value) {
+					chip.isChecked = filterItem.value
+				}
+			}
+		}
+	}
+
+	private fun onChannelFilterCheckChanged(channel: MediathekChannel, isChecked: Boolean) {
+		viewmodel.setChannelFilter(channel, isChecked)
+	}
+
+	private fun onChannelFilterLongClick(clickedChannel: MediathekChannel) {
+		for (channel in MediathekChannel.values()) {
+			val isChecked = clickedChannel == channel
+			viewmodel.setChannelFilter(channel, isChecked)
+		}
+	}
+
+	private fun updateLengthFilterLabels(formatter: ShowLengthLabelFormatter) {
+		binding.filter.showLengthLabelMin.text =
+			formatter.getFormattedValue(binding.filter.showLengthSlider.values[0])
+		binding.filter.showLengthLabelMax.text =
+			formatter.getFormattedValue(binding.filter.showLengthSlider.values[1])
 	}
 }
