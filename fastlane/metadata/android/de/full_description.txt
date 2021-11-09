@@ -1,0 +1,16 @@
+Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.
+
+<b>Features:</b>
+* Android-Client für MediathekView
+* Live-Streams von über 30 Sendern
+* Adaptives Streaming – passend zur Geschwindigkeit deiner Netzwerkverbindung
+* Schneller Sender-Wechsel
+* Aktuelle Programminformationen
+* Sender-Shortcuts für neuere Android-Versionen
+* Sendungen aus fast 20 Mediatheken zum Streamen
+* Bequeme Sendungssuche in der Mediathek
+* Zuschaltbare Untertitel für einige Mediathek-Sendungen
+* Teilen-Funktion für Live- und Mediathek-Videos
+* Hintergrund-Playback
+	
+<b>Achtung:</b> Wenn du Zapp außerhalb deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
