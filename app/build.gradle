@@ -165,4 +165,7 @@ dependencies {
 	implementation "io.insert-koin:koin-android:$koin_version"
 	androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 	testImplementation "io.insert-koin:koin-test:$koin_version"
+
+	// android tv
+	implementation 'androidx.leanback:leanback:1.0.0'
 }

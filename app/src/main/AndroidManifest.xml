@@ -12,6 +12,10 @@
 		android:name="android.hardware.touchscreen"
 		android:required="false" />
 
+	<uses-feature
+		android:name="android.software.leanback"
+		android:required="true" />
+
 	<application
 		android:name=".app.ZappApplication"
 		android:allowBackup="false"
@@ -30,6 +34,19 @@
 		<property
 			android:name="android.content.MEDIA_CAPABILITIES"
 			android:resource="@xml/media_capabilities" />
+
+		<!-- TODO: add banner -->
+		<activity
+			android:theme="@style/Theme.Leanback"
+			android:name=".tv.MainActivity"
+			android:exported="true"
+			android:screenOrientation="landscape">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+
+				<category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+			</intent-filter>
+		</activity>
 
 		<activity
 			android:name=".app.about.ui.ChangelogActivity"
