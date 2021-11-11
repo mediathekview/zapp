@@ -1,10 +1,11 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.text.TextUtils
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.models.shows.Quality
+import androidx.annotation.DrawableRes
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.Quality
 
 data class VideoInfo(
 	var id: Int = 0,
@@ -15,7 +16,8 @@ data class VideoInfo(
 	var subtitle: String? = null,
 	var subtitleUrl: String? = null,
 	var filePath: String? = null,
-	var hasDuration: Boolean = false
+	var hasDuration: Boolean = false,
+	@DrawableRes var artworkVectorDrawableResId: Int = 0
 ) {
 
 	companion object {
@@ -46,6 +48,7 @@ data class VideoInfo(
 			).apply {
 				url = channel.streamUrl
 				hasDuration = false
+				artworkVectorDrawableResId = channel.drawableId
 			}
 		}
 
@@ -57,6 +60,9 @@ data class VideoInfo(
 
 	val isOfflineVideo: Boolean
 		get() = filePath != null
+
+	val hasArtwork: Boolean
+		get() = artworkVectorDrawableResId != 0
 
 	fun getPlaybackUrlOrFilePath(quality: StreamQualityBucket): String {
 		return if (isOfflineVideo) {

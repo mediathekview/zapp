@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.player
 
+
 import android.content.Context
 import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
@@ -10,15 +11,19 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.util.MimeTypes
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.player.VideoInfoArtworkExtensions.getArtworkByteArray
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.io.IOException
+
 
 class Player(
-	context: Context,
+	private val context: Context,
 	private val playbackPositionRepository: IPlaybackPositionRepository
 ) {
 
@@ -178,14 +183,25 @@ class Player(
 	private fun getMediaItem(videoInfo: VideoInfo?): MediaItem {
 		val quality = requiredStreamQualityBucket
 		val uri = videoInfo!!.getPlaybackUrlOrFilePath(quality)
+
+		val mediaMetadataBuilder = MediaMetadata.Builder()
+			.setTitle(videoInfo.title)
+			.setArtist(videoInfo.subtitle)
+
+		if (videoInfo.hasArtwork) {
+			try {
+				val artworkData = videoInfo.getArtworkByteArray(context)
+				mediaMetadataBuilder
+					.setArtworkData(artworkData, MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+			} catch (e: IOException) {
+				// this is okay
+				Timber.w(e)
+			}
+		}
+
 		val mediaItemBuilder = MediaItem.Builder()
 			.setUri(uri)
-			.setMediaMetadata(
-				MediaMetadata.Builder()
-					.setTitle(videoInfo.title)
-					.setArtist(videoInfo.subtitle)
-					.build()
-			)
+			.setMediaMetadata(mediaMetadataBuilder.build())
 
 		// add subtitles if present
 		if (videoInfo.hasSubtitles) {

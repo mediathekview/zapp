@@ -1,6 +1,7 @@
 # v-next
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt
+* Sender-Logo in Benachrichtigung angezeigt
 
 # 5.0.2
 * Download-Abbrüche behoben
