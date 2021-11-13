@@ -8,7 +8,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
-import timber.log.Timber
+import de.christinecoenen.code.zapp.tv.player.PlayerActivity
 
 
 class MainFragment : VerticalGridSupportFragment() {
@@ -31,11 +31,15 @@ class MainFragment : VerticalGridSupportFragment() {
 
 		val gridPresenter = VerticalGridPresenter()
 		gridPresenter.numberOfColumns = 5
-		gridPresenter.setOnItemViewClickedListener { _, item, _, _ ->
-			val channel = item as ChannelModel
-			Timber.d("channel clicked: %s", channel.name)
-			// TODO: start player
-		}
 		setGridPresenter(gridPresenter)
+
+		gridPresenter.setOnItemViewClickedListener { _, item, _, _ ->
+			onChannelClicked(item as ChannelModel)
+		}
+	}
+
+	private fun onChannelClicked(channel: ChannelModel) {
+		val intent = PlayerActivity.getStartIntent(requireContext(), channel)
+		startActivity(intent)
 	}
 }
