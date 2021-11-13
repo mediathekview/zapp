@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -70,12 +69,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 	private fun onContextMenuItemClicked(menuItem: MenuItem, channel: ChannelModel): Boolean {
 		return when (menuItem.itemId) {
 			R.id.menu_share -> {
-				startActivity(
-					Intent.createChooser(
-						channel.videoShareIntent,
-						getString(R.string.action_share)
-					)
-				)
+				channel.playExternally(requireContext())
 				true
 			}
 			else -> false

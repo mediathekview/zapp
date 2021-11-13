@@ -2,6 +2,7 @@
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt
 * Sender-Logo in Benachrichtigung angezeigt
+* Beim Teilen von Sendungen wird immer die höchste verfügbare Qualität verwendet
 
 # 5.0.2
 * Download-Abbrüche behoben

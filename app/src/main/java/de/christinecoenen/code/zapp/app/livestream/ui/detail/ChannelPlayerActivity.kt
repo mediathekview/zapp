@@ -62,10 +62,7 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 
 	override fun onShareMenuItemClicked() {
 		val channel = viewModel.channel.value ?: return
-
-		startActivity(
-			Intent.createChooser(channel.videoShareIntent, getString(R.string.action_share))
-		)
+		channel.playExternally(this)
 	}
 
 	override suspend fun getVideoInfoFromIntent(intent: Intent): VideoInfo {

@@ -1,7 +1,5 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -246,12 +244,7 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun share(quality: Quality) {
-		val videoIntent = Intent(Intent.ACTION_VIEW).apply {
-			val url = persistedMediathekShow!!.mediathekShow.getVideoUrl(quality)
-			setDataAndType(Uri.parse(url), "video/*")
-		}
-
-		startActivity(Intent.createChooser(videoIntent, getString(R.string.action_share)))
+		persistedMediathekShow?.mediathekShow?.playExternally(requireContext(), quality)
 	}
 
 	private fun download(downloadQuality: Quality) {

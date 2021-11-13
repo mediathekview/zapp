@@ -1,10 +1,11 @@
 package de.christinecoenen.code.zapp.models.shows
 
-import android.content.Intent
+import android.content.Context
 import android.text.TextUtils
 import android.text.format.DateUtils
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import de.christinecoenen.code.zapp.utils.system.IntentHelper
 import de.christinecoenen.code.zapp.utils.view.ShowDurationFormatter
 import org.apache.commons.io.FilenameUtils
 import org.joda.time.DateTimeZone
@@ -70,13 +71,6 @@ data class MediathekShow(
 	val hasSubtitle
 		get() = !TextUtils.isEmpty(subtitleUrl)
 
-	val shareIntentPlain: Intent
-		get() = Intent(Intent.ACTION_SEND).apply {
-			type = "text/plain"
-			putExtra(Intent.EXTRA_SUBJECT, "$topic - $title")
-			putExtra(Intent.EXTRA_TEXT, videoUrl)
-		}
-
 	val supportedDownloadQualities: List<Quality>
 		get() = Quality.values().filter(::hasDownloadQuality)
 
@@ -110,6 +104,28 @@ data class MediathekShow(
 	fun getDownloadFileName(quality: Quality): String {
 		val videoUrl = getVideoUrl(quality)
 		return getDownloadFileName(videoUrl)
+	}
+
+	/**
+	 * Shares this shows url to other apps in the Android system.
+	 *
+	 * @param quality Quality to share. Default is highest available quality.
+	 * Non existing qualities will fall back to existing ones.
+	 */
+	fun shareExternally(context: Context, quality: Quality = Quality.High) {
+		val url = getVideoUrl(quality) ?: videoUrl
+		IntentHelper.shareLink(context, url, "$topic - $title")
+	}
+
+	/**
+	 * Shares this shows url to other video player or editor apps in the Android system.
+	 *
+	 * @param quality Quality to share. Default is highest available quality.
+	 * Non existing qualities will fall back to existing ones.
+	 */
+	fun playExternally(context: Context, quality: Quality = Quality.High) {
+		val url = getVideoUrl(quality) ?: videoUrl
+		IntentHelper.playVideo(context, url, "$topic - $title")
 	}
 
 	private fun getDownloadFileName(videoUrl: String?): String {
