@@ -47,3 +47,7 @@ Der Sender ist nicht mehr unter der Adresse erreichbar, die Zapp erwartet und mu
 ## Kann ich Sendungen nach Sender oder Länge filtern?
 
 Einen Sendungsfilter gibt es aktuell noch nicht, ist aber in Planung.
+
+## Warum unterstützt Zapp kein Chromecast?
+
+Chromecast kann nur über eine nicht-quelloffene Bibliothek in Android-Apps eingebunden werden. Da diese Bibliotheken nicht über F-Droid verteilt werden dürfen, kann Zapp Chromecast nicht unterstützen.

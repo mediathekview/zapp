@@ -3,6 +3,7 @@
 * Suchvorschläge entfernt
 * Sender-Logo in Benachrichtigung angezeigt
 * Beim Teilen von Sendungen wird immer die höchste verfügbare Qualität verwendet
+* FAQ-Eintrag zu Chromecast hinzugefügt
 
 # 5.0.2
 * Download-Abbrüche behoben
