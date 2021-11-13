@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.tv
+package de.christinecoenen.code.zapp.tv.main
 
 import android.os.Bundle
 import androidx.leanback.app.VerticalGridSupportFragment

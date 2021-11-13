@@ -38,7 +38,7 @@
 		<!-- TODO: add banner -->
 		<activity
 			android:theme="@style/Theme.Leanback"
-			android:name=".tv.MainActivity"
+			android:name=".tv.main.MainActivity"
 			android:exported="true"
 			android:screenOrientation="landscape">
 			<intent-filter>
