@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.tv.main
 
 import android.app.Application
 import android.view.ViewGroup
-import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import androidx.lifecycle.LifecycleOwner
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
@@ -15,7 +14,7 @@ class ChannelCardPresenter(
 ) : Presenter(), KoinComponent {
 
 	override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-		return ChannelCardViewHolder(ImageCardView(parent.context), lifecycleOwner)
+		return ChannelCardViewHolder(ChannelCardView(parent.context), lifecycleOwner)
 	}
 
 	override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {

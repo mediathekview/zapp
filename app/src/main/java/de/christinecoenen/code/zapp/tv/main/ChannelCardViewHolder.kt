@@ -1,20 +1,14 @@
 package de.christinecoenen.code.zapp.tv.main
 
-import android.graphics.drawable.InsetDrawable
-import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import kotlinx.coroutines.Job
-import kotlin.math.max
-import kotlin.math.roundToInt
 
 class ChannelCardViewHolder(
-	private val imageCardView: ImageCardView,
+	private val imageCardView: ChannelCardView,
 	private val lifecycleOwner: LifecycleOwner
 ) : Presenter.ViewHolder(imageCardView) {
 
@@ -40,31 +34,24 @@ class ChannelCardViewHolder(
 	}
 
 	private fun onShowTitleChanged(title: String) {
-		imageCardView.contentText = title
+		imageCardView.setShowTitle(title)
 	}
 
 	private fun onShowSubtitleChanged(subtitle: String?) {
-
+		imageCardView.setShowSubtitle(subtitle)
 	}
 
 	private fun onShowTimeChanged(time: String?) {
-
+		imageCardView.setShowTime(time)
 	}
 
 	private fun onShowProgressPercentChanged(progressPercent: Float?) {
-
+		imageCardView.setshowProgress(progressPercent)
 	}
 
 	private fun setViewToChannel(channel: ChannelModel) {
-		imageCardView.setMainImageDimensions(200, 100)
-		imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
-		imageCardView.setMainImageAdjustViewBounds(true)
-
-		val logoDrawable = AppCompatResources.getDrawable(view.context, channel.drawableId)!!
-		val inset =
-			(max(logoDrawable.intrinsicHeight, logoDrawable.intrinsicWidth) * 0.25).roundToInt()
-		imageCardView.titleText = channel.name
-		imageCardView.mainImage = InsetDrawable(logoDrawable, inset)
+		imageCardView.setChannelSubtitle(channel.subtitle)
+		imageCardView.setLogo(channel.drawableId)
 	}
 
 	private fun startLoadingProgramInfo(channel: ChannelModel) {
@@ -95,6 +82,6 @@ class ChannelCardViewHolder(
 	}
 
 	private fun setViewLoading() {
-		imageCardView.contentText = "..."
+		imageCardView.setShowTitle("...")
 	}
 }

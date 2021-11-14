@@ -30,7 +30,7 @@ class MainFragment : VerticalGridSupportFragment() {
 		}
 
 		val gridPresenter = VerticalGridPresenter()
-		gridPresenter.numberOfColumns = 5
+		gridPresenter.numberOfColumns = 2
 		setGridPresenter(gridPresenter)
 
 		gridPresenter.setOnItemViewClickedListener { _, item, _, _ ->
