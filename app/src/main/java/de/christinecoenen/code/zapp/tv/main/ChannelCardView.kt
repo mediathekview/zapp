@@ -65,8 +65,18 @@ class ChannelCardView : BaseCardView {
 		if (showProgress == null) {
 			binding.showProgress.isVisible = false
 		} else {
+			binding.showProgress.isIndeterminate = false
 			binding.showProgress.isVisible = true
 			binding.showProgress.progress = (showProgress * binding.showProgress.max).roundToInt()
 		}
+	}
+
+	fun setLoading() {
+		setShowTitle(null)
+		setShowSubtitle(null)
+		setShowTime(null)
+
+		binding.showProgress.isIndeterminate = true
+		binding.showProgress.isVisible = true
 	}
 }

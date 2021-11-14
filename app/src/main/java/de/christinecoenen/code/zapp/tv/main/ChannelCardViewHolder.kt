@@ -82,6 +82,6 @@ class ChannelCardViewHolder(
 	}
 
 	private fun setViewLoading() {
-		imageCardView.setShowTitle("...")
+		imageCardView.setLoading()
 	}
 }
