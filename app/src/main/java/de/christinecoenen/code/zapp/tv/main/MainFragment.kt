@@ -22,7 +22,7 @@ class MainFragment : VerticalGridSupportFragment() {
 
 		channelList = SortableVisibleJsonChannelList(requireContext())
 
-		val adapter = ArrayObjectAdapter(ChannelCardPresenter())
+		val adapter = ArrayObjectAdapter(ChannelCardPresenter(this))
 		setAdapter(adapter)
 
 		for (channel in channelList) {

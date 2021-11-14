@@ -1,33 +1,34 @@
 package de.christinecoenen.code.zapp.tv.main
 
-import android.graphics.drawable.InsetDrawable
+import android.app.Application
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
+import androidx.lifecycle.LifecycleOwner
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import kotlin.math.max
-import kotlin.math.roundToInt
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class ChannelCardPresenter : Presenter() {
+class ChannelCardPresenter(
+	private val lifecycleOwner: LifecycleOwner
+) : Presenter(), KoinComponent {
 
 	override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-		return ViewHolder(ImageCardView(parent.context))
+		return ChannelCardViewHolder(ImageCardView(parent.context), lifecycleOwner)
 	}
 
 	override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-		val view = viewHolder.view as ImageCardView
-		view.setMainImageDimensions(200, 100)
-		view.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
-		view.setMainImageAdjustViewBounds(true)
+		val testViewHolder = viewHolder as ChannelCardViewHolder
+
+		val programInfoViewModel =
+			ProgramInfoViewModel(viewHolder.view.context.applicationContext as Application, get())
 
 		val channel = item as ChannelModel
-		val logoDrawable = AppCompatResources.getDrawable(view.context, channel.drawableId)!!
-		val inset = (max(logoDrawable.intrinsicHeight, logoDrawable.intrinsicWidth) * 0.25).roundToInt()
-		view.titleText = channel.name
-		view.mainImage = InsetDrawable(logoDrawable, inset)
+		testViewHolder.setChannel(programInfoViewModel, channel)
 	}
 
-	override fun onUnbindViewHolder(viewHolder: ViewHolder) {}
+	override fun onUnbindViewHolder(viewHolder: ViewHolder) {
+		(viewHolder as ChannelCardViewHolder).recycle()
+	}
 }
