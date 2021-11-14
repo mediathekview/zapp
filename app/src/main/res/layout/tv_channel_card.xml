@@ -6,7 +6,7 @@
 	android:layout_height="100dp"
 	android:padding="16dp">
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<ImageView
 		android:id="@+id/logo"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
@@ -18,7 +18,7 @@
 		app:layout_constraintVertical_chainStyle="spread_inside"
 		tools:src="@drawable/channel_logo_arte" />
 
-	<com.google.android.material.textview.MaterialTextView
+	<TextView
 		android:id="@+id/channel_subtitle"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 		android:orientation="vertical"
 		app:layout_constraintGuide_begin="80dp" />
 
-	<com.google.android.material.textview.MaterialTextView
+	<TextView
 		android:id="@+id/show_title"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 		app:layout_goneMarginStart="16dp"
 		tools:text="Some funny show" />
 
-	<com.google.android.material.textview.MaterialTextView
+	<TextView
 		android:id="@+id/show_subtitle"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
 		app:layout_goneMarginStart="16dp"
 		tools:text="Some funny show" />
 
-	<com.google.android.material.textview.MaterialTextView
+	<TextView
 		android:id="@+id/show_time"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
