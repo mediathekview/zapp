@@ -49,4 +49,10 @@ class PlayerFragment : VideoSupportFragment() {
 		transportControlGlue.pause()
 	}
 
+	override fun onDestroy() {
+		super.onDestroy()
+
+		player.pause()
+		player.exoPlayer.release()
+	}
 }
