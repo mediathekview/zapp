@@ -47,9 +47,15 @@
 				<category android:name="android.intent.category.LEANBACK_LAUNCHER" />
 			</intent-filter>
 		</activity>
+
 		<activity
 			android:theme="@style/LeanbackAppTheme"
 			android:name=".tv.player.PlayerActivity"
+			android:screenOrientation="landscape" />
+
+		<activity
+			android:theme="@style/LeanbackAppTheme"
+			android:name=".tv.error.ErrorActivity"
 			android:screenOrientation="landscape" />
 
 		<activity

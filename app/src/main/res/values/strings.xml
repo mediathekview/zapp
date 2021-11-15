@@ -45,6 +45,7 @@
 	<string name="fragment_downloads_no_results">keine Downloads vorhanden</string>
 
 	<!-- error messages -->
+	<string name="error_informal">Upsi!</string>
 	<string name="error_report">Fehler melden</string>
 	<string name="error_app_crash">Entschuldigung, es gab einen Fehler.\nMöchtest du per Mail einen Fehlerbericht an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
 	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>

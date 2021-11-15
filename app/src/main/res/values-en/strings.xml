@@ -45,6 +45,7 @@
 	<string name="fragment_downloads_no_results">no downloads available</string>
 
 	<!-- error messages -->
+	<string name="error_informal">Oops!</string>
 	<string name="error_report">Report error</string>
 	<string name="error_app_crash">We are very sorry, but an error occurred.\nWould you like to send an error report to the developer to help fix this problem?</string>
 	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>

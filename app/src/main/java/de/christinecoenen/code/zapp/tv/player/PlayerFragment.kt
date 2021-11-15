@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.tv.player
 
 import android.os.Bundle
+import androidx.annotation.StringRes
 import androidx.leanback.app.VideoSupportFragment
 import androidx.leanback.app.VideoSupportFragmentGlueHost
 import androidx.leanback.media.PlaybackTransportControlGlue
@@ -10,6 +11,8 @@ import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
+import de.christinecoenen.code.zapp.tv.error.ErrorActivity
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 class PlayerFragment : VideoSupportFragment() {
@@ -36,11 +39,19 @@ class PlayerFragment : VideoSupportFragment() {
 		transportControlGlue.isSeekEnabled = true
 		transportControlGlue.playWhenPrepared()
 
-		// TODO: add error handling
-
 		lifecycleScope.launchWhenCreated {
 			player.load(VideoInfo.fromChannel(channel))
 			player.resume()
+		}
+
+		lifecycleScope.launchWhenCreated {
+			player.errorResourceId.collect {
+				if (it == null || it == -1) {
+					return@collect
+				}
+
+				onError(it)
+			}
 		}
 	}
 
@@ -54,5 +65,12 @@ class PlayerFragment : VideoSupportFragment() {
 
 		player.pause()
 		player.exoPlayer.release()
+	}
+
+	private fun onError(@StringRes messageResId: Int) {
+		val message = getString(messageResId)
+		val intent = ErrorActivity.getStartIntent(requireContext(), message)
+		startActivity(intent)
+		requireActivity().finish()
 	}
 }
