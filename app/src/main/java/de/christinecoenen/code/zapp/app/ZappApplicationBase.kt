@@ -7,15 +7,15 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.tv.error.CrashActivity
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper.createBackgroundPlaybackChannel
 import org.acra.ACRA
-import org.acra.ACRA.init
 import org.acra.BuildConfig
 import org.acra.ReportField
-import org.acra.config.CoreConfigurationBuilder
-import org.acra.config.DialogConfigurationBuilder
-import org.acra.config.MailSenderConfigurationBuilder
+import org.acra.config.dialog
+import org.acra.config.mailSender
 import org.acra.data.StringFormat
+import org.acra.ktx.initAcra
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.Koin
@@ -68,48 +68,60 @@ abstract class ZappApplicationBase : Application() {
 	protected abstract fun setUpLogging()
 
 	private fun setUpCrashReporting() {
-		val builder = CoreConfigurationBuilder(this)
-			.apply {
-				buildConfigClass = BuildConfig::class.java
-				reportFormat = StringFormat.KEY_VALUE_LIST
-				reportContent = arrayOf(
-					ReportField.REPORT_ID,
-					ReportField.USER_EMAIL,
-					ReportField.USER_COMMENT,
-					ReportField.IS_SILENT,
-					ReportField.USER_CRASH_DATE,
-					ReportField.APP_VERSION_NAME,
-					ReportField.APP_VERSION_CODE,
-					ReportField.ANDROID_VERSION,
-					ReportField.PHONE_MODEL,
-					ReportField.BRAND,
-					ReportField.SHARED_PREFERENCES,
-					ReportField.STACK_TRACE
-				)
-				excludeMatchingSharedPreferencesKeys = arrayOf(
-					"default.acra.legacyAlreadyConvertedToJson",
-					"default.acra.lastVersionNr",
-					"default.acra.legacyAlreadyConvertedTo4.8.0"
-				)
+		val useLeanbackDialog = resources.getBoolean(R.bool.is_leanback_ui)
+		val useAppDialog = !useLeanbackDialog
 
-				getPluginConfigurationBuilder(DialogConfigurationBuilder::class.java)
-					.withResText(R.string.error_app_crash)
-					.withResTitle(R.string.app_name)
-					.withResIcon(R.drawable.ic_sad_tv)
-					.withResPositiveButtonText(R.string.action_continue)
-					.withResTheme(R.style.ChrashDialog)
-					.withEnabled(true)
+		initAcra {
+			buildConfigClass = BuildConfig::class.java
+			reportFormat = StringFormat.KEY_VALUE_LIST
+			reportContent = arrayOf(
+				ReportField.REPORT_ID,
+				ReportField.USER_EMAIL,
+				ReportField.USER_COMMENT,
+				ReportField.IS_SILENT,
+				ReportField.USER_CRASH_DATE,
+				ReportField.APP_VERSION_NAME,
+				ReportField.APP_VERSION_CODE,
+				ReportField.ANDROID_VERSION,
+				ReportField.PHONE_MODEL,
+				ReportField.BRAND,
+				ReportField.SHARED_PREFERENCES,
+				ReportField.STACK_TRACE
+			)
+			excludeMatchingSharedPreferencesKeys = arrayOf(
+				"default.acra.legacyAlreadyConvertedToJson",
+				"default.acra.lastVersionNr",
+				"default.acra.legacyAlreadyConvertedTo4.8.0"
+			)
 
-
-				getPluginConfigurationBuilder(MailSenderConfigurationBuilder::class.java)
-					.withMailTo("Zapp Entwicklung <code.coenen@gmail.com>")
-					.withResSubject(R.string.error_app_crash_mail_subject)
-					.withResBody(R.string.error_app_crash_mail_body)
-					.withReportAsFile(false)
-					.withEnabled(true)
+			// app dialog
+			dialog {
+				text = getString(R.string.error_app_crash)
+				title = getString(R.string.app_name)
+				resIcon = R.drawable.ic_sad_tv
+				positiveButtonText = getString(R.string.action_continue)
+				resTheme = R.style.ChrashDialog
+				enabled = useAppDialog
 			}
 
-		init(this, builder)
+			// leanback dialog
+			dialog {
+				title = getString(R.string.error_informal)
+				text = getString(R.string.error_app_crash_tv)
+				resIcon = R.drawable.ic_sad_tv
+				resTheme = R.style.LeanbackAppTheme
+				reportDialogClass = CrashActivity::class.java
+				enabled = useLeanbackDialog
+			}
+
+			mailSender {
+				mailTo = "Zapp Entwicklung <code.coenen@gmail.com>"
+				subject = getString(R.string.error_app_crash_mail_subject)
+				body = getString(R.string.error_app_crash_mail_body)
+				reportAsFile = false
+				enabled = useAppDialog
+			}
+		}
 	}
 
 }

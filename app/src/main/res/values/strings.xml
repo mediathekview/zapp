@@ -48,6 +48,7 @@
 	<string name="error_informal">Upsi!</string>
 	<string name="error_report">Fehler melden</string>
 	<string name="error_app_crash">Entschuldigung, es gab einen Fehler.\nMöchtest du per Mail einen Fehlerbericht an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
+	<string name="error_app_crash_tv">Entschuldigung, Zapp ist abgestürtzt.</string>
 	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
 	<string name="error_app_crash_mail_body">Vielen Dank für die Rückmeldung!\n\nFolgende Informationen helfen den Entwicklern von Zapp, den Fehler zu beheben:\n</string>
 
