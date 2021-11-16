@@ -19,6 +19,7 @@
 	<application
 		android:name=".app.ZappApplication"
 		android:allowBackup="false"
+		android:banner="@mipmap/ic_banner"
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
 		android:resizeableActivity="true"
@@ -35,12 +36,11 @@
 			android:name="android.content.MEDIA_CAPABILITIES"
 			android:resource="@xml/media_capabilities" />
 
-		<!-- TODO: add banner -->
 		<activity
-			android:theme="@style/LeanbackAppTheme"
 			android:name=".tv.main.MainActivity"
 			android:exported="true"
-			android:screenOrientation="landscape">
+			android:screenOrientation="landscape"
+			android:theme="@style/LeanbackAppTheme">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -49,23 +49,23 @@
 		</activity>
 
 		<activity
-			android:theme="@style/LeanbackAppTheme"
 			android:name=".tv.player.PlayerActivity"
-			android:screenOrientation="landscape" />
-
-		<activity
-			android:theme="@style/LeanbackAppTheme"
-			android:name=".tv.error.ErrorActivity"
-			android:screenOrientation="landscape" />
-
-		<activity
-			android:theme="@style/LeanbackAppTheme"
-			android:name=".tv.error.CrashActivity"
 			android:screenOrientation="landscape"
-			android:process=":acra"
+			android:theme="@style/LeanbackAppTheme" />
+
+		<activity
+			android:name=".tv.error.ErrorActivity"
+			android:screenOrientation="landscape"
+			android:theme="@style/LeanbackAppTheme" />
+
+		<activity
+			android:name=".tv.error.CrashActivity"
 			android:excludeFromRecents="true"
 			android:finishOnTaskLaunch="true"
-			android:launchMode="singleInstance" />
+			android:launchMode="singleInstance"
+			android:process=":acra"
+			android:screenOrientation="landscape"
+			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
 			android:name=".app.about.ui.ChangelogActivity"
