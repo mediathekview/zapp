@@ -8,6 +8,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
+import de.christinecoenen.code.zapp.tv.main.channels.ChannelCardPresenter
 import de.christinecoenen.code.zapp.tv.player.PlayerActivity
 
 

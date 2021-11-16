@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.tv.main
+package de.christinecoenen.code.zapp.tv.main.channels
 
 import android.content.Context
 import android.util.AttributeSet
