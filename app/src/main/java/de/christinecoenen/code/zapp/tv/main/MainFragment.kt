@@ -1,46 +1,44 @@
 package de.christinecoenen.code.zapp.tv.main
 
 import android.os.Bundle
-import androidx.leanback.app.VerticalGridSupportFragment
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.VerticalGridPresenter
-import de.christinecoenen.code.zapp.R
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
+import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
+import de.christinecoenen.code.zapp.databinding.TvFragmentMainBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
-import de.christinecoenen.code.zapp.tv.main.channels.ChannelCardPresenter
 import de.christinecoenen.code.zapp.tv.player.PlayerActivity
 
 
-class MainFragment : VerticalGridSupportFragment() {
+class MainFragment : Fragment(), ListItemListener {
 
 	private lateinit var channelList: ISortableChannelList
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		title = getString(R.string.app_name)
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
+		val binding = TvFragmentMainBinding.inflate(inflater, container, false)
 
 		channelList = SortableVisibleJsonChannelList(requireContext())
 
-		val adapter = ArrayObjectAdapter(ChannelCardPresenter(this))
-		setAdapter(adapter)
+		binding.grid.setNumColumns(2)
+		binding.grid.adapter = ChannelListAdapter(channelList, this, this)
 
-		for (channel in channelList) {
-			adapter.add(channel)
-		}
-
-		val gridPresenter = VerticalGridPresenter()
-		gridPresenter.numberOfColumns = 2
-		setGridPresenter(gridPresenter)
-
-		gridPresenter.setOnItemViewClickedListener { _, item, _, _ ->
-			onChannelClicked(item as ChannelModel)
-		}
+		return binding.root
 	}
 
-	private fun onChannelClicked(channel: ChannelModel) {
+	override fun onItemClick(channel: ChannelModel) {
 		val intent = PlayerActivity.getStartIntent(requireContext(), channel)
 		startActivity(intent)
+	}
+
+	override fun onItemLongClick(channel: ChannelModel, view: View) {
+		// no action
 	}
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingHorizontal="64dp">
+
+	<androidx.leanback.widget.VerticalGridView
+		android:id="@+id/grid"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:clipToPadding="false"
+		android:horizontalSpacing="16dp"
+		android:paddingTop="64dp"
+		android:paddingBottom="16dp"
+		android:verticalSpacing="8dp"
+		app:focusOutFront="true"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:listitem="@layout/fragment_channel_list_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
