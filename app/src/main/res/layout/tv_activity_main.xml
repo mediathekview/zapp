@@ -8,7 +8,7 @@
 	tools:deviceIds="tv">
 
 	<androidx.fragment.app.FragmentContainerView
-		android:id="@+id/pizza_grid_fragment"
+		android:id="@+id/main_fragment"
 		android:name="de.christinecoenen.code.zapp.tv.main.MainFragment"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />

@@ -59,6 +59,11 @@
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
+			android:name=".tv.changelog.ChangelogActivity"
+			android:screenOrientation="landscape"
+			android:theme="@style/LeanbackAppTheme" />
+
+		<activity
 			android:name=".tv.error.CrashActivity"
 			android:excludeFromRecents="true"
 			android:finishOnTaskLaunch="true"

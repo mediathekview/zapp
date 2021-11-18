@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.TvAboutItemBinding
 
-class AboutListAdapter : RecyclerView.Adapter<AboutViewViewHolder>() {
+class AboutListAdapter(
+	private val listener: AboutItemListener
+) : RecyclerView.Adapter<AboutViewViewHolder>() {
 
 	private val aboutItems = listOf(
 		AboutItem(R.string.activity_changelog_title, R.drawable.ic_sharp_format_list_bulleted_24),
@@ -16,7 +18,7 @@ class AboutListAdapter : RecyclerView.Adapter<AboutViewViewHolder>() {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AboutViewViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = TvAboutItemBinding.inflate(layoutInflater, parent, false)
-		return AboutViewViewHolder(binding)
+		return AboutViewViewHolder(binding, listener)
 	}
 
 	override fun onBindViewHolder(holder: AboutViewViewHolder, position: Int) {

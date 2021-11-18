@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.databinding.TvFragmentAboutBinding
-import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import de.christinecoenen.code.zapp.tv.player.PlayerActivity
+import de.christinecoenen.code.zapp.tv.changelog.ChangelogActivity
 
 
-class AboutFragment : Fragment(), ListItemListener {
+class AboutFragment : Fragment(), AboutItemListener {
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -21,18 +19,14 @@ class AboutFragment : Fragment(), ListItemListener {
 	): View {
 		val binding = TvFragmentAboutBinding.inflate(inflater, container, false)
 
-		binding.grid.adapter = AboutListAdapter()
+		binding.grid.adapter = AboutListAdapter(this)
 		binding.grid.layoutManager = GridLayoutManager(requireContext(), 2)
 
 		return binding.root
 	}
 
-	override fun onItemClick(channel: ChannelModel) {
-		val intent = PlayerActivity.getStartIntent(requireContext(), channel)
+	override fun onclick(item: AboutItem) {
+		val intent = ChangelogActivity.getStartIntent(requireContext())
 		startActivity(intent)
-	}
-
-	override fun onItemLongClick(channel: ChannelModel, view: View) {
-		// no action
 	}
 }
