@@ -5,14 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.TvAboutItemBinding
+import de.christinecoenen.code.zapp.tv.changelog.ChangelogActivity
+import de.christinecoenen.code.zapp.tv.faq.FaqActivity
 
 class AboutListAdapter(
 	private val listener: AboutItemListener
 ) : RecyclerView.Adapter<AboutViewViewHolder>() {
 
 	private val aboutItems = listOf(
-		AboutItem(R.string.activity_changelog_title, R.drawable.ic_sharp_format_list_bulleted_24),
-		AboutItem(R.string.activity_faq_title, R.drawable.ic_baseline_help_outline_24),
+		AboutItem(
+			R.string.activity_changelog_title,
+			R.drawable.ic_sharp_format_list_bulleted_24,
+			ChangelogActivity
+		),
+		AboutItem(
+			R.string.activity_faq_title,
+			R.drawable.ic_baseline_help_outline_24,
+			FaqActivity
+		),
 	)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AboutViewViewHolder {

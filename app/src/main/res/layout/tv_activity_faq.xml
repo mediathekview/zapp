@@ -14,7 +14,7 @@
 		android:background="?colorPrimary"
 		android:paddingHorizontal="64dp"
 		android:paddingVertical="16dp"
-		android:text="@string/activity_changelog_title"
+		android:text="@string/activity_faq_title"
 		app:layout_constraintTop_toTopOf="parent" />
 
 	<ScrollView

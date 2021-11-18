@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import de.christinecoenen.code.zapp.databinding.TvFragmentAboutBinding
-import de.christinecoenen.code.zapp.tv.changelog.ChangelogActivity
 
 
 class AboutFragment : Fragment(), AboutItemListener {
@@ -26,7 +25,7 @@ class AboutFragment : Fragment(), AboutItemListener {
 	}
 
 	override fun onclick(item: AboutItem) {
-		val intent = ChangelogActivity.getStartIntent(requireContext())
+		val intent = item.startableActivity.getStartIntent(requireContext())
 		startActivity(intent)
 	}
 }

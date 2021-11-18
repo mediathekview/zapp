@@ -59,6 +59,11 @@
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
+			android:name=".tv.faq.FaqActivity"
+			android:screenOrientation="landscape"
+			android:theme="@style/LeanbackAppTheme" />
+
+		<activity
 			android:name=".tv.changelog.ChangelogActivity"
 			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
