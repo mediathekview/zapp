@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
 
 	override fun onResume() {
 		super.onResume()
-		binding.viewpager.requestFocus()
+		binding.tabs.getTabAt(0)?.view?.requestFocus()
 	}
 
 	fun onBackPressed(): Boolean {
