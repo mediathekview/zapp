@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.tv.about.AboutFragment
 import de.christinecoenen.code.zapp.tv.channels.ChannelListFragment
 import kotlin.reflect.KClass
 
@@ -16,7 +17,7 @@ class MainNavPagerAdapter(
 
 	private val navItems = listOf(
 		MainNavItem(R.string.activity_main_tab_live, ChannelListFragment::class),
-		MainNavItem(R.string.menu_about_short, ChannelListFragment::class),
+		MainNavItem(R.string.menu_about_short, AboutFragment::class),
 	)
 
 	override fun getCount(): Int = navItems.size

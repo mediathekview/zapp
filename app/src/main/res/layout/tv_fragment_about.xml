@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/grid"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:focusOutFront="true"
+		app:layout_constraintBottom_toTopOf="@id/app_description"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintStart_toEndOf="@id/app_icon"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		tools:listitem="@layout/tv_about_item" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/app_icon"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:padding="64dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintWidth_percent="0.5"
+		app:shapeAppearance="@drawable/circular"
+		app:srcCompat="@drawable/ic_zapp_tv"
+		app:tint="@color/colorSurface" />
+
+	<TextView
+		android:id="@+id/app_description"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="8dp"
+		android:layout_marginTop="32dp"
+		android:text="@string/aboutLibraries_description_text"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="@id/grid"
+		app:layout_constraintStart_toStartOf="@id/grid"
+		app:layout_constraintTop_toBottomOf="@id/grid" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
