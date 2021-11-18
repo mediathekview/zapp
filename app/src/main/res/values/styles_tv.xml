@@ -17,25 +17,13 @@
 		<!--- leanback color overrides -->
 		<item name="playbackProgressPrimaryColor">@color/colorPrimary</item>
 		<item name="playbackProgressSecondaryColor">@color/colorAccent</item>
-
-		<!-- image card -->
-		<item name="imageCardViewStyle">@style/ImageCardViewStyle</item>
-		<item name="imageCardViewInfoAreaStyle">@style/ImageCardInfoAreaStyle</item>
-		<item name="imageCardViewTitleStyle">@style/ImageCardTitleStyle</item>
-
-		<item name="browseTitleTextStyle">@style/BrowseTitleTetxtStyle</item>
 	</style>
 
-	<style name="ImageCardViewStyle" parent="Widget.Leanback.ImageCardViewStyle">
-		<item name="cardBackground">?colorSurface</item>
+	<style name="TvCardStyle">
+		<item name="android:background">?colorSurface</item>
+		<item name="android:foreground">@color/tv_card_foreground_color</item>
+		<item name="android:focusable">true</item>
+		<item name="android:focusableInTouchMode">true</item>
 	</style>
-
-	<style name="ImageCardInfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
-		<item name="android:background">?colorPrimary</item>
-	</style>
-
-	<style name="ImageCardTitleStyle" parent="Widget.Leanback.ImageCardView.TitleStyle" />
-
-	<style name="BrowseTitleTetxtStyle" parent="Widget.Leanback.Title.Text" />
 
 </resources>
