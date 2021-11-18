@@ -12,7 +12,7 @@
 		android:theme="@style/Theme.AppCompat"
 		app:layout_constraintTop_toTopOf="parent"
 		app:tabIndicatorColor="@android:color/white"
-		app:tabTextAppearance="@style/TextAppearance.Leanback.ImageCardView.Title" />
+		app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
 	<androidx.leanback.tab.LeanbackViewPager
 		android:id="@+id/viewpager"
