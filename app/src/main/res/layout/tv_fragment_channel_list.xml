@@ -14,7 +14,7 @@
 		android:horizontalSpacing="16dp"
 		android:paddingTop="64dp"
 		android:paddingBottom="16dp"
-		android:verticalSpacing="8dp"
+		android:verticalSpacing="16dp"
 		app:focusOutFront="true"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintTop_toTopOf="parent"

@@ -7,16 +7,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import kotlinx.coroutines.Job
 import kotlin.math.roundToInt
 
 class ChannelViewHolder(
-	private val binding: FragmentChannelListItemBinding,
+	private val bindingAdapter: IChannelViewBindingAdapter,
 	private val lifecycleOwner: LifecycleOwner,
 	private val listener: ListItemListener
-) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, OnLongClickListener {
+) : RecyclerView.ViewHolder(bindingAdapter.rootView), View.OnClickListener, OnLongClickListener {
 
 	private var channel: ChannelModel? = null
 	private var loadingJob: Job? = null
@@ -25,8 +24,8 @@ class ChannelViewHolder(
 	init {
 		recycle()
 
-		binding.root.setOnLongClickListener(this)
-		binding.root.setOnClickListener(this)
+		bindingAdapter.rootView.setOnLongClickListener(this)
+		bindingAdapter.rootView.setOnClickListener(this)
 	}
 
 	override fun onClick(view: View) {
@@ -52,27 +51,27 @@ class ChannelViewHolder(
 	}
 
 	private fun onShowTitleChanged(title: String) {
-		binding.textShowTitle.text = title
+		bindingAdapter.showTitle.text = title
 	}
 
 	private fun onShowSubtitleChanged(subtitle: String?) {
-		binding.textShowSubtitle.isVisible = !subtitle.isNullOrEmpty()
-		binding.textShowSubtitle.text = subtitle
+		bindingAdapter.showSubtitle.isVisible = !subtitle.isNullOrEmpty()
+		bindingAdapter.showSubtitle.text = subtitle
 	}
 
 	private fun onShowTimeChanged(time: String?) {
-		binding.textShowTime.isVisible = !time.isNullOrEmpty()
-		binding.textShowTime.text = time
+		bindingAdapter.showTime.isVisible = !time.isNullOrEmpty()
+		bindingAdapter.showTime.text = time
 	}
 
 	private fun onShowProgressPercentChanged(progressPercent: Float?) {
-		binding.progressbarShowProgress.isIndeterminate = false
+		bindingAdapter.showProgress.isIndeterminate = false
 
 		if (progressPercent == null) {
-			binding.progressbarShowProgress.isEnabled = false
+			bindingAdapter.showProgress.isEnabled = false
 		} else {
-			val progress = (progressPercent * binding.progressbarShowProgress.max).roundToInt()
-			binding.progressbarShowProgress.progress = progress
+			val progress = (progressPercent * bindingAdapter.showProgress.max).roundToInt()
+			bindingAdapter.showProgress.progress = progress
 		}
 	}
 
@@ -104,19 +103,19 @@ class ChannelViewHolder(
 	}
 
 	private fun setViewToChannel(channel: ChannelModel) {
-		binding.logo.setImageResource(channel.drawableId)
-		binding.logo.contentDescription = channel.name
+		bindingAdapter.logo.setImageResource(channel.drawableId)
+		bindingAdapter.logo.contentDescription = channel.name
 
-		binding.subtitle.text = channel.subtitle
-		binding.subtitle.isVisible = !channel.subtitle.isNullOrEmpty()
+		bindingAdapter.subtitle.text = channel.subtitle
+		bindingAdapter.subtitle.isVisible = !channel.subtitle.isNullOrEmpty()
 	}
 
 	private fun setViewLoading() {
-		binding.textShowTitle.text = ""
-		binding.textShowSubtitle.text = ""
-		binding.textShowTime.text = ""
-		binding.progressbarShowProgress.progress = 0
-		binding.progressbarShowProgress.isEnabled = true
-		binding.progressbarShowProgress.isIndeterminate = true
+		bindingAdapter.showTitle.text = ""
+		bindingAdapter.showSubtitle.text = ""
+		bindingAdapter.showTime.text = ""
+		bindingAdapter.showProgress.progress = 0
+		bindingAdapter.showProgress.isEnabled = true
+		bindingAdapter.showProgress.isIndeterminate = true
 	}
 }

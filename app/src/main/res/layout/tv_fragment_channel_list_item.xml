@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	style="@style/TvCardStyle"
+	android:layout_width="match_parent"
+	android:layout_height="130dp"
+	android:clickable="true"
+	android:focusable="true"
+	android:orientation="horizontal"
+	android:paddingEnd="16dp"
+	tools:ignore="Overdraw">
+
+	<ImageView
+		android:id="@+id/logo"
+		android:layout_width="110dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:paddingHorizontal="16dp"
+		android:scaleType="fitCenter"
+		app:layout_constraintBottom_toTopOf="@id/subtitle"
+		app:layout_constraintHeight_max="70dp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		tools:ignore="ContentDescription"
+		tools:src="@drawable/channel_logo_kika" />
+
+	<TextView
+		android:id="@+id/subtitle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:gravity="center"
+		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Content"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="@id/logo"
+		app:layout_constraintStart_toStartOf="@id/logo"
+		app:layout_constraintTop_toBottomOf="@id/logo"
+		tools:text="Very Long Subtitle" />
+
+	<TextView
+		android:id="@+id/text_show_title"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:ellipsize="end"
+		android:maxLines="2"
+		android:textAppearance="@style/TextAppearance.Leanback.Header"
+		app:layout_constraintBottom_toTopOf="@id/text_show_subtitle"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/logo"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		tools:text="Very very long and complicated show title" />
+
+	<TextView
+		android:id="@+id/text_show_subtitle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
+		app:layout_constraintBottom_toTopOf="@id/text_show_time"
+		app:layout_constraintEnd_toEndOf="@id/text_show_title"
+		app:layout_constraintStart_toStartOf="@id/text_show_title"
+		app:layout_constraintTop_toBottomOf="@id/text_show_title"
+		tools:text="Show subtitle" />
+
+	<TextView
+		android:id="@+id/text_show_time"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Content"
+		app:layout_constraintBottom_toTopOf="@id/progressbar_show_progress"
+		app:layout_constraintEnd_toEndOf="@id/text_show_title"
+		app:layout_constraintStart_toStartOf="@id/text_show_title"
+		app:layout_constraintTop_toBottomOf="@id/text_show_subtitle"
+		tools:text="20:15 – 20:45 Uhr" />
+
+	<ProgressBar
+		android:id="@+id/progressbar_show_progress"
+		style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		android:indeterminate="false"
+		android:max="1000"
+		android:theme="@style/ShowProgress"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="@id/text_show_title"
+		app:layout_constraintStart_toStartOf="@id/text_show_title"
+		app:layout_constraintTop_toBottomOf="@id/text_show_time"
+		tools:progress="300" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
