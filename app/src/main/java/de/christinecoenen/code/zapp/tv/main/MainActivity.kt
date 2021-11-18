@@ -10,4 +10,16 @@ class MainActivity : FragmentActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.tv_activity_main)
 	}
+
+	override fun onBackPressed() {
+		val mainFragment =
+			supportFragmentManager.findFragmentById(R.id.main_fragment) as MainFragment
+
+		// give MainFragment the change to hadle back presses by itself
+		val backPressedHandled = mainFragment.onBackPressed()
+
+		if (!backPressedHandled) {
+			super.onBackPressed()
+		}
+	}
 }

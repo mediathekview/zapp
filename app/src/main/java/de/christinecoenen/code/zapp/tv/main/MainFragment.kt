@@ -35,4 +35,15 @@ class MainFragment : Fragment() {
 		super.onResume()
 		binding.viewpager.requestFocus()
 	}
+
+	fun onBackPressed(): Boolean {
+		return if (binding.tabs.hasFocus()) {
+			// tabs have already focus - let parent handle back press
+			false
+		} else {
+			// focus tabs before doing any other back press action
+			binding.tabs.requestFocus()
+			true
+		}
+	}
 }
