@@ -22,6 +22,8 @@ class MainFragment : Fragment() {
 
 		binding.viewpager.adapter = MainNavPagerAdapter(requireContext(), requireFragmentManager())
 		binding.tabs.setupWithViewPager(binding.viewpager)
+		
+		binding.tabs.getTabAt(0)?.view?.requestFocus()
 
 		return binding.root
 	}
@@ -29,11 +31,6 @@ class MainFragment : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-	}
-
-	override fun onResume() {
-		super.onResume()
-		binding.tabs.getTabAt(0)?.view?.requestFocus()
 	}
 
 	fun onBackPressed(): Boolean {
