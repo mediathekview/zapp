@@ -5,40 +5,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
-import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.databinding.TvFragmentMainBinding
-import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
-import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
-import de.christinecoenen.code.zapp.tv.player.PlayerActivity
 
 
-class MainFragment : Fragment(), ListItemListener {
+class MainFragment : Fragment() {
 
-	private lateinit var channelList: ISortableChannelList
+	private var _binding: TvFragmentMainBinding? = null
+	private val binding: TvFragmentMainBinding get() = _binding!!
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val binding = TvFragmentMainBinding.inflate(inflater, container, false)
+		_binding = TvFragmentMainBinding.inflate(inflater, container, false)
 
-		channelList = SortableVisibleJsonChannelList(requireContext())
-
-		binding.grid.setNumColumns(2)
-		binding.grid.adapter = ChannelListAdapter(channelList, this, this)
+		binding.viewpager.adapter = MainNavPagerAdapter(requireContext(), requireFragmentManager())
+		binding.tabs.setupWithViewPager(binding.viewpager)
 
 		return binding.root
 	}
 
-	override fun onItemClick(channel: ChannelModel) {
-		val intent = PlayerActivity.getStartIntent(requireContext(), channel)
-		startActivity(intent)
+	override fun onDestroyView() {
+		super.onDestroyView()
+		_binding = null
 	}
 
-	override fun onItemLongClick(channel: ChannelModel, view: View) {
-		// no action
+	override fun onResume() {
+		super.onResume()
+		binding.viewpager.requestFocus()
 	}
 }

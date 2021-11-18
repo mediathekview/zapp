@@ -11,7 +11,7 @@ class ErrorFragment : ErrorSupportFragment() {
 		super.onCreate(savedInstanceState)
 
 		message = activity?.intent?.getStringExtra(ErrorActivity.EXTRA_MESSAGE)
-			?: throw IllegalArgumentException("message extra has to be set")
+			//?: throw IllegalArgumentException("message extra has to be set")
 
 		title = getString(R.string.error_informal)
 		imageDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_sad_tv)
