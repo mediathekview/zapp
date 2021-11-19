@@ -1,4 +1,4 @@
-# v-next
+# 6.0.0
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt
 * Sender-Logo in Benachrichtigung angezeigt
