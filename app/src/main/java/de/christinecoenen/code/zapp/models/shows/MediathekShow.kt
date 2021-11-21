@@ -7,8 +7,8 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import de.christinecoenen.code.zapp.utils.system.IntentHelper
 import de.christinecoenen.code.zapp.utils.view.ShowDurationFormatter
-import org.apache.commons.io.FilenameUtils
 import org.joda.time.DateTimeZone
+import java.io.File
 import java.io.Serializable
 
 @Keep
@@ -103,6 +103,7 @@ data class MediathekShow(
 
 	fun getDownloadFileName(quality: Quality): String {
 		val videoUrl = getVideoUrl(quality)
+			?: throw IllegalArgumentException("No download file available for quality $quality.")
 		return getDownloadFileName(videoUrl)
 	}
 
@@ -128,8 +129,8 @@ data class MediathekShow(
 		IntentHelper.playVideo(context, url, "$topic - $title")
 	}
 
-	private fun getDownloadFileName(videoUrl: String?): String {
-		val extension = FilenameUtils.getExtension(videoUrl)
+	private fun getDownloadFileName(videoUrl: String): String {
+		val extension = File(videoUrl).extension
 
 		// needed for samsung devices
 		val maxFileNameLength = 120
