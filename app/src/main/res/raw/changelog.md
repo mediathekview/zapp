@@ -1,3 +1,6 @@
+# v-next
+* Video-Player-Interface verschwindet schneller automatisch
+
 # 6.0.0
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt

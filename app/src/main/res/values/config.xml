@@ -6,4 +6,6 @@
 
 	<fraction name="mediathek_filter_min_duration">0</fraction>
 	<fraction name="mediathek_filter_max_duration">120</fraction>
+
+	<integer name="player_controller_show_timeout_millis">3000</integer>
 </resources>
