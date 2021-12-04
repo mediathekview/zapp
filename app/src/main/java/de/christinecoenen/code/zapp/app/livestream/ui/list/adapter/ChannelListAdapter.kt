@@ -41,5 +41,5 @@ class ChannelListAdapter(
 
 	override fun getItemCount() = channelList.size()
 
-	override fun getItemId(position: Int) = position.toLong()
+	override fun getItemId(position: Int) = channelList[position].hashCode().toLong()
 }

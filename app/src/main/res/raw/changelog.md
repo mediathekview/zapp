@@ -1,3 +1,6 @@
+# v-next
+* Absturz nach dem Bearbeiten der Senderlieste behoben
+
 # 6.0.0
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt
