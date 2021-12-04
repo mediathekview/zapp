@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.tv.about.AboutFragment
 import de.christinecoenen.code.zapp.tv.channels.ChannelListFragment
+import de.christinecoenen.code.zapp.tv.mediathek.MediathekListFragment
 import kotlin.reflect.KClass
 
 class MainNavPagerAdapter(
@@ -17,6 +18,7 @@ class MainNavPagerAdapter(
 
 	private val navItems = listOf(
 		MainNavItem(R.string.activity_main_tab_live, ChannelListFragment::class),
+		MainNavItem(R.string.activity_main_tab_mediathek, MediathekListFragment::class),
 		MainNavItem(R.string.menu_about_short, AboutFragment::class),
 	)
 

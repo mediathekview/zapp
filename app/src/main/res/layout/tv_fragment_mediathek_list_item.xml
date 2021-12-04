@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	style="@style/TvCardStyle"
+	android:layout_width="match_parent"
+	android:layout_height="130dp"
+	android:clickable="true"
+	android:focusable="true"
+	android:orientation="horizontal"
+	android:padding="16dp"
+	tools:ignore="Overdraw">
+
+	<TextView
+		android:id="@+id/title"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:ellipsize="end"
+		android:maxLines="2"
+		android:textAppearance="@style/TextAppearance.Leanback.Header"
+		app:layout_constraintBottom_toTopOf="@id/subtitle"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		tools:text="Very very long and complicated show title" />
+
+	<TextView
+		android:id="@+id/subtitle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/title"
+		tools:text="Show subtitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
