@@ -4,7 +4,10 @@ package de.christinecoenen.code.zapp.app.player
 import android.content.Context
 import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -16,7 +19,9 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.IOException
@@ -103,7 +108,7 @@ class Player(
 		mediaSession.isActive = true
 
 		// set listeners
-		networkConnectionHelper.startListenForNetworkChanges(::setStreamQualityByNetworkType)
+		networkConnectionHelper.startListenForNetworkChanges(::loadStreamQualityByNetworkType)
 	}
 
 	fun setView(videoView: StyledPlayerView) {
@@ -122,13 +127,7 @@ class Player(
 		playerEventHandler.errorResourceId.emit(-1)
 		currentVideoInfo = videoInfo
 
-		val mediaItem = getMediaItem(videoInfo)
-		exoPlayer.stop()
-		exoPlayer.clearMediaItems()
-		exoPlayer.addAnalyticsListener(playerEventHandler)
-		exoPlayer.addMediaItem(mediaItem)
-
-		exoPlayer.prepare()
+		loadStreamQualityByNetworkType()
 
 		if (videoInfo.hasDuration) {
 			millis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo!!)
@@ -218,19 +217,50 @@ class Player(
 		return mediaItemBuilder.build()
 	}
 
-	private fun setStreamQuality(streamQuality: StreamQualityBucket) {
+	private fun loadStreamQuality(streamQuality: StreamQualityBucket) {
 		when (streamQuality) {
 			StreamQualityBucket.DISABLED -> {
+				// needed to bubble error message correctly
+				exoPlayer.addAnalyticsListener(playerEventHandler)
+				exoPlayer.prepare()
+
+				// TODO: save current playback position to resume playback on same position when wifi is available
+
+				// stop playback and emit error
 				exoPlayer.stop()
+				exoPlayer.clearMediaItems()
 				exoPlayer.removeAnalyticsListener(playerEventHandler)
 				playerEventHandler.errorResourceId.tryEmit(R.string.error_stream_not_in_unmetered_network)
 			}
-			else -> trackSelectorWrapper.setStreamQuality(streamQuality)
+			else -> {
+				if (currentVideoInfo == null) {
+					return
+				}
+
+				// adjust quality for adaptive streams
+				trackSelectorWrapper.setStreamQuality(streamQuality)
+
+				// TODO: wrong playback position
+				// (Re)load item with correct quality url.
+				// This is not strictly needed for adaptive streams and downloaded videos,
+				// but we have no way to differentiate between stream types here.
+				val mediaItem = getMediaItem(currentVideoInfo)
+				exoPlayer.stop()
+				exoPlayer.clearMediaItems()
+				exoPlayer.addAnalyticsListener(playerEventHandler)
+				exoPlayer.addMediaItem(mediaItem)
+				exoPlayer.prepare()
+			}
 		}
 	}
 
-	private fun setStreamQualityByNetworkType() {
-		setStreamQuality(requiredStreamQualityBucket)
+	private fun loadStreamQualityByNetworkType() {
+		Timber.w(
+			"setStreamQualityByNetworkType - isMetered: %s, quality: %s",
+			!networkConnectionHelper.isConnectedToUnmeteredNetwork,
+			requiredStreamQualityBucket
+		)
+		loadStreamQuality(requiredStreamQualityBucket)
 	}
 
 	private fun String.toSubtitleMimeType(): String {

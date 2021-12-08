@@ -13,7 +13,9 @@ internal class TrackSelectorWrapper(private val trackSelector: DefaultTrackSelec
 	fun setStreamQuality(streamQuality: StreamQualityBucket?) {
 
 		when (streamQuality) {
-			StreamQualityBucket.DISABLED,
+			StreamQualityBucket.DISABLED ->
+				throw IllegalArgumentException("track selection does not allow disabled wuality bucket")
+
 			StreamQualityBucket.LOWEST ->
 				trackSelector.setParameters(trackSelector
 					.buildUponParameters()
