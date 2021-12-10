@@ -4,39 +4,95 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	style="@style/TvCardStyle"
 	android:layout_width="match_parent"
-	android:layout_height="130dp"
+	android:layout_height="wrap_content"
+	android:layout_marginVertical="8dp"
 	android:clickable="true"
 	android:focusable="true"
 	android:orientation="horizontal"
-	android:padding="16dp"
+	android:paddingBottom="8dp"
 	tools:ignore="Overdraw">
+
+	<TextView
+		android:id="@+id/topic"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="4dp"
+		android:background="@color/colorPrimary"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:paddingHorizontal="16dp"
+		android:textAppearance="@style/TextAppearance.Leanback.Header"
+		app:layout_constraintBottom_toTopOf="@id/title"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		tools:text="Some show topic" />
 
 	<TextView
 		android:id="@+id/title"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="16dp"
+		android:layout_marginBottom="4dp"
 		android:ellipsize="end"
 		android:maxLines="2"
 		android:textAppearance="@style/TextAppearance.Leanback.Header"
-		app:layout_constraintBottom_toTopOf="@id/subtitle"
+		app:layout_constraintBottom_toTopOf="@id/duration"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/topic"
 		app:layout_constraintVertical_chainStyle="packed"
 		tools:text="Very very long and complicated show title" />
 
 	<TextView
-		android:id="@+id/subtitle"
-		android:layout_width="0dp"
+		android:id="@+id/duration"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:ellipsize="end"
-		android:maxLines="1"
 		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/divider_duration"
+		app:layout_constraintStart_toStartOf="@id/title"
 		app:layout_constraintTop_toBottomOf="@id/title"
-		tools:text="Show subtitle" />
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintHorizontal_bias="0"
+		tools:text="14m 21s" />
+
+	<TextView
+		android:id="@+id/divider_duration"
+		style="@style/TvTextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/channel"
+		app:layout_constraintStart_toEndOf="@id/duration" />
+
+	<TextView
+		android:id="@+id/channel"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
+		app:layout_constraintBottom_toBottomOf="@id/divider_duration"
+		app:layout_constraintEnd_toStartOf="@id/divider_channel"
+		app:layout_constraintStart_toEndOf="@id/divider_duration"
+		tools:text="NDR" />
+
+	<TextView
+		android:id="@+id/divider_channel"
+		style="@style/TvTextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/channel"
+		app:layout_constraintEnd_toStartOf="@id/time"
+		app:layout_constraintStart_toEndOf="@id/channel" />
+
+	<TextView
+		android:id="@+id/time"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
+		app:layout_constraintBottom_toBottomOf="@id/divider_channel"
+		app:layout_constraintStart_toEndOf="@id/divider_channel"
+		app:layout_constraintEnd_toEndOf="parent"
+		tools:text="14.05.2020" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
