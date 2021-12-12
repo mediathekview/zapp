@@ -14,7 +14,6 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentV
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.app.player.VideoInfo
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 
 class MediathekListFragment : Fragment(),
@@ -101,11 +99,11 @@ class MediathekListFragment : Fragment(),
 	}
 
 	override fun onSearchQueryChange(query: String?) {
-
+		viewmodel.setSearchQueryFilter(query)
 	}
 
 	override fun onSearchQuerySubmit(query: String?) {
-		viewmodel.setSearchQueryFilter(query)
+
 	}
 
 	override fun onKeyboardDismiss(query: String?) {
