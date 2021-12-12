@@ -72,7 +72,7 @@ class MediathekListFragment : Fragment(),
 				.collectLatest { refreshState ->
 					binding.loader.isVisible = refreshState is LoadState.Loading
 					//binding.error.isVisible = refreshState is LoadState.Error
-					//updateNoShowsMessage(refreshState)
+					updateNoShowsMessage(refreshState)
 
 					when (refreshState) {
 						//is LoadState.Error -> onMediathekLoadErrorChanged(refreshState.error)
@@ -116,5 +116,10 @@ class MediathekListFragment : Fragment(),
 		val videoInfo = VideoInfo.fromShow(persistedShow)
 		val intent = PlayerActivity.getStartIntent(requireContext(), videoInfo)
 		startActivity(intent)
+	}
+
+	private fun updateNoShowsMessage(loadState: LoadState) {
+		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
+		binding.noShows.isVisible = isAdapterEmpty
 	}
 }
