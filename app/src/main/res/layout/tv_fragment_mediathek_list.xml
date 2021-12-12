@@ -4,8 +4,19 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingHorizontal="64dp"
-	android:layout_marginVertical="4dp">
+	android:layout_marginVertical="4dp"
+	android:paddingHorizontal="64dp">
+
+	<androidx.leanback.widget.SearchBar
+		android:id="@+id/search"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="32dp"
+		android:nextFocusDown="@id/list"
+		app:layout_constraintBottom_toTopOf="@id/list"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/list"
@@ -13,12 +24,13 @@
 		android:layout_height="0dp"
 		android:clipToPadding="false"
 		android:horizontalSpacing="16dp"
-		android:paddingTop="64dp"
+		android:nextFocusUp="@id/search"
+		android:paddingTop="32dp"
 		android:paddingBottom="16dp"
 		android:verticalSpacing="16dp"
 		app:focusOutFront="true"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/search"
 		tools:listitem="@layout/tv_fragment_mediathek_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
