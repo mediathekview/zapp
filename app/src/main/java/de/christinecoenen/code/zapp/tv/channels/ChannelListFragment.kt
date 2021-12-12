@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
+import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentChannelListBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
@@ -33,7 +34,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 	}
 
 	override fun onItemClick(channel: ChannelModel) {
-		val intent = PlayerActivity.getStartIntent(requireContext(), channel)
+		val intent = PlayerActivity.getStartIntent(requireContext(), VideoInfo.fromChannel(channel))
 		startActivity(intent)
 	}
 

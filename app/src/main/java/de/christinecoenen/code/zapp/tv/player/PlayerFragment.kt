@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
-import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.tv.error.ErrorActivity
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
@@ -24,9 +23,9 @@ class PlayerFragment : VideoSupportFragment() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val channel =
-			activity?.intent?.getSerializableExtra(PlayerActivity.EXTRA_CHANNEL) as ChannelModel?
-				?: throw IllegalArgumentException("channel extra has to be set")
+		val videoInfo =
+			activity?.intent?.getSerializableExtra(PlayerActivity.EXTRA_VIDEO_INFO) as VideoInfo?
+				?: throw IllegalArgumentException("videoInfo extra has to be set")
 
 		val glueHost = VideoSupportFragmentGlueHost(this@PlayerFragment)
 
@@ -35,12 +34,13 @@ class PlayerFragment : VideoSupportFragment() {
 
 		transportControlGlue = PlaybackTransportControlGlue(activity, playerAdapter)
 		transportControlGlue.host = glueHost
-		transportControlGlue.title = channel.name
+		transportControlGlue.title = videoInfo.title
+		transportControlGlue.subtitle = videoInfo.subtitle
 		transportControlGlue.isSeekEnabled = true
 		transportControlGlue.playWhenPrepared()
 
 		lifecycleScope.launchWhenCreated {
-			player.load(VideoInfo.fromChannel(channel))
+			player.load(videoInfo)
 			player.resume()
 		}
 

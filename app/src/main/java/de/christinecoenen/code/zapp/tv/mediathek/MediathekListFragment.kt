@@ -10,15 +10,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
+import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.tv.player.PlayerActivity
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MediathekListFragment : Fragment(),
 	de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener {
+
+	private val mediathekRepository: MediathekRepository by inject()
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 	private lateinit var adapter: MediathekItemAdapter
@@ -46,10 +53,20 @@ class MediathekListFragment : Fragment(),
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
-		TODO("Not yet implemented")
+		lifecycleScope.launchWhenResumed {
+			saveAndOpenShow(show)
+		}
 	}
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
-		TODO("Not yet implemented")
+		// no action
+	}
+
+	private suspend fun saveAndOpenShow(show: MediathekShow) {
+		val persistedShow = mediathekRepository.persistOrUpdateShow(show).first()
+
+		val videoInfo = VideoInfo.fromShow(persistedShow)
+		val intent = PlayerActivity.getStartIntent(requireContext(), videoInfo)
+		startActivity(intent)
 	}
 }

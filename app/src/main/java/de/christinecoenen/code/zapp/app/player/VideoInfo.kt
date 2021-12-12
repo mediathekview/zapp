@@ -6,6 +6,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
+import java.io.Serializable
 
 data class VideoInfo(
 	var id: Int = 0,
@@ -18,7 +19,7 @@ data class VideoInfo(
 	var filePath: String? = null,
 	var hasDuration: Boolean = false,
 	@DrawableRes var artworkVectorDrawableResId: Int = 0
-) {
+) : Serializable {
 
 	companion object {
 
