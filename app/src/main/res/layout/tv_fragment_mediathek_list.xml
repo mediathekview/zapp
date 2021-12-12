@@ -33,4 +33,13 @@
 		app:layout_constraintTop_toBottomOf="@id/search"
 		tools:listitem="@layout/tv_fragment_mediathek_list_item" />
 
+	<ProgressBar
+		android:id="@+id/loader"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/list"
+		app:layout_constraintEnd_toEndOf="@id/list"
+		app:layout_constraintStart_toStartOf="@id/list"
+		app:layout_constraintTop_toTopOf="@id/list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
