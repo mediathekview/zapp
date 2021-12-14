@@ -3,6 +3,11 @@
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
 * Deaktivierter Download-Button bei manchen Mediathek-Sendungen behoben
 
+# 6.0.1
+* Absturz nach dem Bearbeiten der Senderliste behoben
+* Absturz beim Starten von Tagesschau24 auf Android 6 behoben
+* Springender Fortschrittsbalken in der Senderliste auf Android 6 behoben
+
 # 6.0.0
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt
