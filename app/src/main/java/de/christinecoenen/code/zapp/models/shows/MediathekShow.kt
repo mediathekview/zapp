@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.models.shows
 
 import android.content.Context
-import android.text.TextUtils
 import android.text.format.DateUtils
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
@@ -69,7 +68,7 @@ data class MediathekShow(
 		}
 
 	val hasSubtitle
-		get() = !TextUtils.isEmpty(subtitleUrl)
+		get() = !subtitleUrl.isNullOrEmpty()
 
 	val supportedDownloadQualities: List<Quality>
 		get() = Quality.values().filter(::hasDownloadQuality)
@@ -86,9 +85,7 @@ data class MediathekShow(
 	}
 
 	fun hasAnyDownloadQuality(): Boolean {
-		val highVideoUrl = getVideoUrl(Quality.High)
-		val mediumVideoUrl = getVideoUrl(Quality.Medium)
-		return isValidDownloadUrl(highVideoUrl) || isValidDownloadUrl(mediumVideoUrl)
+		return supportedDownloadQualities.isNotEmpty()
 	}
 
 	private fun hasDownloadQuality(quality: Quality): Boolean {
@@ -145,10 +142,10 @@ data class MediathekShow(
 	}
 
 	private fun isValidStreamingUrl(url: String?): Boolean {
-		return !TextUtils.isEmpty(url)
+		return !url.isNullOrEmpty()
 	}
 
 	private fun isValidDownloadUrl(url: String?): Boolean {
-		return !TextUtils.isEmpty(url) && !url!!.endsWith("m3u8") && !url.endsWith("csmil")
+		return !url.isNullOrEmpty() && !url.endsWith("m3u8") && !url.endsWith("csmil")
 	}
 }

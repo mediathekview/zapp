@@ -1,5 +1,7 @@
 # v-next
 * Video-Player-Interface verschwindet schneller automatisch
+* Abspielfehler bei manchen Mediathek-Sendungen behoben
+* Deaktivierter Download-Button bei manchen Mediathek-Sendungen behoben
 
 # 6.0.0
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
