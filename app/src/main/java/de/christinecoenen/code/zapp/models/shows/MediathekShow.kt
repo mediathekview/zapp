@@ -79,9 +79,9 @@ data class MediathekShow(
 
 	fun getVideoUrl(quality: Quality): String? {
 		return when (quality) {
-			Quality.Low -> videoUrlLow
+			Quality.Low -> if (videoUrlLow.isNullOrEmpty()) null else videoUrlLow
 			Quality.Medium -> videoUrl
-			Quality.High -> videoUrlHd
+			Quality.High -> if (videoUrlHd.isNullOrEmpty()) null else videoUrlHd
 		}
 	}
 
