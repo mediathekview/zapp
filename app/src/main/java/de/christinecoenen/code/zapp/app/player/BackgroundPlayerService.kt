@@ -192,6 +192,7 @@ class BackgroundPlayerService : LifecycleService(),
 				NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			)
 			.setMediaDescriptionAdapter(mediaDescriptionAdapter)
+			.setNotificationListener(this)
 			.build()
 			.also {
 				it.setUsePlayPauseActions(true)
