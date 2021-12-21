@@ -2,6 +2,7 @@
 * Video-Player-Interface verschwindet schneller automatisch
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
 * Deaktivierter Download-Button bei manchen Mediathek-Sendungen behoben
+* Hintergrund-Widergabe wird nicht mehr nach kurzer Zeit vom System abgebrochen
 
 # 6.0.1
 * Absturz nach dem Bearbeiten der Senderliste behoben
