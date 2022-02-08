@@ -16,7 +16,7 @@ import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import okhttp3.JavaNetCookieJar
@@ -30,6 +30,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class DownloadController(
 	applicationContext: Context,
+	private val scope: CoroutineScope,
 	private val mediathekRepository: MediathekRepository
 ) : FetchListener, IDownloadController {
 
@@ -56,7 +57,7 @@ class DownloadController(
 
 		val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(applicationContext)
 			.setNotificationManager(object :
-				ZappNotificationManager(applicationContext, mediathekRepository) {
+				ZappNotificationManager(applicationContext, scope, mediathekRepository) {
 				override fun getFetchInstanceForNamespace(namespace: String): Fetch {
 					return fetch
 				}
@@ -196,13 +197,13 @@ class DownloadController(
 	}
 
 	override fun onAdded(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}
 
 	override fun onCancelled(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			fetch.delete(download.id)
 			updateDownloadStatus(download)
 			updateDownloadProgress(download, 0)
@@ -210,7 +211,7 @@ class DownloadController(
 	}
 
 	override fun onCompleted(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 			mediathekRepository.updateDownloadedVideoPath(download.id, download.file)
 			downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
@@ -218,7 +219,7 @@ class DownloadController(
 	}
 
 	override fun onDeleted(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 			updateDownloadProgress(download, 0)
 			downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
@@ -233,14 +234,14 @@ class DownloadController(
 	}
 
 	override fun onError(download: Download, error: Error, throwable: Throwable?) {
-		GlobalScope.launch {
+		scope.launch {
 			downloadFileInfoManager.deleteDownloadFile(download)
 			updateDownloadStatus(download)
 		}
 	}
 
 	override fun onPaused(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}
@@ -250,25 +251,25 @@ class DownloadController(
 		etaInMilliSeconds: Long,
 		downloadedBytesPerSecond: Long
 	) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadProgress(download, download.progress)
 		}
 	}
 
 	override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}
 
 	override fun onRemoved(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}
 
 	override fun onResumed(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}
@@ -278,13 +279,13 @@ class DownloadController(
 		downloadBlocks: List<DownloadBlock>,
 		totalBlocks: Int
 	) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}
 
 	override fun onWaitingNetwork(download: Download) {
-		GlobalScope.launch {
+		scope.launch {
 			updateDownloadStatus(download)
 		}
 	}

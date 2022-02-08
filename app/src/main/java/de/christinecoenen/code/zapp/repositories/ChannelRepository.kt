@@ -10,8 +10,8 @@ import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
 import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
 import de.christinecoenen.code.zapp.utils.io.IoUtils.writeAllText
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
@@ -19,6 +19,7 @@ import java.io.IOException
 @SuppressLint("CheckResult")
 class ChannelRepository(
 	private val context: Context,
+	scope: CoroutineScope,
 	private val zappApi: IZappBackendApiService
 ) {
 
@@ -94,7 +95,7 @@ class ChannelRepository(
 	init {
 		channelList = SortableVisibleJsonChannelList(context)
 
-		GlobalScope.launch(Dispatchers.IO) {
+		scope.launch(Dispatchers.IO) {
 
 			try {
 				// load fresh urls from api
