@@ -101,9 +101,9 @@ class BackgroundPlayerService : LifecycleService(),
 		lifecycleScope.launch {
 			player.destroy()
 			playerNotificationManager?.setPlayer(null)
-		}
 
-		super.onDestroy()
+			super.onDestroy()
+		}
 	}
 
 	private fun onPlayerError(messageResourceId: Int?) {
