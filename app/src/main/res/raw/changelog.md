@@ -1,4 +1,4 @@
-# v-next
+# 6.0.2
 * Video-Player-Interface verschwindet schneller automatisch
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
 * Deaktivierter Download-Button bei manchen Mediathek-Sendungen behoben

@@ -22,7 +22,7 @@ class FaqActivity : AppCompatActivity() {
 
 		setContentView(binding.root)
 
-		val markdown = resources.readAllText(R.raw.changelog)
+		val markdown = resources.readAllText(R.raw.faq)
 		Markwon.setMarkdown(binding.txtFaq, markdown)
 	}
 }
