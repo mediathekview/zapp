@@ -34,7 +34,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	): View {
 		_binding = DownloadsFragmentBinding.inflate(inflater, container, false)
 
-		downloadAdapter = DownloadListAdapter(this, viewModel)
+		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
 		binding.list.adapter = downloadAdapter
 
 		downloadAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
