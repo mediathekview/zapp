@@ -1,6 +1,9 @@
 package de.christinecoenen.code.zapp.app.player
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -8,9 +11,8 @@ import android.graphics.Bitmap
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ServiceLifecycleDispatcher
+import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.DefaultMediaDescriptionAdapter
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
@@ -18,14 +20,12 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
+class BackgroundPlayerService : LifecycleService(),
 	MediaDescriptionAdapter,
 	PlayerNotificationManager.NotificationListener,
 	LifecycleOwner {
@@ -60,8 +60,6 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 
 	private val binder = Binder()
 
-	private val lifecycleDispatcher: ServiceLifecycleDispatcher = ServiceLifecycleDispatcher(this)
-
 	private var playerNotificationManager: PlayerNotificationManager? = null
 	private var foregroundActivityIntent: Intent? = null
 	private var isPlaybackInBackground = false
@@ -74,7 +72,6 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	 * So is is save to aquire locks and release them in [.onDestroy]
 	 */
 	override fun onCreate() {
-		lifecycleDispatcher.onServicePreSuperOnCreate()
 		super.onCreate()
 
 		lifecycleScope.launchWhenCreated {
@@ -83,26 +80,14 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	}
 
 	override fun onBind(intent: Intent): IBinder {
-		lifecycleDispatcher.onServicePreSuperOnBind()
 		super.onBind(intent)
-
 		return binder
 	}
 
-	override fun onStart(intent: Intent?, startId: Int) {
-		lifecycleDispatcher.onServicePreSuperOnStart()
-		super.onStart(intent, startId)
-	}
-
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+		super.onStartCommand(intent, flags, startId)
 		handleIntent(intent)
 		return Service.START_STICKY
-	}
-
-	override fun onHandleIntent(intent: Intent?) {}
-
-	override fun getLifecycle(): Lifecycle {
-		return lifecycleDispatcher.lifecycle
 	}
 
 	override fun onTaskRemoved(rootIntent: Intent) {
@@ -113,13 +98,12 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 	override fun onDestroy() {
 		movePlaybackToForeground()
 
-		GlobalScope.launch(Dispatchers.Main) {
+		lifecycleScope.launch {
 			player.destroy()
 			playerNotificationManager?.setPlayer(null)
-		}
 
-		lifecycleDispatcher.onServicePreSuperOnDestroy()
-		super.onDestroy()
+			super.onDestroy()
+		}
 	}
 
 	private fun onPlayerError(messageResourceId: Int?) {
@@ -211,6 +195,7 @@ class BackgroundPlayerService : IntentService("BackgroundPlayerService"),
 				NotificationHelper.CHANNEL_ID_BACKGROUND_PLAYBACK,
 			)
 			.setMediaDescriptionAdapter(mediaDescriptionAdapter)
+			.setNotificationListener(this)
 			.build()
 			.also {
 				it.setUsePlayPauseActions(true)

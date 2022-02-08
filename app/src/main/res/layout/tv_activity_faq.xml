@@ -25,7 +25,7 @@
 		tools:context=".tv.faq.FaqActivity">
 
 		<TextView
-			android:id="@+id/txt_changelog"
+			android:id="@+id/txt_faq"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:padding="64dp"

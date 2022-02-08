@@ -44,4 +44,34 @@ object IntentHelper {
 			context.startActivity(Intent.createChooser(feedbackIntent, context.getString(R.string.action_send_mail)))
 		}
 	}
+
+	/**
+	 * Shares the given url as plain text (e.g. for messengers, some players, browsers, etc.).
+	 */
+	fun shareLink(context: Context, url: String, title: String) {
+		val playVideoIntent = Intent(Intent.ACTION_SEND).apply {
+			type = "text/plain"
+			putExtra(Intent.EXTRA_SUBJECT, title)
+			putExtra(Intent.EXTRA_TEXT, url)
+			putExtra(Intent.EXTRA_TITLE, title)
+		}
+
+		context.startActivity(
+			Intent.createChooser(playVideoIntent, context.getString(R.string.action_share))
+		)
+	}
+
+	/**
+	 *
+	 */
+	fun playVideo(context: Context, url: String, title: String) {
+		val playVideoIntent = Intent(Intent.ACTION_VIEW).apply {
+			setDataAndType(Uri.parse(url), "video/*")
+			putExtra(Intent.EXTRA_TITLE, title)
+		}
+
+		context.startActivity(
+			Intent.createChooser(playVideoIntent, context.getString(R.string.action_open))
+		)
+	}
 }

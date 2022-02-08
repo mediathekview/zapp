@@ -4,9 +4,8 @@ import android.content.Context
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.IChannelList
-import org.apache.commons.io.IOUtils
+import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
 import java.io.IOException
-import java.nio.charset.StandardCharsets
 
 /**
  * Loads channel data from a json file bundled with
@@ -41,9 +40,7 @@ class JsonChannelList(private val context: Context) : IChannelList {
 	 */
 	private fun getJsonString(): String {
 		try {
-			context.resources.openRawResource(R.raw.channels).use { inputStream ->
-				return IOUtils.toString(inputStream, StandardCharsets.UTF_8)
-			}
+			return context.resources.readAllText(R.raw.channels)
 		} catch (e: IOException) {
 			// we know, this file is bundled with the app,
 			// so this should never happen

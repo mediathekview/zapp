@@ -51,7 +51,7 @@ class MediathekDetailActivity : AppCompatActivity() {
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
 			R.id.menu_share -> {
-				startActivity(Intent.createChooser(show.shareIntentPlain, getString(R.string.action_share)))
+				show.shareExternally(this)
 				true
 			}
 			android.R.id.home -> {

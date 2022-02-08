@@ -38,6 +38,12 @@ class ChannelViewHolder(
 	}
 
 	fun setChannel(programInfoViewModel: ProgramInfoViewModel, channel: ChannelModel) {
+		if (channel.id == this.channel?.id) {
+			return
+		}
+
+		recycle()
+
 		this.currentViewModel = programInfoViewModel
 		this.channel = channel
 
@@ -48,6 +54,9 @@ class ChannelViewHolder(
 	fun recycle() {
 		stopLoadingProgramInfo()
 		setViewLoading()
+
+		currentViewModel = null
+		channel = null
 	}
 
 	private fun onShowTitleChanged(title: String) {

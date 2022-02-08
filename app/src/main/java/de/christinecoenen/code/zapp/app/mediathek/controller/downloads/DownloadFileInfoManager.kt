@@ -13,7 +13,7 @@ import com.tonyodev.fetch2.Status
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
-import org.apache.commons.io.FileUtils
+import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -25,7 +25,12 @@ internal class DownloadFileInfoManager(
 	fun deleteDownloadFile(download: Download) {
 		val file = File(download.file)
 
-		FileUtils.deleteQuietly(file)
+		try {
+			file.delete()
+		} catch (e: Exception) {
+			Timber.w(e)
+		}
+
 		updateDownloadFileInMediaCollection(download)
 	}
 
@@ -37,7 +42,9 @@ internal class DownloadFileInfoManager(
 		}
 
 		val downloadFile = File(download.file)
-		return !downloadFile.exists() && Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(downloadFile)
+		return !downloadFile.exists() && Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(
+			downloadFile
+		)
 	}
 
 	fun getDownloadFilePath(show: MediathekShow, quality: Quality): String {
@@ -53,7 +60,12 @@ internal class DownloadFileInfoManager(
 	fun updateDownloadFileInMediaCollection(download: Download) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
 			val filePath = download.fileUri.path
-			MediaScannerConnection.scanFile(applicationContext, arrayOf(filePath), arrayOf("video/*"), null)
+			MediaScannerConnection.scanFile(
+				applicationContext,
+				arrayOf(filePath),
+				arrayOf("video/*"),
+				null
+			)
 		} else {
 			val resolver = applicationContext.contentResolver
 
@@ -82,7 +94,8 @@ internal class DownloadFileInfoManager(
 
 		if (settingsRepository.downloadToSdCard &&
 			sdCardDir != null &&
-			Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(sdCardDir)) {
+			Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(sdCardDir)
+		) {
 			downloadFile = File(sdCardDir, fileName)
 		}
 
@@ -117,7 +130,8 @@ internal class DownloadFileInfoManager(
 
 		if (downloadFileUri == null &&
 			settingsRepository.downloadToSdCard &&
-			volumeName == sdcardVoumeName) {
+			volumeName == sdcardVoumeName
+		) {
 			// most likely the external sd card is not properly writable - fall back to primary storage
 			downloadFileUri = getMediaStoreUriForVolume(primaryVolumeName, mediathekShow)
 		}
@@ -146,7 +160,10 @@ internal class DownloadFileInfoManager(
 			// We cannot query for it, because we have no id and display name may have been changed
 			// by the system or app may no longer have rights to access it.
 			// We create a new file with slightly altered title as workaround.
-			videoContentValues.put(MediaStore.Video.Media.DISPLAY_NAME, mediathekShow.title + " (" + UUID.randomUUID().toString().substring(0, 5) + ")")
+			videoContentValues.put(
+				MediaStore.Video.Media.DISPLAY_NAME,
+				mediathekShow.title + " (" + UUID.randomUUID().toString().substring(0, 5) + ")"
+			)
 			fileUri = resolver.insert(videoMediaStoreUri, videoContentValues)
 		}
 

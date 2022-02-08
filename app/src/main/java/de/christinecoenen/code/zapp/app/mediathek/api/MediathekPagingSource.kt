@@ -10,7 +10,7 @@ import java.io.IOException
 
 class MediathekPagingSource(
 	private val mediathekApi: IMediathekApiService,
-	val query: QueryRequest
+	private val query: QueryRequest
 ) : PagingSource<Int, MediathekShow>() {
 
 	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {

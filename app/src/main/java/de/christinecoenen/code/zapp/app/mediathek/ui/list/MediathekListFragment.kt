@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -100,7 +99,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 
-		adapter = MediathekItemAdapter(MediathekShowComparator, this@MediathekListFragment)
+
+		adapter = MediathekItemAdapter(lifecycleScope, MediathekShowComparator, this@MediathekListFragment)
 
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
@@ -204,12 +204,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_share -> {
-				startActivity(
-					Intent.createChooser(
-						longClickShow!!.shareIntentPlain,
-						getString(R.string.action_share)
-					)
-				)
+				longClickShow?.shareExternally(requireContext())
 				return true
 			}
 		}

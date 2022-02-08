@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -50,10 +50,15 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		return binding.root
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	override fun onResume() {
 		super.onResume()
 
 		channelList.reloadChannelOrder()
+
+		// We do not know if the channels changed, so we need to reload them all.
+		// Otherwise outdated data may cause null pointers in the adapter.
+		gridAdapter.notifyDataSetChanged()
 	}
 
 	override fun onItemClick(channel: ChannelModel) {
@@ -71,12 +76,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 	private fun onContextMenuItemClicked(menuItem: MenuItem, channel: ChannelModel): Boolean {
 		return when (menuItem.itemId) {
 			R.id.menu_share -> {
-				startActivity(
-					Intent.createChooser(
-						channel.videoShareIntent,
-						getString(R.string.action_share)
-					)
-				)
+				channel.playExternally(requireContext())
 				true
 			}
 			else -> false

@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.models.channels
 
-import android.content.Intent
-import android.net.Uri
+import android.content.Context
+import de.christinecoenen.code.zapp.utils.system.IntentHelper
 import java.io.Serializable
 
 data class ChannelModel(
@@ -19,8 +19,7 @@ data class ChannelModel(
 		isEnabled = !isEnabled
 	}
 
-	val videoShareIntent
-		get() = Intent(Intent.ACTION_VIEW).apply {
-			setDataAndType(Uri.parse(streamUrl), "video/*")
-		}
+	fun playExternally(context: Context) {
+		IntentHelper.playVideo(context, streamUrl, name)
+	}
 }

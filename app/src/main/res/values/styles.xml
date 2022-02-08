@@ -16,7 +16,6 @@
 
 		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
 
-		<item name="navigationViewStyle">@style/CustomNavigationViewStyle</item>
 		<item name="toolbarStyle">@style/ToolbarStyle</item>
 		<item name="actionBarSize">48dp</item>
 		<item name="appBarLayoutStyle">@style/AppBarStyle</item>
@@ -48,12 +47,6 @@
 
 	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
 		<item name="android:colorBackground">@color/colorSurface</item>
-	</style>
-
-	<style name="CustomNavigationViewStyle" parent="Widget.Design.NavigationView">
-		<item name="itemBackground">@android:color/transparent</item>
-		<item name="itemIconPadding">16dp</item>
-		<item name="selectableItemBackground">@android:color/transparent</item>
 	</style>
 
 	<style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
