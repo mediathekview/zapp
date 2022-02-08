@@ -101,6 +101,7 @@
 
 		<service
 			android:name=".app.player.BackgroundPlayerService"
+			android:foregroundServiceType="mediaPlayback"
 			android:exported="false" />
 
 		<receiver

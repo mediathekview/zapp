@@ -3,6 +3,7 @@
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
 * Deaktivierter Download-Button bei manchen Mediathek-Sendungen behoben
 * App-Absturz in der Mediathek-Liste behoben
+* Hintergrund-Wiedergabe wird nicht mehr nach kurzer Zeit vom System abgebrochen
 
 # 6.0.1
 * Absturz nach dem Bearbeiten der Senderliste behoben
