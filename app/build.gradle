@@ -81,7 +81,7 @@ dependencies {
 
 	// tests
 	debugImplementation 'androidx.test:core:1.4.0'
-	debugImplementation 'androidx.fragment:fragment-testing:1.3.6'
+	debugImplementation 'androidx.fragment:fragment-testing:1.4.1'
 
 	// device tests
 	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
@@ -98,14 +98,14 @@ dependencies {
 	testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'
 
 	// support
-	implementation 'androidx.fragment:fragment-ktx:1.3.6'
-	implementation 'androidx.appcompat:appcompat:1.3.1'
+	implementation 'androidx.fragment:fragment-ktx:1.4.1'
+	implementation 'androidx.appcompat:appcompat:1.4.1'
 	implementation 'com.google.android.material:material:1.4.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 	implementation 'androidx.cardview:cardview:1.0.0'
 	implementation 'androidx.annotation:annotation:1.3.0'
 	implementation 'androidx.recyclerview:recyclerview:1.2.1'
-	implementation 'androidx.preference:preference-ktx:1.1.1'
+	implementation 'androidx.preference:preference-ktx:1.2.0'
 	implementation "androidx.paging:paging-runtime-ktx:3.1.0"
 
 	def lifecycle_version = "2.4.0"
@@ -129,8 +129,8 @@ dependencies {
 	implementation 'ru.noties:markwon:2.0.2'
 
 	// fetch download manager
-	implementation 'androidx.tonyodev.fetch2:xfetch2:3.1.5'
-	implementation 'androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.5'
+	implementation 'androidx.tonyodev.fetch2:xfetch2:3.1.6'
+	implementation 'androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6'
 
 	// exo player
 	def exoplayer_version = "2.16.1"
