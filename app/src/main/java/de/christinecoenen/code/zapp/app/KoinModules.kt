@@ -22,6 +22,7 @@ import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
+import kotlinx.coroutines.MainScope
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -40,11 +41,13 @@ class KoinModules {
 					.build()
 			}
 
-			single { ChannelRepository(androidContext(), get()) }
+			single { MainScope() }
+
+			single { ChannelRepository(androidContext(), get(), get()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
-			single { DownloadController(androidContext(), get()) } bind IDownloadController::class
+			single { DownloadController(androidContext(), get(), get()) } bind IDownloadController::class
 			single {
 				ZappBackendApiServiceFactory(androidContext(), get()).create()
 			} bind IZappBackendApiService::class

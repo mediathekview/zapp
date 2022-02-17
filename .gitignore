@@ -65,6 +65,7 @@ gradle-app.setting
 /.idea/caches/build_file_checksums.ser
 /.idea/caches/gradle_models.ser
 /.idea/jarRepositories.xml
+/.idea/deploymentTargetDropDown.xml
 
 /app/release/output.json
 /app/release/output-metadata.json

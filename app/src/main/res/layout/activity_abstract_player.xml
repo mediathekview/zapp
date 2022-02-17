@@ -15,6 +15,7 @@
 		android:layout_gravity="center"
 		android:animateLayoutChanges="true"
 		app:auto_show="true"
+		app:show_timeout="@integer/player_controller_show_timeout_millis"
 		app:hide_on_touch="true"
 		app:show_buffering="always"
 		app:show_next_button="false"

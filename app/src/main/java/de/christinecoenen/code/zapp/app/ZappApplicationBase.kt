@@ -20,6 +20,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.Koin
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import timber.log.Timber
 
 abstract class ZappApplicationBase : Application() {
@@ -47,7 +48,7 @@ abstract class ZappApplicationBase : Application() {
 		createBackgroundPlaybackChannel(this)
 
 		koin = startKoin {
-			androidLogger()
+			androidLogger(Level.ERROR)
 			androidContext(this@ZappApplicationBase)
 			modules(KoinModules.AppModule)
 		}.koin

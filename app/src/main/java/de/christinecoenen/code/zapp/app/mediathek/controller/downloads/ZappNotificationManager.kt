@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -25,6 +25,7 @@ const val ACTION_TYPE_REPORT_ERROR = 42
 
 abstract class ZappNotificationManager(
 	context: Context,
+	private val scope: CoroutineScope,
 	private val mediathekRepository: MediathekRepository
 ) : FetchNotificationManager {
 
@@ -346,7 +347,7 @@ abstract class ZappNotificationManager(
 	@SuppressLint("CheckResult")
 	override fun postDownloadUpdate(download: Download): Boolean {
 
-		GlobalScope.launch {
+		scope.launch {
 			val persistedShow = mediathekRepository
 				.getPersistedShowByDownloadId(download.id)
 				.first()

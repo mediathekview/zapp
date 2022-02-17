@@ -202,7 +202,7 @@ abstract class AbstractPlayerActivity :
 	}
 
 	override fun onVisibilityChange(visibility: Int) {
-		if (visibility == View.VISIBLE) {
+		if (binding.video.isControllerFullyVisible) {
 			showSystemUi()
 		} else {
 			hideSystemUi()

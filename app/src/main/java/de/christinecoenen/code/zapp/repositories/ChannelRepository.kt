@@ -8,17 +8,18 @@ import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.model.ChannelInfo
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
+import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
+import de.christinecoenen.code.zapp.utils.io.IoUtils.writeAllText
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.apache.commons.io.IOUtils
 import timber.log.Timber
 import java.io.IOException
-import java.nio.charset.StandardCharsets
 
 @SuppressLint("CheckResult")
 class ChannelRepository(
 	private val context: Context,
+	scope: CoroutineScope,
 	private val zappApi: IZappBackendApiService
 ) {
 
@@ -72,9 +73,7 @@ class ChannelRepository(
 	@Throws(IOException::class)
 	private fun getChannelInfoListFromDisk(): Map<String, ChannelInfo> {
 		context.openFileInput(CHANNEL_INFOS_FILE_NAME).use { inputStream ->
-			val json = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
-			inputStream.close()
-
+			val json = inputStream.readAllText()
 			val type = object : TypeToken<Map<String?, ChannelInfo?>?>() {}.type
 			return gson.fromJson(json, type)
 		}
@@ -85,7 +84,7 @@ class ChannelRepository(
 		context.openFileOutput(CHANNEL_INFOS_FILE_NAME, Context.MODE_PRIVATE)
 			.use { fileOutputStream ->
 				val json = gson.toJson(channelInfoList)
-				IOUtils.write(json, fileOutputStream, StandardCharsets.UTF_8)
+				fileOutputStream.writeAllText(json)
 			}
 	}
 
@@ -96,7 +95,7 @@ class ChannelRepository(
 	init {
 		channelList = SortableVisibleJsonChannelList(context)
 
-		GlobalScope.launch(Dispatchers.IO) {
+		scope.launch(Dispatchers.IO) {
 
 			try {
 				// load fresh urls from api

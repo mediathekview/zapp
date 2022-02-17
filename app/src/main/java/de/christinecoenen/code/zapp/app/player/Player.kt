@@ -5,9 +5,9 @@ import android.content.Context
 import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -38,7 +38,7 @@ class Player(
 
 	}
 
-	val exoPlayer: SimpleExoPlayer
+	val exoPlayer: ExoPlayer
 	val mediaSession: MediaSessionCompat
 
 	var currentVideoInfo: VideoInfo? = null
@@ -94,7 +94,7 @@ class Player(
 			.setContentType(C.CONTENT_TYPE_MOVIE)
 			.build()
 
-		exoPlayer = SimpleExoPlayer.Builder(context)
+		exoPlayer = ExoPlayer.Builder(context)
 			.setTrackSelector(trackSelector)
 			.setWakeMode(C.WAKE_MODE_NETWORK)
 			.setAudioAttributes(audioAttributes, true)
@@ -204,14 +204,14 @@ class Player(
 
 		// add subtitles if present
 		if (videoInfo.hasSubtitles) {
-			val subtitle = MediaItem.Subtitle(
-				Uri.parse(videoInfo.subtitleUrl),
-				videoInfo.subtitleUrl!!.toSubtitleMimeType(),
-				LANGUAGE_GERMAN,
-				C.SELECTION_FLAG_AUTOSELECT
-			)
+			val subtitle = MediaItem.SubtitleConfiguration
+				.Builder(Uri.parse(videoInfo.subtitleUrl))
+				.setMimeType(videoInfo.subtitleUrl!!.toSubtitleMimeType())
+				.setLanguage(LANGUAGE_GERMAN)
+				.setSelectionFlags(C.SELECTION_FLAG_AUTOSELECT)
+				.build()
 
-			mediaItemBuilder.setSubtitles(listOf(subtitle))
+			mediaItemBuilder.setSubtitleConfigurations(listOf(subtitle))
 		}
 
 		return mediaItemBuilder.build()

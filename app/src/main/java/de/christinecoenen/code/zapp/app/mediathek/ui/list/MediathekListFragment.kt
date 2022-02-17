@@ -99,7 +99,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 
-		adapter = MediathekItemAdapter(MediathekShowComparator, this@MediathekListFragment)
+
+		adapter = MediathekItemAdapter(lifecycleScope, MediathekShowComparator, this@MediathekListFragment)
 
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
