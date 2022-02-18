@@ -19,9 +19,11 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.IOException
@@ -128,10 +130,6 @@ class Player(
 		currentVideoInfo = videoInfo
 
 		loadStreamQualityByNetworkType()
-
-		if (videoInfo.hasDuration) {
-			millis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo!!)
-		}
 	}
 
 	suspend fun recreate() = withContext(Dispatchers.Main) {
@@ -217,14 +215,12 @@ class Player(
 		return mediaItemBuilder.build()
 	}
 
-	private fun loadStreamQuality(streamQuality: StreamQualityBucket) {
+	private suspend fun loadStreamQuality(streamQuality: StreamQualityBucket) {
 		when (streamQuality) {
 			StreamQualityBucket.DISABLED -> {
 				// needed to bubble error message correctly
 				exoPlayer.addAnalyticsListener(playerEventHandler)
 				exoPlayer.prepare()
-
-				// TODO: save current playback position to resume playback on same position when wifi is available
 
 				// stop playback and emit error
 				exoPlayer.stop()
@@ -237,30 +233,48 @@ class Player(
 					return
 				}
 
-				// adjust quality for adaptive streams
+				// Adjust quality for adaptive streams
 				trackSelectorWrapper.setStreamQuality(streamQuality)
 
-				// TODO: wrong playback position
-				// (Re)load item with correct quality url.
-				// This is not strictly needed for adaptive streams and downloaded videos,
-				// but we have no way to differentiate between stream types here.
+				// Which item should be use for our current quality?
 				val mediaItem = getMediaItem(currentVideoInfo)
+
+				// reload only when url changed
+				if (exoPlayer.currentMediaItem?.localConfiguration?.uri == mediaItem.localConfiguration?.uri) {
+					return
+				}
+
+				// (Re)load item with correct quality url.
 				exoPlayer.stop()
 				exoPlayer.clearMediaItems()
 				exoPlayer.addAnalyticsListener(playerEventHandler)
 				exoPlayer.addMediaItem(mediaItem)
 				exoPlayer.prepare()
+
+				if (currentVideoInfo!!.hasDuration) {
+					millis = playbackPositionRepository.getPlaybackPosition(currentVideoInfo!!)
+				}
 			}
 		}
 	}
 
 	private fun loadStreamQualityByNetworkType() {
+		if (currentVideoInfo == null) {
+			return
+		}
+
 		Timber.w(
 			"setStreamQualityByNetworkType - isMetered: %s, quality: %s",
 			!networkConnectionHelper.isConnectedToUnmeteredNetwork,
 			requiredStreamQualityBucket
 		)
-		loadStreamQuality(requiredStreamQualityBucket)
+
+		// TODO: use application scope
+		GlobalScope.launch(Dispatchers.Main) {
+			saveCurrentPlaybackPosition()
+
+			loadStreamQuality(requiredStreamQualityBucket)
+		}
 	}
 
 	private fun String.toSubtitleMimeType(): String {
