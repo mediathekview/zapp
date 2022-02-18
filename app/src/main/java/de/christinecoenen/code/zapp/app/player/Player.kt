@@ -18,8 +18,8 @@ import de.christinecoenen.code.zapp.app.player.VideoInfoArtworkExtensions.getArt
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -31,6 +31,7 @@ import java.io.IOException
 
 class Player(
 	private val context: Context,
+	private val applicationScope: CoroutineScope,
 	private val playbackPositionRepository: IPlaybackPositionRepository
 ) {
 
@@ -269,8 +270,7 @@ class Player(
 			requiredStreamQualityBucket
 		)
 
-		// TODO: use application scope
-		GlobalScope.launch(Dispatchers.Main) {
+		applicationScope.launch(Dispatchers.Main) {
 			saveCurrentPlaybackPosition()
 
 			loadStreamQuality(requiredStreamQualityBucket)

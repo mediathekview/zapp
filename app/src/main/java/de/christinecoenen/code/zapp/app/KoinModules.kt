@@ -57,7 +57,7 @@ class KoinModules {
 			single { ProgramInfoRepository(get()) }
 
 			factory { SettingsRepository(androidContext()) }
-			factory { Player(androidContext(), get()) }
+			factory { Player(androidContext(), get(), get()) }
 			factory { JsonChannelList(androidContext()) }
 
 			viewModel { MainViewModel(androidApplication()) }
