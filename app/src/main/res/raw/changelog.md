@@ -1,3 +1,6 @@
+# v-next
+* Auswahl der Videoqualität in kostenpflichtigen Netwerken repariert
+
 # 6.0.2
 * Video-Player-Interface verschwindet schneller automatisch
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
