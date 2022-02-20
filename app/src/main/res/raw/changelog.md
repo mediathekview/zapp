@@ -1,3 +1,6 @@
+# v-next
+* Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
+
 # 6.0.2
 * Video-Player-Interface verschwindet schneller automatisch
 * Abspielfehler bei manchen Mediathek-Sendungen behoben

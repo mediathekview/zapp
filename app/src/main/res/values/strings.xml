@@ -43,6 +43,8 @@
 
 	<!-- downloads -->
 	<string name="fragment_downloads_no_results">keine Downloads vorhanden</string>
+	<string name="fragment_downloads_confirm_show_removal_dialog_title">Sendung aus der Download-Liste entfernen?</string>
+	<string name="fragment_downloads_confirm_show_removal_dialog_text">Noch laufende Downloads werden abgrebrochen und vorhandene Video-Dateien gelöscht.</string>
 
 	<!-- error messages -->
 	<string name="error_report">Fehler melden</string>
@@ -71,6 +73,7 @@
 	<string name="action_send_mail">Mail senden</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
 	<string name="action_start_picture_in_picture">Bild im Bild</string>
+	<string name="action_remove">Entfernen</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
 

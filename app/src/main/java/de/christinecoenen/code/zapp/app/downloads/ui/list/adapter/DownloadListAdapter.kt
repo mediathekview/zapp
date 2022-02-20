@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
@@ -27,6 +28,12 @@ class DownloadListAdapter(
 				listener.onShowClicked(it)
 			}
 		}
+		binding.root.setOnLongClickListener {
+			getItem(holder.bindingAdapterPosition)?.let {
+				listener.onShowLongClicked(it, binding.root)
+			}
+			true
+		}
 
 		return holder
 	}
@@ -43,5 +50,6 @@ class DownloadListAdapter(
 
 	interface Listener {
 		fun onShowClicked(show: PersistedMediathekShow)
+		fun onShowLongClicked(show: PersistedMediathekShow, view: View)
 	}
 }
