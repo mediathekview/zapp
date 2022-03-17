@@ -67,5 +67,5 @@ gradle-app.setting
 /.idea/jarRepositories.xml
 /.idea/deploymentTargetDropDown.xml
 
-/app/release/output.json
-/app/release/output-metadata.json
+/app/release
+/app/releases
