@@ -10,6 +10,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
+import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.ChannelFilter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.LengthFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,6 +44,9 @@ class MediathekListFragmentViewModel(
 	}
 		.asLiveData()
 
+	private val _queryInfoResult = MutableStateFlow<QueryInfoResult?>(null)
+	val queryInfoResult = _queryInfoResult.asLiveData()
+
 	val pageFlow = combine(
 		_searchQuery,
 		_lengthFilter,
@@ -53,7 +57,7 @@ class MediathekListFragmentViewModel(
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
 			Pager(PagingConfig(pageSize = ITEM_COUNT_PER_PAGE)) {
-				MediathekPagingSource(mediathekApi, queryRequest)
+				MediathekPagingSource(mediathekApi, queryRequest, _queryInfoResult)
 			}.flow
 		}.cachedIn(viewModelScope)
 
