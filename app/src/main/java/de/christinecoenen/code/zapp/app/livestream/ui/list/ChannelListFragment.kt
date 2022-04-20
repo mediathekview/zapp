@@ -18,11 +18,6 @@ import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 
 class ChannelListFragment : Fragment(), ListItemListener {
 
-	companion object {
-		fun newInstance() = ChannelListFragment()
-	}
-
-
 	private lateinit var channelList: ISortableChannelList
 	private lateinit var gridAdapter: ChannelListAdapter
 

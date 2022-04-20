@@ -4,20 +4,24 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.about.ui.AboutActivity
 import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
-import de.christinecoenen.code.zapp.utils.system.MenuHelper
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-	private val viewModel: MainViewModel by viewModel()
-
 	private var _binding: ActivityMainBinding? = null
 	private val binding get() = _binding!!
+
+	private lateinit var navController: NavController
+	private lateinit var appBarConfiguration: AppBarConfiguration
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -26,27 +30,21 @@ class MainActivity : AppCompatActivity() {
 
 		setContentView(binding.root)
 
+		navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
+
+		appBarConfiguration = AppBarConfiguration(
+			setOf(
+				R.id.channelListFragment,
+				R.id.mediathekListFragment,
+				R.id.downloadsFragment,
+			)
+		)
+		binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 		setSupportActionBar(binding.toolbar)
 
-		binding.viewPager.adapter = MainPageAdapter(this, viewModel)
-		binding.viewPager.isUserInputEnabled = false
-		binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-			override fun onPageScrolled(
-				position: Int,
-				positionOffset: Float,
-				positionOffsetPixels: Int
-			) {
-			}
+		binding.bottomNavigation.setupWithNavController(navController)
 
-			override fun onPageSelected(position: Int) {
-				this@MainActivity.onPageSelected(position)
-			}
-
-			override fun onPageScrollStateChanged(state: Int) {}
-		})
-
-		binding.bottomNavigation.setOnItemSelectedListener(::onNavigationItemSelected)
-		onPageSelected(binding.viewPager.currentItem)
+		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
 	}
 
 	override fun onDestroy() {
@@ -75,14 +73,7 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun onPageSelected(position: Int) {
-		MenuHelper.uncheckItems(binding.bottomNavigation.menu)
-		binding.bottomNavigation.menu.getItem(position).isChecked = true
-	}
-
-	private fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-		val page = viewModel.getPageTypeFromMenuResId(menuItem.itemId)
-		binding.viewPager.setCurrentItem(page.ordinal, false)
-		return true
+	override fun onSupportNavigateUp(): Boolean {
+		return navController.navigateUp(appBarConfiguration)
 	}
 }

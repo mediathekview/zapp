@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
-		android:id="@+id/menu_live"
+		android:id="@+id/channelListFragment"
 		android:icon="@drawable/ic_ondemand_video_white_24dp"
 		android:title="@string/activity_main_tab_live" />
 
 	<item
-		android:id="@+id/menu_mediathek"
+		android:id="@+id/mediathekListFragment"
 		android:icon="@drawable/ic_outline_video_library_24"
 		android:title="@string/activity_main_tab_mediathek" />
 
 	<item
-		android:id="@+id/menu_downloads"
+		android:id="@+id/downloadsFragment"
 		android:icon="@drawable/ic_baseline_save_alt_24"
 		android:title="@string/activity_main_tab_downloads" />
 

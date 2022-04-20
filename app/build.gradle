@@ -112,6 +112,10 @@ dependencies {
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
+	def nav_version = "2.4.2"
+	implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 	// room database
 	def room_version = "2.4.2"
 	implementation "androidx.room:room-runtime:$room_version"

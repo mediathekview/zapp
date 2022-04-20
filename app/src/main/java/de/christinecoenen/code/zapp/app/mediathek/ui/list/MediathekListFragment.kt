@@ -38,13 +38,6 @@ import javax.net.ssl.SSLHandshakeException
 
 class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
-	companion object {
-
-		val instance
-			get() = MediathekListFragment()
-
-	}
-
 	private var _binding: FragmentMediathekListBinding? = null
 	private val binding: FragmentMediathekListBinding
 		get() = _binding!!

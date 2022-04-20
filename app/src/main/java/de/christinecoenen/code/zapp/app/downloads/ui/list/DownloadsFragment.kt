@@ -19,11 +19,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
-	companion object {
-		fun newInstance() = DownloadsFragment()
-	}
-
-
 	private var _binding: DownloadsFragmentBinding? = null
 	private val binding: DownloadsFragmentBinding get() = _binding!!
 
@@ -61,6 +56,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 				downloadAdapter.submitData(it)
 			}
 		}
+		updateNoDownloadsVisibility()
 
 		return binding.root
 	}
