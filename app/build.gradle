@@ -120,7 +120,7 @@ dependencies {
 	implementation "androidx.room:room-ktx:$room_version"
 
 	// helper
-	implementation 'com.google.code.gson:gson:2.8.7'
+	implementation 'com.google.code.gson:gson:2.8.9'
 
 	// sortable list
 	implementation 'com.github.woxthebox:draglistview:1.7.2'
