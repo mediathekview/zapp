@@ -1,3 +1,6 @@
+# v-next
+* Anzahl der Sucherergebnisse wird im Mediathekfilter angezeigt
+
 # 6.0.2
 * Video-Player-Interface verschwindet schneller automatisch
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
