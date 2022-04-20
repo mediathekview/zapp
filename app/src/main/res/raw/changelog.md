@@ -1,4 +1,5 @@
 # v-next
+* Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
 * Auswahl der Videoqualität in kostenpflichtigen Netwerken repariert
 
 # 6.0.2
