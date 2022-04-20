@@ -1,6 +1,7 @@
 # v-next
 * Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
 * Auswahl der Videoqualität in kostenpflichtigen Netwerken repariert
+* Anzahl der Sucherergebnisse wird im Mediathekfilter angezeigt
 
 # 6.0.2
 * Video-Player-Interface verschwindet schneller automatisch

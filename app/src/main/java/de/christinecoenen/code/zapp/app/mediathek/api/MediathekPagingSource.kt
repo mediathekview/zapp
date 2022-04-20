@@ -3,14 +3,17 @@ package de.christinecoenen.code.zapp.app.mediathek.api
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
+import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 
 class MediathekPagingSource(
 	private val mediathekApi: IMediathekApiService,
-	private val query: QueryRequest
+	private val query: QueryRequest,
+	private val queryInfoResultPublisher: MutableStateFlow<QueryInfoResult?>
 ) : PagingSource<Int, MediathekShow>() {
 
 	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
@@ -28,6 +31,9 @@ class MediathekPagingSource(
 	}
 
 	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediathekShow> {
+
+		queryInfoResultPublisher.emit(null)
+
 		return try {
 			// Start refresh at page 1 if undefined.
 			val nextPageNumber = params.key ?: 1
@@ -38,6 +44,8 @@ class MediathekPagingSource(
 
 			val showList = response.result?.results ?: throw Error(response.err)
 			val nextKey = if (showList.isEmpty()) null else nextPageNumber.plus(1)
+
+			queryInfoResultPublisher.emit(response.result.queryInfo)
 
 			LoadResult.Page(
 				data = showList,
