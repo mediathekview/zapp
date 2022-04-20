@@ -8,11 +8,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.about.ui.AboutActivity
-import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -58,22 +57,13 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
-			R.id.menu_about -> {
-				val intent = AboutActivity.getStartIntent(this)
-				startActivity(intent)
-				true
-			}
-			R.id.menu_settings -> {
-				val intent = SettingsActivity.getStartIntent(this)
-				startActivity(intent)
-				true
-			}
-			else -> super.onOptionsItemSelected(item)
+		if (item.itemId == android.R.id.home) {
+			return onSupportNavigateUp()
 		}
+		return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 	}
 
 	override fun onSupportNavigateUp(): Boolean {
-		return navController.navigateUp(appBarConfiguration)
+		return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 	}
 }

@@ -8,14 +8,21 @@
 	<fragment
 		android:id="@+id/channelListFragment"
 		android:name="de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment"
+		android:label="@string/app_name"
 		tools:layout="@layout/fragment_channel_list" />
 	<fragment
 		android:id="@+id/mediathekListFragment"
 		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment"
+		android:label="@string/app_name"
 		tools:layout="@layout/fragment_mediathek_list" />
 	<fragment
 		android:id="@+id/downloadsFragment"
 		android:name="de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsFragment"
+		android:label="@string/app_name"
 		tools:layout="@layout/downloads_fragment" />
+	<fragment
+		android:id="@+id/settingsFragment"
+		android:name="de.christinecoenen.code.zapp.app.settings.ui.SettingsFragment"
+		android:label="@string/menu_settings" />
 
 </navigation>

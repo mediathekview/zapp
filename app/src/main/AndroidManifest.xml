@@ -52,8 +52,7 @@
 		<activity
 			android:name=".app.settings.ui.ChannelSelectionActivity"
 			android:exported="false"
-			android:label="@string/activity_channel_selection_title"
-			android:parentActivityName=".app.settings.ui.SettingsActivity">
+			android:label="@string/activity_channel_selection_title">
 			<intent-filter>
 				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
 
@@ -71,9 +70,6 @@
 			android:supportsPictureInPicture="true"
 			android:taskAffinity=".YourVideoPlayerActivityTask"
 			android:theme="@style/FullscreenTheme" />
-		<activity
-			android:name=".app.settings.ui.SettingsActivity"
-			android:label="@string/activity_settings_title" />
 		<activity
 			android:name=".app.about.ui.AboutActivity"
 			android:label="@string/activity_about_title"

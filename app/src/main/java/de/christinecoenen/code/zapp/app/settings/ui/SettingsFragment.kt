@@ -10,25 +10,12 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 
-/**
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SettingsFragment : PreferenceFragmentCompat() {
 
 	companion object {
 
 		private const val PREF_SHORTCUTS = "pref_shortcuts"
 		private const val PREF_UI_MODE = "pref_ui_mode"
-
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment.
-		 */
-		@JvmStatic
-		fun newInstance(): SettingsFragment {
-			return SettingsFragment()
-		}
 
 	}
 

@@ -16,7 +16,6 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.player.MediathekPlayerActivity
-import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -270,7 +269,8 @@ class MediathekDetailFragment : Fragment() {
 						Snackbar.LENGTH_LONG
 					)
 					.setAction(R.string.activity_settings_title) {
-						startActivity(SettingsActivity.getStartIntent(requireContext()))
+						// TODO: navigate to settings fragment
+						//startActivity(SettingsActivity.getStartIntent(requireContext()))
 					}
 					.show()
 			}
