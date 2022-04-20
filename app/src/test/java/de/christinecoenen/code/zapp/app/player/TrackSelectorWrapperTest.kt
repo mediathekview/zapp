@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class TrackSelectorWrapperTest: AutoCloseKoinTest() {
+class TrackSelectorWrapperTest : AutoCloseKoinTest() {
 
 	private lateinit var trackSelectorWrapper: TrackSelectorWrapper
 
@@ -23,10 +23,14 @@ class TrackSelectorWrapperTest: AutoCloseKoinTest() {
 	}
 
 	@Test
-	fun testQualities() {
-		trackSelectorWrapper.setStreamQuality(StreamQualityBucket.DISABLED)
+	fun testValidQualities() {
 		trackSelectorWrapper.setStreamQuality(StreamQualityBucket.LOWEST)
 		trackSelectorWrapper.setStreamQuality(StreamQualityBucket.MEDIUM)
 		trackSelectorWrapper.setStreamQuality(StreamQualityBucket.HIGHEST)
+	}
+
+	@Test(expected = IllegalArgumentException::class)
+	fun testInvalidQualities() {
+		trackSelectorWrapper.setStreamQuality(StreamQualityBucket.DISABLED)
 	}
 }

@@ -11,7 +11,7 @@ class PersistedPlaybackPositionRepository(
 		positionMillis: Long,
 		durationMillis: Long
 	) {
-		if (videoInfo.id == 0) {
+		if (videoInfo.id == 0 || !videoInfo.hasDuration || durationMillis < 0) {
 			return
 		}
 

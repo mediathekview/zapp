@@ -13,7 +13,6 @@ internal class TrackSelectorWrapper(private val trackSelector: DefaultTrackSelec
 	fun setStreamQuality(streamQuality: StreamQualityBucket?) {
 
 		when (streamQuality) {
-			StreamQualityBucket.DISABLED,
 			StreamQualityBucket.LOWEST ->
 				trackSelector.setParameters(trackSelector
 					.buildUponParameters()
@@ -32,6 +31,9 @@ internal class TrackSelectorWrapper(private val trackSelector: DefaultTrackSelec
 					.buildUponParameters()
 					.clearVideoSizeConstraints()
 					.setForceLowestBitrate(false))
+
+			else ->
+				throw IllegalArgumentException("track selection does not allow quality bucket $streamQuality")
 		}
 	}
 
