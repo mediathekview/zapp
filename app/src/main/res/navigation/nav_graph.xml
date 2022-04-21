@@ -39,5 +39,9 @@
 		android:id="@+id/settingsFragment"
 		android:name="de.christinecoenen.code.zapp.app.settings.ui.SettingsFragment"
 		android:label="@string/menu_settings" />
+	<fragment
+		android:id="@+id/aboutFragment"
+		android:name="de.christinecoenen.code.zapp.app.about.ui.AboutFragment"
+		android:label="@string/menu_about" />
 
 </navigation>

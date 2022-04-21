@@ -34,7 +34,7 @@
 		<activity
 			android:name=".app.about.ui.ChangelogActivity"
 			android:label="@string/activity_changelog_title"
-			android:parentActivityName=".app.about.ui.AboutActivity" />
+			android:parentActivityName=".app.about.ui.AboutFragment" />
 		<activity
 			android:name=".app.main.MainActivity"
 			android:exported="true"
@@ -71,13 +71,13 @@
 			android:taskAffinity=".YourVideoPlayerActivityTask"
 			android:theme="@style/FullscreenTheme" />
 		<activity
-			android:name=".app.about.ui.AboutActivity"
+			android:name=".app.about.ui.AboutFragment"
 			android:label="@string/activity_about_title"
 			android:theme="@style/AppTheme.NoActionBar" />
 		<activity
 			android:name=".app.about.ui.FaqActivity"
 			android:label="@string/activity_faq_title"
-			android:parentActivityName=".app.about.ui.AboutActivity" />
+			android:parentActivityName=".app.about.ui.AboutFragment" />
 		<activity
 			android:name=".app.mediathek.ui.detail.player.MediathekPlayerActivity"
 			android:autoRemoveFromRecents="true"
