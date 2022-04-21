@@ -24,6 +24,9 @@
 			android:name="is_main_destination"
 			android:defaultValue="true"
 			app:argType="boolean" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
 	</fragment>
 	<fragment
 		android:id="@+id/downloadsFragment"
@@ -34,6 +37,9 @@
 			android:name="is_main_destination"
 			android:defaultValue="true"
 			app:argType="boolean" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
 	</fragment>
 	<fragment
 		android:id="@+id/settingsFragment"
@@ -76,5 +82,14 @@
 		android:name="de.christinecoenen.code.zapp.app.about.ui.FaqFragment"
 		android:label="@string/faq_title"
 		tools:layout="@layout/faq_fragment" />
+	<fragment
+		android:id="@+id/mediathekDetailFragment"
+		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailFragment"
+		android:label="@string/fragment_mediathek_title"
+		tools:layout="@layout/mediathek_detail_fragment">
+		<argument
+			android:name="mediathek_show"
+			app:argType="de.christinecoenen.code.zapp.models.shows.MediathekShow" />
+	</fragment>
 
 </navigation>

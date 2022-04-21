@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
@@ -16,7 +17,6 @@ import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
@@ -187,14 +187,15 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
-		startActivity(getStartIntent(context, show))
+		val directions = MediathekListFragmentDirections.toMediathekDetailFragment(show)
+		findNavController().navigate(directions)
 	}
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
 		longClickShow = show
 
 		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.activity_mediathek_detail)
+			inflate(R.menu.mediathek_detail_fragment)
 			show()
 			setOnMenuItemClickListener(::onContextMenuItemClicked)
 		}

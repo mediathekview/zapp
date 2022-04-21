@@ -7,11 +7,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.adapter.DownloadListAdapter
 import de.christinecoenen.code.zapp.app.downloads.ui.list.dialogs.ConfirmShowRemovalDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import kotlinx.coroutines.launch
@@ -67,7 +68,9 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	}
 
 	override fun onShowClicked(show: PersistedMediathekShow) {
-		startActivity(MediathekDetailActivity.getStartIntent(context, show.mediathekShow))
+		val directions =
+			MediathekListFragmentDirections.toMediathekDetailFragment(show.mediathekShow)
+		findNavController().navigate(directions)
 	}
 
 	override fun onShowLongClicked(show: PersistedMediathekShow, view: View) {

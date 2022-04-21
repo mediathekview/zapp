@@ -67,9 +67,6 @@
 			android:supportsPictureInPicture="true"
 			android:taskAffinity=".YourVideoPlayerActivityTask"
 			android:theme="@style/FullscreenTheme" />
-		<activity
-			android:name=".app.mediathek.ui.detail.MediathekDetailActivity"
-			android:label="@string/fragment_mediathek_title" />
 
 		<service
 			android:name=".app.player.BackgroundPlayerService"
