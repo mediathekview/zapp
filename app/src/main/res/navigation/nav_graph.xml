@@ -38,7 +38,23 @@
 	<fragment
 		android:id="@+id/settingsFragment"
 		android:name="de.christinecoenen.code.zapp.app.settings.ui.SettingsFragment"
-		android:label="@string/menu_settings" />
+		android:label="@string/menu_settings">
+		<action
+			android:id="@+id/action_settingsFragment_to_channelSelectionFragment"
+			app:destination="@id/channelSelectionFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/channelSelectionFragment"
+		android:name="de.christinecoenen.code.zapp.app.settings.ui.ChannelSelectionFragment"
+		android:label="@string/activity_channel_selection_title"
+		tools:layout="@layout/channel_selection_fragment">
+		<action
+			android:id="@+id/action_channelSelectionFragment_to_channelSelectionHelpDialog"
+			app:destination="@id/channelSelectionHelpDialog" />
+	</fragment>
+	<dialog
+		android:id="@+id/channelSelectionHelpDialog"
+		android:name="de.christinecoenen.code.zapp.app.settings.ui.ChannelSelectionHelpDialog" />
 	<fragment
 		android:id="@+id/aboutFragment"
 		android:name="de.christinecoenen.code.zapp.app.about.ui.AboutFragment"

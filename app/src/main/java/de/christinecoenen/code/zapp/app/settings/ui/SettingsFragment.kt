@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.settings.ui
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -16,12 +17,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		private const val PREF_SHORTCUTS = "pref_shortcuts"
 		private const val PREF_UI_MODE = "pref_ui_mode"
+		private const val PREF_CHANNEL_SELECTION = "pref_key_channel_selection"
 
 	}
 
 	private lateinit var settingsRepository: SettingsRepository
 	private lateinit var shortcutPreference: ShortcutPreference
 	private lateinit var uiModePreference: ListPreference
+	private lateinit var channelSelectionPreference: Preference
 
 	private val uiModeChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
 		val uiMode = settingsRepository.prefValueToUiMode(newValue as String?)
@@ -40,6 +43,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		shortcutPreference = preferenceScreen.findPreference(PREF_SHORTCUTS)!!
 		uiModePreference = preferenceScreen.findPreference(PREF_UI_MODE)!!
+		channelSelectionPreference = preferenceScreen.findPreference(PREF_CHANNEL_SELECTION)!!
+
+		channelSelectionPreference.setOnPreferenceClickListener {
+			val direction =
+				SettingsFragmentDirections.actionSettingsFragmentToChannelSelectionFragment()
+			findNavController().navigate(direction)
+			true
+		}
 	}
 
 	override fun onResume() {

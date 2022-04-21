@@ -46,16 +46,6 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".app.settings.ui.ChannelSelectionActivity"
-			android:exported="false"
-			android:label="@string/activity_channel_selection_title">
-			<intent-filter>
-				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
-
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
-		<activity
 			android:name=".app.livestream.ui.detail.ChannelPlayerActivity"
 			android:autoRemoveFromRecents="true"
 			android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation"
