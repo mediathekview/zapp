@@ -3,7 +3,7 @@ apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'koin'
-
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
 	compileSdkVersion 31
@@ -112,7 +112,6 @@ dependencies {
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
-	def nav_version = "2.4.2"
 	implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 

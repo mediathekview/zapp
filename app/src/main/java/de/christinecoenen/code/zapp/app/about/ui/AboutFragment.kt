@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.about.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.mikepenz.aboutlibraries.LibsConfiguration.LibsListener
 import com.mikepenz.aboutlibraries.ui.LibsSupportFragment
@@ -19,18 +20,20 @@ class AboutFragment : LibsSupportFragment() {
 		override fun onExtraClicked(v: View, specialButton: SpecialButton): Boolean =
 			when (specialButton) {
 				SpecialButton.SPECIAL1 -> {
-					startActivity(ChangelogActivity.getStartIntent(requireContext()))
+					val action = AboutFragmentDirections.actionAboutFragmentToChangelogFragment()
+					findNavController().navigate(action)
 					true
 				}
 				SpecialButton.SPECIAL2 -> {
-					startActivity(FaqActivity.getStartIntent(requireContext()))
+					val action = AboutFragmentDirections.actionAboutFragmentToFaqFragment()
+					findNavController().navigate(action)
 					true
 				}
 				SpecialButton.SPECIAL3 -> {
 					IntentHelper.sendMail(
 						requireContext(),
 						getString(string.support_mail),
-						getString(string.activity_about_feedback_mail_subject)
+						getString(string.about_feedback_mail_subject)
 					)
 					true
 				}

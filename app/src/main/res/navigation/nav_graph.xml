@@ -42,6 +42,23 @@
 	<fragment
 		android:id="@+id/aboutFragment"
 		android:name="de.christinecoenen.code.zapp.app.about.ui.AboutFragment"
-		android:label="@string/menu_about" />
+		android:label="@string/menu_about">
+		<action
+			android:id="@+id/action_aboutFragment_to_changelogFragment"
+			app:destination="@id/changelogFragment" />
+		<action
+			android:id="@+id/action_aboutFragment_to_faqFragment"
+			app:destination="@id/faqFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/changelogFragment"
+		android:name="de.christinecoenen.code.zapp.app.about.ui.ChangelogFragment"
+		android:label="@string/changelog_title"
+		tools:layout="@layout/changelog_fragment" />
+	<fragment
+		android:id="@+id/faqFragment"
+		android:name="de.christinecoenen.code.zapp.app.about.ui.FaqFragment"
+		android:label="@string/faq_title"
+		tools:layout="@layout/faq_fragment" />
 
 </navigation>
