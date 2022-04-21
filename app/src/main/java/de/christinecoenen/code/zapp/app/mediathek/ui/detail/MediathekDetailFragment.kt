@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
@@ -269,8 +270,8 @@ class MediathekDetailFragment : Fragment() {
 						Snackbar.LENGTH_LONG
 					)
 					.setAction(R.string.activity_settings_title) {
-						// TODO: navigate to settings fragment
-						//startActivity(SettingsActivity.getStartIntent(requireContext()))
+						val directions = MediathekDetailFragmentDirections.toSettingsFragment()
+						findNavController().navigate(directions)
 					}
 					.show()
 			}

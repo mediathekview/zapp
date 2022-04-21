@@ -90,6 +90,9 @@
 		<argument
 			android:name="mediathek_show"
 			app:argType="de.christinecoenen.code.zapp.models.shows.MediathekShow" />
+		<action
+			android:id="@+id/to_settingsFragment"
+			app:destination="@id/settingsFragment" />
 	</fragment>
 
 </navigation>
