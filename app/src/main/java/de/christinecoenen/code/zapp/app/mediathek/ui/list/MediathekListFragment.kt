@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -48,7 +49,9 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		DateFormat.SHORT
 	)
 
-	private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.filterBottomSheet) }
+	private var _bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>? = null
+	private val bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+		get() = _bottomSheetBehavior!!
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 	private lateinit var adapter: MediathekItemAdapter
@@ -88,6 +91,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		createChannelFilterView(inflater)
 
 		// only consume backPressedCallback when bottom sheet is not collapsed
+		_bottomSheetBehavior = BottomSheetBehavior.from(binding.filterBottomSheet)
 		bottomSheetBehavior.addBottomSheetCallback(object :
 			BottomSheetBehavior.BottomSheetCallback() {
 			override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -105,7 +109,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 		viewmodel.queryInfoResult.observe(viewLifecycleOwner, ::onQueryInfoResultChanged)
-
 
 		adapter = MediathekItemAdapter(
 			lifecycleScope,
@@ -153,6 +156,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+		_bottomSheetBehavior = null
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
