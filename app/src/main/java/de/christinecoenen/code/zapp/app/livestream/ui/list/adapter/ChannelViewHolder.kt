@@ -7,13 +7,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
+import de.christinecoenen.code.zapp.databinding.ChannelListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import kotlinx.coroutines.Job
 import kotlin.math.roundToInt
 
 class ChannelViewHolder(
-	private val binding: FragmentChannelListItemBinding,
+	private val binding: ChannelListFragmentItemBinding,
 	private val lifecycleOwner: LifecycleOwner,
 	private val listener: ListItemListener
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, OnLongClickListener {

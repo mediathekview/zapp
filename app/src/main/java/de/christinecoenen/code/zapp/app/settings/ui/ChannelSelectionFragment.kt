@@ -5,7 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionBinding
+import de.christinecoenen.code.zapp.databinding.ChannelSelectionFragmentBinding
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableJsonChannelList
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
@@ -13,8 +13,8 @@ import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener
 
 class ChannelSelectionFragment : Fragment() {
 
-	private var _binding: ActivityChannelSelectionBinding? = null
-	private val binding: ActivityChannelSelectionBinding get() = _binding!!
+	private var _binding: ChannelSelectionFragmentBinding? = null
+	private val binding: ChannelSelectionFragmentBinding get() = _binding!!
 
 
 	private lateinit var channelList: ISortableChannelList
@@ -34,7 +34,7 @@ class ChannelSelectionFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		_binding = ActivityChannelSelectionBinding.inflate(inflater, container, false)
+		_binding = ChannelSelectionFragmentBinding.inflate(inflater, container, false)
 
 		// list adapter
 		listAdapter.itemList = channelList.list

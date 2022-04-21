@@ -4,12 +4,12 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemFooterBinding
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemFooterBinding
 import java.net.UnknownServiceException
 import javax.net.ssl.SSLHandshakeException
 
 class LoadStateViewHolder(
-	private val binding: FragmentMediathekListItemFooterBinding,
+	private val binding: MediathekListFragmentItemFooterBinding,
 	retry: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -29,7 +29,7 @@ class LoadStateViewHolder(
 				} else {
 					R.string.error_mediathek_info_not_available
 				}
-			
+
 			binding.errorMessage.setText(errorMessageResId)
 		}
 	}

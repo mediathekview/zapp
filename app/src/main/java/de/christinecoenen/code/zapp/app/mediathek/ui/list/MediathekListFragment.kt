@@ -21,7 +21,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStat
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -38,8 +38,8 @@ import javax.net.ssl.SSLHandshakeException
 
 class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
-	private var _binding: FragmentMediathekListBinding? = null
-	private val binding: FragmentMediathekListBinding
+	private var _binding: MediathekListFragmentBinding? = null
+	private val binding: MediathekListFragmentBinding
 		get() = _binding!!
 
 	private val numberFormat = NumberFormat.getInstance(Locale.getDefault())
@@ -73,7 +73,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		_binding = FragmentMediathekListBinding.inflate(inflater, container, false)
+		_binding = MediathekListFragmentBinding.inflate(inflater, container, false)
 
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
@@ -157,7 +157,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 		super.onCreateOptionsMenu(menu, inflater)
-		inflater.inflate(R.menu.fragment_mediathek_list, menu)
+		inflater.inflate(R.menu.mediathek_list_fragment, menu)
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu) {

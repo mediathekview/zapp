@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemFooterBinding
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemFooterBinding
 
 class FooterLoadStateAdapter(
 	private val retry: () -> Unit
@@ -15,7 +15,7 @@ class FooterLoadStateAdapter(
 
 	override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
 		val inflater = LayoutInflater.from(parent.context)
-		val binding = FragmentMediathekListItemFooterBinding.inflate(inflater, parent, false)
+		val binding = MediathekListFragmentItemFooterBinding.inflate(inflater, parent, false)
 		return LoadStateViewHolder(binding, retry)
 	}
 }

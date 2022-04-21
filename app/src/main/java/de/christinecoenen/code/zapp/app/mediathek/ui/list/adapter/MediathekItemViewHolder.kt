@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
@@ -16,7 +16,7 @@ import org.koin.core.component.inject
 import timber.log.Timber
 
 class MediathekItemViewHolder(
-	private val binding: FragmentMediathekListItemBinding
+	private val binding: MediathekListFragmentItemBinding
 ) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
 	private val mediathekRepository: MediathekRepository by inject()

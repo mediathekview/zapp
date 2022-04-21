@@ -10,7 +10,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListBinding
+import de.christinecoenen.code.zapp.databinding.ChannelListFragmentBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
@@ -34,7 +34,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val binding = FragmentChannelListBinding.inflate(inflater, container, false)
+		val binding = ChannelListFragmentBinding.inflate(inflater, container, false)
 		val channelGridView = binding.gridviewChannels
 
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true)
@@ -62,7 +62,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 
 	override fun onItemLongClick(channel: ChannelModel, view: View) {
 		val menu = PopupMenu(context, view, Gravity.TOP or Gravity.END)
-		menu.inflate(R.menu.activity_channel_list_context)
+		menu.inflate(R.menu.channel_list_fragment_context)
 		menu.show()
 		menu.setOnMenuItemClickListener { menuItem -> onContextMenuItemClicked(menuItem, channel) }
 	}

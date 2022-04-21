@@ -9,7 +9,7 @@
 		android:id="@+id/channelListFragment"
 		android:name="de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment"
 		android:label="@string/app_name"
-		tools:layout="@layout/fragment_channel_list">
+		tools:layout="@layout/channel_list_fragment">
 		<argument
 			android:name="is_main_destination"
 			android:defaultValue="true"
@@ -19,7 +19,7 @@
 		android:id="@+id/mediathekListFragment"
 		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment"
 		android:label="@string/app_name"
-		tools:layout="@layout/fragment_mediathek_list">
+		tools:layout="@layout/mediathek_list_fragment">
 		<argument
 			android:name="is_main_destination"
 			android:defaultValue="true"

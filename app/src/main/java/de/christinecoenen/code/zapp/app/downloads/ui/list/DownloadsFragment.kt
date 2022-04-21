@@ -74,7 +74,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		longClickShow = show
 
 		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.activity_download_detail)
+			inflate(R.menu.download_fragment_context)
 			show()
 			setOnMenuItemClickListener(::onContextMenuItemClicked)
 		}
