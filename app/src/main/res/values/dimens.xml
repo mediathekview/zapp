@@ -3,6 +3,8 @@
 	<dimen name="activity_horizontal_margin">16dp</dimen>
 	<dimen name="activity_vertical_margin">16dp</dimen>
 
+	<dimen name="toolbar_logo_margin">32dp</dimen>
+
 	<dimen name="view_program_info_subtitle_margin_bottom">4dp</dimen>
 
 	<dimen name="activity_channel_selection_item_width">120dip</dimen>
