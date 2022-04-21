@@ -44,15 +44,6 @@ class MediathekDetailFragment : Fragment() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-
-		lifecycleScope.launchWhenCreated {
-			val persistedShow = mediathekRepository
-				.persistOrUpdateShow(args.mediathekShow)
-				.first()
-
-			onShowLoaded(persistedShow)
-		}
-
 		setHasOptionsMenu(true)
 	}
 
@@ -63,10 +54,13 @@ class MediathekDetailFragment : Fragment() {
 	): View {
 		_binding = MediathekDetailFragmentBinding.inflate(inflater, container, false)
 
-		binding.play.setOnClickListener { onPlayClick() }
-		binding.buttons.download.setOnClickListener { onDownloadClick() }
-		binding.buttons.share.setOnClickListener { onShareClick() }
-		binding.buttons.website.setOnClickListener { onWebsiteClick() }
+		lifecycleScope.launchWhenCreated {
+			val persistedShow = mediathekRepository
+				.persistOrUpdateShow(args.mediathekShow)
+				.first()
+
+			onShowLoaded(persistedShow)
+		}
 
 		lifecycleScope.launchWhenCreated {
 			mediathekRepository
@@ -75,6 +69,15 @@ class MediathekDetailFragment : Fragment() {
 		}
 
 		return binding.root
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		binding.play.setOnClickListener { onPlayClick() }
+		binding.buttons.download.setOnClickListener { onDownloadClick() }
+		binding.buttons.share.setOnClickListener { onShareClick() }
+		binding.buttons.website.setOnClickListener { onWebsiteClick() }
 	}
 
 	override fun onResume() {
