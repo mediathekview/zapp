@@ -28,6 +28,26 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
 	private var longClickShow: PersistedMediathekShow? = null
 
+	private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+		override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+			updateNoDownloadsVisibility()
+		}
+
+		override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+			updateNoDownloadsVisibility()
+		}
+
+		override fun onStateRestorationPolicyChanged() {
+			updateNoDownloadsVisibility()
+		}
+	}
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
+	}
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
@@ -35,22 +55,9 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	): View {
 		_binding = DownloadsFragmentBinding.inflate(inflater, container, false)
 
-		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
 		binding.list.adapter = downloadAdapter
 
-		downloadAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-			override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-				updateNoDownloadsVisibility()
-			}
-
-			override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-				updateNoDownloadsVisibility()
-			}
-
-			override fun onStateRestorationPolicyChanged() {
-				updateNoDownloadsVisibility()
-			}
-		})
+		downloadAdapter.registerAdapterDataObserver(adapterDataObserver)
 
 		viewModel.downloadList.observe(viewLifecycleOwner) {
 			lifecycleScope.launchWhenCreated {
@@ -64,6 +71,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+		downloadAdapter.unregisterAdapterDataObserver(adapterDataObserver)
 		_binding = null
 	}
 
