@@ -25,7 +25,7 @@ class AboutFragment : LibsSupportFragment() {
 					true
 				}
 				SpecialButton.SPECIAL2 -> {
-					val action = AboutFragmentDirections.actionAboutFragmentToFaqFragment()
+					val action = AboutFragmentDirections.toFaqFragment()
 					findNavController().navigate(action)
 					true
 				}

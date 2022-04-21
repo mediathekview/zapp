@@ -46,7 +46,7 @@
 		android:name="de.christinecoenen.code.zapp.app.settings.ui.SettingsFragment"
 		android:label="@string/menu_settings">
 		<action
-			android:id="@+id/action_settingsFragment_to_channelSelectionFragment"
+			android:id="@+id/to_channelSelectionFragment"
 			app:destination="@id/channelSelectionFragment" />
 	</fragment>
 	<fragment
@@ -55,7 +55,7 @@
 		android:label="@string/activity_channel_selection_title"
 		tools:layout="@layout/channel_selection_fragment">
 		<action
-			android:id="@+id/action_channelSelectionFragment_to_channelSelectionHelpDialog"
+			android:id="@+id/to_channelSelectionHelpDialog"
 			app:destination="@id/channelSelectionHelpDialog" />
 	</fragment>
 	<dialog
@@ -69,7 +69,7 @@
 			android:id="@+id/action_aboutFragment_to_changelogFragment"
 			app:destination="@id/changelogFragment" />
 		<action
-			android:id="@+id/action_aboutFragment_to_faqFragment"
+			android:id="@+id/to_faqFragment"
 			app:destination="@id/faqFragment" />
 	</fragment>
 	<fragment

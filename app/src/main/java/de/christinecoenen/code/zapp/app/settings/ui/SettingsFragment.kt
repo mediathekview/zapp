@@ -47,7 +47,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		channelSelectionPreference.setOnPreferenceClickListener {
 			val direction =
-				SettingsFragmentDirections.actionSettingsFragmentToChannelSelectionFragment()
+				SettingsFragmentDirections.toChannelSelectionFragment()
 			findNavController().navigate(direction)
 			true
 		}

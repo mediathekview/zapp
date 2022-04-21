@@ -84,7 +84,7 @@ class ChannelSelectionFragment : Fragment() {
 
 	private fun openHelpDialog() {
 		val directions =
-			ChannelSelectionFragmentDirections.actionChannelSelectionFragmentToChannelSelectionHelpDialog()
+			ChannelSelectionFragmentDirections.toChannelSelectionHelpDialog()
 		findNavController().navigate(directions)
 	}
 }
