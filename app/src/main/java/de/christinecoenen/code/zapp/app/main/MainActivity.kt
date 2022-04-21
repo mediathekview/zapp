@@ -6,10 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
@@ -36,10 +33,12 @@ class MainActivity : AppCompatActivity() {
 				R.id.channelListFragment,
 				R.id.mediathekListFragment,
 				R.id.downloadsFragment,
-			)
+			),
+			fallbackOnNavigateUpListener = ::onSupportNavigateUp
 		)
-		binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
 		setSupportActionBar(binding.toolbar)
+		setupActionBarWithNavController(navController, appBarConfiguration)
 
 		binding.bottomNavigation.setupWithNavController(navController)
 
@@ -57,9 +56,6 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		if (item.itemId == android.R.id.home) {
-			return onSupportNavigateUp()
-		}
 		return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 	}
 
