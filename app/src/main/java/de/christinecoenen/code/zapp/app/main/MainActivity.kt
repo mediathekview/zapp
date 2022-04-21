@@ -76,11 +76,6 @@ class MainActivity : AppCompatActivity() {
 		_binding = null
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		menuInflater.inflate(R.menu.activity_main_toolbar, menu)
-		return super.onCreateOptionsMenu(menu)
-	}
-
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 	}

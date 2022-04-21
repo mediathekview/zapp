@@ -160,7 +160,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-		super.onCreateOptionsMenu(menu, inflater)
+		inflater.inflate(R.menu.activity_main_toolbar, menu)
 		inflater.inflate(R.menu.mediathek_list_fragment, menu)
 	}
 

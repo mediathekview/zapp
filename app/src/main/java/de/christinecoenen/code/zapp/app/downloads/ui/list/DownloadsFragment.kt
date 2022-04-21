@@ -46,6 +46,8 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		super.onCreate(savedInstanceState)
 
 		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
+
+		setHasOptionsMenu(true)
 	}
 
 	override fun onCreateView(
@@ -73,6 +75,10 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		super.onDestroyView()
 		downloadAdapter.unregisterAdapterDataObserver(adapterDataObserver)
 		_binding = null
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.activity_main_toolbar, menu)
 	}
 
 	override fun onShowClicked(show: PersistedMediathekShow) {

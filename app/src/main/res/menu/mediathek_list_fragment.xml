@@ -11,6 +11,7 @@
 	<item
 		android:id="@+id/menu_refresh"
 		android:icon="@drawable/ic_refresh_white_24dp"
+		android:menuCategory="secondary"
 		android:title="@string/menu_refresh"
 		app:showAsAction="never" />
 
