@@ -93,6 +93,16 @@
 		<action
 			android:id="@+id/to_settingsFragment"
 			app:destination="@id/settingsFragment" />
+		<action
+			android:id="@+id/to_mediathekPlayerActivity"
+			app:destination="@id/mediathekPlayerActivity" />
 	</fragment>
+	<activity
+		android:id="@+id/mediathekPlayerActivity"
+		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.detail.player.MediathekPlayerActivity">
+		<argument
+			android:name="persisted_show_id"
+			app:argType="integer" />
+	</activity>
 
 </navigation>

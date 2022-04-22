@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail.player
 
-import android.content.Context
 import android.content.Intent
+import androidx.navigation.navArgs
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.app.player.VideoInfo.Companion.fromShow
@@ -14,20 +14,7 @@ import org.koin.android.ext.android.inject
 
 class MediathekPlayerActivity : AbstractPlayerActivity() {
 
-	companion object {
-		private const val EXTRA_PERSISTED_SHOW_ID =
-			"de.christinecoenen.code.zapp.EXTRA_PERSISTED_SHOW_ID"
-
-		@JvmStatic
-		fun getStartIntent(context: Context?, persistedShowId: Int): Intent {
-			return Intent(context, MediathekPlayerActivity::class.java)
-				.apply {
-					action = Intent.ACTION_VIEW
-					putExtra(EXTRA_PERSISTED_SHOW_ID, persistedShowId)
-				}
-		}
-	}
-
+	private val args: MediathekPlayerActivityArgs by navArgs()
 	private val mediathekRepository: MediathekRepository by inject()
 
 	private var persistedShow: PersistedMediathekShow? = null
@@ -47,13 +34,10 @@ class MediathekPlayerActivity : AbstractPlayerActivity() {
 	}
 
 	override suspend fun getVideoInfoFromIntent(intent: Intent): VideoInfo {
-		val persistedShowId = intent.extras?.getInt(EXTRA_PERSISTED_SHOW_ID, 0)
+		val persistedMediathekShow = mediathekRepository
+			.getPersistedShow(args.persistedShowId)
+			.first()
 
-		if (persistedShowId == null || persistedShowId == 0) {
-			throw IllegalArgumentException("PersistedShowId id is not allowed to be null.")
-		}
-
-		val persistedMediathekShow = mediathekRepository.getPersistedShow(persistedShowId).first()
 		onShowLoaded(persistedMediathekShow)
 
 		return fromShow(persistedMediathekShow)

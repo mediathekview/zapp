@@ -15,7 +15,6 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.player.MediathekPlayerActivity
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -140,7 +139,9 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun onPlayClick() {
-		startActivity(MediathekPlayerActivity.getStartIntent(context, persistedMediathekShow!!.id))
+		val directions =
+			MediathekDetailFragmentDirections.toMediathekPlayerActivity(persistedMediathekShow!!.id)
+		findNavController().navigate(directions)
 	}
 
 	private fun onDownloadClick() {
