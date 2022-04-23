@@ -7,7 +7,7 @@ import android.content.Intent
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -31,6 +31,7 @@ class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 	}
 
 	private val mediathekRepository: MediathekRepository by inject()
+	private val coroutineScope: CoroutineScope by inject()
 
 	@SuppressLint("CheckResult")
 	override fun onReceive(context: Context, intent: Intent) {
@@ -40,7 +41,7 @@ class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 
 		val downloadId = intent.getIntExtra(EXTRA_DOWNLOAD_ID, 0)
 
-		GlobalScope.launch {
+		coroutineScope.launch {
 			val persistedShow = mediathekRepository
 				.getPersistedShowByDownloadId(downloadId)
 				.first()

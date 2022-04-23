@@ -40,9 +40,12 @@
 	<string name="fragment_mediathek_download_delete">Delete download</string>
 	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
 	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
+	<string name="fragment_mediathek_query_info">%1$s search results from %2$s</string>
 
 	<!-- downloads -->
 	<string name="fragment_downloads_no_results">no downloads available</string>
+	<string name="fragment_downloads_confirm_show_removal_dialog_title">Remove show from download list?</string>
+	<string name="fragment_downloads_confirm_show_removal_dialog_text">Running downloads will be canceled and existing video files deleted.</string>
 
 	<!-- error messages -->
 	<string name="error_informal">Oops!</string>
@@ -73,6 +76,7 @@
 	<string name="action_send_mail">Send e-mail</string>
 	<string name="action_play_in_background">Play in background</string>
 	<string name="action_start_picture_in_picture">Picture in picture</string>
+	<string name="action_remove">Remove</string>
 
 	<string name="search_query_hint_mediathek">Search media center…</string>
 

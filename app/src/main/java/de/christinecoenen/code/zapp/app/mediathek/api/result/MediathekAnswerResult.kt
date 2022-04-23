@@ -6,6 +6,7 @@ import de.christinecoenen.code.zapp.models.shows.MediathekShow
 @Keep
 data class MediathekAnswerResult(
 
-	var results: List<MediathekShow>
+	var results: List<MediathekShow>,
+	var queryInfo: QueryInfoResult
 
 )

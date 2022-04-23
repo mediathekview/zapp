@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
+import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
@@ -22,10 +23,16 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemA
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownServiceException
+import java.text.DateFormat
+import java.text.NumberFormat
+import java.util.*
 import javax.net.ssl.SSLHandshakeException
 
 
@@ -41,6 +48,12 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	private var _binding: FragmentMediathekListBinding? = null
 	private val binding: FragmentMediathekListBinding
 		get() = _binding!!
+
+	private val numberFormat = NumberFormat.getInstance(Locale.getDefault())
+	private val queryInfoDateFormatter = DateFormat.getDateTimeInstance(
+		DateFormat.SHORT,
+		DateFormat.SHORT
+	)
 
 	private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.filterBottomSheet) }
 
@@ -98,9 +111,14 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		super.onViewCreated(view, savedInstanceState)
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
+		viewmodel.queryInfoResult.observe(viewLifecycleOwner, ::onQueryInfoResultChanged)
 
 
-		adapter = MediathekItemAdapter(lifecycleScope, MediathekShowComparator, this@MediathekListFragment)
+		adapter = MediathekItemAdapter(
+			lifecycleScope,
+			MediathekShowComparator,
+			this@MediathekListFragment
+		)
 
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
@@ -209,6 +227,23 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			}
 		}
 		return false
+	}
+
+	private fun onQueryInfoResultChanged(queryInfoResult: QueryInfoResult?) {
+		if (queryInfoResult == null) {
+			binding.filter.queryInfo.visibility = View.INVISIBLE
+			return
+		}
+
+		val date = Date(queryInfoResult.filmlisteTimestamp * 1000)
+		val queryInfoMessage = getString(
+			R.string.fragment_mediathek_query_info,
+			numberFormat.format(queryInfoResult.totalResults),
+			queryInfoDateFormatter.format(date)
+		)
+
+		binding.filter.queryInfo.text = queryInfoMessage
+		binding.filter.queryInfo.visibility = View.VISIBLE
 	}
 
 	private fun onIsFilterAppliedChanged() {

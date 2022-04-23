@@ -1,0 +1,3 @@
+* Failed downloads can be removed from download list
+* Repaired video quality selection in metered networks
+* Number of results is displayed inside mediathek filter

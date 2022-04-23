@@ -4,8 +4,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 
 data class ChannelFilter(
 	private val channelMap: MutableMap<MediathekChannel, Boolean> = MediathekChannel.values()
-		.map { it to false }
-		.toMap()
+		.associate { it to false }
 		.toMutableMap()
 ) {
 	val isApplied: Boolean

@@ -29,6 +29,15 @@
 	</com.google.android.material.textfield.TextInputLayout>
 
 	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/query_info"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:paddingHorizontal="@dimen/activity_horizontal_margin"
+		android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+		tools:text="45 Suchergebnisse vom 45.03.2022, 14:50 Uhr" />
+
+	<com.google.android.material.textview.MaterialTextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/activity_vertical_margin"

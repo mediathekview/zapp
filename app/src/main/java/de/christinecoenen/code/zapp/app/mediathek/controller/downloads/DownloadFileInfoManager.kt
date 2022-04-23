@@ -83,6 +83,8 @@ internal class DownloadFileInfoManager(
 					videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
 					resolver.update(download.fileUri, videoContentValues, null, null)
 				}
+
+				else -> {}
 			}
 		}
 	}

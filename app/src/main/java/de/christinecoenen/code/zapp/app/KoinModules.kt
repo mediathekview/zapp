@@ -57,13 +57,13 @@ class KoinModules {
 			single { ProgramInfoRepository(get()) }
 
 			factory { SettingsRepository(androidContext()) }
-			factory { Player(androidContext(), get()) }
+			factory { Player(androidContext(), get(), get()) }
 			factory { JsonChannelList(androidContext()) }
 
 			viewModel { MainViewModel(androidApplication()) }
 			viewModel { AbstractPlayerActivityViewModel(get()) }
 			viewModel { ChannelPlayerActivityViewModel(get()) }
-			viewModel { DownloadsViewModel(get()) }
+			viewModel { DownloadsViewModel(get(), get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
 			viewModel { MediathekListFragmentViewModel(get()) }
 		}
