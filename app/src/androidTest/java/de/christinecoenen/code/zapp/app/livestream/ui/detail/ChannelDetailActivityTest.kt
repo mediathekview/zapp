@@ -1,16 +1,10 @@
-package de.christinecoenen.code.zapp.app.app.livestream.ui.detail
+package de.christinecoenen.code.zapp.app.livestream.ui.detail
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAssertion
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import org.junit.Test
 import org.junit.runner.RunWith
 
