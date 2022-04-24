@@ -175,6 +175,6 @@ dependencies {
 	testImplementation "io.insert-koin:koin-test:$koin_version"
 
 	// android tv
-	implementation 'androidx.leanback:leanback:1.0.0'
+	implementation 'androidx.leanback:leanback:1.1.0-rc02'
 	implementation "androidx.leanback:leanback-tab:1.1.0-beta01"
 }
