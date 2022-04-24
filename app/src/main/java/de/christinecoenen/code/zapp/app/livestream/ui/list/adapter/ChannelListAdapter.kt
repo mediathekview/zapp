@@ -3,7 +3,7 @@ package de.christinecoenen.code.zapp.app.livestream.ui.list.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
+import de.christinecoenen.code.zapp.databinding.ChannelListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 
 
@@ -21,7 +21,7 @@ class ChannelListAdapter(
 		layoutInflater: LayoutInflater,
 		parent: ViewGroup
 	): IChannelViewBindingAdapter {
-		val binding = FragmentChannelListItemBinding.inflate(layoutInflater, parent, false)
+		val binding = ChannelListFragmentItemBinding.inflate(layoutInflater, parent, false)
 		return ChannelViewBindingAdapter(binding)
 	}
 

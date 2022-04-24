@@ -1,34 +1,46 @@
 package de.christinecoenen.code.zapp.app.settings.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionBinding
+import de.christinecoenen.code.zapp.databinding.ChannelSelectionFragmentBinding
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableJsonChannelList
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener
 
-class ChannelSelectionActivity : AppCompatActivity() {
+class ChannelSelectionFragment : Fragment() {
+
+	private var _binding: ChannelSelectionFragmentBinding? = null
+	private val binding: ChannelSelectionFragmentBinding get() = _binding!!
+
 
 	private lateinit var channelList: ISortableChannelList
+	private lateinit var listAdapter: ChannelSelectionAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val binding = ActivityChannelSelectionBinding.inflate(layoutInflater)
-		setContentView(binding.root)
+		channelList = SortableJsonChannelList(requireContext())
+		listAdapter = ChannelSelectionAdapter(requireContext())
 
-		// adapter
-		channelList = SortableJsonChannelList(this)
+		setHasOptionsMenu(true)
+	}
 
-		val listAdapter = ChannelSelectionAdapter(this)
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
+		_binding = ChannelSelectionFragmentBinding.inflate(inflater, container, false)
+
+		// list adapter
 		listAdapter.itemList = channelList.list
 
 		// view
-		val layoutManager = GridAutofitLayoutManager(this, 120)
+		val layoutManager = GridAutofitLayoutManager(requireContext(), 120)
 
 		binding.draglistChannelSelection.apply {
 
@@ -44,6 +56,8 @@ class ChannelSelectionActivity : AppCompatActivity() {
 				}
 			})
 		}
+
+		return binding.root
 	}
 
 	override fun onPause() {
@@ -52,9 +66,8 @@ class ChannelSelectionActivity : AppCompatActivity() {
 		channelList.persistChannelOrder()
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		menuInflater.inflate(R.menu.activity_channel_selection, menu)
-		return super.onCreateOptionsMenu(menu)
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.channel_selection_fragment, menu)
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -70,8 +83,8 @@ class ChannelSelectionActivity : AppCompatActivity() {
 	}
 
 	private fun openHelpDialog() {
-		ChannelSelectionHelpDialog().apply {
-			show(supportFragmentManager, "help")
-		}
+		val directions =
+			ChannelSelectionFragmentDirections.toChannelSelectionHelpDialog()
+		findNavController().navigate(directions)
 	}
 }

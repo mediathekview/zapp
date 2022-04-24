@@ -11,18 +11,13 @@ import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivi
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListBinding
+import de.christinecoenen.code.zapp.databinding.ChannelListFragmentBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 
 class ChannelListFragment : Fragment(), ListItemListener {
-
-	companion object {
-		fun newInstance() = ChannelListFragment()
-	}
-
 
 	private lateinit var channelList: ISortableChannelList
 	private lateinit var gridAdapter: BaseChannelListAdapter
@@ -33,6 +28,8 @@ class ChannelListFragment : Fragment(), ListItemListener {
 
 		channelList = SortableVisibleJsonChannelList(requireContext())
 		gridAdapter = ChannelListAdapter(channelList, this, this)
+
+		setHasOptionsMenu(true)
 	}
 
 	override fun onCreateView(
@@ -40,7 +37,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val binding = FragmentChannelListBinding.inflate(inflater, container, false)
+		val binding = ChannelListFragmentBinding.inflate(inflater, container, false)
 		val channelGridView = binding.gridviewChannels
 
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true)
@@ -61,6 +58,10 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		gridAdapter.notifyDataSetChanged()
 	}
 
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.activity_main_toolbar, menu)
+	}
+
 	override fun onItemClick(channel: ChannelModel) {
 		val intent = ChannelPlayerActivity.getStartIntent(context, channel.id)
 		startActivity(intent)
@@ -68,7 +69,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 
 	override fun onItemLongClick(channel: ChannelModel, view: View) {
 		val menu = PopupMenu(context, view, Gravity.TOP or Gravity.END)
-		menu.inflate(R.menu.activity_channel_list_context)
+		menu.inflate(R.menu.channel_list_fragment_context)
 		menu.show()
 		menu.setOnMenuItemClickListener { menuItem -> onContextMenuItemClicked(menuItem, channel) }
 	}

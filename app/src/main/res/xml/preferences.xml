@@ -46,9 +46,9 @@
 		android:icon="@drawable/ic_live_tv_white_24dp"
 		android:title="@string/pref_header_channels">
 
-		<Preference android:title="@string/pref_channel_selection_title">
-			<intent android:action="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
-		</Preference>
+		<Preference
+			android:key="@string/pref_key_channel_selection"
+			android:title="@string/pref_channel_selection_title" />
 
 		<de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 			android:defaultValue="@array/empty"

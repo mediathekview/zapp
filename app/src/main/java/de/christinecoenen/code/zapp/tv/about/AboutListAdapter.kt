@@ -14,12 +14,12 @@ class AboutListAdapter(
 
 	private val aboutItems = listOf(
 		AboutItem(
-			R.string.activity_changelog_title,
+			R.string.changelog_title,
 			R.drawable.ic_sharp_format_list_bulleted_24,
 			ChangelogActivity
 		),
 		AboutItem(
-			R.string.activity_faq_title,
+			R.string.faq_title,
 			R.drawable.ic_baseline_help_outline_24,
 			FaqActivity
 		),

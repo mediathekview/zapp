@@ -6,13 +6,13 @@
 	<string name="activity_main_tab_mediathek">Media center</string>
 	<string name="activity_main_tab_downloads">Downloads</string>
 
-	<string name="activity_about_title">About Zapp</string>
-	<string name="activity_about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
-	<string name="activity_about_feedback_mail_subject">Zapp Feedback</string>
+	<string name="about_title">About Zapp</string>
+	<string name="about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
+	<string name="about_feedback_mail_subject">Zapp Feedback</string>
 
-	<string name="activity_changelog_title">Changelog</string>
+	<string name="changelog_title">Changelog</string>
 
-	<string name="activity_faq_title">FAQ</string>
+	<string name="faq_title">FAQ</string>
 
 	<string name="activity_channel_detail_info_error">No program information</string>
 

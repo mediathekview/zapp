@@ -78,10 +78,6 @@
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
-			android:name=".app.about.ui.ChangelogActivity"
-			android:label="@string/activity_changelog_title"
-			android:parentActivityName=".app.about.ui.AboutActivity" />
-		<activity
 			android:name=".app.main.MainActivity"
 			android:exported="true"
 			android:launchMode="singleTop"
@@ -96,17 +92,6 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".app.settings.ui.ChannelSelectionActivity"
-			android:exported="false"
-			android:label="@string/activity_channel_selection_title"
-			android:parentActivityName=".app.settings.ui.SettingsActivity">
-			<intent-filter>
-				<action android:name="de.christinecoenen.code.zapp.ACTION_CHANNEL_SELECTION_ACTIVITY" />
-
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
-		<activity
 			android:name=".app.livestream.ui.detail.ChannelPlayerActivity"
 			android:autoRemoveFromRecents="true"
 			android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation"
@@ -118,17 +103,6 @@
 			android:taskAffinity=".YourVideoPlayerActivityTask"
 			android:theme="@style/FullscreenTheme" />
 		<activity
-			android:name=".app.settings.ui.SettingsActivity"
-			android:label="@string/activity_settings_title" />
-		<activity
-			android:name=".app.about.ui.AboutActivity"
-			android:label="@string/activity_about_title"
-			android:theme="@style/AppTheme.NoActionBar" />
-		<activity
-			android:name=".app.about.ui.FaqActivity"
-			android:label="@string/activity_faq_title"
-			android:parentActivityName=".app.about.ui.AboutActivity" />
-		<activity
 			android:name=".app.mediathek.ui.detail.player.MediathekPlayerActivity"
 			android:autoRemoveFromRecents="true"
 			android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation"
@@ -139,9 +113,6 @@
 			android:supportsPictureInPicture="true"
 			android:taskAffinity=".YourVideoPlayerActivityTask"
 			android:theme="@style/FullscreenTheme" />
-		<activity
-			android:name=".app.mediathek.ui.detail.MediathekDetailActivity"
-			android:label="@string/fragment_mediathek_title" />
 
 		<service
 			android:name=".app.player.BackgroundPlayerService"

@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
+import android.os.Bundle
+import androidx.navigation.NavDeepLinkBuilder
+import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.CoroutineScope
@@ -51,14 +53,13 @@ class DownloadReceiver : BroadcastReceiver(), KoinComponent {
 	}
 
 	private fun onShowLoaded(context: Context, persistedMediathekShow: PersistedMediathekShow) {
-		// launch MediathekDetailActivity
-		val detailIntent = MediathekDetailActivity
-			.getStartIntent(context, persistedMediathekShow.mediathekShow)
-			.apply {
-				addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-				addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-			}
-
-		context.startActivity(detailIntent)
+		NavDeepLinkBuilder(context)
+			.setGraph(R.navigation.nav_graph)
+			.setDestination(R.id.mediathekDetailFragment)
+			.setArguments(Bundle().apply {
+				putSerializable("mediathek_show", persistedMediathekShow.mediathekShow)
+			})
+			.createPendingIntent()
+			.send()
 	}
 }

@@ -1,9 +1,9 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list.adapter
 
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
+import de.christinecoenen.code.zapp.databinding.ChannelListFragmentItemBinding
 
 class ChannelViewBindingAdapter(
-	binding: FragmentChannelListItemBinding
+	binding: ChannelListFragmentItemBinding
 ) : IChannelViewBindingAdapter {
 
 	override val rootView = binding.root
