@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListItemBinding
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ class MediathekItemAdapter(
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val inflater = LayoutInflater.from(parent.context)
-		val binding = FragmentMediathekListItemBinding.inflate(inflater, parent, false)
+		val binding = MediathekListFragmentItemBinding.inflate(inflater, parent, false)
 		return MediathekItemViewHolder(binding)
 	}
 

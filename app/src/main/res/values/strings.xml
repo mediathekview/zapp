@@ -6,13 +6,13 @@
 	<string name="activity_main_tab_mediathek">Mediathek</string>
 	<string name="activity_main_tab_downloads">Downloads</string>
 
-	<string name="activity_about_title">Über Zapp</string>
-	<string name="activity_about_summary">Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</string>
-	<string name="activity_about_feedback_mail_subject">Zapp Feedback</string>
+	<string name="about_title">Über Zapp</string>
+	<string name="about_summary">Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</string>
+	<string name="about_feedback_mail_subject">Zapp Feedback</string>
 
-	<string name="activity_changelog_title">Changelog</string>
+	<string name="changelog_title">Changelog</string>
 
-	<string name="activity_faq_title">FAQ</string>
+	<string name="faq_title">FAQ</string>
 
 	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
 

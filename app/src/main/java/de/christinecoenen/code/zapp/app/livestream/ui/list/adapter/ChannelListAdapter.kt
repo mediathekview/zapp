@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
-import de.christinecoenen.code.zapp.databinding.FragmentChannelListItemBinding
+import de.christinecoenen.code.zapp.databinding.ChannelListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -24,7 +24,7 @@ class ChannelListAdapter(
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChannelViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
-		val binding = FragmentChannelListItemBinding.inflate(layoutInflater, parent, false)
+		val binding = ChannelListFragmentItemBinding.inflate(layoutInflater, parent, false)
 		return ChannelViewHolder(binding, lifecycleOwner, listener)
 	}
 

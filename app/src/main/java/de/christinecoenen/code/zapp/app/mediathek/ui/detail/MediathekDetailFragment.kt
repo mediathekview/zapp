@@ -1,13 +1,13 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
@@ -15,11 +15,8 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.player.MediathekPlayerActivity
-import de.christinecoenen.code.zapp.app.settings.ui.SettingsActivity
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekDetailBinding
+import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
-import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
@@ -32,42 +29,21 @@ import timber.log.Timber
 
 class MediathekDetailFragment : Fragment() {
 
-	companion object {
+	private val args: MediathekDetailFragmentArgs by navArgs()
 
-		private const val ARG_SHOW = "ARG_SHOW"
-
-		fun getInstance(show: MediathekShow): MediathekDetailFragment {
-			return MediathekDetailFragment().apply {
-				arguments = Bundle().apply {
-					putSerializable(ARG_SHOW, show)
-				}
-			}
-		}
-	}
-
-	private var _binding: FragmentMediathekDetailBinding? = null
-	private val binding: FragmentMediathekDetailBinding get() = _binding!!
+	private var _binding: MediathekDetailFragmentBinding? = null
+	private val binding: MediathekDetailFragmentBinding get() = _binding!!
 
 	private val downloadController: IDownloadController by inject()
 	private val mediathekRepository: MediathekRepository by inject()
 
 	private var startDownloadJob: Job? = null
 	private var persistedMediathekShow: PersistedMediathekShow? = null
-	private var argumentsMediathekShow: MediathekShow? = null
 	private var downloadStatus = DownloadStatus.NONE
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-
-		argumentsMediathekShow = requireArguments().getSerializable(ARG_SHOW) as MediathekShow
-
-		lifecycleScope.launchWhenCreated {
-			val persistedShow = mediathekRepository
-				.persistOrUpdateShow(argumentsMediathekShow!!)
-				.first()
-
-			onShowLoaded(persistedShow)
-		}
+		setHasOptionsMenu(true)
 	}
 
 	override fun onCreateView(
@@ -75,26 +51,52 @@ class MediathekDetailFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		_binding = FragmentMediathekDetailBinding.inflate(inflater, container, false)
+		_binding = MediathekDetailFragmentBinding.inflate(inflater, container, false)
 
-		binding.play.setOnClickListener { onPlayClick() }
-		binding.buttons.download.setOnClickListener { onDownloadClick() }
-		binding.buttons.share.setOnClickListener { onShareClick() }
-		binding.buttons.website.setOnClickListener { onWebsiteClick() }
+		lifecycleScope.launchWhenCreated {
+			val persistedShow = mediathekRepository
+				.persistOrUpdateShow(args.mediathekShow)
+				.first()
+
+			onShowLoaded(persistedShow)
+		}
 
 		lifecycleScope.launchWhenCreated {
 			mediathekRepository
-				.getPlaybackPositionPercent(argumentsMediathekShow!!.apiId)
+				.getPlaybackPositionPercent(args.mediathekShow.apiId)
 				.collect(::updatePlaybackPosition)
 		}
 
 		return binding.root
 	}
 
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		binding.play.setOnClickListener { onPlayClick() }
+		binding.buttons.download.setOnClickListener { onDownloadClick() }
+		binding.buttons.share.setOnClickListener { onShareClick() }
+		binding.buttons.website.setOnClickListener { onWebsiteClick() }
+	}
+
 	override fun onResume() {
 		super.onResume()
 
 		downloadController.deleteDownloadsWithDeletedFiles()
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.mediathek_detail_fragment, menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		return when (item.itemId) {
+			R.id.menu_share -> {
+				args.mediathekShow.shareExternally(requireContext())
+				true
+			}
+			else -> super.onOptionsItemSelected(item)
+		}
 	}
 
 	private fun onShowLoaded(persistedMediathekShow: PersistedMediathekShow) {
@@ -137,7 +139,9 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun onPlayClick() {
-		startActivity(MediathekPlayerActivity.getStartIntent(context, persistedMediathekShow!!.id))
+		val directions =
+			MediathekDetailFragmentDirections.toMediathekPlayerActivity(persistedMediathekShow!!.id)
+		findNavController().navigate(directions)
 	}
 
 	private fun onDownloadClick() {
@@ -270,7 +274,8 @@ class MediathekDetailFragment : Fragment() {
 						Snackbar.LENGTH_LONG
 					)
 					.setAction(R.string.activity_settings_title) {
-						startActivity(SettingsActivity.getStartIntent(requireContext()))
+						val directions = MediathekDetailFragmentDirections.toSettingsFragment()
+						findNavController().navigate(directions)
 					}
 					.show()
 			}

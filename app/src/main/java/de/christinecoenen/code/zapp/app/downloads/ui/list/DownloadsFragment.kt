@@ -7,22 +7,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.adapter.DownloadListAdapter
 import de.christinecoenen.code.zapp.app.downloads.ui.list.dialogs.ConfirmShowRemovalDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
-
-	companion object {
-		fun newInstance() = DownloadsFragment()
-	}
-
 
 	private var _binding: DownloadsFragmentBinding? = null
 	private val binding: DownloadsFragmentBinding get() = _binding!!
@@ -32,6 +28,28 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
 	private var longClickShow: PersistedMediathekShow? = null
 
+	private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+		override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+			updateNoDownloadsVisibility()
+		}
+
+		override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+			updateNoDownloadsVisibility()
+		}
+
+		override fun onStateRestorationPolicyChanged() {
+			updateNoDownloadsVisibility()
+		}
+	}
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
+
+		setHasOptionsMenu(true)
+	}
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
@@ -39,46 +57,41 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	): View {
 		_binding = DownloadsFragmentBinding.inflate(inflater, container, false)
 
-		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
 		binding.list.adapter = downloadAdapter
 
-		downloadAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-			override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-				updateNoDownloadsVisibility()
-			}
-
-			override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-				updateNoDownloadsVisibility()
-			}
-
-			override fun onStateRestorationPolicyChanged() {
-				updateNoDownloadsVisibility()
-			}
-		})
+		downloadAdapter.registerAdapterDataObserver(adapterDataObserver)
 
 		viewModel.downloadList.observe(viewLifecycleOwner) {
 			lifecycleScope.launchWhenCreated {
 				downloadAdapter.submitData(it)
 			}
 		}
+		updateNoDownloadsVisibility()
 
 		return binding.root
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+		downloadAdapter.unregisterAdapterDataObserver(adapterDataObserver)
 		_binding = null
 	}
 
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.activity_main_toolbar, menu)
+	}
+
 	override fun onShowClicked(show: PersistedMediathekShow) {
-		startActivity(MediathekDetailActivity.getStartIntent(context, show.mediathekShow))
+		val directions =
+			MediathekListFragmentDirections.toMediathekDetailFragment(show.mediathekShow)
+		findNavController().navigate(directions)
 	}
 
 	override fun onShowLongClicked(show: PersistedMediathekShow, view: View) {
 		longClickShow = show
 
 		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.activity_download_detail)
+			inflate(R.menu.download_fragment_context)
 			show()
 			setOnMenuItemClickListener(::onContextMenuItemClicked)
 		}

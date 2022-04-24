@@ -35,7 +35,7 @@
 
 					<include
 						android:id="@+id/texts"
-						layout="@layout/fragment_mediathek_detail_titles_and_description"
+						layout="@layout/mediathek_detail_fragemnt_titles_and_description"
 						android:paddingStart="@dimen/activity_horizontal_margin"
 						android:paddingTop="@dimen/activity_vertical_margin"
 						android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -59,7 +59,7 @@
 
 			<include
 				android:id="@+id/buttons"
-				layout="@layout/fragment_mediathek_detail_buttons" />
+				layout="@layout/mediathek_detail_fragment_buttons" />
 
 		</LinearLayout>
 

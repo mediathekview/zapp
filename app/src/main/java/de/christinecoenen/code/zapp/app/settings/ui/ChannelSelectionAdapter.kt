@@ -6,19 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.woxthebox.draglistview.DragItemAdapter
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.databinding.ActivityChannelSelectionItemBinding
+import de.christinecoenen.code.zapp.databinding.ChannelSelectionFragmentItemBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 
-internal class ChannelSelectionAdapter(context: Context) : DragItemAdapter<ChannelModel, ChannelSelectionAdapter.ViewHolder>() {
+internal class ChannelSelectionAdapter(context: Context) :
+	DragItemAdapter<ChannelModel, ChannelSelectionAdapter.ViewHolder>() {
 
-	private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+	private val inflater: LayoutInflater =
+		context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 	init {
 		setHasStableIds(true)
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		val binding = ActivityChannelSelectionItemBinding.inflate(inflater, parent, false)
+		val binding = ChannelSelectionFragmentItemBinding.inflate(inflater, parent, false)
 		return ViewHolder(binding)
 	}
 
@@ -34,7 +36,7 @@ internal class ChannelSelectionAdapter(context: Context) : DragItemAdapter<Chann
 	}
 
 	internal class ViewHolder(
-		private val binding: ActivityChannelSelectionItemBinding
+		private val binding: ChannelSelectionFragmentItemBinding
 	) : DragItemAdapter.ViewHolder(binding.root, R.id.image_handle, false) {
 
 		private var channel: ChannelModel? = null

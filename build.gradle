@@ -3,6 +3,7 @@
 buildscript {
 	ext.koin_version = '3.1.6'
 	ext.about_libraries_version = '10.1.0'
+	ext.nav_version = '2.4.2'
 
 	repositories {
 		google()
@@ -20,6 +21,8 @@ buildscript {
 		classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libraries_version"
 
 		classpath "io.insert-koin:koin-gradle-plugin:$koin_version"
+
+		classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
 		// NOTE: Do not place your application dependencies here; they belong
 		// in the individual module build.gradle files

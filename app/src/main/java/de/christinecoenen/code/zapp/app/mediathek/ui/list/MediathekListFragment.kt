@@ -5,9 +5,11 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
@@ -16,12 +18,11 @@ import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailActivity.Companion.getStartIntent
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
-import de.christinecoenen.code.zapp.databinding.FragmentMediathekListBinding
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -38,15 +39,8 @@ import javax.net.ssl.SSLHandshakeException
 
 class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
-	companion object {
-
-		val instance
-			get() = MediathekListFragment()
-
-	}
-
-	private var _binding: FragmentMediathekListBinding? = null
-	private val binding: FragmentMediathekListBinding
+	private var _binding: MediathekListFragmentBinding? = null
+	private val binding: MediathekListFragmentBinding
 		get() = _binding!!
 
 	private val numberFormat = NumberFormat.getInstance(Locale.getDefault())
@@ -55,7 +49,9 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		DateFormat.SHORT
 	)
 
-	private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.filterBottomSheet) }
+	private var _bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>? = null
+	private val bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+		get() = _bottomSheetBehavior!!
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 	private lateinit var adapter: MediathekItemAdapter
@@ -80,7 +76,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		_binding = FragmentMediathekListBinding.inflate(inflater, container, false)
+		_binding = MediathekListFragmentBinding.inflate(inflater, container, false)
 
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
@@ -95,6 +91,7 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		createChannelFilterView(inflater)
 
 		// only consume backPressedCallback when bottom sheet is not collapsed
+		_bottomSheetBehavior = BottomSheetBehavior.from(binding.filterBottomSheet)
 		bottomSheetBehavior.addBottomSheetCallback(object :
 			BottomSheetBehavior.BottomSheetCallback() {
 			override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -112,7 +109,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 		viewmodel.queryInfoResult.observe(viewLifecycleOwner, ::onQueryInfoResultChanged)
-
 
 		adapter = MediathekItemAdapter(
 			lifecycleScope,
@@ -160,11 +156,12 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+		_bottomSheetBehavior = null
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-		super.onCreateOptionsMenu(menu, inflater)
-		inflater.inflate(R.menu.fragment_mediathek_list, menu)
+		inflater.inflate(R.menu.activity_main_toolbar, menu)
+		inflater.inflate(R.menu.mediathek_list_fragment, menu)
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu) {
@@ -194,14 +191,15 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
-		startActivity(getStartIntent(context, show))
+		val directions = MediathekListFragmentDirections.toMediathekDetailFragment(show)
+		findNavController().navigate(directions)
 	}
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
 		longClickShow = show
 
 		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.activity_mediathek_detail)
+			inflate(R.menu.mediathek_detail_fragment)
 			show()
 			setOnMenuItemClickListener(::onContextMenuItemClicked)
 		}
