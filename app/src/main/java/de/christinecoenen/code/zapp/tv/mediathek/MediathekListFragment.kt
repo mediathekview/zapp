@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
@@ -22,6 +23,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.net.UnknownServiceException
+import javax.net.ssl.SSLHandshakeException
 
 
 class MediathekListFragment : Fragment(),
@@ -86,11 +89,11 @@ class MediathekListFragment : Fragment(),
 				.distinctUntilChanged()
 				.collectLatest { refreshState ->
 					binding.loader.isVisible = refreshState is LoadState.Loading
-					//binding.error.isVisible = refreshState is LoadState.Error
+					binding.error.isVisible = refreshState is LoadState.Error
 					updateNoShowsMessage(refreshState)
 
 					when (refreshState) {
-						//is LoadState.Error -> onMediathekLoadErrorChanged(refreshState.error)
+						is LoadState.Error -> onMediathekLoadErrorChanged(refreshState.error)
 						is LoadState.NotLoading -> binding.list.scrollToPosition(0)
 						is LoadState.Loading -> Unit
 					}
@@ -124,5 +127,18 @@ class MediathekListFragment : Fragment(),
 	private fun updateNoShowsMessage(loadState: LoadState) {
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
 		binding.noShows.isVisible = isAdapterEmpty
+	}
+
+	private fun onMediathekLoadErrorChanged(e: Throwable) {
+		if (e is SSLHandshakeException || e is UnknownServiceException) {
+			showError(R.string.error_mediathek_ssl_error)
+		} else {
+			showError(R.string.error_mediathek_info_not_available)
+		}
+	}
+
+	private fun showError(messageResId: Int) {
+		binding.errorMessage.setText(messageResId)
+		binding.error.visibility = View.VISIBLE
 	}
 }

@@ -99,6 +99,7 @@
 		android:id="@+id/no_shows"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:focusable="false"
 		android:gravity="center"
 		android:orientation="vertical"
 		android:visibility="gone"
@@ -107,12 +108,13 @@
 		app:layout_constraintStart_toStartOf="@id/list"
 		app:layout_constraintTop_toTopOf="@id/list"
 		tools:ignore="UseCompoundDrawables"
-		tools:visibility="visible">
+		tools:visibility="gone">
 
 		<androidx.appcompat.widget.AppCompatImageView
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/lb_error_image_max_height"
 			android:contentDescription="@null"
+			android:focusable="false"
 			android:src="@drawable/ic_sad_tv"
 			android:tint="@color/lb_error_message" />
 
@@ -120,8 +122,45 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/lb_error_under_image_baseline_margin"
+			android:focusable="false"
 			android:gravity="center"
 			android:text="@string/fragment_mediathek_no_results"
+			android:textAppearance="@style/TextAppearance.Leanback.ErrorMessage" />
+
+	</androidx.appcompat.widget.LinearLayoutCompat>
+
+	<androidx.appcompat.widget.LinearLayoutCompat
+		android:id="@+id/error"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:focusable="false"
+		android:gravity="center"
+		android:orientation="vertical"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="@id/list"
+		app:layout_constraintEnd_toEndOf="@id/list"
+		app:layout_constraintStart_toStartOf="@id/list"
+		app:layout_constraintTop_toTopOf="@id/list"
+		app:layout_constraintWidth_max="350dp"
+		tools:ignore="UseCompoundDrawables"
+		tools:visibility="visible">
+
+		<androidx.appcompat.widget.AppCompatImageView
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/lb_error_image_max_height"
+			android:contentDescription="@null"
+			android:focusable="false"
+			android:src="@drawable/ic_warning_white_24dp"
+			android:tint="@color/lb_error_message" />
+
+		<androidx.appcompat.widget.AppCompatTextView
+			android:id="@+id/error_message"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/lb_error_under_image_baseline_margin"
+			android:focusable="false"
+			android:gravity="center"
+			android:text="@string/error_mediathek_info_not_available"
 			android:textAppearance="@style/TextAppearance.Leanback.ErrorMessage" />
 
 	</androidx.appcompat.widget.LinearLayoutCompat>
