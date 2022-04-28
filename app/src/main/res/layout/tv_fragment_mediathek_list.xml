@@ -17,7 +17,7 @@
 		android:orientation="horizontal"
 		android:padding="8dp"
 		app:layout_constraintBottom_toTopOf="@id/list"
-		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/refresh_button"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent">
 
@@ -58,6 +58,20 @@
 			android:src="@drawable/ic_baseline_close_24" />
 
 	</LinearLayout>
+
+	<ImageButton
+		android:id="@+id/refresh_button"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_marginStart="8dp"
+		android:background="@color/tv_card_foreground_color"
+		android:contentDescription="@string/menu_refresh"
+		android:paddingHorizontal="16dp"
+		android:src="@drawable/ic_refresh_white_24dp"
+		app:layout_constraintBottom_toBottomOf="@id/search_wrapper"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/search_wrapper"
+		app:layout_constraintTop_toTopOf="@id/search_wrapper" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/list"

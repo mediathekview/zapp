@@ -49,6 +49,9 @@ class MediathekListFragment : Fragment(),
 		// clear search field
 		binding.deleteSearchButton.setOnClickListener { binding.search.editableText.clear() }
 
+		// refresh list
+		binding.refreshButton.setOnClickListener { adapter.refresh() }
+
 		// search text change
 		binding.search.addTextChangedListener {
 			viewmodel.setSearchQueryFilter(it?.toString())
