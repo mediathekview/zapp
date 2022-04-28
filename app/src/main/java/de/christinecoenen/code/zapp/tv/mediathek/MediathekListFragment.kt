@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.leanback.widget.SearchBar
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MediathekListFragment : Fragment(),
-	de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener,
-	SearchBar.SearchBarListener {
+	de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener {
 
 	private val mediathekRepository: MediathekRepository by inject()
 
@@ -47,7 +46,20 @@ class MediathekListFragment : Fragment(),
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
 
-		binding.search.setSearchBarListener(this)
+		// clear search field
+		binding.deleteSearchButton.setOnClickListener { binding.search.editableText.clear() }
+
+		// search text change
+		binding.search.addTextChangedListener {
+			viewmodel.setSearchQueryFilter(it?.toString())
+		}
+
+		// hack to get focus to the input field
+		binding.searchWrapper.setOnFocusChangeListener { _, isFocused ->
+			if (isFocused) {
+				binding.search.requestFocus()
+			}
+		}
 
 		adapter = MediathekItemAdapter(MediathekShowComparator, this)
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
@@ -96,18 +108,6 @@ class MediathekListFragment : Fragment(),
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
 		// no action
-	}
-
-	override fun onSearchQueryChange(query: String?) {
-		viewmodel.setSearchQueryFilter(query)
-	}
-
-	override fun onSearchQuerySubmit(query: String?) {
-
-	}
-
-	override fun onKeyboardDismiss(query: String?) {
-
 	}
 
 	private suspend fun saveAndOpenShow(show: MediathekShow) {

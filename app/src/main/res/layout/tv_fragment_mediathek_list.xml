@@ -7,16 +7,57 @@
 	android:layout_marginVertical="4dp"
 	android:paddingHorizontal="64dp">
 
-	<androidx.leanback.widget.SearchBar
-		android:id="@+id/search"
+	<LinearLayout
+		android:id="@+id/search_wrapper"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginVertical="16dp"
-		android:nextFocusDown="@id/list"
+		android:background="@color/colorSurface"
+		android:focusable="true"
+		android:orientation="horizontal"
+		android:padding="8dp"
 		app:layout_constraintBottom_toTopOf="@id/list"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+		app:layout_constraintTop_toTopOf="parent">
+
+		<ImageView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:alpha="0.5"
+			android:contentDescription="@null"
+			android:gravity="center_vertical"
+			android:paddingVertical="8dp"
+			android:paddingEnd="8dp"
+			android:src="@drawable/ic_baseline_search_24" />
+
+		<androidx.leanback.widget.SearchEditText
+			android:id="@+id/search"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="16"
+			android:clickable="true"
+			android:focusable="true"
+			android:focusableInTouchMode="true"
+			android:gravity="center_vertical"
+			android:hint="@string/search_query_hint_mediathek"
+			android:imeOptions="actionSearch"
+			android:inputType="text"
+			android:maxLines="1"
+			android:textAppearance="@style/TextAppearance.Leanback.Header" />
+
+		<ImageButton
+			android:id="@+id/delete_search_button"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:background="@color/tv_card_foreground_color"
+			android:contentDescription="@string/delete_search_query_content_description"
+			android:padding="8dp"
+			android:src="@drawable/ic_baseline_close_24" />
+
+	</LinearLayout>
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/list"
@@ -27,9 +68,8 @@
 		android:nextFocusUp="@id/search"
 		android:paddingBottom="16dp"
 		android:verticalSpacing="16dp"
-		app:focusOutFront="true"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/search"
+		app:layout_constraintTop_toBottomOf="@id/search_wrapper"
 		tools:listitem="@layout/tv_fragment_mediathek_list_item" />
 
 	<ProgressBar
