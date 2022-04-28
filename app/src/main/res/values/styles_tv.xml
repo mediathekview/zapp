@@ -17,6 +17,10 @@
 		<!--- leanback color overrides -->
 		<item name="playbackProgressPrimaryColor">@color/colorPrimary</item>
 		<item name="playbackProgressSecondaryColor">@color/colorAccent</item>
+
+		<!-- CheckBox, RadioButton, SeekBar, ProgressBar with alpha, EditText underline -->
+		<item name="android:colorControlNormal">@color/colorAccent</item>
+		<item name="android:colorControlActivated">@color/colorPrimary</item>
 	</style>
 
 	<style name="TvCardStyle">
