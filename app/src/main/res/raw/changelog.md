@@ -1,5 +1,6 @@
 # v-next
 * Offizielle Unterstützung für Android TV!
+* Android-Backup-Unterstützung für Einstellungen und Datenbankeinträge
 
 # 6.1.0
 * Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
