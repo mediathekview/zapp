@@ -1,3 +1,6 @@
+# v-next
+* Offizielle Unterstützung für Android TV!
+
 # 6.1.0
 * Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
 * Auswahl der Videoqualität in kostenpflichtigen Netwerken repariert

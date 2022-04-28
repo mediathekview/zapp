@@ -149,6 +149,7 @@ dependencies {
 	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 	implementation "com.google.android.exoplayer:extension-mediasession:$exoplayer_version"
+	implementation "com.google.android.exoplayer:extension-leanback:$exoplayer_version"
 
 	// retrofit rest client
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -172,4 +173,8 @@ dependencies {
 	implementation "io.insert-koin:koin-android:$koin_version"
 	androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 	testImplementation "io.insert-koin:koin-test:$koin_version"
+
+	// android tv
+	implementation 'androidx.leanback:leanback:1.1.0-rc02'
+	implementation "androidx.leanback:leanback-tab:1.1.0-beta01"
 }

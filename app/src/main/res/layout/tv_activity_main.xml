@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".tv.main.MainActivity"
+	tools:deviceIds="tv">
+
+	<androidx.fragment.app.FragmentContainerView
+		android:id="@+id/main_fragment"
+		android:name="de.christinecoenen.code.zapp.tv.main.MainFragment"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+
+</RelativeLayout>

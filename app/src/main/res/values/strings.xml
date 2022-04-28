@@ -48,8 +48,10 @@
 	<string name="fragment_downloads_confirm_show_removal_dialog_text">Noch laufende Downloads werden abgrebrochen und vorhandene Video-Dateien gelöscht.</string>
 
 	<!-- error messages -->
+	<string name="error_informal">Upsi!</string>
 	<string name="error_report">Fehler melden</string>
 	<string name="error_app_crash">Entschuldigung, es gab einen Fehler.\nMöchtest du per Mail einen Fehlerbericht an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
+	<string name="error_app_crash_tv">Entschuldigung, Zapp ist abgestürtzt.</string>
 	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
 	<string name="error_app_crash_mail_body">Vielen Dank für die Rückmeldung!\n\nFolgende Informationen helfen den Entwicklern von Zapp, den Fehler zu beheben:\n</string>
 
@@ -77,10 +79,12 @@
 	<string name="action_remove">Entfernen</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
+	<string name="delete_search_query_content_description">Suche löschen</string>
 
 	<string name="menu_refresh">Aktualisieren</string>
 	<string name="menu_retry">Wiederholen</string>
 	<string name="menu_about">Über Zapp</string>
+	<string name="menu_about_short">Über</string>
 	<string name="menu_settings">Einstellungen</string>
 	<string name="menu_feedback">Feedback</string>
 	<string name="menu_filter">Filter</string>

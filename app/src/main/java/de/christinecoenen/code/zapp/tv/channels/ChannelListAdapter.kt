@@ -1,9 +1,12 @@
-package de.christinecoenen.code.zapp.app.livestream.ui.list.adapter
+package de.christinecoenen.code.zapp.tv.channels
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import de.christinecoenen.code.zapp.databinding.ChannelListFragmentItemBinding
+import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
+import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.IChannelViewBindingAdapter
+import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
+import de.christinecoenen.code.zapp.databinding.TvFragmentChannelListItemBinding
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 
 
@@ -21,7 +24,7 @@ class ChannelListAdapter(
 		layoutInflater: LayoutInflater,
 		parent: ViewGroup
 	): IChannelViewBindingAdapter {
-		val binding = ChannelListFragmentItemBinding.inflate(layoutInflater, parent, false)
+		val binding = TvFragmentChannelListItemBinding.inflate(layoutInflater, parent, false)
 		return ChannelViewBindingAdapter(binding)
 	}
 

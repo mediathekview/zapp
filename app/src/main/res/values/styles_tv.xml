@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- leanback color overrides that cannot be overwritten any other way -->
+	<color name="lb_preference_item_category_text_color">@color/colorAccent</color>
+	<color name="lb_error_background_color_opaque">@color/colorBackground</color>
+
+	<style name="LeanbackAppTheme" parent="Theme.Leanback">
+
+		<!-- main theme colors -->
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="colorSurface">@color/colorSurface</item>
+		<item name="android:colorBackground">@color/colorBackground</item>
+
+		<!--- leanback color overrides -->
+		<item name="playbackProgressPrimaryColor">@color/colorPrimary</item>
+		<item name="playbackProgressSecondaryColor">@color/colorAccent</item>
+
+		<!-- CheckBox, RadioButton, SeekBar, ProgressBar with alpha, EditText underline -->
+		<item name="android:colorControlNormal">@color/colorAccent</item>
+		<item name="android:colorControlActivated">@color/colorPrimary</item>
+	</style>
+
+	<style name="TvCardStyle">
+		<item name="android:background">?colorSurface</item>
+		<item name="android:foreground">@color/tv_card_foreground_color</item>
+		<item name="android:focusable">true</item>
+		<item name="android:focusableInTouchMode">true</item>
+	</style>
+
+	<style name="TvTextDividerStyle" parent="Widget.AppCompat.TextView">
+		<item name="android:layout_marginStart">6dp</item>
+		<item name="android:layout_marginEnd">6dp</item>
+		<item name="android:alpha">0.3</item>
+		<item name="android:text">|</item>
+	</style>
+
+</resources>

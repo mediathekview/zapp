@@ -8,4 +8,6 @@
 	<fraction name="mediathek_filter_max_duration">120</fraction>
 
 	<integer name="player_controller_show_timeout_millis">3000</integer>
+
+	<bool name="is_leanback_ui">false</bool>
 </resources>

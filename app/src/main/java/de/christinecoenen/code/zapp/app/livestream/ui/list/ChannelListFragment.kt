@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
+import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.databinding.ChannelListFragmentBinding
@@ -19,7 +20,7 @@ import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 class ChannelListFragment : Fragment(), ListItemListener {
 
 	private lateinit var channelList: ISortableChannelList
-	private lateinit var gridAdapter: ChannelListAdapter
+	private lateinit var gridAdapter: BaseChannelListAdapter
 
 
 	override fun onCreate(savedInstanceState: Bundle?) {
