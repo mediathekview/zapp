@@ -18,6 +18,6 @@
 		app:focusOutFront="true"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		tools:listitem="@layout/fragment_channel_list_item" />
+		tools:listitem="@layout/tv_fragment_channel_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

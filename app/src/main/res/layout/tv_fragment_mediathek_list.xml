@@ -110,13 +110,12 @@
 		tools:ignore="UseCompoundDrawables"
 		tools:visibility="gone">
 
-		<androidx.appcompat.widget.AppCompatImageView
+		<ImageView
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/lb_error_image_max_height"
 			android:contentDescription="@null"
 			android:focusable="false"
-			android:src="@drawable/ic_sad_tv"
-			android:tint="@color/lb_error_message" />
+			android:src="@drawable/ic_sad_tv" />
 
 		<androidx.appcompat.widget.AppCompatTextView
 			android:layout_width="match_parent"
@@ -145,13 +144,12 @@
 		tools:ignore="UseCompoundDrawables"
 		tools:visibility="visible">
 
-		<androidx.appcompat.widget.AppCompatImageView
+		<ImageView
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/lb_error_image_max_height"
 			android:contentDescription="@null"
 			android:focusable="false"
-			android:src="@drawable/ic_warning_white_24dp"
-			android:tint="@color/lb_error_message" />
+			android:src="@drawable/ic_warning_white_24dp" />
 
 		<androidx.appcompat.widget.AppCompatTextView
 			android:id="@+id/error_message"
