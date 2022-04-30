@@ -79,7 +79,6 @@
 			android:layout_height="wrap_content"
 			android:indeterminate="false"
 			android:max="1000"
-			android:theme="@style/ShowProgress"
 			tools:progress="300" />
 
 	</androidx.appcompat.widget.LinearLayoutCompat>

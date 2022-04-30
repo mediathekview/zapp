@@ -101,7 +101,7 @@ abstract class ZappApplicationBase : Application() {
 				title = getString(R.string.app_name)
 				resIcon = R.drawable.ic_sad_tv
 				positiveButtonText = getString(R.string.action_continue)
-				resTheme = R.style.ChrashDialog
+				/*resTheme = R.style.ChrashDialog*/
 				enabled = useAppDialog
 			}
 

@@ -29,7 +29,6 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/retry_button"
-		style="@style/ColorlessOutlinedButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="8dp"

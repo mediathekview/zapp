@@ -15,13 +15,13 @@
 		android:layout_gravity="center"
 		android:animateLayoutChanges="true"
 		app:auto_show="true"
-		app:show_timeout="@integer/player_controller_show_timeout_millis"
 		app:hide_on_touch="true"
 		app:show_buffering="always"
 		app:show_next_button="false"
 		app:show_previous_button="false"
 		app:show_shuffle_button="false"
-		app:show_subtitle_button="true" />
+		app:show_subtitle_button="true"
+		app:show_timeout="@integer/player_controller_show_timeout_millis" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/error"
@@ -50,10 +50,8 @@
 
 		<com.google.android.material.appbar.MaterialToolbar
 			android:id="@+id/toolbar"
-			style="@style/ToolbarStyle"
 			android:layout_width="match_parent"
-			android:layout_height="56dp"
-			android:background="@color/colorPrimary" />
+			android:layout_height="56dp" />
 
 	</FrameLayout>
 

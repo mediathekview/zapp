@@ -91,7 +91,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="-26dp"
 			android:layout_marginBottom="@dimen/activity_vertical_margin"
-			android:background="@color/colorPrimary"
+			android:background="?colorPrimarySurface"
 			android:baselineAligned="false"
 			android:orientation="horizontal"
 			android:padding="@dimen/activity_vertical_margin">

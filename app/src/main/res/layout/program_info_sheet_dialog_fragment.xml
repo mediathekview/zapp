@@ -32,7 +32,6 @@
 
 	<com.google.android.material.progressindicator.LinearProgressIndicator
 		android:id="@+id/show_progress"
-		style="@style/ShowProgressDetail"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="8dp"
