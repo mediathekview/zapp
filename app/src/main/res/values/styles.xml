@@ -72,6 +72,7 @@
 
 	<style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
 		<item name="subtitleTextColor">@android:color/white</item>
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
 	</style>
 
 	<style name="AppBarStyle" parent="Widget.MaterialComponents.AppBarLayout.Primary" />
@@ -100,6 +101,10 @@
 
 	<style name="ThemeOverlay.ShowProgressDetail" parent="">
 		<item name="colorPrimary">?attr/colorOnSurface</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Toolbar" parent="AppTheme">
+		<item name="colorControlNormal">@android:color/white</item>
 	</style>
 
 	<style name="ChrashDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">

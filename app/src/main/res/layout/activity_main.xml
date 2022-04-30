@@ -26,7 +26,6 @@
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="?attr/actionBarSize"
-				android:elevation="8dp"
 				app:logo="@drawable/ic_zapp_tv_small" />
 
 		</com.google.android.material.appbar.AppBarLayout>
