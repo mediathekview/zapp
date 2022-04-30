@@ -1,7 +1,7 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.Material3.DayNight">
+	<style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorOnPrimary">@android:color/white</item>
 		<item name="colorSecondary">@color/colorAccent</item>
@@ -10,6 +10,11 @@
 		<item name="colorOnSecondaryContainer">@android:color/white</item>
 		<item name="colorTertiary">@color/colorPrimaryDark</item>
 		<item name="colorOnTertiary">@android:color/white</item>
+
+		<item name="android:statusBarColor">?attr/colorTertiary</item>
+
+		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+		<item name="actionBarSize">48dp</item>
 	</style>
 
 	<style name="FullscreenTheme" parent="AppTheme">
@@ -35,6 +40,23 @@
 		<item name="android:layout_marginEnd">6dp</item>
 		<item name="android:alpha">0.3</item>
 		<item name="android:text">|</item>
+	</style>
+
+	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
+		<item name="titleCentered">true</item>
+		<item name="subtitleCentered">true</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Toolbar" parent="">
+		<item name="colorSurface">@color/colorPrimary</item>
+		<item name="colorOnSurface">@android:color/white</item>
+		<item name="colorControlNormal">@android:color/white</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
+		<item name="colorSurface">@color/colorSurface</item>
 	</style>
 
 </resources>
