@@ -24,6 +24,7 @@
 
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/download"
+			style="@style/Widget.Material3.Button.TextButton.Icon"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_download"
@@ -33,6 +34,7 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/share"
+		style="@style/Widget.Material3.Button.TextButton.Icon"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/action_share"
@@ -40,6 +42,7 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/website"
+		style="@style/Widget.Material3.Button.TextButton.Icon"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/fragment_mediathek_website"
