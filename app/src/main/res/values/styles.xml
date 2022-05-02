@@ -4,14 +4,14 @@
 	<style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorOnPrimary">@android:color/white</item>
+		<item name="colorPrimarySurface">@color/colorPrimary</item>
+		<item name="colorOnPrimarySurface">@android:color/white</item>
 		<item name="colorSecondary">@color/colorAccent</item>
 		<item name="colorOnSecondary">@android:color/white</item>
 		<item name="colorSecondaryContainer">@color/colorAccent</item>
 		<item name="colorOnSecondaryContainer">@android:color/white</item>
 		<item name="colorTertiary">@color/colorPrimaryDark</item>
 		<item name="colorOnTertiary">@android:color/white</item>
-
-		<item name="android:statusBarColor">?attr/colorTertiary</item>
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 		<item name="actionBarSize">48dp</item>
@@ -50,9 +50,9 @@
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar" parent="">
-		<item name="colorSurface">@color/colorPrimary</item>
-		<item name="colorOnSurface">@android:color/white</item>
-		<item name="colorControlNormal">@android:color/white</item>
+		<item name="colorSurface">?attr/colorPrimarySurface</item>
+		<item name="colorOnSurface">?attr/colorOnPrimarySurface</item>
+		<item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
