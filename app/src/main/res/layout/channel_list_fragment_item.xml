@@ -72,12 +72,12 @@
 			android:layout_height="wrap_content"
 			tools:text="20:15 – 20:45 Uhr" />
 
-		<ProgressBar
+		<com.google.android.material.progressindicator.LinearProgressIndicator
 			android:id="@+id/progressbar_show_progress"
-			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:indeterminate="false"
+			android:layout_marginTop="8dp"
 			android:max="1000"
 			tools:progress="300" />
 

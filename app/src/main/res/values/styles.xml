@@ -33,6 +33,7 @@
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
 
 		<item name="actionBarSize">48dp</item>
 		<item name="android:statusBarColor">@color/colorPrimaryContainer</item>
@@ -74,7 +75,10 @@
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
 	</style>
 
-	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary">
+	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary" />
+
+	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
+		<item name="indicatorColor">@color/colorOnSurfaceVariant</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar" parent="">
