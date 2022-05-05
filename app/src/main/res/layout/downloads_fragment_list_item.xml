@@ -8,7 +8,7 @@
 	android:clickable="true"
 	android:focusable="true"
 	android:foreground="?android:attr/selectableItemBackground"
-	android:paddingVertical="8dp"
+	android:paddingVertical="10dp"
 	tools:ignore="UnusedAttribute">
 
 	<androidx.appcompat.widget.AppCompatImageView
