@@ -2,9 +2,9 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.setFragmentResult
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
@@ -55,7 +55,7 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 	}
 
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-		return AlertDialog.Builder(requireActivity())
+		return MaterialAlertDialogBuilder(requireActivity())
 			.setTitle(R.string.fragment_mediathek_qualities_title)
 			.setItems(qualityLabels.toTypedArray()) { _, i ->
 				onItemSelected(qualities[i])
