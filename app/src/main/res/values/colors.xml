@@ -21,7 +21,7 @@
 	<color name="colorSurface">#FBFBFB</color>
 	<color name="colorOnSurface">@android:color/black</color>
 	<color name="colorSurfaceVariant">#E3E3E3</color>
-	<color name="colorOnSurfaceVariant">#7A7A7A</color>
+	<color name="colorOnSurfaceVariant">#5C5C5C</color>
 
 	<color name="colorAccent">#ff5722</color>
 
