@@ -3,12 +3,12 @@
 	<color name="colorPrimary">#e1007a</color>
 	<color name="colorOnPrimary">@android:color/white</color>
 	<color name="colorPrimaryContainer">#b00050</color>
-	<color name="colorOnPrimaryContainer">@android:color/white</color>
+	<color name="colorOnPrimaryContainer">#FFE6F3</color>
 
 	<color name="colorSecondary">@color/colorAccent</color>
 	<color name="colorOnSecondary">@android:color/white</color>
 	<color name="colorSecondaryContainer">@color/colorAccent</color>
-	<color name="colorOnSecondaryContainer">@android:color/white</color>
+	<color name="colorOnSecondaryContainer">#FFF4F1</color>
 
 	<color name="colorTertiary">#0000ff</color>
 	<color name="colorOnTertiary">@android:color/white</color>

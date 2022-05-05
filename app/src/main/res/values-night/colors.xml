@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#A00054</color>
+	<color name="colorPrimary">#B83C7E</color>
 	<color name="colorOnPrimary">@android:color/white</color>
 	<color name="colorPrimaryContainer">#6A002F</color>
-	<color name="colorOnPrimaryContainer">@android:color/white</color>
+	<color name="colorOnPrimaryContainer">#FFD5EB</color>
 
 	<color name="colorSecondary">#F42C95</color>
 	<color name="colorOnSecondary">@android:color/white</color>
-	<color name="colorSecondaryContainer">@color/colorPrimary</color>
-	<color name="colorOnSecondaryContainer">@android:color/white</color>
+	<color name="colorSecondaryContainer">#A00054</color>
+	<color name="colorOnSecondaryContainer">#FFD5EB</color>
 
 	<color name="colorTertiary">#0000ff</color>
 	<color name="colorOnTertiary">@android:color/white</color>

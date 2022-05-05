@@ -76,7 +76,7 @@
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
 		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
 		<item name="titleCentered">true</item>
-		<item name="subtitleCentered">true</item>
+		<item name="subtitleCentered">true</item>^
 	</style>
 
 	<style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
@@ -112,7 +112,7 @@
 		<item name="colorSurface">@color/colorPrimaryContainer</item>
 		<item name="colorOnSurface">@color/colorOnPrimaryContainer</item>
 		<item name="colorOnSurfaceVariant">@color/colorOnPrimaryContainer</item>
-		<item name="colorSecondaryContainer">@color/colorPrimary</item>
+		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
