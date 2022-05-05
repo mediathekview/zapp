@@ -13,18 +13,22 @@
 		android:layout_height="wrap_content"
 		android:animateLayoutChanges="true">
 
-		<ProgressBar
+		<com.google.android.material.progressindicator.CircularProgressIndicator
 			android:id="@+id/downloadProgress"
-			style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
+			style="@style/Widget.App.CircularProgressIndicator.Small"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_alignParentEnd="true"
+			android:layout_centerVertical="true"
+			android:layout_marginEnd="4dp"
 			android:progress="0"
-			android:visibility="gone" />
+			android:visibility="gone"
+			tools:progress="80"
+			tools:visibility="visible" />
 
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/download"
-			style="@style/Widget.Material3.Button.TextButton.Icon"
+			style="@style/ColorlessTextButtonStyle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_download"
@@ -34,7 +38,7 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/share"
-		style="@style/Widget.Material3.Button.TextButton.Icon"
+		style="@style/ColorlessTextButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/action_share"
@@ -42,7 +46,7 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/website"
-		style="@style/Widget.Material3.Button.TextButton.Icon"
+		style="@style/ColorlessTextButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/fragment_mediathek_website"

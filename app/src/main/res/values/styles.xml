@@ -89,6 +89,19 @@
 		<item name="indicatorColor">@color/colorOnSurfaceVariant</item>
 	</style>
 
+	<style name="Widget.App.CircularProgressIndicator.Small" parent="Widget.Material3.CircularProgressIndicator.Small">
+		<item name="indicatorColor">@color/colorOnSurfaceVariant</item>
+		<item name="trackColor">@color/colorSurfaceVariant</item>
+	</style>
+
+	<style name="ColorlessTextButtonStyle" parent="Widget.Material3.Button.TextButton.Icon">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Button" parent="ThemeOverlay.Material3.Button.TextButton">
+		<item name="colorPrimary">@color/colorOnBackground</item>
+	</style>
+
 	<style name="ThemeOverlay.App.Toolbar" parent="">
 		<item name="colorSurface">@color/colorPrimaryContainer</item>
 		<item name="colorOnSurface">@color/colorOnPrimaryContainer</item>
