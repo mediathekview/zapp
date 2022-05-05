@@ -30,12 +30,16 @@
 		<item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
 		<item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
 
+		<!-- for old school material dialogs (e.g. in settings) -->
+		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
+
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
 
 		<item name="actionBarSize">48dp</item>
+		<item name="android:textAllCaps">false</item>
 		<item name="android:statusBarColor">@color/colorPrimaryContainer</item>
 	</style>
 
@@ -49,6 +53,10 @@
 		<!-- to use toolbar instead of default action bar -->
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
+	</style>
+
+	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+		<item name="android:colorBackground">@color/colorSurface</item>
 	</style>
 
 	<style name="AppTheme.NoActionBar">
