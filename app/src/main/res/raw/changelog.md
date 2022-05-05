@@ -1,6 +1,7 @@
 # v-next
 * Offizielle Unterstützung für Android TV!
 * Android-Backup-Unterstützung für Einstellungen und Datenbankeinträge
+* Kategorie-Icons sind heben sich im hellen Design vom Hintergrund ab.
 
 # 6.1.0
 * Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
