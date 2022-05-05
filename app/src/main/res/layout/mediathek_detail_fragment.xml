@@ -43,11 +43,11 @@
 						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:background="@color/colorAccent"
+						android:background="@color/colorSecondaryContainer"
 						android:paddingStart="4dp"
 						android:paddingEnd="4dp"
 						android:text="@string/fragment_mediathek_batch_subtitle"
-						android:textColor="@android:color/primary_text_dark" />
+						android:textColor="@color/colorOnSecondaryContainer" />
 
 				</LinearLayout>
 
@@ -92,7 +92,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="-26dp"
 			android:layout_marginBottom="@dimen/activity_vertical_margin"
-			android:background="?colorPrimarySurface"
+			android:background="@color/colorPrimaryContainer"
 			android:baselineAligned="false"
 			android:orientation="horizontal"
 			android:padding="@dimen/activity_vertical_margin">

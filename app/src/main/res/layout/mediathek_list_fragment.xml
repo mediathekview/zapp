@@ -82,7 +82,7 @@
 		style="?attr/bottomSheetStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/colorBackground"
+		android:background="@color/colorSurface"
 		app:behavior_peekHeight="48dp"
 		app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 		app:layout_constraintTop_toBottomOf="parent">

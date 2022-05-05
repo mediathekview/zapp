@@ -2,19 +2,40 @@
 
 	<!-- Base application theme. -->
 	<style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+
 		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorOnPrimary">@android:color/white</item>
+		<item name="colorOnPrimary">@color/colorOnPrimary</item>
+		<item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
+
 		<item name="colorPrimarySurface">@color/colorPrimary</item>
 		<item name="colorOnPrimarySurface">@android:color/white</item>
-		<item name="colorSecondary">@color/colorAccent</item>
-		<item name="colorOnSecondary">@android:color/white</item>
-		<item name="colorSecondaryContainer">@color/colorAccent</item>
-		<item name="colorOnSecondaryContainer">@android:color/white</item>
-		<item name="colorTertiary">@color/colorPrimaryDark</item>
-		<item name="colorOnTertiary">@android:color/white</item>
+
+		<item name="colorSecondary">@color/colorSecondary</item>
+		<item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+		<item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
+
+		<item name="colorTertiary">@color/colorTertiary</item>
+		<item name="colorOnTertiary">@color/colorOnTertiary</item>
+		<item name="colorTertiaryContainer">@color/colorTertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
+
+		<item name="background">@color/colorBackground</item>
+		<item name="colorOnBackground">@color/colorOnBackground</item>
+
+		<item name="colorSurface">@color/colorSurface</item>
+		<item name="colorOnSurface">@color/colorOnSurface</item>
+		<item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+
 		<item name="actionBarSize">48dp</item>
+		<item name="android:statusBarColor">@color/colorPrimaryContainer</item>
 	</style>
 
 	<style name="FullscreenTheme" parent="AppTheme">
@@ -49,10 +70,24 @@
 		<item name="subtitleCentered">true</item>
 	</style>
 
+	<style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+	</style>
+
+	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary">
+	</style>
+
 	<style name="ThemeOverlay.App.Toolbar" parent="">
-		<item name="colorSurface">?attr/colorPrimarySurface</item>
-		<item name="colorOnSurface">?attr/colorOnPrimarySurface</item>
-		<item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
+		<item name="colorSurface">@color/colorPrimaryContainer</item>
+		<item name="colorOnSurface">@color/colorOnPrimaryContainer</item>
+		<item name="colorControlNormal">@color/colorOnPrimaryContainer</item>
+	</style>
+
+	<style name="ThemeOverlay.App.BottomNavigationView" parent="">
+		<item name="colorSurface">@color/colorPrimaryContainer</item>
+		<item name="colorOnSurface">@color/colorOnPrimaryContainer</item>
+		<item name="colorOnSurfaceVariant">@color/colorOnPrimaryContainer</item>
+		<item name="colorSecondaryContainer">@color/colorPrimary</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
