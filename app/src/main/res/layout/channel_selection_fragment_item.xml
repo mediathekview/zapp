@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="@dimen/activity_channel_selection_item_width"
 	android:layout_height="@dimen/activity_channel_selection_item_height"
 	android:layout_margin="@dimen/activity_channel_selection_item_margin"
-	android:background="?android:attr/selectableItemBackground"
+	android:background="@color/colorSurface"
 	android:clickable="true"
 	android:focusable="true"
+	android:foreground="?android:attr/selectableItemBackground"
 	android:orientation="horizontal">
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/image_handle"
 		android:layout_width="@dimen/activity_channel_selection_handleWidth"
-		android:layout_height="match_parent"
-		android:layout_gravity="center"
-		android:background="@color/black_overlay"
+		android:layout_height="0dip"
+		android:background="@color/colorSurfaceVariant"
 		android:padding="@dimen/activity_channel_selection_item_margin"
 		android:src="@drawable/ic_handle_white_24dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
 		tools:ignore="ContentDescription" />
 
-	<androidx.appcompat.widget.LinearLayoutCompat
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/logo"
+		android:layout_width="0dip"
+		android:layout_height="0dip"
+		android:padding="@dimen/activity_vertical_margin"
+		app:layout_constraintBottom_toTopOf="@id/subtitle"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/image_handle"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:ignore="ContentDescription"
+		tools:src="@drawable/channel_logo_das_erste" />
 
-		<androidx.appcompat.widget.AppCompatImageView
-			android:id="@+id/logo"
-			android:layout_width="match_parent"
-			android:layout_height="0dip"
-			android:layout_weight="4"
-			android:padding="@dimen/activity_vertical_margin"
-			tools:ignore="ContentDescription"
-			tools:src="@drawable/channel_logo_das_erste" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/subtitle"
+		android:layout_width="0dip"
+		android:layout_height="wrap_content"
+		android:ellipsize="end"
+		android:gravity="center|bottom"
+		android:lines="1"
+		android:paddingHorizontal="2dp"
+		android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/image_handle"
+		app:layout_constraintTop_toBottomOf="@id/logo"
+		tools:text="Mecklenburg-Vorpommern" />
 
-		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/subtitle"
-			android:layout_width="match_parent"
-			android:layout_height="0dip"
-			android:layout_weight="1"
-			android:ellipsize="end"
-			android:gravity="center|bottom"
-			android:lines="1"
-			android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-			tools:text="Mecklenburg-Vorpommern" />
-
-	</androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
