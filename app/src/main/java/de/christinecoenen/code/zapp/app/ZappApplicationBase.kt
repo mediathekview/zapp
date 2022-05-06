@@ -95,24 +95,26 @@ abstract class ZappApplicationBase : Application() {
 				"default.acra.legacyAlreadyConvertedTo4.8.0"
 			)
 
-			// app dialog
-			dialog {
-				text = getString(R.string.error_app_crash)
-				title = getString(R.string.app_name)
-				resIcon = R.drawable.ic_sad_tv
-				positiveButtonText = getString(R.string.action_continue)
-				/*resTheme = R.style.ChrashDialog*/
-				enabled = useAppDialog
+			if (useAppDialog) {
+				dialog {
+					text = getString(R.string.error_app_crash)
+					title = getString(R.string.app_name)
+					resIcon = R.drawable.ic_sad_tv
+					positiveButtonText = getString(R.string.action_continue)
+					resTheme = R.style.AppTheme
+					enabled = true
+				}
 			}
 
-			// leanback dialog
-			dialog {
-				title = getString(R.string.error_informal)
-				text = getString(R.string.error_app_crash_tv)
-				resIcon = R.drawable.ic_sad_tv
-				resTheme = R.style.LeanbackAppTheme
-				reportDialogClass = CrashActivity::class.java
-				enabled = useLeanbackDialog
+			if (useLeanbackDialog) {
+				dialog {
+					title = getString(R.string.error_informal)
+					text = getString(R.string.error_app_crash_tv)
+					resIcon = R.drawable.ic_sad_tv
+					resTheme = R.style.LeanbackAppTheme
+					reportDialogClass = CrashActivity::class.java
+					enabled = true
+				}
 			}
 
 			mailSender {
