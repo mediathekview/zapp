@@ -35,6 +35,7 @@
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
 
@@ -76,7 +77,16 @@
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
 		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
 		<item name="titleCentered">true</item>
-		<item name="subtitleCentered">true</item>^
+		<item name="subtitleCentered">true</item>
+	</style>
+
+	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+		<item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.App.Title.Icon
+		</item>
+	</style>
+
+	<style name="MaterialAlertDialog.App.Title.Icon" parent="MaterialAlertDialog.Material3.Title.Icon">
+		<item name="tint">@color/colorOnSurfaceVariant</item>
 	</style>
 
 	<style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">

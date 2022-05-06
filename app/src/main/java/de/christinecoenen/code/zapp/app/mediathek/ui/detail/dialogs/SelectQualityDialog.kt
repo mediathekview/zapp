@@ -57,6 +57,12 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 		return MaterialAlertDialogBuilder(requireActivity())
 			.setTitle(R.string.fragment_mediathek_qualities_title)
+			.setIcon(
+				when (mode) {
+					Mode.DOWNLOAD -> R.drawable.ic_baseline_save_alt_24
+					Mode.SHARE -> R.drawable.ic_share_white_24dp
+				}
+			)
 			.setItems(qualityLabels.toTypedArray()) { _, i ->
 				onItemSelected(qualities[i])
 			}
