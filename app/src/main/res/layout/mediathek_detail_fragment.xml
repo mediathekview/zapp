@@ -83,7 +83,7 @@
 			android:background="?colorPrimaryContainer"
 			android:baselineAligned="false"
 			android:orientation="horizontal"
-			android:padding="@dimen/activity_vertical_margin">
+			android:padding="32dp">
 
 			<LinearLayout
 				android:layout_width="wrap_content"
