@@ -9,7 +9,9 @@
 	android:focusable="true"
 	android:foreground="?selectableItemBackground"
 	android:paddingVertical="10dp"
-	tools:ignore="UnusedAttribute">
+	android:visibility="gone"
+	tools:ignore="UnusedAttribute"
+	tools:visibility="visible">
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/thumbnail"

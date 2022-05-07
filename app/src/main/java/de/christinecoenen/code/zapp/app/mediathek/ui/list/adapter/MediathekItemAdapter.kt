@@ -27,18 +27,17 @@ class MediathekItemAdapter(
 		val show = getItem(position) ?: throw RuntimeException("null show not supported")
 
 		scope.launch(Dispatchers.Main) {
-
-			holder.itemView.setOnClickListener { listener?.onShowClicked(show) }
-			holder.itemView.setOnLongClickListener { view ->
-				if (listener != null) {
-					listener.onShowLongClicked(show, view)
-					true
-				} else {
-					false
-				}
-			}
-
 			holder.setShow(show)
+		}
+
+		holder.itemView.setOnClickListener { listener?.onShowClicked(show) }
+		holder.itemView.setOnLongClickListener { view ->
+			if (listener != null) {
+				listener.onShowLongClicked(show, view)
+				true
+			} else {
+				false
+			}
 		}
 	}
 }
