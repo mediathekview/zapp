@@ -21,7 +21,7 @@
 			android:orientation="vertical">
 
 			<com.google.android.material.card.MaterialCardView
-				style="@style/Widget.Material3.CardView.Elevated"
+				style="?materialCardViewElevatedStyle"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="@dimen/activity_vertical_margin">
@@ -42,17 +42,13 @@
 						android:paddingEnd="@dimen/activity_horizontal_margin"
 						android:paddingBottom="70dp" />
 
-					<TextView
+					<com.google.android.material.chip.Chip
 						android:id="@+id/subtitle"
-						style="@style/TextAppearance.AppCompat.Small"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginTop="@dimen/activity_vertical_margin"
-						android:background="@color/colorSecondaryContainer"
-						android:paddingStart="4dp"
-						android:paddingEnd="4dp"
-						android:text="@string/fragment_mediathek_batch_subtitle"
-						android:textColor="@color/colorOnSecondaryContainer" />
+						android:enabled="false"
+						android:text="@string/fragment_mediathek_batch_subtitle" />
 
 				</LinearLayout>
 
@@ -78,51 +74,51 @@
 				android:orientation="vertical"
 				android:padding="@dimen/activity_vertical_margin">
 
-				<TextView
-					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+				<com.google.android.material.textview.MaterialTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/fragment_mediathek_duration"
-					android:textColor="@color/text_alwayslight_secondary" />
+					android:textAppearance="?textAppearanceLabelMedium"
+					android:textColor="?colorOnPrimaryContainer" />
 
-				<TextView
+				<com.google.android.material.textview.MaterialTextView
 					android:id="@+id/duration"
-					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/text_alwayslight_primary"
+					android:textAppearance="?textAppearanceBodyMedium"
+					android:textColor="?colorOnPrimaryContainer"
 					tools:text="120 min" />
 
-				<TextView
-					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+				<com.google.android.material.textview.MaterialTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="@dimen/activity_vertical_margin"
 					android:text="@string/fragment_mediathek_channel"
-					android:textColor="@color/text_alwayslight_secondary" />
+					android:textAppearance="?textAppearanceLabelMedium"
+					android:textColor="?colorOnPrimaryContainer" />
 
-				<TextView
+				<com.google.android.material.textview.MaterialTextView
 					android:id="@+id/channel"
-					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/text_alwayslight_primary"
+					android:textAppearance="?textAppearanceBodyMedium"
+					android:textColor="?colorOnPrimaryContainer"
 					tools:text="ARTE.DE" />
 
-				<TextView
-					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+				<com.google.android.material.textview.MaterialTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="@dimen/activity_vertical_margin"
 					android:text="@string/fragment_mediathek_time"
-					android:textColor="@color/text_alwayslight_secondary" />
+					android:textAppearance="?textAppearanceLabelMedium"
+					android:textColor="?colorOnPrimaryContainer" />
 
-				<TextView
+				<com.google.android.material.textview.MaterialTextView
 					android:id="@+id/time"
-					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/text_alwayslight_primary"
+					android:textAppearance="?textAppearanceBodyMedium"
+					android:textColor="?colorOnPrimaryContainer"
 					tools:text="vor 2 Tagen" />
 
 			</LinearLayout>

@@ -6,10 +6,10 @@
 	android:layout_width="@dimen/activity_channel_selection_item_width"
 	android:layout_height="@dimen/activity_channel_selection_item_height"
 	android:layout_margin="@dimen/activity_channel_selection_item_margin"
-	android:background="@color/colorSurface"
+	android:background="?colorSurface"
 	android:clickable="true"
 	android:focusable="true"
-	android:foreground="?android:attr/selectableItemBackground"
+	android:foreground="?selectableItemBackground"
 	android:orientation="horizontal">
 
 	<androidx.appcompat.widget.AppCompatImageView
@@ -44,7 +44,7 @@
 		android:gravity="center|bottom"
 		android:lines="1"
 		android:paddingHorizontal="2dp"
-		android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+		android:textAppearance="?textAppearanceLabelSmall"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/image_handle"

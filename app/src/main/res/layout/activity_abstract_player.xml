@@ -25,22 +25,23 @@
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/error"
-		style="@style/TextAppearance.AppCompat.Body1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
-		android:background="@color/colorPrimary"
+		android:background="?colorErrorContainer"
 		android:drawableEnd="@drawable/ic_refresh_white_24dp"
 		android:drawablePadding="@dimen/activity_horizontal_margin"
+		android:drawableTint="?colorOnErrorContainer"
 		android:gravity="center"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingTop="@dimen/activity_vertical_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:paddingBottom="@dimen/activity_vertical_margin"
-		android:textColor="@color/text_alwayslight_primary"
+		android:textAppearance="?textAppearanceBodyMedium"
+		android:textColor="?colorOnErrorContainer"
 		android:visibility="gone"
 		tools:text="@string/error_stream_io"
-		tools:visibility="gone" />
+		tools:visibility="visible" />
 
 	<FrameLayout
 		android:layout_width="match_parent"

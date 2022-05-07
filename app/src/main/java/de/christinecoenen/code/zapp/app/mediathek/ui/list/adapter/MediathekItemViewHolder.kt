@@ -28,9 +28,9 @@ class MediathekItemViewHolder(
 		thumbnailJob?.cancel()
 		playbackPositionJob?.cancel()
 
-		binding.imageHolder.visibility = View.GONE
+		binding.thumbnail.visibility = View.GONE
 		binding.thumbnail.setImageBitmap(null)
-		binding.progress.scaleX = 0f
+		binding.viewingProgress.scaleX = 0f
 		binding.title.text = show.title
 		binding.topic.text = show.topic
 		binding.duration.text = show.formattedDuration
@@ -65,11 +65,11 @@ class MediathekItemViewHolder(
 	}
 
 	private fun updatePlaybackPosition(progressPercent: Float) {
-		binding.progress.scaleX = progressPercent
+		binding.viewingProgress.scaleX = progressPercent
 	}
 
 	private fun updatethumbnail(thumbnail: Bitmap) {
 		binding.thumbnail.setImageBitmap(thumbnail)
-		binding.imageHolder.visibility = View.VISIBLE
+		binding.thumbnail.visibility = View.VISIBLE
 	}
 }
