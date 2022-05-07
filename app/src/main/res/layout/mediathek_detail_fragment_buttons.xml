@@ -15,7 +15,7 @@
 
 		<com.google.android.material.progressindicator.CircularProgressIndicator
 			android:id="@+id/downloadProgress"
-			style="@style/Widget.App.CircularProgressIndicator.Small"
+			style="@style/Widget.App.CircularProgressIndicator.Small.Colorless"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:layout_alignParentEnd="true"
@@ -28,7 +28,7 @@
 
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/download"
-			style="@style/ColorlessTextButtonStyle"
+			style="?materialButtonOutlinedStyle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/fragment_mediathek_download"
@@ -38,7 +38,7 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/share"
-		style="@style/ColorlessTextButtonStyle"
+		style="?materialButtonOutlinedStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/action_share"
@@ -46,7 +46,7 @@
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/website"
-		style="@style/ColorlessTextButtonStyle"
+		style="?materialButtonOutlinedStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/fragment_mediathek_website"
