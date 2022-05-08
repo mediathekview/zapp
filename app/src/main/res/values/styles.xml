@@ -103,7 +103,7 @@
 	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary" />
 
 	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
-		<item name="indicatorColor">?colorOnSurfaceVariant</item>
+		<item name="indicatorColor">@color/color_on_surface_20_alpha</item>
 	</style>
 
 	<style name="Widget.App.CircularProgressIndicator.Small.Colorless" parent="Widget.Material3.CircularProgressIndicator.Small">
