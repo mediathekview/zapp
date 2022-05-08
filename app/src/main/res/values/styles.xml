@@ -1,7 +1,7 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+	<style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
 
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -30,7 +30,7 @@
 		<item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
 		<item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
 
-		<item name="strokeColor">@color/colorPrimary</item>
+		<item name="strokeColor">?colorPrimary</item>
 
 		<!-- for old school material dialogs (e.g. in settings) -->
 		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
@@ -44,7 +44,7 @@
 
 		<item name="actionBarSize">48dp</item>
 		<item name="android:textAllCaps">false</item>
-		<item name="android:statusBarColor">@color/colorPrimaryContainer</item>
+		<item name="android:statusBarColor">?colorPrimaryContainer</item>
 
 		<item name="android:letterSpacing">0.02</item>
 		<item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
@@ -64,7 +64,7 @@
 	</style>
 
 	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-		<item name="android:colorBackground">@color/colorSurface</item>
+		<item name="android:colorBackground">?colorSurface</item>
 	</style>
 
 	<style name="AppTheme.NoActionBar">
@@ -93,7 +93,7 @@
 	</style>
 
 	<style name="MaterialAlertDialog.App.Title.Icon" parent="MaterialAlertDialog.Material3.Title.Icon">
-		<item name="tint">@color/colorOnSurfaceVariant</item>
+		<item name="tint">?colorOnSurfaceVariant</item>
 	</style>
 
 	<style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
@@ -103,12 +103,12 @@
 	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary" />
 
 	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
-		<item name="indicatorColor">@color/colorOnSurfaceVariant</item>
+		<item name="indicatorColor">?colorOnSurfaceVariant</item>
 	</style>
 
 	<style name="Widget.App.CircularProgressIndicator.Small.Colorless" parent="Widget.Material3.CircularProgressIndicator.Small">
-		<item name="indicatorColor">@color/colorOnSurfaceVariant</item>
-		<item name="trackColor">@color/colorSurfaceVariant</item>
+		<item name="indicatorColor">?colorOnSurfaceVariant</item>
+		<item name="trackColor">?colorOnSurfaceVariant</item>
 	</style>
 
 	<style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
@@ -116,25 +116,25 @@
 	</style>
 
 	<style name="ThemeOverlay.App.OutlinedButton" parent="ThemeOverlay.Material3.Button.TextButton">
-		<item name="colorPrimary">@color/colorOnSurfaceVariant</item>
+		<item name="colorPrimary">?colorOnSurfaceVariant</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar" parent="">
-		<item name="colorSurface">@color/colorPrimaryContainer</item>
-		<item name="colorOnSurface">@color/colorOnPrimaryContainer</item>
-		<item name="colorOnSurfaceVariant">@color/colorOnPrimaryContainer</item>
-		<item name="colorControlNormal">@color/colorOnPrimaryContainer</item>
+		<item name="colorSurface">?colorPrimaryContainer</item>
+		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
+		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
+		<item name="colorControlNormal">?colorOnPrimaryContainer</item>
 	</style>
 
 	<style name="ThemeOverlay.App.BottomNavigationView" parent="">
-		<item name="colorSurface">@color/colorPrimaryContainer</item>
-		<item name="colorOnSurface">@color/colorOnPrimaryContainer</item>
-		<item name="colorOnSurfaceVariant">@color/colorOnPrimaryContainer</item>
+		<item name="colorSurface">?colorPrimaryContainer</item>
+		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
+		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
 		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
-		<item name="colorSurface">@color/colorSurface</item>
+		<item name="colorPrimaryContainer">?android:colorBackground</item>
 	</style>
 
 

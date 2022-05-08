@@ -49,7 +49,7 @@
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:textAppearance="?textAppearanceTitleMedium"
-		android:textColor="@color/colorOnSecondaryContainer"
+		android:textColor="?colorOnSecondaryContainer"
 		app:layout_constrainedWidth="true"
 		app:layout_constraintBottom_toTopOf="@id/title"
 		app:layout_constraintEnd_toEndOf="parent"
