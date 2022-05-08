@@ -18,7 +18,7 @@
 	<color name="colorBackground">#fafafa</color>
 	<color name="colorOnBackground">@android:color/black</color>
 
-	<color name="colorSurface">#FBFBFB</color>
+	<color name="colorSurface">#F5F5F5</color>
 	<color name="colorOnSurface">@android:color/black</color>
 	<color name="colorSurfaceVariant">#E3E3E3</color>
 	<color name="colorOnSurfaceVariant">#5C5C5C</color>
