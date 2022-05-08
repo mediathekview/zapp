@@ -11,7 +11,6 @@ import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.tv.error.ErrorActivity
-import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 class PlayerFragment : VideoSupportFragment() {
