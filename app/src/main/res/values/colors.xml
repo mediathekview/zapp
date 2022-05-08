@@ -26,4 +26,7 @@
 	<color name="colorAccent">#ff5722</color>
 
 	<color name="black_overlay">#66000000</color>
+
+	<!-- Needed only for tv (as Material 3 does not use this color). But we need to define it here to avoid linter and runtime errors. -->
+	<color name="colorPrimaryDark">#810039</color>
 </resources>
