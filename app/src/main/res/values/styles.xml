@@ -39,7 +39,6 @@
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
-		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
 		<item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
 
 		<item name="actionBarSize">48dp</item>
@@ -61,6 +60,14 @@
 		<!-- to use toolbar instead of default action bar -->
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
+
+		<!-- avoid ui studder when showing/hiding navigation -->
+		<item name="android:windowTranslucentNavigation">true</item>
+
+		<!-- make all bars transparent -->
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+		<item name="android:statusBarColor">@android:color/transparent</item>
+		<item name="toolbarStyle">@style/Widget.App.Toolbar.Transparent</item>
 	</style>
 
 	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
@@ -87,6 +94,11 @@
 		<item name="subtitleCentered">true</item>
 	</style>
 
+	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Transparent</item>
+		<item name="android:background">@null</item>
+	</style>
+
 	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
 		<item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.App.Title.Icon
 		</item>
@@ -101,10 +113,6 @@
 	</style>
 
 	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary" />
-
-	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
-		<item name="indicatorColor">@color/color_on_surface_20_alpha</item>
-	</style>
 
 	<style name="Widget.App.CircularProgressIndicator.Small.Colorless" parent="Widget.Material3.CircularProgressIndicator.Small">
 		<item name="indicatorColor">?colorOnSurfaceVariant</item>
@@ -129,6 +137,12 @@
 		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
 		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
 		<item name="colorControlNormal">?colorOnPrimaryContainer</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Toolbar.Transparent" parent="">
+		<item name="colorOnSurface">@android:color/white</item>
+		<item name="colorOnSurfaceVariant">@android:color/white</item>
+		<item name="colorControlNormal">@android:color/white</item>
 	</style>
 
 	<style name="ThemeOverlay.App.BottomNavigationView" parent="">
