@@ -116,7 +116,7 @@
 
 	<style name="Widget.App.CircularProgressIndicator.Small.Colorless" parent="Widget.Material3.CircularProgressIndicator.Small">
 		<item name="indicatorColor">?colorOnSurfaceVariant</item>
-		<item name="trackColor">?colorOnSurfaceVariant</item>
+		<item name="trackColor">?colorSurfaceVariant</item>
 	</style>
 
 	<style name="Widget.App.CircularProgressIndicator.Small.OnSecondaryContainer" parent="Widget.Material3.CircularProgressIndicator.Small">
