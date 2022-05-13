@@ -255,6 +255,11 @@ abstract class AbstractPlayerActivity :
 
 	private fun resumeActivity() {
 		hideError()
+
+		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
+		windowInsetsControllerCompat.systemBarsBehavior =
+			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
 		bind(this, backgroundPlayerServiceConnection)
 	}
 
@@ -279,15 +284,9 @@ abstract class AbstractPlayerActivity :
 
 	private fun showSystemUi() {
 		supportActionBar?.show()
-
-		windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars())
 	}
 
 	private fun hideSystemUi() {
 		supportActionBar?.hide()
-
-		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
-		windowInsetsControllerCompat.systemBarsBehavior =
-			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 	}
 }

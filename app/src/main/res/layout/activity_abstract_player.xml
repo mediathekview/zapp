@@ -6,6 +6,7 @@
 	android:layout_height="match_parent"
 	android:animateLayoutChanges="true"
 	android:background="@android:color/black"
+	android:fitsSystemWindows="false"
 	tools:context=".app.mediathek.ui.detail.player.MediathekPlayerActivity">
 
 	<de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView
@@ -47,7 +48,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:animateLayoutChanges="true"
-		android:fitsSystemWindows="true">
+		android:fitsSystemWindows="false">
 
 		<com.google.android.material.appbar.MaterialToolbar
 			android:id="@+id/toolbar"
