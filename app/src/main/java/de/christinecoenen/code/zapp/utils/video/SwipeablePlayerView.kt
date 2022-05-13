@@ -14,10 +14,8 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.AspectRatioListener
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
-import de.christinecoenen.code.zapp.utils.view.ColorHelper
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -30,14 +28,12 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		private const val INDICATOR_WIDTH = 300
 	}
 
-	private val bufferingView: LinearProgressIndicator =
-		findViewById(com.google.android.exoplayer2.ui.R.id.exo_buffering)
-
 	private var volumeIndicator = SwipeIndicatorView(context)
 	private var brightnessIndicator = SwipeIndicatorView(context)
 
 	private var window: Window = (context as Activity).window
-	private var audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+	private var audioManager: AudioManager =
+		context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
 	private var settingsRepository: SettingsRepository
 	private var gestureDetector: GestureDetector
@@ -56,14 +52,22 @@ class SwipeablePlayerView @JvmOverloads constructor(
 	init {
 
 		volumeIndicator.setIconResId(R.drawable.ic_volume_up_white_24dp)
-		addView(volumeIndicator, LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END))
+		addView(
+			volumeIndicator,
+			LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END)
+		)
 
 		brightnessIndicator.setIconResId(R.drawable.ic_brightness_6_white_24dp)
-		addView(brightnessIndicator, LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START))
+		addView(
+			brightnessIndicator,
+			LayoutParams(INDICATOR_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START)
+		)
 
-		gestureDetector = GestureDetector(context.applicationContext, WipingControlGestureListener())
+		gestureDetector =
+			GestureDetector(context.applicationContext, WipingControlGestureListener())
 		gestureDetector.setIsLongpressEnabled(false)
-		scaleGestureDetector = ScaleGestureDetector(context.applicationContext, ScaleGestureListener())
+		scaleGestureDetector =
+			ScaleGestureDetector(context.applicationContext, ScaleGestureListener())
 
 		setOnTouchListener(this)
 		setAspectRatioListener(this)
@@ -85,13 +89,6 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		} else {
 			showController()
 		}
-	}
-
-	fun setPrimaryColor(color: Int) {
-		volumeIndicator.setColor(color)
-		brightnessIndicator.setColor(color)
-		bufferingView.setIndicatorColor(color)
-		bufferingView.trackColor = ColorHelper.darker(color, 0.7f)
 	}
 
 	override fun setPlayer(player: Player?) {
@@ -139,7 +136,11 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		settingsRepository.isPlayerZoomed = false
 	}
 
-	override fun onAspectRatioUpdated(targetAspectRatio: Float, naturalAspectRatio: Float, aspectRatioMismatch: Boolean) {
+	override fun onAspectRatioUpdated(
+		targetAspectRatio: Float,
+		naturalAspectRatio: Float,
+		aspectRatioMismatch: Boolean
+	) {
 		hasAspectRatioMismatch = aspectRatioMismatch
 	}
 
@@ -153,12 +154,14 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			if (detector.scaleFactor > 1) {
 				if (!isZoomStateCropped) {
 					setZoomStateCropped()
-					Toast.makeText(context, R.string.player_zoom_state_cropped, Toast.LENGTH_SHORT).show()
+					Toast.makeText(context, R.string.player_zoom_state_cropped, Toast.LENGTH_SHORT)
+						.show()
 				}
 			} else {
 				if (!isZoomStateBoxed) {
 					setZoomStateBoxed()
-					Toast.makeText(context, R.string.player_zoom_state_boxed, Toast.LENGTH_SHORT).show()
+					Toast.makeText(context, R.string.player_zoom_state_boxed, Toast.LENGTH_SHORT)
+						.show()
 				}
 			}
 		}
