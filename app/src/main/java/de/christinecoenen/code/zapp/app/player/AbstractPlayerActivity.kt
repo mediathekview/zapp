@@ -110,6 +110,7 @@ abstract class AbstractPlayerActivity :
 		}
 
 		requestedOrientation = viewModel.screenOrientation
+		binding.video.showController()
 	}
 
 	override fun onPause() {
