@@ -12,7 +12,7 @@
 		android:layout_height="wrap_content"
 		android:ellipsize="end"
 		android:lines="1"
-		android:textAppearance="?textAppearanceTitleLarge"
+		android:textAppearance="?textAppearanceTitleMedium"
 		tools:text="Some show topic" />
 
 	<com.google.android.material.textview.MaterialTextView
