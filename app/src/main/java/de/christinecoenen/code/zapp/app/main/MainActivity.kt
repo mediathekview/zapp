@@ -62,8 +62,6 @@ class MainActivity : AppCompatActivity() {
 		// hide toolbar logo for non main destinations
 		if (isMainDestination) {
 			binding.toolbar.setLogo(R.drawable.ic_zapp_tv_small)
-			binding.toolbar.titleMarginStart =
-				resources.getDimensionPixelSize(R.dimen.toolbar_logo_margin)
 		} else {
 			binding.toolbar.logo = null
 			binding.toolbar.titleMarginStart = 0
