@@ -57,7 +57,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerInParent="true"
-				android:contentDescription="@string/exo_controls_play_description"
+				android:contentDescription="@string/action_play"
 				android:src="@drawable/ic_play_arrow_white_24dp" />
 
 			<com.google.android.material.progressindicator.CircularProgressIndicator

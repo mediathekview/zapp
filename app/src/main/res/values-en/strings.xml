@@ -69,6 +69,7 @@
 
 
 	<!-- menus & buttons -->
+	<string name="action_play">Play</string>
 	<string name="action_share">Share</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
