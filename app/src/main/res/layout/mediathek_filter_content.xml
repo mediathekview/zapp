@@ -10,6 +10,7 @@
 
 	<com.google.android.material.textfield.TextInputLayout
 		android:id="@+id/textField"
+		style="?textInputFilledStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		app:endIconMode="clear_text"
@@ -34,7 +35,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+		android:textAppearance="?textAppearanceBodySmall"
 		tools:text="45 Suchergebnisse vom 45.03.2022, 14:50 Uhr" />
 
 	<com.google.android.material.textview.MaterialTextView
@@ -42,13 +43,15 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:text="@string/fragment_mediathek_channel" />
+		android:text="@string/fragment_mediathek_channel"
+		android:textAppearance="?textAppearanceLabelLarge" />
 
 	<com.google.android.material.chip.ChipGroup
 		android:id="@+id/channels"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
+		app:chipSpacingVertical="0dp"
 		app:selectionRequired="true">
 
 		<include
@@ -63,14 +66,15 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:text="@string/fragment_mediathek_duration" />
+		android:text="@string/fragment_mediathek_duration"
+		android:textAppearance="?textAppearanceLabelLarge" />
 
 	<com.google.android.material.slider.RangeSlider
 		android:id="@+id/show_length_slider"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_weight="5"
 		android:stepSize="5.0"
+		android:layout_marginHorizontal="8dp"
 		android:valueFrom="@fraction/mediathek_filter_min_duration"
 		android:valueTo="@fraction/mediathek_filter_max_duration"
 		app:labelBehavior="gone"
@@ -84,23 +88,23 @@
 
 		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/show_length_label_min"
-			style="@style/TextAppearance.MaterialComponents.Subtitle2"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:labelFor="@id/show_length_slider"
 			android:paddingHorizontal="@dimen/activity_horizontal_margin"
+			android:textAppearance="?textAppearanceLabelMedium"
 			tools:text="0m" />
 
 		<com.google.android.material.textview.MaterialTextView
 			android:id="@+id/show_length_label_max"
-			style="@style/TextAppearance.MaterialComponents.Subtitle2"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:gravity="end"
 			android:labelFor="@id/show_length_slider"
 			android:paddingHorizontal="@dimen/activity_horizontal_margin"
+			android:textAppearance="?textAppearanceLabelMedium"
 			tools:text="∞" />
 
 	</androidx.appcompat.widget.LinearLayoutCompat>

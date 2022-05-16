@@ -1,6 +1,9 @@
 # v-next
 * Offizielle Unterstützung für Android TV!
+* Neues Material 3 Design
 * Android-Backup-Unterstützung für Einstellungen und Datenbankeinträge
+* Kategorie-Icons heben sich im hellen Design vom Hintergrund ab
+* Verbesserter Vollbild-Modus für Videos
 
 # 6.1.0
 * Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden

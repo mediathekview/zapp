@@ -21,6 +21,7 @@
 			android:orientation="vertical">
 
 			<com.google.android.material.card.MaterialCardView
+				style="?materialCardViewElevatedStyle"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="@dimen/activity_vertical_margin">
@@ -41,17 +42,13 @@
 						android:paddingEnd="@dimen/activity_horizontal_margin"
 						android:paddingBottom="70dp" />
 
-					<TextView
+					<com.google.android.material.chip.Chip
 						android:id="@+id/subtitle"
-						style="@style/TextAppearance.AppCompat.Small"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginTop="@dimen/activity_vertical_margin"
-						android:background="@color/colorAccent"
-						android:paddingStart="4dp"
-						android:paddingEnd="4dp"
-						android:text="@string/fragment_mediathek_batch_subtitle"
-						android:textColor="@android:color/primary_text_dark" />
+						android:enabled="false"
+						android:text="@string/fragment_mediathek_batch_subtitle" />
 
 				</LinearLayout>
 
@@ -72,56 +69,56 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@color/colorPrimary"
+				android:background="@color/colorPrimaryContainer"
 				android:baselineAligned="false"
 				android:orientation="vertical"
 				android:padding="@dimen/activity_vertical_margin">
 
-				<TextView
-					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+				<com.google.android.material.textview.MaterialTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/fragment_mediathek_duration"
-					android:textColor="@color/text_alwayslight_secondary" />
+					android:textAppearance="?textAppearanceLabelMedium"
+					android:textColor="?colorOnPrimaryContainer" />
 
-				<TextView
+				<com.google.android.material.textview.MaterialTextView
 					android:id="@+id/duration"
-					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/text_alwayslight_primary"
+					android:textAppearance="?textAppearanceBodyMedium"
+					android:textColor="?colorOnPrimaryContainer"
 					tools:text="120 min" />
 
-				<TextView
-					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+				<com.google.android.material.textview.MaterialTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="@dimen/activity_vertical_margin"
 					android:text="@string/fragment_mediathek_channel"
-					android:textColor="@color/text_alwayslight_secondary" />
+					android:textAppearance="?textAppearanceLabelMedium"
+					android:textColor="?colorOnPrimaryContainer" />
 
-				<TextView
+				<com.google.android.material.textview.MaterialTextView
 					android:id="@+id/channel"
-					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/text_alwayslight_primary"
+					android:textAppearance="?textAppearanceBodyMedium"
+					android:textColor="?colorOnPrimaryContainer"
 					tools:text="ARTE.DE" />
 
-				<TextView
-					style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+				<com.google.android.material.textview.MaterialTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="@dimen/activity_vertical_margin"
 					android:text="@string/fragment_mediathek_time"
-					android:textColor="@color/text_alwayslight_secondary" />
+					android:textAppearance="?textAppearanceLabelMedium"
+					android:textColor="?colorOnPrimaryContainer" />
 
-				<TextView
+				<com.google.android.material.textview.MaterialTextView
 					android:id="@+id/time"
-					style="@style/TextAppearance.AppCompat.Inverse"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/text_alwayslight_primary"
+					android:textAppearance="?textAppearanceBodyMedium"
+					android:textColor="?colorOnPrimaryContainer"
 					tools:text="vor 2 Tagen" />
 
 			</LinearLayout>
@@ -130,33 +127,32 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="start|bottom"
+				android:layout_marginStart="-6dp"
 				android:layout_marginTop="10dp"
 				android:layout_marginEnd="@dimen/activity_horizontal_margin"
-				android:layout_marginStart="-6dp"
 				android:clipToPadding="false"
 				android:elevation="1dp"
 				android:padding="6dp">
-
-				<ProgressBar
-					android:id="@+id/viewingProgress"
-					style="?android:attr/progressBarStyleHorizontal"
-					android:layout_width="62dp"
-					android:layout_height="62dp"
-					android:layout_centerInParent="true"
-					android:elevation="8dp"
-					android:max="100"
-					android:progress="0"
-					android:progressDrawable="@drawable/circular"
-					android:rotation="-90"
-					tools:progress="40" />
 
 				<com.google.android.material.floatingactionbutton.FloatingActionButton
 					android:id="@+id/play"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_centerInParent="true"
-					android:contentDescription="@string/exo_controls_play_description"
+					android:contentDescription="@string/action_play"
 					android:src="@drawable/ic_play_arrow_white_24dp" />
+
+				<com.google.android.material.progressindicator.CircularProgressIndicator
+					android:id="@+id/viewingProgress"
+					style="@style/Widget.App.CircularProgressIndicator.Small.OnSecondaryContainer"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:elevation="20dp"
+					android:max="100"
+					android:progress="0"
+					android:rotation="-90"
+					tools:progress="40" />
 
 			</RelativeLayout>
 

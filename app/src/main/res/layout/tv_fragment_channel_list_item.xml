@@ -87,7 +87,6 @@
 		android:layout_marginTop="4dp"
 		android:indeterminate="false"
 		android:max="1000"
-		android:theme="@style/ShowProgress"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="@id/text_show_title"
 		app:layout_constraintStart_toStartOf="@id/text_show_title"

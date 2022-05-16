@@ -31,11 +31,6 @@ class SwipeIndicatorView @JvmOverloads constructor(
 		visibility = VISIBLE
 	}
 
-	fun setColor(color: Int) {
-		setBackgroundColor(color)
-		binding.indicator.setBackgroundColor(color)
-	}
-
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 

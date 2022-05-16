@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="colorPrimary">#e1007a</color>
-	<color name="colorPrimaryDark">#b00050</color>
-	<color name="colorAccent">#ff5722</color>
-	<color name="colorSurface">#ffffff</color>
+	<color name="colorOnPrimary">@android:color/white</color>
+	<color name="colorPrimaryContainer">#b00050</color>
+	<color name="colorOnPrimaryContainer">#FFE6F3</color>
+
+	<color name="colorSecondary">@color/colorAccent</color>
+	<color name="colorOnSecondary">@android:color/white</color>
+	<color name="colorSecondaryContainer">@color/colorAccent</color>
+	<color name="colorOnSecondaryContainer">#FFF4F1</color>
+
+	<color name="colorTertiary">#0000ff</color>
+	<color name="colorOnTertiary">@android:color/white</color>
+	<color name="colorTertiaryContainer">#0000ff</color>
+	<color name="colorOnTertiaryContainer">@android:color/white</color>
+
 	<color name="colorBackground">#fafafa</color>
+	<color name="colorOnBackground">@android:color/black</color>
+
+	<color name="colorSurface">#F5F5F5</color>
+	<color name="colorOnSurface">@android:color/black</color>
+	<color name="colorSurfaceVariant">#E3E3E3</color>
+	<color name="colorOnSurfaceVariant">#5C5C5C</color>
 
 	<color name="black_overlay">#66000000</color>
 
-	<color name="text_alwayslight_primary">#ffffff</color>
-	<color name="text_alwayslight_secondary">#CBFFFFFF</color>
+	<!-- Needed only for tv (as Material 3 does not use this color). But we need to define it here to avoid linter and runtime errors. -->
+	<color name="colorAccent">#ff5722</color>
+	<color name="colorPrimaryDark">#810039</color>
 </resources>

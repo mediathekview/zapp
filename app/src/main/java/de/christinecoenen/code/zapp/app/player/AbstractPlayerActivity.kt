@@ -23,7 +23,6 @@ import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -111,6 +110,7 @@ abstract class AbstractPlayerActivity :
 		}
 
 		requestedOrientation = viewModel.screenOrientation
+		binding.video.showController()
 	}
 
 	override fun onPause() {
@@ -255,6 +255,11 @@ abstract class AbstractPlayerActivity :
 
 	private fun resumeActivity() {
 		hideError()
+
+		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
+		windowInsetsControllerCompat.systemBarsBehavior =
+			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
 		bind(this, backgroundPlayerServiceConnection)
 	}
 
@@ -279,15 +284,9 @@ abstract class AbstractPlayerActivity :
 
 	private fun showSystemUi() {
 		supportActionBar?.show()
-
-		windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars())
 	}
 
 	private fun hideSystemUi() {
 		supportActionBar?.hide()
-
-		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
-		windowInsetsControllerCompat.systemBarsBehavior =
-			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 	}
 }

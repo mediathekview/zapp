@@ -1,30 +1,53 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-		<!-- Customize your theme here. -->
+	<style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
+
 		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorOnPrimary">@android:color/white</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorSecondary">@color/colorAccent</item>
-		<item name="colorOnSecondary">@android:color/white</item>
-		<item name="colorAccent">@color/colorAccent</item>
+		<item name="colorOnPrimary">@color/colorOnPrimary</item>
+		<item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
+
+		<item name="colorPrimarySurface">@color/colorPrimary</item>
+		<item name="colorOnPrimarySurface">@android:color/white</item>
+
+		<item name="colorSecondary">@color/colorSecondary</item>
+		<item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+		<item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
+
+		<item name="colorTertiary">@color/colorTertiary</item>
+		<item name="colorOnTertiary">@color/colorOnTertiary</item>
+		<item name="colorTertiaryContainer">@color/colorTertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
+
+		<item name="background">@color/colorBackground</item>
+		<item name="colorOnBackground">@color/colorOnBackground</item>
+
 		<item name="colorSurface">@color/colorSurface</item>
-		<item name="android:colorBackground">@color/colorBackground</item>
+		<item name="colorOnSurface">@color/colorOnSurface</item>
+		<item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
 
-		<item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+		<item name="strokeColor">?colorPrimary</item>
 
+		<!-- for old school material dialogs (e.g. in settings) -->
 		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
 
-		<item name="toolbarStyle">@style/ToolbarStyle</item>
-		<item name="actionBarSize">48dp</item>
-		<item name="appBarLayoutStyle">@style/AppBarStyle</item>
-		<item name="bottomNavigationStyle">@style/BottomNavigationViewStyle</item>
-		<item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
-		<item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
-		<item name="chipStyle">@style/Widget.App.Chip</item>
+		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+		<item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
 
+		<item name="actionBarSize">48dp</item>
 		<item name="android:textAllCaps">false</item>
+		<item name="android:statusBarColor">?colorPrimaryContainer</item>
+
+		<item name="android:letterSpacing">0.02</item>
+		<item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
+		<item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
 	</style>
 
 	<style name="FullscreenTheme" parent="AppTheme">
@@ -37,30 +60,24 @@
 		<!-- to use toolbar instead of default action bar -->
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
+
+		<!-- avoid ui studder when showing/hiding navigation -->
+		<item name="android:windowTranslucentNavigation">true</item>
+
+		<!-- make all bars transparent -->
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+		<item name="android:windowTranslucentStatus">true</item>
+		<item name="toolbarStyle">@style/Widget.App.Toolbar.Transparent</item>
+	</style>
+
+	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+		<item name="android:colorBackground">?colorSurface</item>
 	</style>
 
 	<style name="AppTheme.NoActionBar">
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
-	</style>
-
-	<style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-		<item name="android:colorBackground">@color/colorSurface</item>
-	</style>
-
-	<style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-		<item name="android:minHeight">56dp</item>
-		<item name="iconPadding">-24dp</item>
-	</style>
-
-	<style name="ColorlessOutlinedButton" parent="OutlinedButton">
-		<item name="iconTint">?android:textColorTertiary</item>
-		<item name="android:textColor">?android:textColorTertiary</item>
-	</style>
-
-	<style name="OverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
-		<item name="android:tint">?attr/colorOnPrimary</item>
 	</style>
 
 	<style name="TextDividerStyle" parent="Widget.MaterialComponents.TextView">
@@ -70,51 +87,88 @@
 		<item name="android:text">|</item>
 	</style>
 
-	<style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
-		<item name="subtitleTextColor">@android:color/white</item>
+	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
+		<item name="titleCentered">true</item>
+		<item name="subtitleCentered">true</item>
 	</style>
 
-	<style name="AppBarStyle" parent="Widget.MaterialComponents.AppBarLayout.Primary" />
-
-	<style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">
-		<item name="chipBackgroundColor">@color/chip_background</item>
-		<item name="android:textColor">@color/chip_text</item>
-		<item name="shapeAppearanceOverlay">@null</item>
+	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Transparent</item>
+		<item name="android:background">@null</item>
 	</style>
 
-	<style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
-		<item name="android:background">?attr/colorPrimaryDark</item>
+	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+		<item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.App.Title.Icon
+		</item>
 	</style>
 
-	<style name="BottomNavigationTextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">
-		<item name="android:textSize">10sp</item>
+	<style name="MaterialAlertDialog.App.Title.Icon" parent="MaterialAlertDialog.Material3.Title.Icon">
+		<item name="tint">?colorOnSurface</item>
 	</style>
 
-	<style name="ShowProgress" parent="Theme.MaterialComponents.DayNight">
-		<item name="colorAccent">@android:color/darker_gray</item>
+	<style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
 	</style>
 
-	<style name="ShowProgressDetail" parent="Widget.MaterialComponents.LinearProgressIndicator">
-		<item name="materialThemeOverlay">@style/ThemeOverlay.ShowProgressDetail</item>
+	<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary" />
+
+	<style name="Widget.App.CircularProgressIndicator.Small.Colorless" parent="Widget.Material3.CircularProgressIndicator.Small">
+		<item name="indicatorColor">?colorOnSurfaceVariant</item>
+		<item name="trackColor">?colorSurfaceVariant</item>
 	</style>
 
-	<style name="ThemeOverlay.ShowProgressDetail" parent="">
-		<item name="colorPrimary">?attr/colorOnSurface</item>
+	<style name="Widget.App.CircularProgressIndicator.Small.OnSecondaryContainer" parent="Widget.Material3.CircularProgressIndicator.Small">
+		<item name="indicatorColor">@color/color_on_secondary_container_70_alpha</item>
+		<item name="trackColor">@color/color_on_secondary_container_20_alpha</item>
 	</style>
 
-	<style name="ThemeOverlay.App.Toolbar" parent="AppTheme">
+	<style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.OutlinedButton</item>
+	</style>
+
+	<style name="ThemeOverlay.App.OutlinedButton" parent="ThemeOverlay.Material3.Button.TextButton">
+		<item name="colorPrimary">?colorOnSurfaceVariant</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Toolbar" parent="">
+		<item name="colorSurface">?colorPrimaryContainer</item>
+		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
+		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
+		<item name="colorControlNormal">?colorOnPrimaryContainer</item>
+	</style>
+
+	<style name="ThemeOverlay.App.Toolbar.Transparent" parent="">
+		<item name="colorOnSurface">@android:color/white</item>
+		<item name="colorOnSurfaceVariant">@android:color/white</item>
 		<item name="colorControlNormal">@android:color/white</item>
 	</style>
 
-	<style name="ChrashDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
-		<item name="android:windowNoTitle">false</item>
-		<item name="android:windowIsFloating">true</item>
+	<style name="ThemeOverlay.App.BottomNavigationView" parent="">
+		<item name="colorSurface">?colorPrimaryContainer</item>
+		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
+		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
+		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>
 	</style>
 
-	<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-		<item name="cornerFamily">rounded</item>
-		<item name="cornerSize">8dp</item>
+	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
+		<item name="colorPrimaryContainer">?android:colorBackground</item>
+	</style>
+
+
+	<!-- text styles -->
+
+	<style name="TextAppearance.App.TitleLarge.Base" parent="TextAppearance.Material3.TitleLarge">
+		<item name="android:textSize">18sp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="lineHeight">24sp</item>
+	</style>
+
+	<style name="TextAppearance.App.TitleLarge" parent="TextAppearance.App.TitleLarge.Base" />
+
+	<style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+		<item name="android:textSize">16sp</item>
 	</style>
 
 </resources>

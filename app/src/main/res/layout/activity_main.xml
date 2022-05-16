@@ -25,7 +25,7 @@
 			<com.google.android.material.appbar.MaterialToolbar
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
-				android:layout_height="?attr/actionBarSize"
+				android:layout_height="?actionBarSize"
 				app:logo="@drawable/ic_zapp_tv_small" />
 
 		</com.google.android.material.appbar.AppBarLayout>
@@ -47,8 +47,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_gravity="bottom"
-		app:itemTextAppearanceActive="@style/BottomNavigationTextAppearance"
-		app:itemTextAppearanceInactive="@style/BottomNavigationTextAppearance"
 		app:menu="@menu/activity_main_bottom_nav" />
 
 </RelativeLayout>

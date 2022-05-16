@@ -1,120 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?android:attr/selectableItemBackground"
 	android:clickable="true"
 	android:focusable="true"
-	android:orientation="horizontal"
-	android:paddingTop="8dp"
-	android:paddingBottom="8dp"
-	android:textAppearance="?attr/textAppearanceListItem">
+	android:foreground="?selectableItemBackground"
+	android:paddingVertical="10dp"
+	android:visibility="gone"
+	tools:ignore="UnusedAttribute"
+	tools:visibility="visible">
 
-	<RelativeLayout
-		android:id="@+id/image_holder"
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/thumbnail"
 		android:layout_width="80dp"
-		android:layout_height="match_parent"
+		android:layout_height="0dp"
 		android:layout_marginEnd="4dp"
+		android:background="?colorSurface"
+		android:scaleType="centerCrop"
 		android:visibility="gone"
-		tools:visibility="visible">
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/topic"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
-		<androidx.appcompat.widget.AppCompatImageView
-			android:id="@+id/thumbnail"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scaleType="centerCrop" />
+	<View
+		android:id="@+id/viewing_progress"
+		android:layout_width="0dp"
+		android:layout_height="4dp"
+		android:background="?colorSecondary"
+		android:scaleX="0"
+		android:transformPivotX="0dp"
+		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+		app:layout_constraintEnd_toEndOf="@id/thumbnail"
+		app:layout_constraintStart_toStartOf="@id/thumbnail" />
 
-		<View
-			android:id="@+id/progress"
-			android:layout_width="match_parent"
-			android:layout_height="4dp"
-			android:layout_alignParentBottom="true"
-			android:background="?attr/colorSecondary"
-			android:transformPivotX="0dp" />
-
-	</RelativeLayout>
-
-	<androidx.appcompat.widget.LinearLayoutCompat
-		android:layout_width="match_parent"
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/topic"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:orientation="vertical">
+		android:background="?colorSecondaryContainer"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:textAppearance="?textAppearanceTitleMedium"
+		android:textColor="?colorOnSecondaryContainer"
+		app:layout_constrainedWidth="true"
+		app:layout_constraintBottom_toTopOf="@id/title"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/thumbnail"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
 
-		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/topic"
-			style="@style/TextAppearance.MaterialComponents.Body1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
-			android:background="?attr/colorSecondary"
-			android:ellipsize="end"
-			android:maxLines="1"
-			android:paddingStart="@dimen/activity_horizontal_margin"
-			android:paddingEnd="@dimen/activity_horizontal_margin"
-			android:textColor="?attr/colorOnSecondary"
-			tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/title"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginVertical="4dp"
+		android:ellipsize="end"
+		android:maxLines="2"
+		android:paddingHorizontal="@dimen/activity_horizontal_margin"
+		android:textAppearance="?textAppearanceTitleLarge"
+		app:layout_constraintBottom_toTopOf="@id/duration"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="@id/topic"
+		app:layout_constraintTop_toBottomOf="@id/topic"
+		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
 
-		<com.google.android.material.textview.MaterialTextView
-			android:id="@+id/title"
-			style="@style/TextAppearance.MaterialComponents.Headline6"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
-			android:ellipsize="end"
-			android:maxLines="2"
-			android:paddingStart="@dimen/activity_horizontal_margin"
-			android:paddingEnd="@dimen/activity_horizontal_margin"
-			tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/duration"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		android:textAppearance="?textAppearanceBodyMedium"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/channel_divider"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintStart_toStartOf="@id/topic"
+		app:layout_constraintTop_toBottomOf="@id/title"
+		tools:text="58:59 Minuten" />
 
-		<androidx.appcompat.widget.LinearLayoutCompat
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:paddingStart="@dimen/activity_horizontal_margin"
-			android:paddingEnd="@dimen/activity_horizontal_margin">
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/channel_divider"
+		style="@style/TextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/channel"
+		app:layout_constraintStart_toEndOf="@id/duration"
+		app:layout_constraintTop_toTopOf="@id/duration" />
 
-			<com.google.android.material.textview.MaterialTextView
-				android:id="@+id/duration"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				tools:text="58:59 Minuten" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/channel"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?textAppearanceBodyMedium"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/time_divider"
+		app:layout_constraintStart_toEndOf="@id/channel_divider"
+		app:layout_constraintTop_toTopOf="@id/duration"
+		tools:text="ZDF-tivi" />
 
-			<com.google.android.material.textview.MaterialTextView
-				style="@style/TextDividerStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/time_divider"
+		style="@style/TextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/time"
+		app:layout_constraintStart_toEndOf="@id/channel"
+		app:layout_constraintTop_toTopOf="@id/duration" />
 
-			<com.google.android.material.textview.MaterialTextView
-				android:id="@+id/channel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				tools:text="ZDF-tivi" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/time"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?textAppearanceBodyMedium"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/subtitle_divider"
+		app:layout_constraintStart_toEndOf="@id/time_divider"
+		app:layout_constraintTop_toTopOf="@id/duration"
+		tools:text="vor 29 Minuten" />
 
-			<com.google.android.material.textview.MaterialTextView
-				style="@style/TextDividerStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/subtitle_divider"
+		style="@style/TextDividerStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toStartOf="@id/subtitle"
+		app:layout_constraintStart_toEndOf="@id/time"
+		app:layout_constraintTop_toTopOf="@id/duration" />
 
-			<com.google.android.material.textview.MaterialTextView
-				android:id="@+id/time"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				tools:text="vor 29 Minuten" />
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/subtitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/fragment_mediathek_batch_subtitle"
+		android:textAppearance="?textAppearanceBodyMedium"
+		app:layout_constraintBottom_toBottomOf="@id/duration"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/subtitle_divider"
+		app:layout_constraintTop_toTopOf="@id/duration" />
 
-			<com.google.android.material.textview.MaterialTextView
-				android:id="@+id/subtitle_divider"
-				style="@style/TextDividerStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" />
-
-			<com.google.android.material.textview.MaterialTextView
-				android:id="@+id/subtitle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/fragment_mediathek_batch_subtitle" />
-
-		</androidx.appcompat.widget.LinearLayoutCompat>
-
-	</androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 
 import android.animation.ObjectAnimator
 import android.graphics.Bitmap
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.view.isVisible
@@ -31,6 +32,8 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		show: PersistedMediathekShow,
 		showFlow: Flow<PersistedMediathekShow>
 	) {
+		binding.root.visibility = View.GONE
+
 		loadThumbnailJob?.cancel()
 		downloadProgressJob?.cancel()
 		downloadStatusJob?.cancel()
@@ -41,6 +44,8 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.duration.text = show.mediathekShow.formattedDuration
 		binding.channel.text = show.mediathekShow.channel
 		binding.time.text = show.mediathekShow.formattedTimestamp
+		
+		binding.root.visibility = View.VISIBLE
 
 		coroutineScope {
 

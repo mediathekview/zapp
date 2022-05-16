@@ -6,21 +6,23 @@
 	android:orientation="vertical"
 	tools:showIn="@layout/mediathek_detail_fragment">
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/topic"
-		style="@style/Base.TextAppearance.AppCompat.Medium"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:ellipsize="end"
 		android:lines="1"
+		android:textAppearance="?textAppearanceTitleMedium"
 		tools:text="Some show topic" />
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
-		style="@style/Base.TextAppearance.AppCompat.Headline"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
 		android:layout_marginBottom="@dimen/activity_vertical_margin"
+		android:hyphenationFrequency="full"
+		android:textAppearance="?textAppearanceHeadlineSmall"
 		tools:text="Some show title" />
 
 	<androidx.appcompat.widget.AppCompatImageView
@@ -33,11 +35,12 @@
 		tools:src="@color/colorAccent"
 		tools:visibility="visible" />
 
-	<TextView
+	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/description"
-		style="@style/Base.TextAppearance.AppCompat.Body1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:hyphenationFrequency="full"
+		android:textAppearance="?textAppearanceBodyMedium"
 		tools:text="Some show desciption" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

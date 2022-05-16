@@ -11,7 +11,6 @@ import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper
-import de.christinecoenen.code.zapp.utils.view.ColorHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChannelPlayerActivity : AbstractPlayerActivity() {
@@ -79,20 +78,11 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 
 	private fun onChannelLoaded(channel: ChannelModel) {
 		title = channel.name
-		setColor(channel.color)
 	}
 
 	private fun onShowTitleChanged(sshowTitle: String) {
 		supportActionBar?.let {
 			it.subtitle = sshowTitle
 		}
-	}
-
-	private fun setColor(color: Int) {
-		binding.toolbar.setBackgroundColor(color)
-		binding.error.setBackgroundColor(color)
-		binding.video.setPrimaryColor(color)
-
-		window.statusBarColor = ColorHelper.darker(color, 0.075f)
 	}
 }

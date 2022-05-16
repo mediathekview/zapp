@@ -9,7 +9,7 @@
 
 	<com.google.android.material.progressindicator.CircularProgressIndicator
 		android:id="@+id/progress"
-		style="@style/Widget.MaterialComponents.CircularProgressIndicator"
+		style="@style/Widget.Material3.CircularProgressIndicator.Small"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:indeterminate="true"
@@ -23,13 +23,13 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+		android:textColor="?colorError"
 		app:layout_constraintBottom_toTopOf="@id/retry_button"
 		app:layout_constraintTop_toTopOf="parent"
 		tools:text="@string/error_mediathek_info_not_available" />
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/retry_button"
-		style="@style/ColorlessOutlinedButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="8dp"

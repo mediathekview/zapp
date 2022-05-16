@@ -9,8 +9,11 @@ import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -25,12 +28,14 @@ class MediathekItemViewHolder(
 	private var playbackPositionJob: Job? = null
 
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
+		binding.root.visibility = View.GONE
+
 		thumbnailJob?.cancel()
 		playbackPositionJob?.cancel()
 
-		binding.imageHolder.visibility = View.GONE
 		binding.thumbnail.setImageBitmap(null)
-		binding.progress.scaleX = 0f
+		binding.thumbnail.visibility = View.GONE
+		binding.viewingProgress.scaleX = 0f
 		binding.title.text = show.title
 		binding.topic.text = show.topic
 		binding.duration.text = show.formattedDuration
@@ -39,10 +44,10 @@ class MediathekItemViewHolder(
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.subtitleDivider.isVisible = show.hasSubtitle
 
-		coroutineScope {
-			thumbnailJob = launch { loadThumbnailFlow(show) }
-			thumbnailJob = launch { updatePlaybackPositionFlow(show) }
-		}
+		binding.root.visibility = View.VISIBLE
+
+		thumbnailJob = launch { loadThumbnailFlow(show) }
+		thumbnailJob = launch { updatePlaybackPositionFlow(show) }
 	}
 
 	private suspend fun loadThumbnailFlow(show: MediathekShow) {
@@ -65,11 +70,11 @@ class MediathekItemViewHolder(
 	}
 
 	private fun updatePlaybackPosition(progressPercent: Float) {
-		binding.progress.scaleX = progressPercent
+		binding.viewingProgress.scaleX = progressPercent
 	}
 
 	private fun updatethumbnail(thumbnail: Bitmap) {
 		binding.thumbnail.setImageBitmap(thumbnail)
-		binding.imageHolder.visibility = View.VISIBLE
+		binding.thumbnail.visibility = View.VISIBLE
 	}
 }

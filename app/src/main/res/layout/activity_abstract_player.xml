@@ -6,6 +6,7 @@
 	android:layout_height="match_parent"
 	android:animateLayoutChanges="true"
 	android:background="@android:color/black"
+	android:fitsSystemWindows="false"
 	tools:context=".app.mediathek.ui.detail.player.MediathekPlayerActivity">
 
 	<de.christinecoenen.code.zapp.utils.video.SwipeablePlayerView
@@ -15,45 +16,44 @@
 		android:layout_gravity="center"
 		android:animateLayoutChanges="true"
 		app:auto_show="true"
-		app:show_timeout="@integer/player_controller_show_timeout_millis"
 		app:hide_on_touch="true"
 		app:show_buffering="always"
 		app:show_next_button="false"
 		app:show_previous_button="false"
 		app:show_shuffle_button="false"
-		app:show_subtitle_button="true" />
+		app:show_subtitle_button="true"
+		app:show_timeout="@integer/player_controller_show_timeout_millis" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/error"
-		style="@style/TextAppearance.AppCompat.Body1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
-		android:background="@color/colorPrimary"
+		android:background="?colorErrorContainer"
 		android:drawableEnd="@drawable/ic_refresh_white_24dp"
 		android:drawablePadding="@dimen/activity_horizontal_margin"
+		android:drawableTint="?colorOnErrorContainer"
 		android:gravity="center"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingTop="@dimen/activity_vertical_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
 		android:paddingBottom="@dimen/activity_vertical_margin"
-		android:textColor="@color/text_alwayslight_primary"
+		android:textAppearance="?textAppearanceBodyMedium"
+		android:textColor="?colorOnErrorContainer"
 		android:visibility="gone"
 		tools:text="@string/error_stream_io"
-		tools:visibility="gone" />
+		tools:visibility="visible" />
 
 	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:animateLayoutChanges="true"
-		android:fitsSystemWindows="true">
+		android:fitsSystemWindows="false">
 
 		<com.google.android.material.appbar.MaterialToolbar
 			android:id="@+id/toolbar"
-			style="@style/ToolbarStyle"
 			android:layout_width="match_parent"
-			android:layout_height="56dp"
-			android:background="@color/colorPrimary" />
+			android:layout_height="56dp" />
 
 	</FrameLayout>
 

@@ -52,6 +52,7 @@ class MediathekDetailFragment : Fragment() {
 		savedInstanceState: Bundle?
 	): View {
 		_binding = MediathekDetailFragmentBinding.inflate(inflater, container, false)
+		binding.root.isVisible = false
 
 		lifecycleScope.launchWhenCreated {
 			val persistedShow = mediathekRepository
@@ -111,6 +112,8 @@ class MediathekDetailFragment : Fragment() {
 		binding.duration.text = show.formattedDuration
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
+
+		binding.root.isVisible = true
 
 		lifecycleScope.launchWhenCreated {
 			downloadController
