@@ -12,6 +12,7 @@
 		android:layout_height="match_parent"
 		android:gravity="center"
 		android:orientation="vertical"
+		android:paddingHorizontal="@dimen/activity_horizontal_margin"
 		android:visibility="gone"
 		tools:ignore="UseCompoundDrawables"
 		tools:visibility="visible">
