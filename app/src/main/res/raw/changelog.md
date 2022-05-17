@@ -1,4 +1,4 @@
-# v-next
+# 7.0.0 - Beta
 * Offizielle Unterstützung für Android TV!
 * Neues Material 3 Design
 * Android-Backup-Unterstützung für Einstellungen und Datenbankeinträge
