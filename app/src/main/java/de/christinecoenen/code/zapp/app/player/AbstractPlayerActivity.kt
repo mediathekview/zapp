@@ -110,7 +110,6 @@ abstract class AbstractPlayerActivity :
 		}
 
 		requestedOrientation = viewModel.screenOrientation
-		binding.video.showController()
 	}
 
 	override fun onPause() {
@@ -265,6 +264,12 @@ abstract class AbstractPlayerActivity :
 
 	private fun handlePictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
 		binding.video.useController = !isInPictureInPictureMode
+
+		if (!isInPictureInPictureMode) {
+			binding.video.showController()
+		} else {
+			hideSystemUi()
+		}
 	}
 
 	private fun showError(messageResId: Int) {

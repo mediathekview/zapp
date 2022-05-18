@@ -1,3 +1,6 @@
+# vNext
+* Player-UI versteckt sich korrekt automatisch, wenn man aus dem Hintergrund-Playback kommt
+
 # 7.0.0 - Beta
 * Offizielle Unterstützung für Android TV!
 * Neues Material 3 Design
