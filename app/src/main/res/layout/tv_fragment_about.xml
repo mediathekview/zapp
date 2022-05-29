@@ -18,21 +18,21 @@
 		app:layout_constraintVertical_chainStyle="packed"
 		tools:listitem="@layout/tv_about_item" />
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<ImageView
 		android:id="@+id/app_icon"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
+		android:alpha="0.05"
+		android:contentDescription="@null"
 		android:padding="64dp"
+		android:src="@drawable/ic_zapp_tv"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintHorizontal_bias="0"
 		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintWidth_percent="0.5"
-		app:shapeAppearance="@drawable/circular"
-		app:srcCompat="@drawable/ic_zapp_tv"
-		app:tint="@color/colorSurface" />
+		app:layout_constraintWidth_percent="0.5" />
 
 	<TextView
 		android:id="@+id/app_description"

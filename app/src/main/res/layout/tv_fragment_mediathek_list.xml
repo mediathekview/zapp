@@ -52,7 +52,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:background="@color/tv_card_foreground_color"
+			android:background="?android:attr/selectableItemBackground"
 			android:contentDescription="@string/delete_search_query_content_description"
 			android:padding="8dp"
 			android:src="@drawable/ic_baseline_close_24" />
@@ -64,7 +64,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
 		android:layout_marginStart="8dp"
-		android:background="@color/tv_card_foreground_color"
+		android:background="?android:attr/selectableItemBackground"
 		android:contentDescription="@string/menu_refresh"
 		android:paddingHorizontal="16dp"
 		android:src="@drawable/ic_refresh_white_24dp"
@@ -117,7 +117,7 @@
 			android:focusable="false"
 			android:src="@drawable/ic_sad_tv" />
 
-		<androidx.appcompat.widget.AppCompatTextView
+		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/lb_error_under_image_baseline_margin"
@@ -151,7 +151,7 @@
 			android:focusable="false"
 			android:src="@drawable/ic_warning_white_24dp" />
 
-		<androidx.appcompat.widget.AppCompatTextView
+		<TextView
 			android:id="@+id/error_message"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

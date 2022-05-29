@@ -24,7 +24,7 @@
 
 	<style name="TvCardStyle">
 		<item name="android:background">?colorSurface</item>
-		<item name="android:foreground">@color/tv_card_foreground_color</item>
+		<item name="android:foreground">?android:attr/selectableItemBackground</item>
 		<item name="android:focusable">true</item>
 		<item name="android:focusableInTouchMode">true</item>
 	</style>
