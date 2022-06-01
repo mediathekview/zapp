@@ -7,19 +7,21 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER
 import com.tonyodev.fetch2.util.DEFAULT_NOTIFICATION_TIMEOUT_AFTER_RESET
 import com.tonyodev.fetch2.util.onDownloadNotificationActionTriggered
 import de.christinecoenen.code.zapp.app.ZappApplication
-import de.christinecoenen.code.zapp.app.mediathek.controller.DownloadReceiver
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 const val ACTION_TYPE_REPORT_ERROR = 42
 
@@ -486,16 +488,19 @@ abstract class ZappNotificationManager(
 
 	private fun getContentIntent(downloadNotification: DownloadNotification): PendingIntent {
 		synchronized(downloadNotificationsMap) {
-			val intent = DownloadReceiver.getNotificationClickedIntent(
-				context,
-				downloadNotification.notificationId
-			)
-			return PendingIntent.getBroadcast(
-				context,
-				downloadNotification.notificationId,
-				intent,
-				getPendingIntentFlags()
-			)
+			return runBlocking {
+				val persistedShow = mediathekRepository
+					.getPersistedShowByDownloadId(downloadNotification.notificationId)
+					.first()
+
+				return@runBlocking NavDeepLinkBuilder(context)
+					.setGraph(de.christinecoenen.code.zapp.R.navigation.nav_graph)
+					.setDestination(de.christinecoenen.code.zapp.R.id.mediathekDetailFragment)
+					.setArguments(Bundle().apply {
+						putSerializable("mediathek_show", persistedShow.mediathekShow)
+					})
+					.createPendingIntent()
+			}
 		}
 	}
 

@@ -1,6 +1,7 @@
 # vNext
 * Player-UI versteckt sich korrekt automatisch, wenn man aus dem Hintergrund-Playback kommt
 * Abstürze beim Start auf älteren Android TV Geräten behoben
+* Klick auf Download-Beendet-Benachrichtigung funktioniert wieder auf Android 12
 
 # 7.0.0 - Beta
 * Offizielle Unterstützung für Android TV!
