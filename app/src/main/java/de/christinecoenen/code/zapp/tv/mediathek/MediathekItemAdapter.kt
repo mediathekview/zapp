@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.tv.mediathek
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
@@ -11,6 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MediathekItemAdapter(
+	private val scope: LifecycleCoroutineScope,
 	diffCallback: DiffUtil.ItemCallback<MediathekShow>,
 	private val listener: ListItemListener?
 ) :
@@ -25,7 +27,7 @@ class MediathekItemAdapter(
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		val show = getItem(position) ?: throw RuntimeException("null show not supported")
 
-		GlobalScope.launch {
+		scope.launch {
 
 			holder.itemView.setOnClickListener { listener?.onShowClicked(show) }
 			holder.itemView.setOnLongClickListener { view ->

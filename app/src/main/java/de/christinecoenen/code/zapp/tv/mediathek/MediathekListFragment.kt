@@ -67,7 +67,7 @@ class MediathekListFragment : Fragment(),
 			}
 		}
 
-		adapter = MediathekItemAdapter(MediathekShowComparator, this)
+		adapter = MediathekItemAdapter(lifecycleScope, MediathekShowComparator, this)
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
 		viewLifecycleOwner.lifecycleScope.launch {
