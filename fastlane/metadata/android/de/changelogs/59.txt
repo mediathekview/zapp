@@ -1,0 +1,1 @@
+* Zapp wieder für Nicht-Android-TV-Geräte sichtbar gemacht

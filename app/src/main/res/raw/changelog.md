@@ -1,3 +1,6 @@
+# 7.0.2
+* Zapp wieder für Nicht-Android-TV-Geräte sichtbar gemacht
+
 # 7.0.1
 * Player-UI versteckt sich korrekt automatisch, wenn man aus dem Hintergrund-Playback kommt
 * Abstürze beim Start auf älteren Android TV Geräten behoben

@@ -13,8 +13,8 @@ android {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 23
 		targetSdkVersion 32
-		versionCode 58
-		versionName "7.0.1"
+		versionCode 59
+		versionName "7.0.2"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
 
