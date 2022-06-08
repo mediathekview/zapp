@@ -41,7 +41,7 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		val channelGridView = binding.gridviewChannels
 
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true)
-		channelGridView.layoutManager = GridAutofitLayoutManager(requireContext(), 320)
+		channelGridView.layoutManager = GridAutofitLayoutManager(requireContext(), 400)
 		channelGridView.adapter = gridAdapter
 
 		return binding.root
