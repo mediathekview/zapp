@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.tv.player
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.leanback.app.VideoSupportFragment
 import androidx.leanback.app.VideoSupportFragmentGlueHost
@@ -11,6 +12,7 @@ import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.tv.error.ErrorActivity
+import de.christinecoenen.code.zapp.utils.video.ScreenDimmingVideoEventListener
 import org.koin.android.ext.android.inject
 
 class PlayerFragment : VideoSupportFragment() {
@@ -18,6 +20,8 @@ class PlayerFragment : VideoSupportFragment() {
 	private lateinit var transportControlGlue: PlaybackTransportControlGlue<LeanbackPlayerAdapter>
 
 	private val player: Player by inject()
+
+	private var screenDimmingListener: ScreenDimmingVideoEventListener? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -54,6 +58,14 @@ class PlayerFragment : VideoSupportFragment() {
 		}
 	}
 
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		screenDimmingListener = ScreenDimmingVideoEventListener(view).apply {
+			player.exoPlayer.addListener(this)
+		}
+	}
+
 	override fun onPause() {
 		super.onPause()
 		transportControlGlue.pause()
@@ -63,6 +75,7 @@ class PlayerFragment : VideoSupportFragment() {
 		super.onDestroy()
 
 		player.pause()
+		screenDimmingListener?.let { player.exoPlayer.removeListener(it) }
 		player.exoPlayer.release()
 	}
 

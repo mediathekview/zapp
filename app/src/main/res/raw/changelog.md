@@ -1,3 +1,6 @@
+# v-next
+* Standby-Modus auf Android-TV-Geräten wird nicht mehr während der Videowiedergabe aktiviert
+
 # 7.0.2
 * Zapp wieder für Nicht-Android-TV-Geräte sichtbar gemacht
 
