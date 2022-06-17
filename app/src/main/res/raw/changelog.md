@@ -1,4 +1,4 @@
-# v-next
+# 7.0.3
 * Standby-Modus auf Android-TV-Geräten wird nicht mehr während der Videowiedergabe aktiviert
 * Standby-Modus wird nicht mehr aktiviert, wenn man aus der Hintergrund-Wiedergabe zurück kehrt
 
