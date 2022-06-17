@@ -10,7 +10,6 @@ import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View.OnTouchListener
 import android.widget.Toast
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.AspectRatioListener
 import com.google.android.exoplayer2.ui.StyledPlayerView
@@ -89,11 +88,6 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		} else {
 			showController()
 		}
-	}
-
-	override fun setPlayer(player: Player?) {
-		super.setPlayer(player)
-		player?.addListener(ScreenDimmingVideoEventListener(this))
 	}
 
 	private fun adjustBrightness(yPercent: Float) {

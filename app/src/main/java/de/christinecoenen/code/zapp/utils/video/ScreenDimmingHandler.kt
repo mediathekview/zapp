@@ -8,12 +8,20 @@ import java.lang.ref.WeakReference
  * Allows the screen to turn off as soon as video playback finishes
  * or pauses.
  */
-internal class ScreenDimmingVideoEventListener(viewToKeepScreenOn: View) : Player.Listener {
+internal class ScreenDimmingHandler : Player.Listener {
 
-	private val viewToKeepScreenOn: WeakReference<View> = WeakReference(viewToKeepScreenOn)
+	private var viewToKeepScreenOn: WeakReference<View?> = WeakReference(null)
 
 	private var isIdleOrEnded = false
 	private var isPaused = false
+
+	/**
+	 * The given screen will only be kept on as long as any video is playing.
+	 */
+	fun setScreenToKeepOn(view: View) {
+		viewToKeepScreenOn = WeakReference(view)
+		applyScreenDimming()
+	}
 
 	override fun onPlaybackStateChanged(playbackState: Int) {
 		isIdleOrEnded = playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED
