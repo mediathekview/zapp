@@ -1,3 +1,10 @@
+# 7.0.3
+* Standby-Modus auf Android-TV-Geräten wird nicht mehr während der Videowiedergabe aktiviert
+* Standby-Modus wird nicht mehr aktiviert, wenn man aus der Hintergrund-Wiedergabe zurück kehrt
+
+# 7.0.2
+* Zapp wieder für Nicht-Android-TV-Geräte sichtbar gemacht
+
 # 7.0.1
 * Player-UI versteckt sich korrekt automatisch, wenn man aus dem Hintergrund-Playback kommt
 * Abstürze beim Start auf älteren Android TV Geräten behoben

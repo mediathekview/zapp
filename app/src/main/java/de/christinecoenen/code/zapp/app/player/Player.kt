@@ -4,6 +4,7 @@ package de.christinecoenen.code.zapp.app.player
 import android.content.Context
 import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
+import android.view.View
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -18,6 +19,7 @@ import de.christinecoenen.code.zapp.app.player.VideoInfoArtworkExtensions.getArt
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.utils.system.NetworkConnectionHelper
+import de.christinecoenen.code.zapp.utils.video.ScreenDimmingHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -57,6 +59,7 @@ class Player(
 
 
 	private val playerEventHandler: PlayerEventHandler = PlayerEventHandler()
+	private val screenDimmingHandler = ScreenDimmingHandler()
 	private val settings: SettingsRepository = SettingsRepository(context)
 	private val networkConnectionHelper: NetworkConnectionHelper = NetworkConnectionHelper(context)
 
@@ -112,10 +115,16 @@ class Player(
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(::loadStreamQualityByNetworkType)
+		exoPlayer.addListener(screenDimmingHandler)
 	}
 
 	fun setView(videoView: StyledPlayerView) {
 		videoView.player = exoPlayer
+		screenDimmingHandler.setScreenToKeepOn(videoView)
+	}
+
+	fun setView(parentView: View) {
+		screenDimmingHandler.setScreenToKeepOn(parentView)
 	}
 
 	suspend fun load(videoInfo: VideoInfo) = withContext(Dispatchers.Main) {

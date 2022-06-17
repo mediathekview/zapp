@@ -1,0 +1,1 @@
+* Make Zapp visible again for non Android TV devices

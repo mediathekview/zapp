@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.tv.player
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.leanback.app.VideoSupportFragment
 import androidx.leanback.app.VideoSupportFragmentGlueHost
@@ -54,16 +55,22 @@ class PlayerFragment : VideoSupportFragment() {
 		}
 	}
 
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		player.setView(view)
+	}
+
 	override fun onPause() {
 		super.onPause()
 		transportControlGlue.pause()
 	}
 
 	override fun onDestroy() {
-		super.onDestroy()
+		lifecycleScope.launchWhenCreated {
+			player.destroy()
+		}
 
-		player.pause()
-		player.exoPlayer.release()
+		super.onDestroy()
 	}
 
 	private fun onError(@StringRes messageResId: Int) {
