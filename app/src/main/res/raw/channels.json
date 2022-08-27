@@ -197,7 +197,7 @@
   {
 	"id": "sr",
 	"name": "SR",
-	"stream_url": "http://live2_sr-lh.akamaihd.net/i/sr_universal02@107595/master.m3u8",
+	"stream_url": "https://srfs.akamaized.net/hls/live/689649/srfsgeo/master.m3u8",
 	"logo_name": "channel_logo_sr",
 	"color": "#0F2995"
   },
