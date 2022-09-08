@@ -17,6 +17,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 
 class SwipeablePlayerView @JvmOverloads constructor(
 	context: Context,
@@ -198,7 +199,8 @@ class SwipeablePlayerView @JvmOverloads constructor(
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}
 
-			val yPercent = 1 - e2.y / height
+			var yPercent = 1 - e2.y / height
+			yPercent = min(1f, max(0f, yPercent))
 
 			return when {
 				e2.x < INDICATOR_WIDTH -> {
