@@ -200,6 +200,9 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			}
 
 			var yPercent = 1 - e2.y / height
+			// use a wider percent range than needed to improve handling on the screen edges
+			yPercent = yPercent * 1.2f - 0.1f
+			// truncate to valid percent value between 0 and 1
 			yPercent = min(1f, max(0f, yPercent))
 
 			return when {
