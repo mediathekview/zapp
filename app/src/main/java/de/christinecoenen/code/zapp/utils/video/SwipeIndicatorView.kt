@@ -27,6 +27,7 @@ class SwipeIndicatorView @JvmOverloads constructor(
 	fun setValue(value: Float) {
 		binding.indicator.layoutParams.height = (value * height).toInt()
 		binding.indicator.requestLayout()
+		binding.text.text = String.format("%.0f%%", value * 100)
 
 		visibility = VISIBLE
 	}
