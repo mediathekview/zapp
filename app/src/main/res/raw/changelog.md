@@ -1,3 +1,8 @@
+# 7.0.4
+* Layout der Senderliste auf Tablets glatt gezogen
+* Hängende Status-Bar im Vollbild-Modus auf manchen Geräten behoben
+* Lautstärke- und Helligkeitsregler verbessert
+
 # 7.0.3
 * Standby-Modus auf Android-TV-Geräten wird nicht mehr während der Videowiedergabe aktiviert
 * Standby-Modus wird nicht mehr aktiviert, wenn man aus der Hintergrund-Wiedergabe zurück kehrt
