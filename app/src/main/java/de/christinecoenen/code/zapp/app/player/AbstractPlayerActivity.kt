@@ -256,8 +256,6 @@ abstract class AbstractPlayerActivity :
 		hideError()
 
 		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
-		windowInsetsControllerCompat.systemBarsBehavior =
-			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
 		bind(this, backgroundPlayerServiceConnection)
 	}
@@ -270,6 +268,12 @@ abstract class AbstractPlayerActivity :
 		} else {
 			hideSystemUi()
 		}
+
+		// We have to call this here indead of in resumeActivity.
+		// Otherwise status bar will get stuck on some devices (see issue #313)
+		// when pulled down manually.
+		windowInsetsControllerCompat.systemBarsBehavior =
+			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 	}
 
 	private fun showError(messageResId: Int) {
