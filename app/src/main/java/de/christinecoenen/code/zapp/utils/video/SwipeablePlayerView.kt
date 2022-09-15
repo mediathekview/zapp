@@ -17,6 +17,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 
 class SwipeablePlayerView @JvmOverloads constructor(
 	context: Context,
@@ -164,6 +165,9 @@ class SwipeablePlayerView @JvmOverloads constructor(
 
 	private inner class WipingControlGestureListener : SimpleOnGestureListener() {
 
+		private val forbiddenAreaSizeTop = 34
+		private val minVerticalMovementNeeded = 100
+
 		private var canUseWipeControls = false
 		private var maxVerticalMovement = 0f
 
@@ -185,20 +189,24 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			distanceX: Float,
 			distanceY: Float
 		): Boolean {
-			if (!canUseWipeControls) {
+			if (!canUseWipeControls || e1.y <= forbiddenAreaSizeTop) {
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}
 
 			val distanceYSinceTouchbegin = e1.y - e2.y
 			maxVerticalMovement = max(maxVerticalMovement, abs(distanceYSinceTouchbegin))
 
-			val enoughVerticalMovement = maxVerticalMovement > 100
+			val enoughVerticalMovement = maxVerticalMovement > minVerticalMovementNeeded
 
 			if (!enoughVerticalMovement) {
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}
 
-			val yPercent = 1 - e2.y / height
+			var yPercent = 1 - e2.y / height
+			// use a wider percent range than needed to improve handling on the screen edges
+			yPercent = yPercent * 1.2f - 0.1f
+			// truncate to valid percent value between 0 and 1
+			yPercent = min(1f, max(0f, yPercent))
 
 			return when {
 				e2.x < INDICATOR_WIDTH -> {

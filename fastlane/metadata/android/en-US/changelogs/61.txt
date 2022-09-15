@@ -1,0 +1,3 @@
+* Fixed layout of channel list on tablet devices
+* Fixed stuck status bar in fullscreen mode on some devices
+* Improved volume and brighness controls
