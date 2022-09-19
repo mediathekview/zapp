@@ -1,3 +1,6 @@
+# v-next
+* Nullwerte bei der Anzahl der Sucherergebnisse repariert
+
 # 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen
 * Hängende Status-Bar im Vollbild-Modus auf manchen Geräten behoben
