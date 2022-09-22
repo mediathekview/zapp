@@ -1,4 +1,5 @@
 # v-next
+* Unterstützung für Android 13
 * Nullwerte bei der Anzahl der Sucherergebnisse repariert
 
 # 7.0.4
