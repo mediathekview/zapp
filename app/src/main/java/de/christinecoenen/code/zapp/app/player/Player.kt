@@ -82,14 +82,14 @@ class Player(
 
 	init {
 		// quality selection
-		val trackSelector = DefaultTrackSelector(context).apply {
-			setParameters(
-				this
+		val trackSelector = DefaultTrackSelector(context).also {
+			it.setParameters(
+				it
 					.buildUponParameters()
 					.setPreferredAudioLanguage(LANGUAGE_GERMAN)
 					.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings(context)
 					.setSelectUndeterminedTextLanguage(true)
-					.setDisabledTextTrackSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+					.setIgnoredTextSelectionFlags(C.SELECTION_FLAG_DEFAULT)
 			)
 		}
 		trackSelectorWrapper = TrackSelectorWrapper(trackSelector)
@@ -97,7 +97,7 @@ class Player(
 		// audio focus setup
 		val audioAttributes = AudioAttributes.Builder()
 			.setUsage(C.USAGE_MEDIA)
-			.setContentType(C.CONTENT_TYPE_MOVIE)
+			.setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
 			.build()
 
 		exoPlayer = ExoPlayer.Builder(context)

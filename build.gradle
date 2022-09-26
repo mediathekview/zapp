@@ -3,7 +3,7 @@
 buildscript {
 	ext.koin_version = '3.1.6'
 	ext.about_libraries_version = '10.1.0'
-	ext.nav_version = '2.4.2'
+	ext.nav_version = '2.5.2'
 
 	repositories {
 		google()
@@ -16,7 +16,7 @@ buildscript {
 	dependencies {
 		classpath 'com.android.tools.build:gradle:7.3.0'
 
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
 
 		classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libraries_version"
 
