@@ -82,7 +82,8 @@
 			android:background="?colorPrimaryContainer"
 			android:baselineAligned="false"
 			android:orientation="horizontal"
-			android:padding="32dp">
+			android:paddingHorizontal="32dp"
+			android:paddingVertical="16dp">
 
 			<LinearLayout
 				android:layout_width="wrap_content"
