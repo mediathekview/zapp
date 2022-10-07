@@ -1,9 +1,9 @@
 <resources>
-	<string name="app_name">Zapp</string>
-	<string name="app_website_url">https://github.com/mediathekview/zapp</string>
+	<string name="app_name" translatable="false">Zapp</string>
+	<string name="app_website_url" translatable="false">https://github.com/mediathekview/zapp</string>
 
 	<string name="activity_main_tab_live">Live</string>
-	<string name="activity_main_tab_mediathek">Media center</string>
+	<string name="activity_main_tab_mediathek">Mediathek</string>
 	<string name="activity_main_tab_downloads">Downloads</string>
 
 	<string name="about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
@@ -51,7 +51,7 @@
 	<string name="error_report">Report error</string>
 	<string name="error_app_crash">We are very sorry, but an error occurred.\nWould you like to send an error report to the developer to help fix this problem?</string>
 	<string name="error_app_crash_tv">We are very sorry, but Zapp just crashed.</string>
-	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
+	<string name="error_app_crash_mail_subject" translatable="false">Zapp Crash Report</string>
 	<string name="error_app_crash_mail_body">Thank you very much for this report!\n\nFollowing information will help fix this error:\n</string>
 
 	<string name="error_stream_unknown">The video could not be played because of an unknown error.</string>
@@ -78,7 +78,7 @@
 	<string name="action_start_picture_in_picture">Picture in picture</string>
 	<string name="action_remove">Remove</string>
 
-	<string name="search_query_hint_mediathek">Search media center…</string>
+	<string name="search_query_hint_mediathek">Search Mediathek…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
 
 	<string name="menu_refresh">Refresh</string>
