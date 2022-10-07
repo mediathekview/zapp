@@ -1,0 +1,147 @@
+<resources>
+	<string name="app_name">Zapp</string>
+	<string name="app_website_url">https://github.com/mediathekview/zapp</string>
+
+	<string name="activity_main_tab_live">Live</string>
+	<string name="activity_main_tab_mediathek">Mediathek</string>
+	<string name="activity_main_tab_downloads">Downloads</string>
+
+	<string name="about_summary">Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</string>
+	<string name="about_feedback_mail_subject">Zapp Feedback</string>
+
+	<string name="changelog_title">Changelog</string>
+
+	<string name="faq_title">FAQ</string>
+
+	<string name="activity_channel_detail_info_error">Keine Programminfo</string>
+
+	<string name="activity_settings_title">Einstellungen</string>
+	<string name="activity_channel_selection_title">Senderliste ändern</string>
+	<string name="activity_channel_selection_help_text">Ziehe an den grauen Balken, um die Sender zu sortieren.\n\nEin Klick blendet einen Sender ein oder aus.</string>
+
+	<string name="view_program_info_show_time">%1$s – %2$s Uhr</string>
+
+	<!-- mediathek -->
+	<string name="fragment_mediathek_no_results">keine Sendungen gefunden</string>
+	<string name="fragment_mediathek_title">Sendungsdetails</string>
+	<string name="fragment_mediathek_time">Eingestellt</string>
+	<string name="fragment_mediathek_channel">Sender</string>
+	<string name="fragment_mediathek_duration">Dauer</string>
+	<string name="fragment_mediathek_website">Website</string>
+	<string name="fragment_mediathek_batch_subtitle">UT</string>
+	<string name="fragment_mediathek_qualities_title">Qualität auswählen</string>
+	<string name="fragment_mediathek_qualities_low">Niedrig</string>
+	<string name="fragment_mediathek_qualities_medium">Mittel</string>
+	<string name="fragment_mediathek_qualities_high">Hoch</string>
+	<string name="fragment_mediathek_download">Download</string>
+	<string name="fragment_mediathek_download_retry">Download wiederholen</string>
+	<string name="fragment_mediathek_download_running">Download läuft…</string>
+	<string name="fragment_mediathek_download_delete">Download löschen</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Datei wirklich löschen?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">Die Video-Datei wird gelöscht und kann später nochmals herunter geladen werden.</string>
+	<string name="fragment_mediathek_query_info">%1$s Suchergebnisse vom %2$s</string>
+
+	<!-- downloads -->
+	<string name="fragment_downloads_no_results">keine Downloads vorhanden</string>
+	<string name="fragment_downloads_confirm_show_removal_dialog_title">Sendung aus der Download-Liste entfernen?</string>
+	<string name="fragment_downloads_confirm_show_removal_dialog_text">Noch laufende Downloads werden abgrebrochen und vorhandene Video-Dateien gelöscht.</string>
+
+	<!-- error messages -->
+	<string name="error_informal">Upsi!</string>
+	<string name="error_report">Fehler melden</string>
+	<string name="error_app_crash">Entschuldigung, es gab einen Fehler.\nMöchtest du per Mail einen Fehlerbericht an den Entwickler senden, um diesen Fehler zukünftig zu beheben?</string>
+	<string name="error_app_crash_tv">Entschuldigung, Zapp ist abgestürzt.</string>
+	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
+	<string name="error_app_crash_mail_body">Vielen Dank für die Rückmeldung!\n\nFolgende Informationen helfen den Entwicklern von Zapp, den Fehler zu beheben:\n</string>
+
+	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
+	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
+	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
+	<string name="error_stream_not_in_unmetered_network">Das Abspielen über kostenpflichtige Netzwerke wurde in den Einstellungen deaktiviert.</string>
+
+	<string name="error_mediathek_info_not_available">Es gab einen Fehler beim Laden der Mediathek. Bitte prüfe deine Internet-Verbindung.</string>
+	<string name="error_mediathek_ssl_error">Dein Gerät kann keine verschlüsselte Verbindung zum Server aufbauen. Wahrscheinlich hilft es, deine Android-Version zu aktualisieren.</string>
+	<string name="error_mediathek_generic_start_download_error">Der download konnte nicht gestartet werden.</string>
+	<string name="error_mediathek_download_over_unmetered_network_only">Download nur über kostenlose Netzwerke erlaubt.</string>
+	<string name="error_mediathek_download_no_network">Kein Internet verfügbar.</string>
+
+	<string name="error_prefixed_message">Fehler: %s</string>
+
+
+	<!-- menus & buttons -->
+	<string name="action_play">Play</string>
+	<string name="action_share">Teilen</string>
+	<string name="action_continue">Weiter</string>
+	<string name="action_open">Öffnen</string>
+	<string name="action_send_mail">Mail senden</string>
+	<string name="action_play_in_background">Im Hintergrund abspielen</string>
+	<string name="action_start_picture_in_picture">Bild im Bild</string>
+	<string name="action_remove">Entfernen</string>
+
+	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
+	<string name="delete_search_query_content_description">Suche löschen</string>
+
+	<string name="menu_refresh">Aktualisieren</string>
+	<string name="menu_retry">Wiederholen</string>
+	<string name="menu_about">Über Zapp</string>
+	<string name="menu_about_short">Über</string>
+	<string name="menu_settings">Einstellungen</string>
+	<string name="menu_feedback">Feedback</string>
+	<string name="menu_filter">Filter</string>
+	<string name="menu_program_info">Programm-Informationen</string>
+
+	<!-- player -->
+	<string name="player_zoom_state_cropped">Gezoomt</string>
+	<string name="player_zoom_state_boxed">Original</string>
+
+	<!-- preferences -->
+	<string name="pref_header_network">Netzwerk</string>
+	<string name="pref_header_channels">Sender</string>
+	<string name="pref_header_data">Daten</string>
+
+	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
+	<string name="pref_detail_landscape_summary">Sperrt die App im Querformat, solange ein Video läuft</string>
+
+	<string name="pref_stream_quality_cellular_title">Videoqualität in kostenpflichtigen Netzwerken</string>
+
+	<string name="pref_download_over_unmetered_network_only_title">Nur in kostenlosen Netzwerken herunter laden</string>
+	<string name="pref_download_over_unmetered_network_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät z.B. im Mobilfunknetz befindet</string>
+
+	<string name="pref_channel_selection_title">Sender anordnen</string>
+
+	<string name="pref_shortcuts_title">Sender-Shortcuts</string>
+	<string name="pref_shortcuts_summary_not_supported">Unterstützt ab Android 7.1</string>
+	<string name="pref_shortcuts_summary_limit">Es können maximal 4 Shortcuts gespeichert werden</string>
+	<string name="pref_shortcuts_too_many">Es können maximal 4 Shortcuts gespeichert werden.</string>
+
+	<string name="pref_ui_mode_default">System-Standard</string>
+	<string name="pref_ui_mode_light">Immer hell</string>
+	<string name="pref_ui_mode_dark">Immer dunkel</string>
+
+	<string name="stream_quality_cellular_disabled">Videos nicht abspielen</string>
+	<string name="stream_quality_cellular_lowest">Niedrigste Qualität</string>
+	<string name="stream_quality_cellular_medium">Mittlere Qualität</string>
+	<string name="stream_quality_cellular_highest">Höchste Qualität</string>
+
+	<string name="pref_download_to_sd_card_title">Downloads auf SD-Karte</string>
+	<string name="pref_download_to_sd_card_summary">Wenn verfügbar, werden Video-Dateien auf die SD-Karte gespeichert.</string>
+
+	<!-- notifications -->
+	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>
+	<string name="notification_channel_name_download_progress">Download Fortschritt</string>
+	<string name="notification_channel_name_download_event">Download Event</string>
+
+	<!-- fetch download notifications -->
+	<string name="fetch_notification_download_eta_sec">%1$ds verbleibend</string>
+	<string name="fetch_notification_download_eta_min">%1$dm %2$ds verbleibend</string>
+	<string name="fetch_notification_download_eta_hrs">%1$dh %2$dm %3$ds verbleibend</string>
+	<string name="fetch_notification_download_complete">Fertig</string>
+	<string name="fetch_notification_download_failed">Fehlgeschlagen</string>
+	<string name="fetch_notification_download_pause">Pause</string>
+	<string name="fetch_notification_download_resume">Fortsetzen</string>
+	<string name="fetch_notification_download_retry">Wiederholen</string>
+	<string name="fetch_notification_download_cancel">Abbrechen</string>
+	<string name="fetch_notification_download_paused">Pausiert</string>
+	<string name="fetch_notification_download_starting">Startet</string>
+	<string name="fetch_notification_download_downloading">Lädt herunter</string>
+</resources>
