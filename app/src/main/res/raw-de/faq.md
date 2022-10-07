@@ -44,9 +44,9 @@ Manche Sender wie das ZDF bieten Untertitel in einigen Sendungen der Live-Stream
 Der Sender ist nicht mehr unter der Adresse erreichbar, die Zapp erwartet und muss aktualisiert werden. Bitte wende dich an die Entwickler, damit das Problem gelöst werden kann.
 
 
-## Why is the video image cropped or has black borders left and right?
+## Warum ist das Video-Bild angeschnitten oder hat schwarze Balken links und rechts?
 
-Your display has another aspect ratio than the video. You can use the pinch gesture (pinch two fingers together) to display the video smaller or larger.
+Dein Bildschirm hat ein anderes Seitenverhälnis, als das abgepielte Video. Du kannst das Video mithilfe der Pinch-Geste (zwei Finger zusammen- oder außeinander ziehen) größer oder kleiner ziehen.
 
 
 ## Warum unterstützt Zapp kein Chromecast?
