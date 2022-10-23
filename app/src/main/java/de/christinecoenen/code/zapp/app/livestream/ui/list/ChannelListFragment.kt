@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
@@ -17,7 +19,7 @@ import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 
-class ChannelListFragment : Fragment(), ListItemListener {
+class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 
 	private lateinit var channelList: ISortableChannelList
 	private lateinit var gridAdapter: BaseChannelListAdapter
@@ -28,8 +30,6 @@ class ChannelListFragment : Fragment(), ListItemListener {
 
 		channelList = SortableVisibleJsonChannelList(requireContext())
 		gridAdapter = ChannelListAdapter(channelList, this, this)
-
-		setHasOptionsMenu(true)
 	}
 
 	override fun onCreateView(
@@ -43,6 +43,8 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		ViewCompat.setNestedScrollingEnabled(channelGridView, true)
 		channelGridView.layoutManager = GridAutofitLayoutManager(requireContext(), 400)
 		channelGridView.adapter = gridAdapter
+
+		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
 		return binding.root
 	}
@@ -58,9 +60,11 @@ class ChannelListFragment : Fragment(), ListItemListener {
 		gridAdapter.notifyDataSetChanged()
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-		inflater.inflate(R.menu.activity_main_toolbar, menu)
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+		menuInflater.inflate(R.menu.activity_main_toolbar, menu)
 	}
+
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
 
 	override fun onItemClick(channel: ChannelModel) {
 		val intent = ChannelPlayerActivity.getStartIntent(context, channel.id)

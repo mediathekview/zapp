@@ -2,7 +2,9 @@ package de.christinecoenen.code.zapp.app.settings.ui
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ChannelSelectionFragmentBinding
@@ -11,7 +13,7 @@ import de.christinecoenen.code.zapp.models.channels.json.SortableJsonChannelList
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener
 
-class ChannelSelectionFragment : Fragment() {
+class ChannelSelectionFragment : Fragment(), MenuProvider {
 
 	private var _binding: ChannelSelectionFragmentBinding? = null
 	private val binding: ChannelSelectionFragmentBinding get() = _binding!!
@@ -25,8 +27,6 @@ class ChannelSelectionFragment : Fragment() {
 
 		channelList = SortableJsonChannelList(requireContext())
 		listAdapter = ChannelSelectionAdapter(requireContext())
-
-		setHasOptionsMenu(true)
 	}
 
 	override fun onCreateView(
@@ -57,6 +57,8 @@ class ChannelSelectionFragment : Fragment() {
 			})
 		}
 
+		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
 		return binding.root
 	}
 
@@ -66,19 +68,17 @@ class ChannelSelectionFragment : Fragment() {
 		channelList.persistChannelOrder()
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-		inflater.inflate(R.menu.channel_selection_fragment, menu)
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+		menuInflater.inflate(R.menu.channel_selection_fragment, menu)
 	}
 
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+		return when (menuItem.itemId) {
 			R.id.menu_help -> {
 				openHelpDialog()
 				true
 			}
-			else -> {
-				super.onOptionsItemSelected(item)
-			}
+			else -> false
 		}
 	}
 

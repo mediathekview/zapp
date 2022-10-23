@@ -1,8 +1,11 @@
 package de.christinecoenen.code.zapp.app.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -12,7 +15,7 @@ import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private var _binding: ActivityMainBinding? = null
 	private val binding get() = _binding!!
@@ -45,6 +48,8 @@ class MainActivity : AppCompatActivity() {
 
 		binding.bottomNavigation.setupWithNavController(navController)
 
+		addMenuProvider(this)
+
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
 	}
 
@@ -73,8 +78,12 @@ class MainActivity : AppCompatActivity() {
 		_binding = null
 	}
 
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+		// done by child fragments
+	}
+
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+		return menuItem.onNavDestinationSelected(navController)
 	}
 
 	override fun onSupportNavigateUp(): Boolean {

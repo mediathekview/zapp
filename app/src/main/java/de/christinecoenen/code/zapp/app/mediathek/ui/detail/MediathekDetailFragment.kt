@@ -2,9 +2,11 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.detail
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -27,7 +29,7 @@ import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-class MediathekDetailFragment : Fragment() {
+class MediathekDetailFragment : Fragment(), MenuProvider {
 
 	private val args: MediathekDetailFragmentArgs by navArgs()
 
@@ -40,11 +42,6 @@ class MediathekDetailFragment : Fragment() {
 	private var startDownloadJob: Job? = null
 	private var persistedMediathekShow: PersistedMediathekShow? = null
 	private var downloadStatus = DownloadStatus.NONE
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setHasOptionsMenu(true)
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -68,6 +65,8 @@ class MediathekDetailFragment : Fragment() {
 				.collect(::updatePlaybackPosition)
 		}
 
+		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
 		return binding.root
 	}
 
@@ -86,17 +85,17 @@ class MediathekDetailFragment : Fragment() {
 		downloadController.deleteDownloadsWithDeletedFiles()
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-		inflater.inflate(R.menu.mediathek_detail_fragment, menu)
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+		menuInflater.inflate(R.menu.mediathek_detail_fragment, menu)
 	}
 
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+		return when (menuItem.itemId) {
 			R.id.menu_share -> {
 				args.mediathekShow.shareExternally(requireContext())
 				true
 			}
-			else -> super.onOptionsItemSelected(item)
+			else -> false
 		}
 	}
 
