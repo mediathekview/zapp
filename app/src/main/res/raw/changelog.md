@@ -1,5 +1,5 @@
 # v-next
-* Unterstützung für Android 13
+* Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Nullwerte bei der Anzahl der Sucherergebnisse repariert
 
 # 7.0.4
