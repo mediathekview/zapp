@@ -12,6 +12,7 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -126,6 +127,7 @@ abstract class AbstractPlayerActivity :
 		pauseActivity()
 	}
 
+	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onPictureInPictureModeChanged(
 		isInPictureInPictureMode: Boolean,
 		newConfig: Configuration
