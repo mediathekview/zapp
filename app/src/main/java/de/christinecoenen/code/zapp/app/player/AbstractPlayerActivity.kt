@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
@@ -27,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 abstract class AbstractPlayerActivity :
-	AppCompatActivity(), StyledPlayerControlView.VisibilityListener {
+	AppCompatActivity(), StyledPlayerView.ControllerVisibilityListener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
 
@@ -200,7 +201,7 @@ abstract class AbstractPlayerActivity :
 		}
 	}
 
-	override fun onVisibilityChange(visibility: Int) {
+	override fun onVisibilityChanged(visibility: Int) {
 		if (binding.video.isControllerFullyVisible) {
 			showSystemUi()
 		} else {
