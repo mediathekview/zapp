@@ -16,7 +16,7 @@ android {
 		versionCode 61
 		versionName "7.0.4"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-		resConfigs "de", "en"
+		resConfigs 'de', 'en'
 	}
 
 	compileOptions {
