@@ -168,7 +168,7 @@ class BackgroundPlayerService : LifecycleService(),
 	private fun movePlaybackToForeground() {
 		isPlaybackInBackground = false
 
-		stopForeground(true)
+		stopForeground(Service.STOP_FOREGROUND_REMOVE)
 		stopSelf()
 
 		playerNotificationManager?.apply {
@@ -237,7 +237,7 @@ class BackgroundPlayerService : LifecycleService(),
 		if (ongoing) {
 			startForeground(notificationId, notification)
 		} else {
-			stopForeground(false)
+			stopForeground(Service.STOP_FOREGROUND_REMOVE)
 		}
 	}
 
