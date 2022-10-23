@@ -33,8 +33,7 @@ Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen de
 
 **Achtung:** Wenn du Zapp außerhalb Deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
 
-<img src="app/src/main/play/listings/de/phone-screenshots/02_live_video.png" width="49%" alt="video screen" /><img src="app/src/main/play/listings/de/phone-screenshots/06_mediathek_player.png" width="49%" alt="video screen" /><br>
-<img src="app/src/main/play/listings/de/phone-screenshots/01_live.png" width="33%" alt="main screen" /><img src="app/src/main/play/listings/de/phone-screenshots/04_mediathek_search.png" width="33%" alt="arrange screen" /><img src="app/src/main/play/listings/de/phone-screenshots/05_mediathek_details.png" width="33%" alt="settings screen" />
+<img src="fastlane/metadata/android/de/images/phoneScreenshots/01.jpg" width="24%" alt="video screen" /> <img src="fastlane/metadata/android/de/images/phoneScreenshots/02.jpg" width="24%" alt="video screen" /> <img src="fastlane/metadata/android/de/images/phoneScreenshots/03.jpg" width="24%" alt="video screen" /> <img src="fastlane/metadata/android/de/images/phoneScreenshots/04.jpg" width="24%" alt="video screen" /><img src="fastlane/metadata/android/de/images/phoneScreenshots/05.jpg" width="49%" alt="video screen" /> <img src="fastlane/metadata/android/de/images/phoneScreenshots/06.jpg" width="49%" alt="video screen" />
 
 ---------------------
 
