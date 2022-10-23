@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.settings.helper
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -10,7 +9,6 @@ import androidx.preference.Preference
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
-import de.christinecoenen.code.zapp.utils.system.ShortcutHelper.areShortcutsSupported
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper.getChannelIdsOfShortcuts
 import de.christinecoenen.code.zapp.utils.system.ShortcutHelper.updateShortcutsToChannels
 import java.util.*
@@ -23,11 +21,9 @@ class ShortcutPreference @JvmOverloads constructor(
 	private lateinit var channelList: IChannelList
 
 	init {
-		if (areShortcutsSupported()) {
-			loadChannelList()
-			setSummaryToSelectedChannels()
-			isEnabled = true
-		}
+		loadChannelList()
+		setSummaryToSelectedChannels()
+		isEnabled = true
 	}
 
 	override fun onPreferenceChange(preference: Preference, selectedValues: Any): Boolean {
@@ -63,7 +59,6 @@ class ShortcutPreference @JvmOverloads constructor(
 		values = HashSet(shortcutIds)
 	}
 
-	@TargetApi(25)
 	private fun saveShortcuts(channelIds: Set<String>): Boolean {
 		val channels = channelIds.map { channelList[it]!! }
 		return updateShortcutsToChannels(context, channels)

@@ -5,14 +5,12 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -127,7 +125,6 @@ abstract class AbstractPlayerActivity :
 		pauseActivity()
 	}
 
-	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onPictureInPictureModeChanged(
 		isInPictureInPictureMode: Boolean,
 		newConfig: Configuration
@@ -159,9 +156,7 @@ abstract class AbstractPlayerActivity :
 				true
 			}
 			R.id.menu_pip -> {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					MultiWindowHelper.enterPictureInPictureMode(this)
-				}
+				MultiWindowHelper.enterPictureInPictureMode(this)
 				true
 			}
 			android.R.id.home -> {
