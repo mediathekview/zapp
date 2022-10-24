@@ -9,14 +9,14 @@ import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListe
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentChannelListBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
-import de.christinecoenen.code.zapp.models.channels.json.SortableVisibleJsonChannelList
+import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.tv.player.PlayerActivity
+import org.koin.android.ext.android.inject
 
 
 class ChannelListFragment : Fragment(), ListItemListener {
 
-	private lateinit var channelList: ISortableChannelList
+	private val channelRepository: ChannelRepository by inject()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -25,10 +25,8 @@ class ChannelListFragment : Fragment(), ListItemListener {
 	): View {
 		val binding = TvFragmentChannelListBinding.inflate(inflater, container, false)
 
-		channelList = SortableVisibleJsonChannelList(requireContext())
-
 		binding.grid.setNumColumns(2)
-		binding.grid.adapter = ChannelListAdapter(channelList, this, this)
+		binding.grid.adapter = ChannelListAdapter(channelRepository.getChannelList(), this, this)
 
 		return binding.root
 	}

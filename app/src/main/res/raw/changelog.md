@@ -1,6 +1,7 @@
 # v-next
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Nullwerte bei der Anzahl der Sucherergebnisse repariert
+* Android TV erhält aktuelle Live-Stream-Adressen
 
 # 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen
