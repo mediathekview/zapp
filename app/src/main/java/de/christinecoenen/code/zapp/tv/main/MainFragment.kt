@@ -20,9 +20,9 @@ class MainFragment : Fragment() {
 	): View {
 		_binding = TvFragmentMainBinding.inflate(inflater, container, false)
 
-		binding.viewpager.adapter = MainNavPagerAdapter(requireContext(), requireFragmentManager())
+		binding.viewpager.adapter = MainNavPagerAdapter(requireContext(), parentFragmentManager)
 		binding.tabs.setupWithViewPager(binding.viewpager)
-		
+
 		binding.tabs.getTabAt(0)?.view?.requestFocus()
 
 		return binding.root

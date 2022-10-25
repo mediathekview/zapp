@@ -12,14 +12,19 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Implementation of IDownloadController using WorkManager for background execution.
  */
+@OptIn(FlowPreview::class)
 class WorkManagerDownloadController(
 	val applicationContext: Context,
 	private val scope: CoroutineScope,
@@ -42,7 +47,8 @@ class WorkManagerDownloadController(
 			workManager
 				.getWorkInfosByTagLiveData(WorkTag)
 				.asFlow()
-				.collect { workInfos ->
+				.debounce(250.milliseconds)
+				.collectLatest { workInfos ->
 					workInfos.onEach {
 						updateWorkInDatabase(it)
 					}

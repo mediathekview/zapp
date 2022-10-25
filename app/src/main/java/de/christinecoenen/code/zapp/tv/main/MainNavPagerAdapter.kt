@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 class MainNavPagerAdapter(
 	private val context: Context,
 	fragmentManger: FragmentManager
-) : FragmentPagerAdapter(fragmentManger) {
+) : FragmentPagerAdapter(fragmentManger, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
 	private val navItems = listOf(
 		MainNavItem(R.string.activity_main_tab_live, ChannelListFragment::class),
