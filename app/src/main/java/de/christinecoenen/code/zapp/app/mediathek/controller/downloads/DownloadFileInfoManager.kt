@@ -9,8 +9,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import com.tonyodev.fetch2.Download
-import com.tonyodev.fetch2.Status
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import timber.log.Timber
@@ -31,7 +31,7 @@ internal class DownloadFileInfoManager(
 			Timber.w(e)
 		}
 
-		updateDownloadFileInMediaCollection(download)
+		updateDownloadFileInMediaCollection(download.fileUri, DownloadStatus.DELETED)
 	}
 
 	fun shouldDeleteDownload(download: Download): Boolean {
@@ -57,9 +57,9 @@ internal class DownloadFileInfoManager(
 		}
 	}
 
-	fun updateDownloadFileInMediaCollection(download: Download) {
+	fun updateDownloadFileInMediaCollection(filePathUri: Uri, status: DownloadStatus) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-			val filePath = download.fileUri.path
+			val filePath = filePathUri.path
 			MediaScannerConnection.scanFile(
 				applicationContext,
 				arrayOf(filePath),
@@ -70,18 +70,18 @@ internal class DownloadFileInfoManager(
 			val resolver = applicationContext.contentResolver
 
 			@Suppress("NON_EXHAUSTIVE_WHEN")
-			when (download.status) {
-				Status.DELETED,
-				Status.FAILED -> try {
-					resolver.delete(download.fileUri, null, null)
+			when (status) {
+				DownloadStatus.DELETED,
+				DownloadStatus.FAILED -> try {
+					resolver.delete(filePathUri, null, null)
 				} catch (e: SecurityException) {
 					// maybe file is already deleted - that's okay
 				}
 
-				Status.COMPLETED -> {
+				DownloadStatus.COMPLETED -> {
 					val videoContentValues = ContentValues()
 					videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
-					resolver.update(download.fileUri, videoContentValues, null, null)
+					resolver.update(filePathUri, videoContentValues, null, null)
 				}
 
 				else -> {}

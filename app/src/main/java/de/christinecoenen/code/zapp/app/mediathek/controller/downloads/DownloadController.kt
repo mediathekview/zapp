@@ -214,7 +214,10 @@ class DownloadController(
 		scope.launch {
 			updateDownloadStatus(download)
 			mediathekRepository.updateDownloadedVideoPath(download.id, download.file)
-			downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
+			downloadFileInfoManager.updateDownloadFileInMediaCollection(
+				download.fileUri,
+				DownloadStatus.COMPLETED
+			)
 		}
 	}
 
@@ -222,7 +225,10 @@ class DownloadController(
 		scope.launch {
 			updateDownloadStatus(download)
 			updateDownloadProgress(download, 0)
-			downloadFileInfoManager.updateDownloadFileInMediaCollection(download)
+			downloadFileInfoManager.updateDownloadFileInMediaCollection(
+				download.fileUri,
+				DownloadStatus.DELETED
+			)
 		}
 	}
 
