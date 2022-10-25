@@ -5,18 +5,14 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
@@ -28,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 abstract class AbstractPlayerActivity :
-	AppCompatActivity(), StyledPlayerView.ControllerVisibilityListener {
+	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
 
@@ -77,6 +73,8 @@ abstract class AbstractPlayerActivity :
 		binding.video.setControllerVisibilityListener(this)
 		binding.video.requestFocus()
 		binding.error.setOnClickListener { onErrorViewClick() }
+
+		addMenuProvider(this)
 	}
 
 	override fun onNewIntent(intent: Intent) {
@@ -136,18 +134,16 @@ abstract class AbstractPlayerActivity :
 		handlePictureInPictureModeChanged(isInPictureInPictureMode)
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu): Boolean {
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 		menuInflater.inflate(R.menu.activity_abstract_player, menu)
 
 		if (!supportsPictureInPictureMode(this)) {
 			menu.removeItem(R.id.menu_pip)
 		}
-
-		return true
 	}
 
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+		return when (menuItem.itemId) {
 			R.id.menu_share -> {
 				onShareMenuItemClicked()
 				true
@@ -158,16 +154,14 @@ abstract class AbstractPlayerActivity :
 				true
 			}
 			R.id.menu_pip -> {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					MultiWindowHelper.enterPictureInPictureMode(this)
-				}
+				MultiWindowHelper.enterPictureInPictureMode(this)
 				true
 			}
 			android.R.id.home -> {
 				finish()
 				true
 			}
-			else -> super.onOptionsItemSelected(item)
+			else -> false
 		}
 	}
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
@@ -39,16 +40,14 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 		programInfoViewModel.title.observe(this, ::onShowTitleChanged)
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		super.onCreateOptionsMenu(menu)
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+		super.onCreateMenu(menu, menuInflater)
 
 		menuInflater.inflate(R.menu.activity_channel_player, menu)
-
-		return true
 	}
 
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		when (item.itemId) {
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+		when (menuItem.itemId) {
 			R.id.menu_program_info -> {
 				val modalBottomSheet = ProgramInfoSheetDialogFragment(programInfoViewModel)
 				modalBottomSheet.show(supportFragmentManager, ProgramInfoSheetDialogFragment.TAG)
@@ -56,7 +55,7 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 			}
 		}
 
-		return super.onOptionsItemSelected(item)
+		return super.onMenuItemSelected(menuItem)
 	}
 
 	override fun onShareMenuItemClicked() {

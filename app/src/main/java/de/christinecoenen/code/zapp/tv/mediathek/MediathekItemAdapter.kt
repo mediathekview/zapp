@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListItemBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MediathekItemAdapter(

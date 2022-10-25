@@ -53,8 +53,6 @@
 	<style name="FullscreenTheme" parent="AppTheme">
 		<item name="android:windowActionBarOverlay">true</item>
 		<item name="android:windowBackground">@null</item>
-		<item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-		<item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
 		<item name="windowActionBarOverlay">true</item>
 
 		<!-- to use toolbar instead of default action bar -->

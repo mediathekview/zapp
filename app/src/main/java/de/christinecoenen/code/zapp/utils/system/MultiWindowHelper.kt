@@ -1,12 +1,9 @@
 package de.christinecoenen.code.zapp.utils.system
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 
 object MultiWindowHelper {
@@ -18,10 +15,8 @@ object MultiWindowHelper {
 	 * @return true if activity is currently displayed in multi window mode
 	 */
 	@JvmStatic
-	@TargetApi(24)
 	fun isInsideMultiWindow(activity: Activity): Boolean {
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-			(activity.isInMultiWindowMode || activity.isInPictureInPictureMode)
+		return activity.isInMultiWindowMode || activity.isInPictureInPictureMode
 	}
 
 	/**
@@ -32,9 +27,8 @@ object MultiWindowHelper {
 	 * @return true if activity is currently displayed in picture in picture mode
 	 */
 	@JvmStatic
-	@TargetApi(24)
 	fun isInPictureInPictureMode(activity: Activity): Boolean {
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInPictureInPictureMode
+		return activity.isInPictureInPictureMode
 	}
 
 	/**
@@ -46,19 +40,12 @@ object MultiWindowHelper {
 	@JvmStatic
 	fun supportsPictureInPictureMode(context: Context): Boolean {
 		val packageManager = context.applicationContext.packageManager
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-			packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+		return packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
 	}
 
 	@JvmStatic
-	@RequiresApi(Build.VERSION_CODES.N)
 	fun enterPictureInPictureMode(activity: AppCompatActivity, params: PictureInPictureParams? = null) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			val nullCheckedParams = params ?: PictureInPictureParams.Builder().build()
-			activity.enterPictureInPictureMode(nullCheckedParams)
-		} else {
-			@Suppress("DEPRECATION")
-			activity.enterPictureInPictureMode()
-		}
+		val nullCheckedParams = params ?: PictureInPictureParams.Builder().build()
+		activity.enterPictureInPictureMode(nullCheckedParams)
 	}
 }

@@ -1,5 +1,6 @@
 # v-next
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
+* Keine Unterstützung mehr für Android 7
 * Nullwerte bei der Anzahl der Sucherergebnisse repariert
 * Android TV erhält aktuelle Live-Stream-Adressen
 

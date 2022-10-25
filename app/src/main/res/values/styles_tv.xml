@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<!-- leanback color overrides that cannot be overwritten any other way -->
-	<color name="lb_preference_item_category_text_color">@color/colorAccent</color>
+	<color name="lb_preference_item_category_text_color" tools:keep="@color/lb_preference_item_category_text_color">@color/colorAccent</color>
 	<color name="lb_error_background_color_opaque">@color/colorBackground</color>
 
 	<style name="LeanbackAppTheme" parent="Theme.Leanback">

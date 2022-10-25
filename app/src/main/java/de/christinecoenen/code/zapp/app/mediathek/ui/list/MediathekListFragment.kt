@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -37,7 +39,7 @@ import java.util.*
 import javax.net.ssl.SSLHandshakeException
 
 
-class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
+class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefreshListener {
 
 	private var _binding: MediathekListFragmentBinding? = null
 	private val binding: MediathekListFragmentBinding
@@ -63,12 +65,6 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 			// close bottom sheet first, before using system back button setting
 			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 		}
-	}
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		setHasOptionsMenu(true)
 	}
 
 	override fun onCreateView(
@@ -100,6 +96,8 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 
 			override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 		})
+
+		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
 		return binding.root
 	}
@@ -159,25 +157,13 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 		_bottomSheetBehavior = null
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-		inflater.inflate(R.menu.activity_main_toolbar, menu)
-		inflater.inflate(R.menu.mediathek_list_fragment, menu)
+	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+		menuInflater.inflate(R.menu.activity_main_toolbar, menu)
+		menuInflater.inflate(R.menu.mediathek_list_fragment, menu)
 	}
 
-	override fun onPrepareOptionsMenu(menu: Menu) {
-		super.onPrepareOptionsMenu(menu)
-
-		val filterIconResId = if (viewmodel.isFilterApplied.value == true) {
-			R.drawable.ic_sharp_filter_list_off_24
-		} else {
-			R.drawable.ic_sharp_filter_list_24
-		}
-		val filterItem = menu.findItem(R.id.menu_filter)
-		filterItem.setIcon(filterIconResId)
-	}
-
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
+	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+		return when (menuItem.itemId) {
 			R.id.menu_filter -> {
 				onFilterMenuClicked()
 				true
@@ -186,8 +172,18 @@ class MediathekListFragment : Fragment(), ListItemListener, OnRefreshListener {
 				onRefresh()
 				true
 			}
-			else -> super.onOptionsItemSelected(item)
+			else -> false
 		}
+	}
+
+	override fun onPrepareMenu(menu: Menu) {
+		val filterIconResId = if (viewmodel.isFilterApplied.value == true) {
+			R.drawable.ic_sharp_filter_list_off_24
+		} else {
+			R.drawable.ic_sharp_filter_list_24
+		}
+		val filterItem = menu.findItem(R.id.menu_filter)
+		filterItem.setIcon(filterIconResId)
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
