@@ -26,7 +26,7 @@ class WorkManagerDownloadController(
 	val applicationContext: Context,
 	private val scope: CoroutineScope,
 	private val mediathekRepository: MediathekRepository,
-	settingsRepository: SettingsRepository
+	private val settingsRepository: SettingsRepository
 ) : IDownloadController {
 
 	private val downloadFileInfoManager: DownloadFileInfoManager =
@@ -60,16 +60,23 @@ class WorkManagerDownloadController(
 		val filePathUri =
 			downloadFileInfoManager.getDownloadFilePath(show.mediathekShow, quality)
 
-		// TODO: delete any downloads with wrong quality
-		// TODO: set wifi constraints
+		val networkType = if (settingsRepository.downloadOverUnmeteredNetworkOnly)
+			NetworkType.UNMETERED else NetworkType.CONNECTED
+
+		val constraints = Constraints.Builder()
+			.setRequiresStorageNotLow(true)
+			.setRequiredNetworkType(networkType)
+			.build()
 
 		val workerInput = DownloadWorker.constructInputData(
 			downloadUrl,
 			filePathUri,
 			show.mediathekShow.title
 		)
+
 		val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
 			.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+			.setConstraints(constraints)
 			.setInputData(workerInput)
 			.addTag(show.id.toString())
 			.addTag(WorkTag)
