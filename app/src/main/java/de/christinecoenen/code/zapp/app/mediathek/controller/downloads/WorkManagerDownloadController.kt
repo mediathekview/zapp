@@ -66,9 +66,14 @@ class WorkManagerDownloadController(
 		// TODO: delete any downloads with wrong quality
 		// TODO: set wifi constraints
 
+		val workerInput = DownloadWorker.constructInputData(
+			downloadUrl,
+			filePathUri,
+			show.mediathekShow.title
+		)
 		val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
 			.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-			.setInputData(DownloadWorker.constructInputData(downloadUrl, filePathUri))
+			.setInputData(workerInput)
 			.addTag(show.id.toString())
 			.addTag(WorkTag)
 			.build()
@@ -142,6 +147,7 @@ class WorkManagerDownloadController(
 		mediathekRepository.updateShow(show)
 
 		// TODO: delete file if canceled
+		// TODO: show notification on error or success
 
 		if (show.downloadedVideoPath != null) {
 			val fileUri = Uri.parse(show.downloadedVideoPath)

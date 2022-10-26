@@ -1,11 +1,14 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.net.Uri
-import androidx.work.CoroutineWorker
-import androidx.work.WorkInfo
-import androidx.work.WorkerParameters
-import androidx.work.workDataOf
+import androidx.core.app.NotificationCompat
+import androidx.work.*
+import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -18,18 +21,19 @@ import java.io.OutputStream
 class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	CoroutineWorker(appContext, workerParams), KoinComponent {
 
-	private val httpClient: OkHttpClient by inject()
-
 	companion object {
 		private const val ProgressKey = "Progress"
 		private const val SourceUrlKey = "SourceUrl"
 		private const val TargetFileUriKey = "TargetFileUri"
+		private const val TitleKey = "Title"
 		private const val BufferSize = 1024
 
-		fun constructInputData(sourceUrl: String, targetFileUri: String) = workDataOf(
-			SourceUrlKey to sourceUrl,
-			TargetFileUriKey to targetFileUri
-		)
+		fun constructInputData(sourceUrl: String, targetFileUri: String, title: String) =
+			workDataOf(
+				SourceUrlKey to sourceUrl,
+				TargetFileUriKey to targetFileUri,
+				TitleKey to title
+			)
 
 		/**
 		 * @return download progress between 0 and 100
@@ -37,15 +41,42 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		fun getProgress(workInfo: WorkInfo) = workInfo.progress.getInt(ProgressKey, 0)
 	}
 
-	override suspend fun doWork(): Result {
-		// TODO: run in foreground
+	private val httpClient: OkHttpClient by inject()
 
+	private val sourceUrl by lazy { inputData.getString(SourceUrlKey) }
+	private val targetFileUri by lazy { inputData.getString(TargetFileUriKey) }
+	private val title by lazy { inputData.getString(TitleKey) ?: "" }
+
+	// TODO: make notification clickable
+	private val progressNotificationBuilder = NotificationCompat.Builder(
+		applicationContext,
+		NotificationHelper.CHANNEL_ID_DOWNLOAD_PROGRESS
+	)
+		.setContentTitle(title)
+		.setTicker(title)
+		.setContentText("Lädt herunter")
+		.setOngoing(true)
+		.setSmallIcon(R.drawable.ic_baseline_save_alt_24)
+		.setPriority(NotificationManager.IMPORTANCE_MIN)
+		.setCategory(Notification.CATEGORY_SERVICE)
+		.addAction(
+			R.drawable.fetch_notification_cancel,
+			appContext.getString(android.R.string.cancel),
+			getCancelIntent()
+		)
+
+	init {
+		NotificationHelper.createDownloadProgressChannel(applicationContext)
+	}
+
+	override suspend fun doWork(): Result {
 		reportProgress(0)
 
-		val sourceUrl = inputData.getString(SourceUrlKey) ?: return Result.failure()
-		val targetFileUri = inputData.getString(TargetFileUriKey) ?: return Result.failure()
+		if (sourceUrl == null || targetFileUri == null) {
+			return Result.failure()
+		}
 
-		val request = Request.Builder().url(sourceUrl).build()
+		val request = Request.Builder().url(sourceUrl!!).build()
 		val response = httpClient.newCall(request).execute()
 
 		if (!response.isSuccessful || response.body() == null) {
@@ -79,7 +110,8 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		outputStream: OutputStream,
 		contentLength: Long
 	) = withContext(Dispatchers.IO) {
-		var bytesCopied = 0
+		var bytesCopied = 0L
+		var readCount = 0L
 		val buffer = ByteArray(BufferSize)
 		var bytes = inputStream.read(buffer)
 
@@ -88,14 +120,31 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			bytesCopied += bytes
 
 			bytes = inputStream.read(buffer)
+			readCount++
 
-			val progress = ((bytesCopied * 100) / contentLength).toInt()
-			reportProgress(progress)
+			// TODO: use a better, time based debounce
+			if (readCount % 1000 == 0L) {
+				val progress = ((bytesCopied * 100) / contentLength).toInt()
+				reportProgress(progress)
+			}
 		}
+	}
+
+	private fun createForegroundInfo(progress: Int, indeterminate: Boolean): ForegroundInfo {
+		val notification = progressNotificationBuilder
+			.setProgress(100, progress, indeterminate)
+			.build()
+
+		return ForegroundInfo(id.hashCode(), notification)
 	}
 
 	private suspend fun reportProgress(progress: Int) {
 		val update = workDataOf(ProgressKey to progress)
 		setProgress(update)
+
+		setForeground(createForegroundInfo(progress, progress == 0))
 	}
+
+	private fun getCancelIntent(): PendingIntent = WorkManager.getInstance(applicationContext)
+		.createCancelPendingIntent(id)
 }
