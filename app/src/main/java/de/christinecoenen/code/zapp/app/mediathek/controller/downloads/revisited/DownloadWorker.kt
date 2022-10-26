@@ -1,13 +1,9 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
 
-import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.net.Uri
-import androidx.core.app.NotificationCompat
 import androidx.work.*
-import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,23 +43,9 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private val targetFileUri by lazy { inputData.getString(TargetFileUriKey) }
 	private val title by lazy { inputData.getString(TitleKey) ?: "" }
 
-	// TODO: make notification clickable
-	private val progressNotificationBuilder = NotificationCompat.Builder(
-		applicationContext,
-		NotificationHelper.CHANNEL_ID_DOWNLOAD_PROGRESS
+	private val downloadProgressNotification = DownloadProgressNotification(
+		appContext, title, getCancelIntent()
 	)
-		.setContentTitle(title)
-		.setTicker(title)
-		.setContentText("Lädt herunter")
-		.setOngoing(true)
-		.setSmallIcon(R.drawable.ic_baseline_save_alt_24)
-		.setPriority(NotificationManager.IMPORTANCE_MIN)
-		.setCategory(Notification.CATEGORY_SERVICE)
-		.addAction(
-			R.drawable.fetch_notification_cancel,
-			appContext.getString(android.R.string.cancel),
-			getCancelIntent()
-		)
 
 	init {
 		NotificationHelper.createDownloadProgressChannel(applicationContext)
@@ -130,19 +112,14 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		}
 	}
 
-	private fun createForegroundInfo(progress: Int, indeterminate: Boolean): ForegroundInfo {
-		val notification = progressNotificationBuilder
-			.setProgress(100, progress, indeterminate)
-			.build()
-
-		return ForegroundInfo(id.hashCode(), notification)
-	}
+	private fun createForegroundInfo(progress: Int) =
+		ForegroundInfo(id.hashCode(), downloadProgressNotification.build(progress))
 
 	private suspend fun reportProgress(progress: Int) {
 		val update = workDataOf(ProgressKey to progress)
 		setProgress(update)
 
-		setForeground(createForegroundInfo(progress, progress == 0))
+		setForeground(createForegroundInfo(progress))
 	}
 
 	private fun getCancelIntent(): PendingIntent = WorkManager.getInstance(applicationContext)
