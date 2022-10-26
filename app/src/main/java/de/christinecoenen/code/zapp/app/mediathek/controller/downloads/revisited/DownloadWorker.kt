@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.net.Uri
 import androidx.work.*
-import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -46,10 +45,6 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private val downloadProgressNotification = DownloadProgressNotification(
 		appContext, title, getCancelIntent()
 	)
-
-	init {
-		NotificationHelper.createDownloadProgressChannel(applicationContext)
-	}
 
 	override suspend fun doWork(): Result {
 		reportProgress(0)

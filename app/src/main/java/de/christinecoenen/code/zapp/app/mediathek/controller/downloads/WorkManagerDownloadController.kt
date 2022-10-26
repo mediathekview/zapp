@@ -2,15 +2,20 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.asFlow
 import androidx.work.*
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadCompletedEventNotification
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadFailedEventNotification
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadQueuedEventNotification
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadWorker
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -33,13 +38,16 @@ class WorkManagerDownloadController(
 		DownloadFileInfoManager(applicationContext, settingsRepository)
 
 	private val workManager = WorkManager.getInstance(applicationContext)
+	private val notificationManager = NotificationManagerCompat.from(applicationContext)
 
 	companion object {
 		const val WorkTag = "zapp_download"
 	}
 
 	init {
-		workManager.pruneWork()
+		NotificationHelper.createDownloadProgressChannel(applicationContext)
+		NotificationHelper.createDownloadEventChannel(applicationContext)
+
 		scope.launch {
 			workManager
 				.getWorkInfosByTagLiveData(WorkTag)
@@ -56,6 +64,8 @@ class WorkManagerDownloadController(
 	override suspend fun startDownload(show: PersistedMediathekShow, quality: Quality) {
 		val downloadUrl = show.mediathekShow.getVideoUrl(quality)
 			?: throw DownloadException("$quality is no valid download quality.")
+
+		deleteDownload(show)
 
 		val filePathUri =
 			downloadFileInfoManager.getDownloadFilePath(show.mediathekShow, quality)
@@ -115,6 +125,8 @@ class WorkManagerDownloadController(
 	private suspend fun deleteDownload(show: PersistedMediathekShow) {
 		deleteFile(show)
 
+		notificationManager.cancel(show.downloadId)
+
 		show.downloadProgress = 0
 		show.downloadStatus = DownloadStatus.NONE
 		show.downloadId = 0
@@ -155,15 +167,38 @@ class WorkManagerDownloadController(
 		show.downloadStatus = when (workInfo.state) {
 			WorkInfo.State.SUCCEEDED -> DownloadStatus.COMPLETED
 			WorkInfo.State.ENQUEUED -> DownloadStatus.QUEUED
+			WorkInfo.State.BLOCKED -> DownloadStatus.QUEUED
 			WorkInfo.State.RUNNING -> DownloadStatus.DOWNLOADING
 			WorkInfo.State.FAILED -> DownloadStatus.FAILED
-			WorkInfo.State.BLOCKED -> DownloadStatus.ADDED
 			WorkInfo.State.CANCELLED -> DownloadStatus.CANCELLED
 		}
 
 		mediathekRepository.updateShow(show)
 
-		// TODO: show notification on error or success
+		val notificationTitle = show.mediathekShow.title
+		val notification = when (show.downloadStatus) {
+			DownloadStatus.COMPLETED -> DownloadCompletedEventNotification(
+				applicationContext,
+				notificationTitle
+			)
+			DownloadStatus.QUEUED -> DownloadQueuedEventNotification(
+				applicationContext,
+				notificationTitle
+			)
+			DownloadStatus.FAILED -> DownloadFailedEventNotification(
+				applicationContext,
+				notificationTitle
+			)
+			DownloadStatus.CANCELLED -> {
+				notificationManager.cancel(show.downloadId)
+				null
+			}
+			else -> null
+		}
+
+		notification?.let {
+			notificationManager.notify(show.downloadId, it.build())
+		}
 
 		when (workInfo.state) {
 			WorkInfo.State.FAILED,
