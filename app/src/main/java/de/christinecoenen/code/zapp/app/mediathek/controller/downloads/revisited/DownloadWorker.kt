@@ -26,7 +26,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		private const val SourceUrlKey = "SourceUrl"
 		private const val TargetFileUriKey = "TargetFileUri"
 		private const val TitleKey = "Title"
-		private const val BufferSize = 1024
+		private const val BufferSize = DEFAULT_BUFFER_SIZE
 
 		fun constructInputData(sourceUrl: String, targetFileUri: String, title: String) =
 			workDataOf(
@@ -123,7 +123,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			readCount++
 
 			// TODO: use a better, time based debounce
-			if (readCount % 1000 == 0L) {
+			if (readCount % 500 == 0L) {
 				val progress = ((bytesCopied * 100) / contentLength).toInt()
 				reportProgress(progress)
 			}
