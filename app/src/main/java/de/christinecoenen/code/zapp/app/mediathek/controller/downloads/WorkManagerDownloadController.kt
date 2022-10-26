@@ -90,21 +90,7 @@ class WorkManagerDownloadController(
 	}
 
 	override fun stopDownload(persistedShowId: Int) {
-		workManager.cancelAllWorkByTag(persistedShowId.toString())
-
-		scope.launch {
-			val show = mediathekRepository
-				.getPersistedShow(persistedShowId)
-				.firstOrNull() ?: return@launch
-
-			deleteFile(show)
-
-			show.downloadProgress = 0
-			show.downloadStatus = DownloadStatus.CANCELLED
-			show.downloadedVideoPath = null
-
-			mediathekRepository.updateShow(show)
-		}
+		deleteDownload(persistedShowId)
 	}
 
 	override fun deleteDownload(persistedShowId: Int) {
