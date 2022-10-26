@@ -54,7 +54,7 @@ class MediathekRepository(private val database: Database) {
 		withContext(Dispatchers.IO) {
 			database
 				.mediathekShowDao()
-				.updateDownloadedVideoPath(downloadId, videoPath!!)
+				.updateDownloadedVideoPath(downloadId, videoPath)
 		}
 
 	fun getPersistedShow(id: Int): Flow<PersistedMediathekShow> {

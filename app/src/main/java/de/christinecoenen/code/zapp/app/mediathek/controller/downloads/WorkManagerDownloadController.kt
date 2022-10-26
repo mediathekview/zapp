@@ -93,18 +93,32 @@ class WorkManagerDownloadController(
 	}
 
 	override fun stopDownload(persistedShowId: Int) {
-		deleteDownload(persistedShowId)
+		workManager.cancelAllWorkByTag(persistedShowId.toString())
+
+		scope.launch {
+			val show = mediathekRepository
+				.getPersistedShow(persistedShowId)
+				.firstOrNull() ?: return@launch
+
+			deleteFile(show)
+
+			show.downloadProgress = 0
+			show.downloadStatus = DownloadStatus.CANCELLED
+			show.downloadedVideoPath = null
+
+			mediathekRepository.updateShow(show)
+		}
 	}
 
 	override fun deleteDownload(persistedShowId: Int) {
 		workManager.cancelAllWorkByTag(persistedShowId.toString())
 
 		scope.launch {
-			// TODO: delete file
-
 			val show = mediathekRepository
 				.getPersistedShow(persistedShowId)
 				.firstOrNull() ?: return@launch
+
+			deleteFile(show)
 
 			show.downloadProgress = 0
 			show.downloadStatus = DownloadStatus.NONE
@@ -146,8 +160,15 @@ class WorkManagerDownloadController(
 
 		mediathekRepository.updateShow(show)
 
-		// TODO: delete file if canceled
 		// TODO: show notification on error or success
+
+		when (workInfo.state) {
+			WorkInfo.State.FAILED,
+			WorkInfo.State.CANCELLED -> {
+				deleteFile(show)
+			}
+			else -> {}
+		}
 
 		if (show.downloadedVideoPath != null) {
 			val fileUri = Uri.parse(show.downloadedVideoPath)
@@ -157,5 +178,14 @@ class WorkManagerDownloadController(
 				show.downloadStatus
 			)
 		}
+	}
+
+	private suspend fun deleteFile(mediathekShow: PersistedMediathekShow) {
+		mediathekShow.downloadedVideoPath?.let {
+			downloadFileInfoManager.deleteDownloadFile(it)
+		}
+
+		mediathekRepository.updateDownloadedVideoPath(mediathekShow.downloadId, null)
+		mediathekRepository.updateDownloadProgress(mediathekShow.downloadId, 0)
 	}
 }

@@ -34,6 +34,21 @@ internal class DownloadFileInfoManager(
 		updateDownloadFileInMediaCollection(download.fileUri, DownloadStatus.DELETED)
 	}
 
+	fun deleteDownloadFile(filePath: String) {
+		val file = File(filePath)
+
+		try {
+			file.delete()
+		} catch (e: Exception) {
+			Timber.w(e)
+		}
+
+		updateDownloadFileInMediaCollection(
+			Uri.parse(filePath),
+			DownloadStatus.DELETED
+		)
+	}
+
 	fun shouldDeleteDownload(download: Download): Boolean {
 		val filePath = download.file
 

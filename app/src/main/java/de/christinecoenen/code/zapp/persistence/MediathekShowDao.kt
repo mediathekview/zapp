@@ -65,7 +65,7 @@ interface MediathekShowDao {
 	suspend fun updateDownloadProgress(downloadId: Int, progress: Int)
 
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
-	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String)
+	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?)
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
 	suspend fun setPlaybackPosition(
