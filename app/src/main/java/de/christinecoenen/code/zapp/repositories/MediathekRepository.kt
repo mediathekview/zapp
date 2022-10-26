@@ -64,6 +64,13 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
+	fun getCompletedDownloads(): Flow<List<PersistedMediathekShow>> {
+		return database
+			.mediathekShowDao()
+			.getCompletedDownloads()
+			.flowOn(Dispatchers.IO)
+	}
+
 	fun getPersistedShowByApiId(apiId: String): Flow<PersistedMediathekShow> {
 		return database
 			.mediathekShowDao()

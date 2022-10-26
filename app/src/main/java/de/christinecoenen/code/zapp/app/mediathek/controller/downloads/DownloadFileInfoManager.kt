@@ -12,6 +12,7 @@ import com.tonyodev.fetch2.Download
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import timber.log.Timber
 import java.io.File
@@ -57,9 +58,20 @@ internal class DownloadFileInfoManager(
 		}
 
 		val downloadFile = File(download.file)
-		return !downloadFile.exists() && Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(
-			downloadFile
-		)
+		return !downloadFile.exists() &&
+			Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(downloadFile)
+	}
+
+	fun shouldDeleteDownload(show: PersistedMediathekShow): Boolean {
+		val filePath = show.downloadedVideoPath ?: return false
+
+		if (isMediaStoreFile(filePath)) {
+			return isDeletedMediaStoreFile(filePath)
+		}
+
+		val downloadFile = File(filePath)
+		return !downloadFile.exists() &&
+			Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(downloadFile)
 	}
 
 	fun getDownloadFilePath(show: MediathekShow, quality: Quality): String {

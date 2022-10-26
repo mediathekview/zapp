@@ -13,10 +13,7 @@ import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import kotlin.time.Duration.Companion.milliseconds
@@ -118,20 +115,33 @@ class WorkManagerDownloadController(
 				.getPersistedShow(persistedShowId)
 				.firstOrNull() ?: return@launch
 
-			deleteFile(show)
-
-			show.downloadProgress = 0
-			show.downloadStatus = DownloadStatus.NONE
-			show.downloadId = 0
-			show.downloadedAt = null
-			show.downloadedVideoPath = null
-
-			mediathekRepository.updateShow(show)
+			deleteDownload(show)
 		}
 	}
 
+	private suspend fun deleteDownload(show: PersistedMediathekShow) {
+		deleteFile(show)
+
+		show.downloadProgress = 0
+		show.downloadStatus = DownloadStatus.NONE
+		show.downloadId = 0
+		show.downloadedAt = null
+		show.downloadedVideoPath = null
+
+		mediathekRepository.updateShow(show)
+	}
+
 	override fun deleteDownloadsWithDeletedFiles() {
-		// TODO: implement
+		scope.launch {
+			mediathekRepository
+				.getCompletedDownloads()
+				.first()
+				.forEach {
+					if (downloadFileInfoManager.shouldDeleteDownload(it)) {
+						deleteDownload(it)
+					}
+				}
+		}
 	}
 
 	override fun getDownloadStatus(persistedShowId: Int): Flow<DownloadStatus> {

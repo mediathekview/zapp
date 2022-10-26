@@ -35,6 +35,9 @@ interface MediathekShowDao {
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE id=:id")
 	fun getDownloadProgress(id: Int): Flow<Int>
 
+	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus=4")
+	fun getCompletedDownloads(): Flow<List<PersistedMediathekShow>>
+
 	@Insert
 	suspend fun insert(vararg show: PersistedMediathekShow)
 
