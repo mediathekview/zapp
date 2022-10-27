@@ -173,6 +173,39 @@ class WorkManagerDownloadController(
 
 		mediathekRepository.updateShow(show)
 
+		showStatusChangeNotificationIfNeeded(show)
+		deleteFileOnStatusChangeIfNeeded(show)
+		updateMediaCollectionOnStatusChangeIfNeeded(show)
+	}
+
+	private fun updateMediaCollectionOnStatusChangeIfNeeded(show: PersistedMediathekShow) {
+		if (show.downloadedVideoPath == null) {
+			return
+		}
+
+		val fileUri = Uri.parse(show.downloadedVideoPath)
+
+		downloadFileInfoManager.updateDownloadFileInMediaCollection(
+			fileUri,
+			show.downloadStatus
+		)
+	}
+
+	private suspend fun deleteFileOnStatusChangeIfNeeded(show: PersistedMediathekShow) {
+		when (show.downloadStatus) {
+			DownloadStatus.FAILED,
+			DownloadStatus.CANCELLED -> {
+				deleteFile(show)
+			}
+			else -> {}
+		}
+	}
+
+	private fun showStatusChangeNotificationIfNeeded(show: PersistedMediathekShow) {
+		if (!notificationManager.areNotificationsEnabled()) {
+			return
+		}
+
 		val notificationTitle = show.mediathekShow.title
 		val notification = when (show.downloadStatus) {
 			DownloadStatus.COMPLETED -> DownloadCompletedEventNotification(
@@ -197,23 +230,6 @@ class WorkManagerDownloadController(
 		// TODO: this will let notifications reappear if previously dismissed by the user
 		notification?.let {
 			notificationManager.notify(show.downloadId, it.build())
-		}
-
-		when (workInfo.state) {
-			WorkInfo.State.FAILED,
-			WorkInfo.State.CANCELLED -> {
-				deleteFile(show)
-			}
-			else -> {}
-		}
-
-		if (show.downloadedVideoPath != null) {
-			val fileUri = Uri.parse(show.downloadedVideoPath)
-
-			downloadFileInfoManager.updateDownloadFileInMediaCollection(
-				fileUri,
-				show.downloadStatus
-			)
 		}
 	}
 
