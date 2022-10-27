@@ -1,10 +1,15 @@
 package de.christinecoenen.code.zapp.app.main
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -22,6 +27,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
+
+	private val requestPermissionLauncher =
+		registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -51,6 +59,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		addMenuProvider(this)
 
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
+
+		requestPermissions()
 	}
 
 	@Suppress("UNUSED_PARAMETER")
@@ -88,5 +98,19 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	override fun onSupportNavigateUp(): Boolean {
 		return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+	}
+
+	private fun requestPermissions() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			if (ContextCompat.checkSelfPermission(
+					this,
+					Manifest.permission.POST_NOTIFICATIONS
+				) == PackageManager.PERMISSION_GRANTED
+			) {
+				return
+			}
+
+			requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+		}
 	}
 }
