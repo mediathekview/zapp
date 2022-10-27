@@ -2,10 +2,10 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisite
 
 import android.app.PendingIntent
 import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.core.component.KoinComponent
@@ -13,6 +13,7 @@ import org.koin.core.component.inject
 import timber.log.Timber
 import java.io.InputStream
 import java.io.OutputStream
+import kotlin.time.Duration.Companion.milliseconds
 
 class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	CoroutineWorker(appContext, workerParams), KoinComponent {
@@ -23,6 +24,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		private const val TargetFileUriKey = "TargetFileUri"
 		private const val TitleKey = "Title"
 		private const val BufferSize = DEFAULT_BUFFER_SIZE
+		private val NotificationDelay = 100.milliseconds
 
 		fun constructInputData(sourceUrl: String, targetFileUri: String, title: String) =
 			workDataOf(
@@ -40,9 +42,12 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private val httpClient: OkHttpClient by inject()
 	private val downloadFileInfoManager: DownloadFileInfoManager by inject()
 
+	private val notificationManager = NotificationManagerCompat.from(applicationContext)
+
 	private val sourceUrl by lazy { inputData.getString(SourceUrlKey) }
 	private val targetFileUri by lazy { inputData.getString(TargetFileUriKey) }
 	private val title by lazy { inputData.getString(TitleKey) ?: "" }
+	private val notificationId by lazy { id.hashCode() }
 
 	private var progress = 0
 
@@ -54,7 +59,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		reportProgress()
 
 		if (sourceUrl == null || targetFileUri == null) {
-			return Result.failure()
+			return failure()
 		}
 
 		val request = Request.Builder().url(sourceUrl!!).build()
@@ -62,7 +67,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 
 		if (!response.isSuccessful || response.body() == null) {
 			Timber.w("server response not successful")
-			return Result.failure()
+			return failure()
 		}
 
 		val body = response.body()!!
@@ -70,7 +75,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			downloadFileInfoManager.openOutputStream(targetFileUri!!).use { outputSream ->
 				if (outputSream == null) {
 					Timber.w("fileoutputstream not readable")
-					return Result.failure()
+					return failure()
 				}
 
 				body.byteStream().use { inputStream ->
@@ -79,13 +84,35 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			}
 		} catch (e: Exception) {
 			Timber.w(e)
-			return Result.failure()
+			return failure()
 		}
 
 		progress = 100
 		reportProgress()
 
+		return success()
+	}
+
+	private fun success(): Result {
+		MainScope().launch {
+			delay(NotificationDelay)
+
+			val notification = DownloadCompletedEventNotification(applicationContext, title)
+			notificationManager.notify(notificationId, notification.build())
+		}
+
 		return Result.success()
+	}
+
+	private fun failure(): Result {
+		MainScope().launch {
+			delay(NotificationDelay)
+
+			val notification = DownloadFailedEventNotification(applicationContext, title)
+			notificationManager.notify(notificationId, notification.build())
+		}
+
+		return Result.failure()
 	}
 
 	private suspend fun download(

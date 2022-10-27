@@ -6,8 +6,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.asFlow
 import androidx.work.*
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadCompletedEventNotification
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadFailedEventNotification
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadQueuedEventNotification
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadWorker
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -208,15 +206,7 @@ class WorkManagerDownloadController(
 
 		val notificationTitle = show.mediathekShow.title
 		val notification = when (show.downloadStatus) {
-			DownloadStatus.COMPLETED -> DownloadCompletedEventNotification(
-				applicationContext,
-				notificationTitle
-			)
 			DownloadStatus.QUEUED -> DownloadQueuedEventNotification(
-				applicationContext,
-				notificationTitle
-			)
-			DownloadStatus.FAILED -> DownloadFailedEventNotification(
 				applicationContext,
 				notificationTitle
 			)
@@ -224,10 +214,17 @@ class WorkManagerDownloadController(
 				notificationManager.cancel(show.downloadId)
 				null
 			}
-			else -> null
+			DownloadStatus.FAILED,
+			DownloadStatus.COMPLETED -> {
+				// will be handled in worker
+				null
+			}
+			else -> {
+				// no notification needed
+				null
+			}
 		}
 
-		// TODO: this will let notifications reappear if previously dismissed by the user
 		notification?.let {
 			notificationManager.notify(show.downloadId, it.build())
 		}
