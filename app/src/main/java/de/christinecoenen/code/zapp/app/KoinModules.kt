@@ -9,6 +9,7 @@ import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivi
 import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApiServiceFactory
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.WorkManagerDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
@@ -47,7 +48,7 @@ class KoinModules {
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
-			single { WorkManagerDownloadController(androidContext(), get(), get(), get())} bind IDownloadController::class
+			single { WorkManagerDownloadController(androidContext(), get(), get(), get(), get())} bind IDownloadController::class
 			single {
 				ZappBackendApiServiceFactory(androidContext(), get()).create()
 			} bind IZappBackendApiService::class
@@ -55,6 +56,7 @@ class KoinModules {
 				MediathekApiServiceFactory(androidContext(), get()).create()
 			} bind IMediathekApiService::class
 			single { ProgramInfoRepository(get()) }
+			single { DownloadFileInfoManager(get(), get()) }
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get(), get()) }

@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
+import androidx.core.net.toFile
 import com.tonyodev.fetch2.Download
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
@@ -16,9 +17,10 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import timber.log.Timber
 import java.io.File
+import java.io.OutputStream
 import java.util.*
 
-internal class DownloadFileInfoManager(
+class DownloadFileInfoManager(
 	private val applicationContext: Context,
 	private val settingsRepository: SettingsRepository
 ) {
@@ -113,6 +115,21 @@ internal class DownloadFileInfoManager(
 
 				else -> {}
 			}
+		}
+	}
+
+	fun openOutputStream(filePathUri: String): OutputStream? {
+
+		return if (isMediaStoreFile(filePathUri)) {
+			val uri = Uri.parse(filePathUri)
+			applicationContext.contentResolver.openOutputStream(uri)
+		} else {
+			// TODO: this throws an IOException "No such file or directory"
+			val uri = Uri.parse("file:/$filePathUri")
+			val file = uri.toFile()
+			file.parentFile?.mkdirs()
+			file.createNewFile()
+			file.outputStream()
 		}
 	}
 

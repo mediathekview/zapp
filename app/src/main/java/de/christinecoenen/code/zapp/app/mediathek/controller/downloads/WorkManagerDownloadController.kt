@@ -31,11 +31,9 @@ class WorkManagerDownloadController(
 	val applicationContext: Context,
 	private val scope: CoroutineScope,
 	private val mediathekRepository: MediathekRepository,
-	private val settingsRepository: SettingsRepository
+	private val settingsRepository: SettingsRepository,
+	private val downloadFileInfoManager: DownloadFileInfoManager
 ) : IDownloadController {
-
-	private val downloadFileInfoManager: DownloadFileInfoManager =
-		DownloadFileInfoManager(applicationContext, settingsRepository)
 
 	private val workManager = WorkManager.getInstance(applicationContext)
 	private val notificationManager = NotificationManagerCompat.from(applicationContext)
@@ -196,6 +194,7 @@ class WorkManagerDownloadController(
 			else -> null
 		}
 
+		// TODO: this will let notifications reappear if previously dismissed by the user
 		notification?.let {
 			notificationManager.notify(show.downloadId, it.build())
 		}

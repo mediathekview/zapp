@@ -2,14 +2,15 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisite
 
 import android.app.PendingIntent
 import android.content.Context
-import android.net.Uri
 import androidx.work.*
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import timber.log.Timber
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -37,17 +38,20 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	}
 
 	private val httpClient: OkHttpClient by inject()
+	private val downloadFileInfoManager: DownloadFileInfoManager by inject()
 
 	private val sourceUrl by lazy { inputData.getString(SourceUrlKey) }
 	private val targetFileUri by lazy { inputData.getString(TargetFileUriKey) }
 	private val title by lazy { inputData.getString(TitleKey) ?: "" }
+
+	private var progress = 0
 
 	private val downloadProgressNotification = DownloadProgressNotification(
 		appContext, title, getCancelIntent()
 	)
 
 	override suspend fun doWork(): Result {
-		reportProgress(0)
+		reportProgress()
 
 		if (sourceUrl == null || targetFileUri == null) {
 			return Result.failure()
@@ -57,27 +61,29 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		val response = httpClient.newCall(request).execute()
 
 		if (!response.isSuccessful || response.body() == null) {
+			Timber.w("server response not successful")
 			return Result.failure()
 		}
 
-		val fileOutputStream = applicationContext
-			.contentResolver
-			.openOutputStream(Uri.parse(targetFileUri)) ?: return Result.failure()
 		val body = response.body()!!
-		val fileInputStream = body.byteStream()
-
 		try {
-			download(fileInputStream, fileOutputStream, body.contentLength())
-		} catch (e: Exception) {
-			return Result.failure()
-		} finally {
-			withContext(Dispatchers.IO) {
-				fileOutputStream.close()
-				fileInputStream.close()
+			downloadFileInfoManager.openOutputStream(targetFileUri!!).use { outputSream ->
+				if (outputSream == null) {
+					Timber.w("fileoutputstream not readable")
+					return Result.failure()
+				}
+
+				body.byteStream().use { inputStream ->
+					download(inputStream, outputSream, body.contentLength())
+				}
 			}
+		} catch (e: Exception) {
+			Timber.w(e)
+			return Result.failure()
 		}
 
-		reportProgress(100)
+		progress = 100
+		reportProgress()
 
 		return Result.success()
 	}
@@ -101,20 +107,20 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 
 			// TODO: use a better, time based debounce
 			if (readCount % 500 == 0L) {
-				val progress = ((bytesCopied * 100) / contentLength).toInt()
-				reportProgress(progress)
+				progress = ((bytesCopied * 100) / contentLength).toInt()
+				reportProgress()
 			}
 		}
 	}
 
-	private fun createForegroundInfo(progress: Int) =
+	override suspend fun getForegroundInfo() =
 		ForegroundInfo(id.hashCode(), downloadProgressNotification.build(progress))
 
-	private suspend fun reportProgress(progress: Int) {
+	private suspend fun reportProgress() {
 		val update = workDataOf(ProgressKey to progress)
 		setProgress(update)
 
-		setForeground(createForegroundInfo(progress))
+		setForeground(getForegroundInfo())
 	}
 
 	private fun getCancelIntent(): PendingIntent = WorkManager.getInstance(applicationContext)
