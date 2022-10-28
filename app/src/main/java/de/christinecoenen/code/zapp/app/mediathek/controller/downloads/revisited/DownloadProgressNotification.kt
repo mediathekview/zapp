@@ -4,8 +4,10 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
 class DownloadProgressNotification(
@@ -22,6 +24,10 @@ class DownloadProgressNotification(
 		.setContentTitle(title)
 		.setTicker(title)
 		.setContentText(appContext.getString(R.string.notification_download_downloading))
+		.setColor(
+			ContextThemeWrapper(appContext, R.style.AppTheme)
+				.themeColor(android.R.attr.colorPrimary)
+		)
 		.setOngoing(true)
 		.setSmallIcon(android.R.drawable.stat_sys_download)
 		.setPriority(NotificationManager.IMPORTANCE_MIN)

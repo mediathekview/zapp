@@ -3,8 +3,10 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisite
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
 abstract class DownloadEventNotification(
@@ -20,8 +22,11 @@ abstract class DownloadEventNotification(
 		.setContentTitle(title)
 		.setTicker(title)
 		.setOnlyAlertOnce(true)
+		.setColor(
+			ContextThemeWrapper(appContext, R.style.AppTheme)
+				.themeColor(android.R.attr.colorPrimary)
+		)
 		.setPriority(NotificationManager.IMPORTANCE_MIN)
-		.setCategory(Notification.CATEGORY_SERVICE)
 		.setCategory(Notification.CATEGORY_SERVICE)
 
 	fun build() = notificationBuilder
