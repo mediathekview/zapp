@@ -1,0 +1,2 @@
+* Correzione dell'attivazione della modalità standby durante la riproduzione video su dispositivi Android TV
+* Correzione dell'attivazione della modalità standby al ritorno dalla riproduzione in background

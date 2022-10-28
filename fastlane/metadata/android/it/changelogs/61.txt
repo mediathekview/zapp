@@ -1,0 +1,3 @@
+* Corretto il layout dell'elenco dei canali sui dispositivi tablet
+* Barra di stato bloccata in modalità fullscreen su alcuni dispositivi
+* Miglioramento dei controlli del volume e della luminosità

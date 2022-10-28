@@ -1,0 +1,5 @@
+* estensione della ricerca in mediateca: filtraggio per canale e durata dello spettacolo
+* rimossi i suggerimenti di ricerca
+* visualizzazione del logo del canale nelle notifiche di riproduzione
+* utilizzare la massima qualità disponibile quando si condividono gli spettacoli di mediathek
+* aggiunta voce faq relativa al supporto chromecast

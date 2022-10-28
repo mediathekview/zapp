@@ -1,0 +1,5 @@
+* L'interfaccia del lettore video viene nascosta automaticamente più velocemente
+* Errori di riproduzione corretti per alcuni spettacoli mediathek
+* Corretto il pulsante di download disattivato per alcuni spettacoli mediathek
+* Corretto l'arresto anomalo dell'app nell'elenco di mediathek
+* Corretta la riproduzione in background che non viene interrotta dal sistema dopo alcuni minuti

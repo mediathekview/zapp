@@ -1,0 +1,5 @@
+* Supporto ufficiale per Android TV!
+* Nuovo design Material 3
+* Supporto per i backup di Android per le preferenze e le voci del database
+* Le icone delle categorie sono ora visibili nel tema chiaro
+* Modalità fullscreen migliorata per i video

@@ -1,0 +1,3 @@
+* I download non riusciti possono essere rimossi dall'elenco dei download.
+* Selezione della qualità video riparata nelle reti a pagamento
+* Il numero di risultati viene visualizzato all'interno del filtro mediathek

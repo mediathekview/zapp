@@ -1,0 +1,3 @@
+* L'interfaccia del lettore si nasconde automaticamente al ritorno dalla riproduzione in background.
+* Correzione dei crash dell'app sui dispositivi Android TV più vecchi
+* Cliccare sulla notifica di download terminato funziona di nuovo con Android 12

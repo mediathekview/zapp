@@ -1,0 +1,3 @@
+* Arresto anomalo corretto dopo la modifica dell'elenco dei canali
+* Arresto anomalo fisso all'avvio di Tagessschau24 su Android 6
+* Barra di avanzamento che salta nell'elenco dei canali su Android 6

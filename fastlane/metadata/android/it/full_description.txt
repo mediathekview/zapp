@@ -1,0 +1,16 @@
+Zapp fa parte di MediathekView e consente di accedere facilmente a molte emittenti pubbliche tedesche. Guardate ARD, ZDF e altri canali in diretta o dal loro media center.
+
+<b>Caratteristiche:</b>
+* Client Android per MediathekView
+* Streaming in diretta di oltre 30 canali
+* Streaming adattivo
+* Transizione rapida dei canali
+* Informazioni aggiornate sui programmi
+* Scorciatoie per i canali per le nuove versioni di Android
+* Programmi da oltre 20 media center da trasmettere in streaming
+* Ricerca facile degli spettacoli all'interno del media center
+* Sottotitoli per alcuni programmi
+* Funzione di condivisione per i programmi live e media center
+* Riproduzione in background
+
+<b>Nota bene:</b> Se si utilizza Zapp al di fuori della Germania, alcuni canali, come ZDF, potrebbero essere geobloccati.
