@@ -1,12 +1,14 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.text.format.Formatter
 import de.christinecoenen.code.zapp.R
 
 class DownloadProgressNotification(
-	appContext: Context,
+	private val appContext: Context,
 	title: String,
 	persistedShowId: Int,
 	cancelIntent: PendingIntent
@@ -26,7 +28,25 @@ class DownloadProgressNotification(
 			)
 	}
 
-	fun build(progress: Int) = notificationBuilder
-		.setProgress(100, progress, progress == 0)
-		.build()
+	fun build(progress: Int, downloadedBytes: Long, totalBytes: Long): Notification {
+
+		if (downloadedBytes != 0L && totalBytes != 0L) {
+			val downloaded = Formatter.formatShortFileSize(appContext, downloadedBytes)
+			val total = Formatter.formatShortFileSize(appContext, totalBytes)
+
+			notificationBuilder.setSubText(
+				appContext.getString(
+					R.string.notification_download_downloading_size,
+					downloaded,
+					total
+				)
+			)
+		} else {
+			notificationBuilder.setSubText(null)
+		}
+
+		return notificationBuilder
+			.setProgress(100, progress, progress == 0)
+			.build()
+	}
 }

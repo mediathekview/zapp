@@ -66,6 +66,8 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private val downloadId by lazy { notificationId }
 
 	private var progress = 0
+	private var downloadedBytes = 0L
+	private var totalBytes = 0L
 
 	private val downloadProgressNotification = DownloadProgressNotification(
 		appContext, title, persistedShowId, getCancelIntent(),
@@ -94,8 +96,10 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 					return@use failure()
 				}
 
+				totalBytes = body.contentLength()
+
 				body.byteStream().use { inputStream ->
-					download(inputStream, outputSream, body.contentLength())
+					download(inputStream, outputSream)
 				}
 			}
 		} catch (e: CancellationException) {
@@ -149,31 +153,32 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 
 	private suspend fun download(
 		inputStream: InputStream,
-		outputStream: OutputStream,
-		contentLength: Long
+		outputStream: OutputStream
 	) = withContext(Dispatchers.IO) {
-		var bytesCopied = 0L
 		var readCount = 0L
 		val buffer = ByteArray(BufferSize)
 		var bytes = inputStream.read(buffer)
 
 		while (bytes >= 0 && !isStopped) {
 			outputStream.write(buffer, 0, bytes)
-			bytesCopied += bytes
+			downloadedBytes += bytes
 
 			bytes = inputStream.read(buffer)
 			readCount++
 
 			// TODO: use a better, time based debounce
 			if (readCount % 500 == 0L) {
-				progress = ((bytesCopied * 100) / contentLength).toInt()
+				progress = ((downloadedBytes * 100) / totalBytes).toInt()
 				reportProgress()
 			}
 		}
 	}
 
 	override suspend fun getForegroundInfo() =
-		ForegroundInfo(id.hashCode(), downloadProgressNotification.build(progress))
+		ForegroundInfo(
+			id.hashCode(),
+			downloadProgressNotification.build(progress, downloadedBytes, totalBytes)
+		)
 
 	private suspend fun reportProgress() {
 		val update = workDataOf(ProgressKey to progress)
