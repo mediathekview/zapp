@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
+import de.christinecoenen.code.zapp.models.shows.Quality
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,14 +24,21 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		private const val SourceUrlKey = "SourceUrl"
 		private const val TargetFileUriKey = "TargetFileUri"
 		private const val TitleKey = "Title"
+		private const val QualityKey = "Quality"
 		private const val BufferSize = DEFAULT_BUFFER_SIZE
 		private val NotificationDelay = 100.milliseconds
 
-		fun constructInputData(sourceUrl: String, targetFileUri: String, title: String) =
+		fun constructInputData(
+			sourceUrl: String,
+			targetFileUri: String,
+			title: String,
+			quality: Quality
+		) =
 			workDataOf(
 				SourceUrlKey to sourceUrl,
 				TargetFileUriKey to targetFileUri,
-				TitleKey to title
+				TitleKey to title,
+				QualityKey to quality.name
 			)
 
 		/**
@@ -47,7 +55,9 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private val sourceUrl by lazy { inputData.getString(SourceUrlKey) }
 	private val targetFileUri by lazy { inputData.getString(TargetFileUriKey) }
 	private val title by lazy { inputData.getString(TitleKey) ?: "" }
+	private val quality by lazy { Quality.valueOf(inputData.getString(QualityKey)!!) }
 	private val notificationId by lazy { id.hashCode() }
+	private val downloadId by lazy { notificationId }
 
 	private var progress = 0
 
@@ -108,7 +118,12 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		MainScope().launch {
 			delay(NotificationDelay)
 
-			val notification = DownloadFailedEventNotification(applicationContext, title)
+			val retryIntent = RetryDownloadBroadcastReceiver.getPendingIntent(
+				applicationContext, downloadId, quality
+			)
+
+			val notification =
+				DownloadFailedEventNotification(applicationContext, title, retryIntent)
 			notificationManager.notify(notificationId, notification.build())
 		}
 

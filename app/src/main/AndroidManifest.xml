@@ -123,6 +123,10 @@
 			android:foregroundServiceType="mediaPlayback" />
 
 		<receiver
+			android:name=".app.mediathek.controller.downloads.revisited.RetryDownloadBroadcastReceiver"
+			android:exported="false" />
+
+		<receiver
 			android:name=".utils.system.PackageUpdateReceiver"
 			android:enabled="true"
 			android:exported="false">

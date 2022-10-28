@@ -78,7 +78,8 @@ class WorkManagerDownloadController(
 		val workerInput = DownloadWorker.constructInputData(
 			downloadUrl,
 			filePathUri,
-			show.mediathekShow.title
+			show.mediathekShow.title,
+			quality
 		)
 
 		val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
