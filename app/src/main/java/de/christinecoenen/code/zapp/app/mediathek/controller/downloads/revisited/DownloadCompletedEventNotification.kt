@@ -8,7 +8,7 @@ class DownloadCompletedEventNotification(
 	appContext: Context,
 	title: String,
 	persistedShowId: Int
-) : DownloadEventNotification(appContext, title, persistedShowId) {
+) : DownloadNotification(appContext, title, persistedShowId) {
 
 	init {
 		notificationBuilder

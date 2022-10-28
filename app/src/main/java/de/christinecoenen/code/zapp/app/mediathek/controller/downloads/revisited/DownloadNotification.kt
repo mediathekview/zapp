@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.view.ContextThemeWrapper
@@ -11,13 +12,11 @@ import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import org.joda.time.DateTime
 
-abstract class DownloadEventNotification(
+open class DownloadNotification(
 	appContext: Context,
 	title: String,
 	persistedShowId: Int
 ) {
-
-	// TODO: make notification clickable
 	protected val notificationBuilder = NotificationCompat.Builder(
 		appContext,
 		NotificationHelper.CHANNEL_ID_DOWNLOAD_EVENT
@@ -29,6 +28,7 @@ abstract class DownloadEventNotification(
 			ContextThemeWrapper(appContext, R.style.AppTheme)
 				.themeColor(android.R.attr.colorPrimary)
 		)
+		.setPriority(NotificationManager.IMPORTANCE_MIN)
 		.setSortKey(DateTime.now().millis.toString())
 		.setCategory(Notification.CATEGORY_SERVICE)
 		.setContentIntent(

@@ -10,10 +10,11 @@ class DownloadQueuedEventNotification(
 	title: String,
 	persistedShowId: Int,
 	cancelIntent: PendingIntent
-) : DownloadEventNotification(appContext, title, persistedShowId) {
+) : DownloadNotification(appContext, title, persistedShowId) {
 
 	init {
 		notificationBuilder
+			.setContentText(appContext.getString(R.string.notification_download_queued))
 			.setPriority(NotificationManager.IMPORTANCE_MIN)
 			.setOngoing(true)
 			.setSilent(true)

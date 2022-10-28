@@ -10,7 +10,7 @@ class DownloadFailedEventNotification(
 	title: String,
 	persistedShowId: Int,
 	retryIntent: PendingIntent
-) : DownloadEventNotification(appContext, title, persistedShowId) {
+) : DownloadNotification(appContext, title, persistedShowId) {
 
 	init {
 		notificationBuilder
