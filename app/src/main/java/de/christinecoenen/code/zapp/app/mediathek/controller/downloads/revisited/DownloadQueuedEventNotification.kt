@@ -8,8 +8,9 @@ import de.christinecoenen.code.zapp.R
 class DownloadQueuedEventNotification(
 	appContext: Context,
 	title: String,
+	persistedShowId: Int,
 	cancelIntent: PendingIntent
-) : DownloadEventNotification(appContext, title) {
+) : DownloadEventNotification(appContext, title, persistedShowId) {
 
 	init {
 		notificationBuilder

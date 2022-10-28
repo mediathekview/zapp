@@ -6,8 +6,9 @@ import de.christinecoenen.code.zapp.R
 
 class DownloadCompletedEventNotification(
 	appContext: Context,
-	title: String
-) : DownloadEventNotification(appContext, title) {
+	title: String,
+	persistedShowId: Int
+) : DownloadEventNotification(appContext, title, persistedShowId) {
 
 	init {
 		notificationBuilder

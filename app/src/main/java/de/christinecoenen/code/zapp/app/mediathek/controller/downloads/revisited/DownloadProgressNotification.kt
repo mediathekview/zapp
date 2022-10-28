@@ -4,8 +4,10 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.os.Bundle
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
@@ -14,10 +16,10 @@ import org.joda.time.DateTime
 class DownloadProgressNotification(
 	appContext: Context,
 	title: String,
+	persistedShowId: Int,
 	cancelIntent: PendingIntent
 ) {
 
-	// TODO: make notification clickable
 	private val progressNotificationBuilder = NotificationCompat.Builder(
 		appContext,
 		NotificationHelper.CHANNEL_ID_DOWNLOAD_PROGRESS
@@ -34,6 +36,15 @@ class DownloadProgressNotification(
 		.setPriority(NotificationManager.IMPORTANCE_MIN)
 		.setCategory(Notification.CATEGORY_SERVICE)
 		.setSortKey(DateTime.now().millis.toString())
+		.setContentIntent(
+			NavDeepLinkBuilder(appContext)
+				.setGraph(R.navigation.nav_graph)
+				.setDestination(R.id.mediathekDetailFragment)
+				.setArguments(Bundle().apply {
+					putSerializable("persisted_show_id", persistedShowId)
+				})
+				.createPendingIntent()
+		)
 		.addAction(
 			R.drawable.ic_baseline_close_24,
 			appContext.getString(R.string.action_cancel),

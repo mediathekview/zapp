@@ -76,6 +76,7 @@ class WorkManagerDownloadController(
 			.build()
 
 		val workerInput = DownloadWorker.constructInputData(
+			show.id,
 			downloadUrl,
 			filePathUri,
 			show.mediathekShow.title,
@@ -216,6 +217,7 @@ class WorkManagerDownloadController(
 				DownloadQueuedEventNotification(
 					applicationContext,
 					notificationTitle,
+					show.id,
 					cancelIntent
 				)
 			}

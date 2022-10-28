@@ -20,6 +20,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	CoroutineWorker(appContext, workerParams), KoinComponent {
 
 	companion object {
+		private const val PersistedShowIdKey = "PersistedShowId"
 		private const val ProgressKey = "Progress"
 		private const val SourceUrlKey = "SourceUrl"
 		private const val TargetFileUriKey = "TargetFileUri"
@@ -29,12 +30,14 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		private val NotificationDelay = 100.milliseconds
 
 		fun constructInputData(
+			persistedShowId: Int,
 			sourceUrl: String,
 			targetFileUri: String,
 			title: String,
 			quality: Quality
 		) =
 			workDataOf(
+				PersistedShowIdKey to persistedShowId,
 				SourceUrlKey to sourceUrl,
 				TargetFileUriKey to targetFileUri,
 				TitleKey to title,
@@ -52,6 +55,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 
 	private val notificationManager = NotificationManagerCompat.from(applicationContext)
 
+	private val persistedShowId by lazy { inputData.getInt(PersistedShowIdKey, -1) }
 	private val sourceUrl by lazy { inputData.getString(SourceUrlKey) }
 	private val targetFileUri by lazy { inputData.getString(TargetFileUriKey) }
 	private val title by lazy { inputData.getString(TitleKey) ?: "" }
@@ -62,13 +66,13 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private var progress = 0
 
 	private val downloadProgressNotification = DownloadProgressNotification(
-		appContext, title, getCancelIntent()
+		appContext, title, persistedShowId, getCancelIntent(),
 	)
 
 	override suspend fun doWork(): Result {
 		reportProgress()
 
-		if (sourceUrl == null || targetFileUri == null) {
+		if (sourceUrl == null || targetFileUri == null || persistedShowId == -1) {
 			return failure()
 		}
 
@@ -92,6 +96,9 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 					download(inputStream, outputSream, body.contentLength())
 				}
 			}
+		} catch (e: CancellationException) {
+			// cancelled - no not show any notification
+			return Result.failure()
 		} catch (e: Exception) {
 			Timber.w(e)
 			return failure()
@@ -107,7 +114,11 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		MainScope().launch {
 			delay(NotificationDelay)
 
-			val notification = DownloadCompletedEventNotification(applicationContext, title)
+			val notification = DownloadCompletedEventNotification(
+				applicationContext,
+				title,
+				persistedShowId
+			)
 			notificationManager.notify(notificationId, notification.build())
 		}
 
@@ -122,8 +133,12 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 				applicationContext, downloadId, quality
 			)
 
-			val notification =
-				DownloadFailedEventNotification(applicationContext, title, retryIntent)
+			val notification = DownloadFailedEventNotification(
+				applicationContext,
+				title,
+				persistedShowId,
+				retryIntent
+			)
 			notificationManager.notify(notificationId, notification.build())
 		}
 

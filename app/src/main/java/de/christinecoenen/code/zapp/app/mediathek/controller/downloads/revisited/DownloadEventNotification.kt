@@ -2,8 +2,10 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisite
 
 import android.app.Notification
 import android.content.Context
+import android.os.Bundle
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
@@ -11,7 +13,8 @@ import org.joda.time.DateTime
 
 abstract class DownloadEventNotification(
 	appContext: Context,
-	title: String
+	title: String,
+	persistedShowId: Int
 ) {
 
 	// TODO: make notification clickable
@@ -28,6 +31,15 @@ abstract class DownloadEventNotification(
 		)
 		.setSortKey(DateTime.now().millis.toString())
 		.setCategory(Notification.CATEGORY_SERVICE)
+		.setContentIntent(
+			NavDeepLinkBuilder(appContext)
+				.setGraph(R.navigation.nav_graph)
+				.setDestination(R.id.mediathekDetailFragment)
+				.setArguments(Bundle().apply {
+					putSerializable("persisted_show_id", persistedShowId)
+				})
+				.createPendingIntent()
+		)
 
 	fun build() = notificationBuilder
 		.build()

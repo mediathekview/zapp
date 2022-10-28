@@ -8,8 +8,9 @@ import de.christinecoenen.code.zapp.R
 class DownloadFailedEventNotification(
 	appContext: Context,
 	title: String,
+	persistedShowId: Int,
 	retryIntent: PendingIntent
-) : DownloadEventNotification(appContext, title) {
+) : DownloadEventNotification(appContext, title, persistedShowId) {
 
 	init {
 		notificationBuilder
