@@ -19,6 +19,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import java.util.*
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -171,7 +172,7 @@ class WorkManagerDownloadController(
 
 		mediathekRepository.updateShow(show)
 
-		showStatusChangeNotificationIfNeeded(show)
+		showStatusChangeNotificationIfNeeded(workInfo.id, show)
 		deleteFileOnStatusChangeIfNeeded(show)
 		updateMediaCollectionOnStatusChangeIfNeeded(show)
 	}
@@ -199,17 +200,24 @@ class WorkManagerDownloadController(
 		}
 	}
 
-	private fun showStatusChangeNotificationIfNeeded(show: PersistedMediathekShow) {
+	private fun showStatusChangeNotificationIfNeeded(
+		workId: UUID,
+		show: PersistedMediathekShow
+	) {
 		if (!notificationManager.areNotificationsEnabled()) {
 			return
 		}
 
 		val notificationTitle = show.mediathekShow.title
 		val notification = when (show.downloadStatus) {
-			DownloadStatus.QUEUED -> DownloadQueuedEventNotification(
-				applicationContext,
-				notificationTitle
-			)
+			DownloadStatus.QUEUED -> {
+				val cancelIntent = workManager.createCancelPendingIntent(workId)
+				DownloadQueuedEventNotification(
+					applicationContext,
+					notificationTitle,
+					cancelIntent
+				)
+			}
 			DownloadStatus.CANCELLED -> {
 				notificationManager.cancel(show.downloadId)
 				null
