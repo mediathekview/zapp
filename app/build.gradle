@@ -141,10 +141,6 @@ dependencies {
 	// markdown
 	implementation 'ru.noties:markwon:2.0.2'
 
-	// fetch download manager
-	implementation 'androidx.tonyodev.fetch2:xfetch2:3.1.6'
-	implementation 'androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6'
-
 	// work manager
 	def work_version = "2.7.1"
 	implementation "androidx.work:work-runtime-ktx:$work_version"

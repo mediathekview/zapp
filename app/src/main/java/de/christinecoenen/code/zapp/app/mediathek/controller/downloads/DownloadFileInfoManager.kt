@@ -9,7 +9,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.net.toFile
-import com.tonyodev.fetch2.Download
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -25,18 +24,6 @@ class DownloadFileInfoManager(
 	private val settingsRepository: SettingsRepository
 ) {
 
-	fun deleteDownloadFile(download: Download) {
-		val file = File(download.file)
-
-		try {
-			file.delete()
-		} catch (e: Exception) {
-			Timber.w(e)
-		}
-
-		updateDownloadFileInMediaCollection(download.fileUri, DownloadStatus.DELETED)
-	}
-
 	fun deleteDownloadFile(filePath: String) {
 		val file = File(filePath)
 
@@ -50,18 +37,6 @@ class DownloadFileInfoManager(
 			Uri.parse(filePath),
 			DownloadStatus.DELETED
 		)
-	}
-
-	fun shouldDeleteDownload(download: Download): Boolean {
-		val filePath = download.file
-
-		if (isMediaStoreFile(filePath)) {
-			return isDeletedMediaStoreFile(filePath)
-		}
-
-		val downloadFile = File(download.file)
-		return !downloadFile.exists() &&
-			Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(downloadFile)
 	}
 
 	fun shouldDeleteDownload(show: PersistedMediathekShow): Boolean {
