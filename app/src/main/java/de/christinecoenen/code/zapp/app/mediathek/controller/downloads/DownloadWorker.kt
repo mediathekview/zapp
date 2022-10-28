@@ -71,11 +71,11 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		appContext, title, persistedShowId, getCancelIntent(),
 	)
 
-	override suspend fun doWork(): Result {
+	override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 		reportProgress()
 
 		if (sourceUrl == null || targetFileUri == null || persistedShowId == -1) {
-			return failure()
+			return@withContext failure()
 		}
 
 		val request = Request.Builder().url(sourceUrl!!).build()
@@ -83,7 +83,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 
 		if (!response.isSuccessful || response.body() == null) {
 			Timber.w("server response not successful")
-			return failure()
+			return@withContext failure()
 		}
 
 		val body = response.body()!!
@@ -91,7 +91,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			downloadFileInfoManager.openOutputStream(targetFileUri!!).use { outputSream ->
 				if (outputSream == null) {
 					Timber.w("fileoutputstream not readable")
-					return failure()
+					return@use failure()
 				}
 
 				body.byteStream().use { inputStream ->
@@ -100,16 +100,16 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			}
 		} catch (e: CancellationException) {
 			// cancelled - no not show any notification
-			return Result.failure()
+			return@withContext Result.failure()
 		} catch (e: Exception) {
 			Timber.w(e)
-			return failure()
+			return@withContext failure()
 		}
 
 		progress = 100
 		reportProgress()
 
-		return success()
+		return@withContext success()
 	}
 
 	private fun success(): Result {
