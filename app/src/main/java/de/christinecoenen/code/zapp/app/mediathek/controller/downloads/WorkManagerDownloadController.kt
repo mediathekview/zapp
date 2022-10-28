@@ -1,11 +1,14 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.net.Uri
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.asFlow
 import androidx.work.*
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadQueuedEventNotification
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited.DownloadWorker
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -36,6 +39,8 @@ class WorkManagerDownloadController(
 
 	private val workManager = WorkManager.getInstance(applicationContext)
 	private val notificationManager = NotificationManagerCompat.from(applicationContext)
+	private val connectivityManager =
+		applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 	companion object {
 		const val WorkTag = "zapp_download"
@@ -69,6 +74,13 @@ class WorkManagerDownloadController(
 
 		val networkType = if (settingsRepository.downloadOverUnmeteredNetworkOnly)
 			NetworkType.UNMETERED else NetworkType.CONNECTED
+
+		if (connectivityManager.activeNetwork == null) {
+			throw NoNetworkException("No active network available.")
+		}
+		if (settingsRepository.downloadOverUnmeteredNetworkOnly && connectivityManager.isActiveNetworkMetered) {
+			throw WrongNetworkConditionException("Download over metered networks prohibited.")
+		}
 
 		val constraints = Constraints.Builder()
 			.setRequiresStorageNotLow(true)
