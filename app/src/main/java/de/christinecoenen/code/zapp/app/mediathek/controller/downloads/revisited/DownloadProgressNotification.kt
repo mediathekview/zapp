@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
+import org.joda.time.DateTime
 
 class DownloadProgressNotification(
 	appContext: Context,
@@ -32,6 +33,7 @@ class DownloadProgressNotification(
 		.setSmallIcon(android.R.drawable.stat_sys_download)
 		.setPriority(NotificationManager.IMPORTANCE_MIN)
 		.setCategory(Notification.CATEGORY_SERVICE)
+		.setSortKey(DateTime.now().millis.toString())
 		.addAction(
 			R.drawable.ic_baseline_close_24,
 			appContext.getString(R.string.action_cancel),

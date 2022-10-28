@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
 
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import de.christinecoenen.code.zapp.R
@@ -12,6 +13,7 @@ class DownloadQueuedEventNotification(
 
 	init {
 		notificationBuilder
+			.setPriority(NotificationManager.IMPORTANCE_MIN)
 			.setOngoing(true)
 			.setSilent(true)
 			.setProgress(0, 0, true)

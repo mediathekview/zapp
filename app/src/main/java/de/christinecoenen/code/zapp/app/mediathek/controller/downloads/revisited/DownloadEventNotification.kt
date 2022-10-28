@@ -1,13 +1,13 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
 
 import android.app.Notification
-import android.app.NotificationManager
 import android.content.Context
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
+import org.joda.time.DateTime
 
 abstract class DownloadEventNotification(
 	appContext: Context,
@@ -26,7 +26,7 @@ abstract class DownloadEventNotification(
 			ContextThemeWrapper(appContext, R.style.AppTheme)
 				.themeColor(android.R.attr.colorPrimary)
 		)
-		.setPriority(NotificationManager.IMPORTANCE_MIN)
+		.setSortKey(DateTime.now().millis.toString())
 		.setCategory(Notification.CATEGORY_SERVICE)
 
 	fun build() = notificationBuilder
