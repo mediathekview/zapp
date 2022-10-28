@@ -1,10 +1,9 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.MainScope

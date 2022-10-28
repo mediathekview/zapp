@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications
 
 import android.app.NotificationManager
 import android.app.PendingIntent

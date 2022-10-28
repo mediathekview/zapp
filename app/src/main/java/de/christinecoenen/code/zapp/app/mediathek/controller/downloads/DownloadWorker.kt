@@ -1,10 +1,12 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
 import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadCompletedEventNotification
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadFailedEventNotification
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadProgressNotification
 import de.christinecoenen.code.zapp.models.shows.Quality
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient

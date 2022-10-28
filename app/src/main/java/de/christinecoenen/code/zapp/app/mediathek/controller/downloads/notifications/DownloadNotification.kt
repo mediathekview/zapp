@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisited
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -12,7 +12,7 @@ import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import org.joda.time.DateTime
 
-open class DownloadNotification(
+abstract class DownloadNotification(
 	appContext: Context,
 	title: String,
 	persistedShowId: Int

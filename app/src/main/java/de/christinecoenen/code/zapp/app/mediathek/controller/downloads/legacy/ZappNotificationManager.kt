@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.legacy
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager

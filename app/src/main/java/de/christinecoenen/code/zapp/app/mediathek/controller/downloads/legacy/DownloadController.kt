@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
+package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.legacy
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -8,6 +8,8 @@ import com.tonyodev.fetch2.database.DownloadInfo
 import com.tonyodev.fetch2core.DownloadBlock
 import com.tonyodev.fetch2core.Downloader.FileDownloaderType
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
