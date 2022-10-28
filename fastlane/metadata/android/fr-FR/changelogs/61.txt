@@ -1,0 +1,3 @@
+* Correction de la mise en page de la liste des chaînes sur les tablettes
+* Correction de la barre d'état bloquée en mode plein écran sur certains appareils.
+* Amélioration des contrôles de volume et de luminosité

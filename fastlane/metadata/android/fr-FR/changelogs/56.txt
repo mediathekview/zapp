@@ -1,0 +1,3 @@
+* Les téléchargements échoués peuvent être supprimés de la liste des téléchargements.
+* Correction de la sélection de la qualité vidéo dans les réseaux à compteur
+* Le nombre de résultats est affiché dans le filtre mediathek

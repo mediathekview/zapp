@@ -1,0 +1,16 @@
+Zapp fait partie de MediathekView et vous permet d'accéder facilement à de nombreuses stations de radiodiffusion publiques allemandes. Regardez ARD, ZDF et d'autres chaînes en direct ou depuis leur centre média.
+
+<b>Caractéristiques :</b>
+* Client Android pour MediathekView
+* Flux en direct de plus de 30 chaînes
+* Streaming adaptatif
+* Changement rapide de chaîne
+* Informations actualisées sur les programmes
+* Raccourcis des chaînes pour les nouvelles versions d'Android
+* Spectacles de plus de 20 media centers à diffuser en continu
+* Recherche facile d'émissions dans le centre multimédia
+* Sous-titres pour certaines émissions
+* Fonction de partage pour les émissions en direct et les émissions du centre multimédia
+* Lecture en arrière-plan
+
+<b>Remarque :</b> Si vous utilisez Zapp en dehors de l'Allemagne, certaines chaînes - comme ZDF - peuvent être géobloquées.

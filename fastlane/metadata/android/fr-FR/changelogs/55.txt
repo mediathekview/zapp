@@ -1,0 +1,5 @@
+* L'interface du lecteur vidéo est cachée automatiquement plus rapidement
+* Correction d'erreurs de lecture pour certaines émissions de mediathek
+* Correction de la désactivation du bouton de téléchargement pour certaines émissions de mediathek.
+* Correction du crash de l'application dans la liste mediathek
+* Correction de la lecture en arrière-plan qui n'est pas arrêtée par le système après quelques minutes

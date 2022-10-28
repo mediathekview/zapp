@@ -1,0 +1,5 @@
+* Recherche étendue dans la médiathèque : filtrage par chaîne et durée de l'émission.
+* suppression des suggestions de recherche
+* affichage du logo de la chaîne dans les notifications de lecture
+* utilisation de la plus haute qualité disponible lors du partage des émissions de mediathek
+* Ajout d'une entrée de FAQ concernant le support chromecast

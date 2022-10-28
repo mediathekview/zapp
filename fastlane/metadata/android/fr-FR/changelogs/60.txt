@@ -1,0 +1,2 @@
+* Correction de l'activation du mode veille pendant la lecture d'une vidéo sur les appareils Android TV.
+* Correction de l'activation du mode veille lors du retour de la lecture en arrière-plan

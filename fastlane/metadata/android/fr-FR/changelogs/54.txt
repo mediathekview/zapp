@@ -1,0 +1,3 @@
+* Correction d'une erreur après avoir modifié la liste des chaînes
+* Correction d'un crash au démarrage de Tagessschau24 sur Android 6
+* Correction du saut de la barre de progression dans la liste des chaînes sur Android 6

@@ -1,0 +1,3 @@
+* L'interface du lecteur se cache automatiquement lorsqu'il revient de la lecture en arrière-plan.
+* Correction des plantages de l'application sur les anciens appareils Android TV
+* Cliquer sur la notification de téléchargement terminé fonctionne à nouveau avec Android 12
