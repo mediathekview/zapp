@@ -21,14 +21,14 @@ class DownloadProgressNotification(
 	)
 		.setContentTitle(title)
 		.setTicker(title)
-		.setContentText(appContext.getString(R.string.fetch_notification_download_downloading))
+		.setContentText(appContext.getString(R.string.notification_download_downloading))
 		.setOngoing(true)
-		.setSmallIcon(R.drawable.ic_baseline_save_alt_24)
+		.setSmallIcon(android.R.drawable.stat_sys_download)
 		.setPriority(NotificationManager.IMPORTANCE_MIN)
 		.setCategory(Notification.CATEGORY_SERVICE)
 		.addAction(
-			R.drawable.fetch_notification_cancel,
-			appContext.getString(R.string.fetch_notification_download_cancel),
+			R.drawable.ic_baseline_close_24,
+			appContext.getString(R.string.action_cancel),
 			cancelIntent
 		)
 

@@ -10,16 +10,15 @@ class DownloadQueuedEventNotification(
 	cancelIntent: PendingIntent
 ) : DownloadEventNotification(appContext, title) {
 
-	// TODO: explain in text what "queued" means
 	init {
 		notificationBuilder
 			.setOngoing(true)
 			.setSilent(true)
 			.setProgress(0, 0, true)
-			.setContentText(appContext.getString(R.string.fetch_notification_download_starting))
+			.setSmallIcon(android.R.drawable.stat_sys_download)
 			.addAction(
-				R.drawable.fetch_notification_cancel,
-				appContext.getString(R.string.fetch_notification_download_cancel),
+				R.drawable.ic_baseline_close_24,
+				appContext.getString(R.string.action_cancel),
 				cancelIntent
 			)
 	}

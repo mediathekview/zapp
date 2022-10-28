@@ -73,6 +73,7 @@
 	<string name="action_share">Share</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
+	<string name="action_cancel">Cancel</string>
 	<string name="action_send_mail">Send e-mail</string>
 	<string name="action_play_in_background">Play in background</string>
 	<string name="action_start_picture_in_picture">Picture in picture</string>
@@ -131,7 +132,12 @@
 	<string name="notification_channel_name_download_progress">Download progress</string>
 	<string name="notification_channel_name_download_event">Download event</string>
 
-	<!-- fetch download notifications -->
+	<!-- download notifications -->
+	<string name="notification_download_queued">The download starts as soon as all prerequisites are met.</string>
+	<string name="notification_download_downloading">Downloading</string>
+	<string name="notification_download_complete">Download complete</string>
+	<string name="notification_download_failed">Download failed</string>
+
 	<string name="fetch_notification_download_eta_sec">%1$ds left</string>
 	<string name="fetch_notification_download_eta_min">%1$dm %2$ds left</string>
 	<string name="fetch_notification_download_eta_hrs">%1$dh %2$dm %3$ds left</string>

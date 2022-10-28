@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads.revisite
 
 import android.app.NotificationManager
 import android.content.Context
+import de.christinecoenen.code.zapp.R
 
 class DownloadCompletedEventNotification(
 	appContext: Context,
@@ -11,8 +12,9 @@ class DownloadCompletedEventNotification(
 	init {
 		notificationBuilder
 			.setPriority(NotificationManager.IMPORTANCE_DEFAULT)
+			.setSmallIcon(R.drawable.ic_outline_check_24)
 			.setAutoCancel(true)
-			.setContentText("COMPLETED!")
+			.setContentText(appContext.getString(R.string.notification_download_complete))
 	}
 
 }

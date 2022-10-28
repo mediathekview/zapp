@@ -22,7 +22,6 @@ abstract class DownloadEventNotification(
 		.setOnlyAlertOnce(true)
 		.setPriority(NotificationManager.IMPORTANCE_MIN)
 		.setCategory(Notification.CATEGORY_SERVICE)
-		.setSmallIcon(R.drawable.ic_baseline_save_alt_24)
 		.setCategory(Notification.CATEGORY_SERVICE)
 
 	fun build() = notificationBuilder
