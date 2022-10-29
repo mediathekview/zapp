@@ -48,7 +48,7 @@ class DownloadProgressNotification(
 		}
 
 		return notificationBuilder
-			.setProgress(100, progress, progress == 0)
+			.setProgress(100, progress, downloadedBytes == 0L)
 			.build()
 	}
 }
