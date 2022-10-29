@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import androidx.core.net.toFile
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -17,6 +16,7 @@ import de.christinecoenen.code.zapp.models.shows.Quality
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
 
@@ -95,14 +95,16 @@ class DownloadFileInfoManager(
 	}
 
 	fun getFileSize(filePathUri: String): Long {
-		// TODO: make this work with file schemes
-		val uri = Uri.parse(filePathUri)
-
 		return try {
-			val pfd = applicationContext.contentResolver.openFileDescriptor(uri, "r")
-			val fileLength = pfd?.statSize ?: 0
-			pfd?.close()
-			fileLength
+			if (isMediaStoreFile(filePathUri)) {
+				val uri = Uri.parse(filePathUri)
+				val pfd = applicationContext.contentResolver.openFileDescriptor(uri, "r")
+				val fileLength = pfd?.statSize ?: 0
+				pfd?.close()
+				fileLength
+			} else {
+				File(filePathUri).length()
+			}
 		} catch (e: FileNotFoundException) {
 			0
 		}
@@ -115,13 +117,16 @@ class DownloadFileInfoManager(
 			val mode = if (append) "wa" else "w"
 			applicationContext.contentResolver.openOutputStream(uri, mode)
 		} else {
-			// TODO: support append mode
-			// TODO: this throws an IOException "No such file or directory"
-			val uri = Uri.parse("file:/$filePathUri")
-			val file = uri.toFile()
-			file.parentFile?.mkdirs()
-			file.createNewFile()
-			file.outputStream()
+			val file = File(filePathUri)
+
+			// create if not exists
+			if (!file.exists()) {
+				if (!file.createNewFile()) {
+					return null
+				}
+			}
+
+			return FileOutputStream(file, append)
 		}
 	}
 
