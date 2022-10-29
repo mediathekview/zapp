@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import de.christinecoenen.code.zapp.R
 
-class DownloadQueuedEventNotification(
+open class DownloadQueuedEventNotification(
 	appContext: Context,
 	title: String,
 	persistedShowId: Int,

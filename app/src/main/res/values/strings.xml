@@ -134,6 +134,7 @@
 
 	<!-- download notifications -->
 	<string name="notification_download_queued">Der Download beginnt, sobald alle Voraussetzungen dafür erfüllt sind.</string>
+	<string name="notification_download_queued_for_retry">Download unterbrochen – warte auf Versuch Nummer %1$d.</string>
 	<string name="notification_download_downloading">Lädt herunter</string>
 	<string name="notification_download_downloading_size">%1$s / %2$s</string>
 	<string name="notification_download_complete">Download abgeschlossen</string>

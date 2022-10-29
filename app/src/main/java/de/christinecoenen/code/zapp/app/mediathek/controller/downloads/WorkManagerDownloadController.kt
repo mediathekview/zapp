@@ -10,6 +10,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadQueuedEventNotification
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadQueuedForRetryEventNotification
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -189,7 +190,7 @@ class WorkManagerDownloadController(
 
 		mediathekRepository.updateShow(show)
 
-		showStatusChangeNotificationIfNeeded(workInfo.id, show)
+		showStatusChangeNotificationIfNeeded(workInfo, show)
 		deleteFileOnStatusChangeIfNeeded(show)
 		updateMediaCollectionOnStatusChangeIfNeeded(show)
 	}
@@ -218,7 +219,7 @@ class WorkManagerDownloadController(
 	}
 
 	private fun showStatusChangeNotificationIfNeeded(
-		workId: UUID,
+		workInfo: WorkInfo,
 		show: PersistedMediathekShow
 	) {
 		if (!notificationManager.areNotificationsEnabled()) {
@@ -228,14 +229,24 @@ class WorkManagerDownloadController(
 		val notificationTitle = show.mediathekShow.title
 		val notification = when (show.downloadStatus) {
 			DownloadStatus.QUEUED -> {
-				// TODO: show different notification if workInfo.runAttemptCount is greater zero
-				val cancelIntent = workManager.createCancelPendingIntent(workId)
-				DownloadQueuedEventNotification(
-					applicationContext,
-					notificationTitle,
-					show.id,
-					cancelIntent
-				)
+				val cancelIntent = workManager.createCancelPendingIntent(workInfo.id)
+
+				if (workInfo.runAttemptCount == 0) {
+					DownloadQueuedEventNotification(
+						applicationContext,
+						notificationTitle,
+						show.id,
+						cancelIntent
+					)
+				} else {
+					DownloadQueuedForRetryEventNotification(
+						applicationContext,
+						notificationTitle,
+						show.id,
+						workInfo.runAttemptCount,
+						cancelIntent
+					)
+				}
 			}
 			DownloadStatus.CANCELLED -> {
 				notificationManager.cancel(show.downloadId)
