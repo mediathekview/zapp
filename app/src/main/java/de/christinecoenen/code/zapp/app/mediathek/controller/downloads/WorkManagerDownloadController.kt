@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -98,6 +99,9 @@ class WorkManagerDownloadController(
 			.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
 			.setConstraints(constraints)
 			.setInputData(workerInput)
+			.setBackoffCriteria(
+				BackoffPolicy.LINEAR, OneTimeWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS
+			)
 			.addTag(show.id.toString())
 			.addTag(WorkTag)
 			.build()
@@ -224,6 +228,7 @@ class WorkManagerDownloadController(
 		val notificationTitle = show.mediathekShow.title
 		val notification = when (show.downloadStatus) {
 			DownloadStatus.QUEUED -> {
+				// TODO: show different notification if workInfo.runAttemptCount is greater zero
 				val cancelIntent = workManager.createCancelPendingIntent(workId)
 				DownloadQueuedEventNotification(
 					applicationContext,

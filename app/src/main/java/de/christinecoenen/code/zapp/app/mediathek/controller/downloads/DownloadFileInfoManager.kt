@@ -16,6 +16,7 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import timber.log.Timber
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.OutputStream
 import java.util.*
 
@@ -93,12 +94,28 @@ class DownloadFileInfoManager(
 		}
 	}
 
-	fun openOutputStream(filePathUri: String): OutputStream? {
+	fun getFileSize(filePathUri: String): Long {
+		// TODO: make this work with file schemes
+		val uri = Uri.parse(filePathUri)
+
+		return try {
+			val pfd = applicationContext.contentResolver.openFileDescriptor(uri, "r")
+			val fileLength = pfd?.statSize ?: 0
+			pfd?.close()
+			fileLength
+		} catch (e: FileNotFoundException) {
+			0
+		}
+	}
+
+	fun openOutputStream(filePathUri: String, append: Boolean = false): OutputStream? {
 
 		return if (isMediaStoreFile(filePathUri)) {
 			val uri = Uri.parse(filePathUri)
-			applicationContext.contentResolver.openOutputStream(uri)
+			val mode = if (append) "wa" else "w"
+			applicationContext.contentResolver.openOutputStream(uri, mode)
 		} else {
+			// TODO: support append mode
 			// TODO: this throws an IOException "No such file or directory"
 			val uri = Uri.parse("file:/$filePathUri")
 			val file = uri.toFile()

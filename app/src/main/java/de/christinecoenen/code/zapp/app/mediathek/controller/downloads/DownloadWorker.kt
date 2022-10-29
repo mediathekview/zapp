@@ -16,6 +16,7 @@ import org.koin.core.component.inject
 import timber.log.Timber
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.HttpURLConnection
 import kotlin.time.Duration.Companion.milliseconds
 
 class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
@@ -28,7 +29,10 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		private const val TargetFileUriKey = "TargetFileUri"
 		private const val TitleKey = "Title"
 		private const val QualityKey = "Quality"
+
 		private const val BufferSize = DEFAULT_BUFFER_SIZE
+		private const val SupportRangeHeaderForRetries = true
+		private const val MaxRetries = 3
 		private val NotificationDelay = 100.milliseconds
 
 		fun constructInputData(
@@ -68,6 +72,8 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private var progress = 0
 	private var downloadedBytes = 0L
 	private var totalBytes = 0L
+	private var existingFileSize = 0L
+	private var shouldResume = false
 
 	private val downloadProgressNotification = DownloadProgressNotification(
 		appContext, title, persistedShowId, getCancelIntent(),
@@ -80,8 +86,19 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			return@withContext failure()
 		}
 
-		val request = Request.Builder().url(sourceUrl!!).build()
-		val response = httpClient.newCall(request).execute()
+		if (SupportRangeHeaderForRetries) {
+			existingFileSize = downloadFileInfoManager.getFileSize(targetFileUri!!)
+			shouldResume = existingFileSize > 0
+		}
+
+		val request = Request.Builder()
+			.url(sourceUrl!!)
+
+		if (shouldResume) {
+			request.header("Range", "bytes=$existingFileSize-")
+		}
+
+		val response = httpClient.newCall(request.build()).execute()
 
 		if (!response.isSuccessful || response.body() == null) {
 			Timber.w("server response not successful")
@@ -89,25 +106,41 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		}
 
 		val body = response.body()!!
+
+		if (response.code() == HttpURLConnection.HTTP_PARTIAL) {
+			// server does support ranges
+			downloadedBytes = existingFileSize
+			totalBytes = existingFileSize + body.contentLength()
+		} else {
+			// server does not support range header - download regularly
+			shouldResume = false
+			totalBytes = body.contentLength()
+		}
+
+		val outputStream = try {
+			downloadFileInfoManager.openOutputStream(targetFileUri!!, shouldResume)
+		} catch (e: Exception) {
+			return@withContext failure()
+		}
+
+		if (outputStream == null) {
+			Timber.w("fileoutputstream not readable")
+			return@withContext failure()
+		}
+
 		try {
-			downloadFileInfoManager.openOutputStream(targetFileUri!!).use { outputSream ->
-				if (outputSream == null) {
-					Timber.w("fileoutputstream not readable")
-					return@use failure()
-				}
-
-				totalBytes = body.contentLength()
-
+			outputStream.use {
 				body.byteStream().use { inputStream ->
-					download(inputStream, outputSream)
+					download(inputStream, outputStream)
 				}
 			}
 		} catch (e: CancellationException) {
 			// cancelled - no not show any notification
 			return@withContext Result.failure()
 		} catch (e: Exception) {
+			// this is most likely a connection issue we can recover from - so we retry
 			Timber.w(e)
-			return@withContext failure()
+			return@withContext retry()
 		}
 
 		progress = 100
@@ -149,6 +182,12 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		}
 
 		return Result.failure()
+	}
+
+	private fun retry() = if (runAttemptCount < MaxRetries) {
+		Result.retry()
+	} else {
+		failure()
 	}
 
 	private suspend fun download(
