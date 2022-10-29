@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
 open class DownloadQueuedEventNotification(
 	appContext: Context,
@@ -14,6 +15,7 @@ open class DownloadQueuedEventNotification(
 
 	init {
 		notificationBuilder
+			.setChannelId(NotificationHelper.CHANNEL_ID_DOWNLOAD_PROGRESS)
 			.setContentText(appContext.getString(R.string.notification_download_queued))
 			.setPriority(NotificationManager.IMPORTANCE_MIN)
 			.setOngoing(true)

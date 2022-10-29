@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
 class DownloadFailedEventNotification(
 	appContext: Context,
@@ -14,6 +15,7 @@ class DownloadFailedEventNotification(
 
 	init {
 		notificationBuilder
+			.setChannelId(NotificationHelper.CHANNEL_ID_DOWNLOAD_EVENT)
 			.setPriority(NotificationManager.IMPORTANCE_DEFAULT)
 			.setSmallIcon(R.drawable.ic_warning_white_24dp)
 			.setAutoCancel(true)

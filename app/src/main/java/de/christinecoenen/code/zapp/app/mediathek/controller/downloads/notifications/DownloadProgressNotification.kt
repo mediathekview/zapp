@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.text.format.Formatter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 
 class DownloadProgressNotification(
 	private val appContext: Context,
@@ -16,6 +17,7 @@ class DownloadProgressNotification(
 
 	init {
 		notificationBuilder
+			.setChannelId(NotificationHelper.CHANNEL_ID_DOWNLOAD_PROGRESS)
 			.setContentText(appContext.getString(R.string.notification_download_downloading))
 			.setPriority(NotificationManager.IMPORTANCE_MIN)
 			.setOngoing(true)
