@@ -14,7 +14,7 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
 
-	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus!=0 AND downloadStatus!=7 AND downloadStatus!=8 ORDER BY downloadedAt DESC")
+	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus IN (1,2,3,4,6,9) ORDER BY downloadedAt DESC")
 	fun getAllDownloads(): PagingSource<Int, PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
