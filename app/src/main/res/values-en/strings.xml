@@ -35,6 +35,7 @@
 	<string name="fragment_mediathek_qualities_high">High</string>
 	<string name="fragment_mediathek_download">Download</string>
 	<string name="fragment_mediathek_download_retry">Retry download</string>
+	<string name="fragment_mediathek_download_queued">Waiting for download…</string>
 	<string name="fragment_mediathek_download_running">Downloading…</string>
 	<string name="fragment_mediathek_download_delete">Delete download</string>
 	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>

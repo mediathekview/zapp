@@ -222,7 +222,7 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 			DownloadStatus.ADDED, DownloadStatus.QUEUED -> {
 				binding.buttons.downloadProgress.visibility = View.VISIBLE
 				binding.buttons.downloadProgress.isIndeterminate = true
-				binding.buttons.download.setText(R.string.fragment_mediathek_download_running)
+				binding.buttons.download.setText(R.string.fragment_mediathek_download_queued)
 				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp)
 			}
 			DownloadStatus.DOWNLOADING -> {
