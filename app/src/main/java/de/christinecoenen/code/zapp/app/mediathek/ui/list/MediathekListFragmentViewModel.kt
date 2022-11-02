@@ -31,7 +31,7 @@ class MediathekListFragmentViewModel(
 		private const val DEBOUNCE_TIME_MILLIS = 300L
 	}
 
-	private val _searchQuery = MutableStateFlow<String?>(null)
+	private val _searchQuery = MutableStateFlow("")
 
 	private val _lengthFilter = MutableStateFlow(LengthFilter())
 	val lengthFilter = _lengthFilter.asLiveData()
@@ -82,11 +82,11 @@ class MediathekListFragmentViewModel(
 	}
 
 	fun setSearchQueryFilter(query: String?) {
-		_searchQuery.tryEmit(query)
+		_searchQuery.tryEmit(query ?: "")
 	}
 
 	private fun createQueryRequest(
-		searchQuery: String?,
+		searchQuery: String,
 		lengthFilter: LengthFilter,
 		channelFilter: ChannelFilter
 	): QueryRequest {

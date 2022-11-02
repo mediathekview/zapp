@@ -123,8 +123,19 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 		}
 
 		viewLifecycleOwner.lifecycleScope.launch {
-			adapter.loadStateFlow
+			viewmodel
+				.pageFlow
 				.drop(1)
+				.collectLatest {
+					// When new paging data was created we need to scroll up, because most
+					// likely the filter parameters changed.
+					// We skip the first item here, to not jump upong view recreation.
+					binding.list.scrollToPosition(0)
+				}
+		}
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			adapter.loadStateFlow
 				.map { it.refresh }
 				.distinctUntilChanged()
 				.collectLatest { refreshState ->
@@ -134,8 +145,7 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 
 					when (refreshState) {
 						is LoadState.Error -> onMediathekLoadErrorChanged(refreshState.error)
-						is LoadState.NotLoading -> binding.list.scrollToPosition(0)
-						is LoadState.Loading -> Unit
+						is LoadState.NotLoading, LoadState.Loading -> Unit
 					}
 				}
 		}

@@ -32,7 +32,7 @@ class QueryRequest : Serializable {
 	private val channels = MediathekChannel.values().toMutableSet()
 
 	@Transient
-	private var queryString: String? = null
+	private var queryString: String = ""
 
 	init {
 		resetQueries()
@@ -50,7 +50,7 @@ class QueryRequest : Serializable {
 		return this
 	}
 
-	fun setQueryString(queryString: String?): QueryRequest {
+	fun setQueryString(queryString: String): QueryRequest {
 		this.queryString = queryString
 
 		resetQueries()
@@ -63,7 +63,7 @@ class QueryRequest : Serializable {
 
 		// set search query
 		if (!TextUtils.isEmpty(this.queryString)) {
-			queries.add(Query(this.queryString!!, "title", "topic"))
+			queries.add(Query(this.queryString, "title", "topic"))
 		}
 
 		// We do not allow an empty channel Filter as the result would always be empty.

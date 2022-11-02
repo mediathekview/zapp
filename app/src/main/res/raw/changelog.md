@@ -3,6 +3,7 @@
 * Keine Unterstützung mehr für Android 7
 * Nullwerte bei der Anzahl der Sucherergebnisse repariert
 * Android TV erhält aktuelle Live-Stream-Adressen
+* Springen der Mediathek-Liste beim Scrollen behoben
 
 # 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen
