@@ -6,10 +6,7 @@ import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.persistence.Database
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 
@@ -27,6 +24,7 @@ class MediathekRepository(private val database: Database) {
 			database
 				.mediathekShowDao()
 				.getFromApiId(show.apiId)
+				.distinctUntilChanged()
 				.flowOn(Dispatchers.IO)
 		}
 
@@ -54,13 +52,22 @@ class MediathekRepository(private val database: Database) {
 		withContext(Dispatchers.IO) {
 			database
 				.mediathekShowDao()
-				.updateDownloadedVideoPath(downloadId, videoPath!!)
+				.updateDownloadedVideoPath(downloadId, videoPath)
 		}
 
 	fun getPersistedShow(id: Int): Flow<PersistedMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getFromId(id)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	fun getCompletedDownloads(): Flow<List<PersistedMediathekShow>> {
+		return database
+			.mediathekShowDao()
+			.getCompletedDownloads()
+			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
 
@@ -68,6 +75,7 @@ class MediathekRepository(private val database: Database) {
 		return database
 			.mediathekShowDao()
 			.getFromApiId(apiId)
+			.distinctUntilChanged()
 			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
@@ -76,6 +84,7 @@ class MediathekRepository(private val database: Database) {
 		return database
 			.mediathekShowDao()
 			.getFromDownloadId(downloadId)
+			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
 
@@ -83,6 +92,7 @@ class MediathekRepository(private val database: Database) {
 		return database
 			.mediathekShowDao()
 			.getDownloadStatus(id)
+			.distinctUntilChanged()
 			.onStart { emit(DownloadStatus.NONE) }
 			.flowOn(Dispatchers.IO)
 	}
@@ -91,6 +101,7 @@ class MediathekRepository(private val database: Database) {
 		return database
 			.mediathekShowDao()
 			.getDownloadProgress(id)
+			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
 
@@ -111,6 +122,7 @@ class MediathekRepository(private val database: Database) {
 		return database
 			.mediathekShowDao()
 			.getPlaybackPositionPercent(apiId)
+			.distinctUntilChanged()
 			.filterNotNull()
 			.onStart { emit(0f) }
 			.flowOn(Dispatchers.IO)

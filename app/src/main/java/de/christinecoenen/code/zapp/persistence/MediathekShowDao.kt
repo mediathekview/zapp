@@ -14,7 +14,7 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
 
-	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus!=0 AND downloadStatus!=7 AND downloadStatus!=8 ORDER BY downloadedAt DESC")
+	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus IN (1,2,3,4,6,9) ORDER BY downloadedAt DESC")
 	fun getAllDownloads(): PagingSource<Int, PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
@@ -34,6 +34,9 @@ interface MediathekShowDao {
 
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE id=:id")
 	fun getDownloadProgress(id: Int): Flow<Int>
+
+	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus=4")
+	fun getCompletedDownloads(): Flow<List<PersistedMediathekShow>>
 
 	@Insert
 	suspend fun insert(vararg show: PersistedMediathekShow)
@@ -65,7 +68,7 @@ interface MediathekShowDao {
 	suspend fun updateDownloadProgress(downloadId: Int, progress: Int)
 
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
-	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String)
+	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?)
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
 	suspend fun setPlaybackPosition(

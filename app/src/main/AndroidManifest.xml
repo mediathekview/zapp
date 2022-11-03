@@ -6,6 +6,7 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
 	<uses-feature
 		android:name="android.hardware.touchscreen"
@@ -120,6 +121,10 @@
 			android:name=".app.player.BackgroundPlayerService"
 			android:exported="false"
 			android:foregroundServiceType="mediaPlayback" />
+
+		<receiver
+			android:name=".app.mediathek.controller.downloads.RetryDownloadBroadcastReceiver"
+			android:exported="false" />
 
 		<receiver
 			android:name=".utils.system.PackageUpdateReceiver"

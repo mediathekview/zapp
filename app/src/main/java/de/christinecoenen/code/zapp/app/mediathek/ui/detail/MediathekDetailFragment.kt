@@ -52,17 +52,7 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 		binding.root.isVisible = false
 
 		lifecycleScope.launchWhenCreated {
-			val persistedShow = mediathekRepository
-				.persistOrUpdateShow(args.mediathekShow)
-				.first()
-
-			onShowLoaded(persistedShow)
-		}
-
-		lifecycleScope.launchWhenCreated {
-			mediathekRepository
-				.getPlaybackPositionPercent(args.mediathekShow.apiId)
-				.collect(::updatePlaybackPosition)
+			loadOrPersistShowFromArguments()
 		}
 
 		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -92,10 +82,28 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 		return when (menuItem.itemId) {
 			R.id.menu_share -> {
-				args.mediathekShow.shareExternally(requireContext())
+				persistedMediathekShow?.mediathekShow?.shareExternally(requireContext())
 				true
 			}
 			else -> false
+		}
+	}
+
+	private suspend fun loadOrPersistShowFromArguments() {
+		if (args.mediathekShow != null) {
+			// persist show if passed to this fragment
+			val persistedShow = mediathekRepository
+				.persistOrUpdateShow(args.mediathekShow!!)
+				.first()
+
+			onShowLoaded(persistedShow)
+		} else {
+			// load existing persisted show from id
+			val persistedShow = mediathekRepository
+				.getPersistedShow(args.persistedShowId)
+				.first()
+
+			onShowLoaded(persistedShow)
 		}
 	}
 
@@ -124,6 +132,12 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 			downloadController
 				.getDownloadProgress(persistedMediathekShow.id)
 				.collect(::onDownloadProgressChanged)
+		}
+
+		lifecycleScope.launchWhenCreated {
+			mediathekRepository
+				.getPlaybackPositionPercent(show.apiId)
+				.collect(::updatePlaybackPosition)
 		}
 	}
 
@@ -208,7 +222,7 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 			DownloadStatus.ADDED, DownloadStatus.QUEUED -> {
 				binding.buttons.downloadProgress.visibility = View.VISIBLE
 				binding.buttons.downloadProgress.isIndeterminate = true
-				binding.buttons.download.setText(R.string.fragment_mediathek_download_running)
+				binding.buttons.download.setText(R.string.fragment_mediathek_download_queued)
 				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp)
 			}
 			DownloadStatus.DOWNLOADING -> {

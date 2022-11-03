@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.liveData
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadController
+import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 
 class DownloadsViewModel(
 	private val mediathekRepository: MediathekRepository,
-	private val downloadController: DownloadController
+	private val downloadController: IDownloadController
 ) : ViewModel() {
 
 	private val pagingConfig = PagingConfig(pageSize = 20)

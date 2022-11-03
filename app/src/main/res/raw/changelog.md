@@ -4,7 +4,8 @@
 * Nullwerte bei der Anzahl der Sucherergebnisse repariert
 * Android TV erhält aktuelle Live-Stream-Adressen
 * Springen der Mediathek-Liste beim Scrollen behoben
-
+* Download-Funktionalität überarbeitet
+* Fehlgeschlagene Downloads werden automatisch fortgesetzt
 # 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen
 * Hängende Status-Bar im Vollbild-Modus auf manchen Geräten behoben

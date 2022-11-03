@@ -33,9 +33,6 @@ allprojects {
 	repositories {
 		google()
 		mavenCentral()
-
-		// TODO: remove once androidx.tonyodev.fetch2 has migrated
-		jcenter()
 	}
 }
 

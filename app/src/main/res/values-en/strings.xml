@@ -35,6 +35,7 @@
 	<string name="fragment_mediathek_qualities_high">High</string>
 	<string name="fragment_mediathek_download">Download</string>
 	<string name="fragment_mediathek_download_retry">Retry download</string>
+	<string name="fragment_mediathek_download_queued">Waiting for download…</string>
 	<string name="fragment_mediathek_download_running">Downloading…</string>
 	<string name="fragment_mediathek_download_delete">Delete download</string>
 	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
@@ -73,6 +74,7 @@
 	<string name="action_share">Share</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
+	<string name="action_cancel">Cancel</string>
 	<string name="action_send_mail">Send e-mail</string>
 	<string name="action_play_in_background">Play in background</string>
 	<string name="action_start_picture_in_picture">Picture in picture</string>
@@ -82,7 +84,7 @@
 	<string name="delete_search_query_content_description">Delete query</string>
 
 	<string name="menu_refresh">Refresh</string>
-	<string name="menu_retry">Reload</string>
+	<string name="menu_retry">Retry</string>
 	<string name="menu_about">About Zapp</string>
 	<string name="menu_about_short">About</string>
 	<string name="menu_settings">Settings</string>
@@ -131,17 +133,11 @@
 	<string name="notification_channel_name_download_progress">Download progress</string>
 	<string name="notification_channel_name_download_event">Download event</string>
 
-	<!-- fetch download notifications -->
-	<string name="fetch_notification_download_eta_sec">%1$ds left</string>
-	<string name="fetch_notification_download_eta_min">%1$dm %2$ds left</string>
-	<string name="fetch_notification_download_eta_hrs">%1$dh %2$dm %3$ds left</string>
-	<string name="fetch_notification_download_complete">Complete</string>
-	<string name="fetch_notification_download_failed">Failed</string>
-	<string name="fetch_notification_download_pause">Pause</string>
-	<string name="fetch_notification_download_resume">Resume</string>
-	<string name="fetch_notification_download_retry">Retry</string>
-	<string name="fetch_notification_download_cancel">Cancel</string>
-	<string name="fetch_notification_download_paused">Paused</string>
-	<string name="fetch_notification_download_starting">Starting</string>
-	<string name="fetch_notification_download_downloading">Downloading</string>
+	<!-- download notifications -->
+	<string name="notification_download_queued">The download starts as soon as all prerequisites are met.</string>
+	<string name="notification_download_queued_for_retry">Download interrupted – waiting for attempt no. %1$d.</string>
+	<string name="notification_download_downloading">Downloading</string>
+	<string name="notification_download_downloading_size">%1$s / %2$s</string>
+	<string name="notification_download_complete">Download complete</string>
+	<string name="notification_download_failed">Download failed</string>
 </resources>

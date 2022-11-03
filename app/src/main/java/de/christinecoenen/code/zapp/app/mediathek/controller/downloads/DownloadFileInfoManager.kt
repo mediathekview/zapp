@@ -8,22 +8,25 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import com.tonyodev.fetch2.Download
-import com.tonyodev.fetch2.Status
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import timber.log.Timber
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.OutputStream
 import java.util.*
 
-internal class DownloadFileInfoManager(
+class DownloadFileInfoManager(
 	private val applicationContext: Context,
 	private val settingsRepository: SettingsRepository
 ) {
 
-	fun deleteDownloadFile(download: Download) {
-		val file = File(download.file)
+	fun deleteDownloadFile(filePath: String) {
+		val file = File(filePath)
 
 		try {
 			file.delete()
@@ -31,20 +34,22 @@ internal class DownloadFileInfoManager(
 			Timber.w(e)
 		}
 
-		updateDownloadFileInMediaCollection(download)
+		updateDownloadFileInMediaCollection(
+			Uri.parse(filePath),
+			DownloadStatus.DELETED
+		)
 	}
 
-	fun shouldDeleteDownload(download: Download): Boolean {
-		val filePath = download.file
+	fun shouldDeleteDownload(show: PersistedMediathekShow): Boolean {
+		val filePath = show.downloadedVideoPath ?: return false
 
 		if (isMediaStoreFile(filePath)) {
 			return isDeletedMediaStoreFile(filePath)
 		}
 
-		val downloadFile = File(download.file)
-		return !downloadFile.exists() && Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(
-			downloadFile
-		)
+		val downloadFile = File(filePath)
+		return !downloadFile.exists() &&
+			Environment.MEDIA_MOUNTED == Environment.getExternalStorageState(downloadFile)
 	}
 
 	fun getDownloadFilePath(show: MediathekShow, quality: Quality): String {
@@ -57,9 +62,9 @@ internal class DownloadFileInfoManager(
 		}
 	}
 
-	fun updateDownloadFileInMediaCollection(download: Download) {
+	fun updateDownloadFileInMediaCollection(filePathUri: Uri, status: DownloadStatus) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-			val filePath = download.fileUri.path
+			val filePath = filePathUri.path
 			MediaScannerConnection.scanFile(
 				applicationContext,
 				arrayOf(filePath),
@@ -70,22 +75,58 @@ internal class DownloadFileInfoManager(
 			val resolver = applicationContext.contentResolver
 
 			@Suppress("NON_EXHAUSTIVE_WHEN")
-			when (download.status) {
-				Status.DELETED,
-				Status.FAILED -> try {
-					resolver.delete(download.fileUri, null, null)
+			when (status) {
+				DownloadStatus.DELETED,
+				DownloadStatus.FAILED -> try {
+					resolver.delete(filePathUri, null, null)
 				} catch (e: SecurityException) {
 					// maybe file is already deleted - that's okay
 				}
 
-				Status.COMPLETED -> {
+				DownloadStatus.COMPLETED -> {
 					val videoContentValues = ContentValues()
 					videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
-					resolver.update(download.fileUri, videoContentValues, null, null)
+					resolver.update(filePathUri, videoContentValues, null, null)
 				}
 
 				else -> {}
 			}
+		}
+	}
+
+	fun getFileSize(filePathUri: String): Long {
+		return try {
+			if (isMediaStoreFile(filePathUri)) {
+				val uri = Uri.parse(filePathUri)
+				val pfd = applicationContext.contentResolver.openFileDescriptor(uri, "r")
+				val fileLength = pfd?.statSize ?: 0
+				pfd?.close()
+				fileLength
+			} else {
+				File(filePathUri).length()
+			}
+		} catch (e: FileNotFoundException) {
+			0
+		}
+	}
+
+	fun openOutputStream(filePathUri: String, append: Boolean = false): OutputStream? {
+
+		return if (isMediaStoreFile(filePathUri)) {
+			val uri = Uri.parse(filePathUri)
+			val mode = if (append) "wa" else "w"
+			applicationContext.contentResolver.openOutputStream(uri, mode)
+		} else {
+			val file = File(filePathUri)
+
+			// create if not exists
+			if (!file.exists()) {
+				if (!file.createNewFile()) {
+					return null
+				}
+			}
+
+			return FileOutputStream(file, append)
 		}
 	}
 

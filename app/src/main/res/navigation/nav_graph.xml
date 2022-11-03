@@ -89,13 +89,19 @@
 		tools:layout="@layout/mediathek_detail_fragment">
 		<argument
 			android:name="mediathek_show"
-			app:argType="de.christinecoenen.code.zapp.models.shows.MediathekShow" />
+			app:argType="de.christinecoenen.code.zapp.models.shows.MediathekShow"
+			app:nullable="true"
+			android:defaultValue="@null" />
 		<action
 			android:id="@+id/to_settingsFragment"
 			app:destination="@id/settingsFragment" />
 		<action
 			android:id="@+id/to_mediathekPlayerActivity"
 			app:destination="@id/mediathekPlayerActivity" />
+		<argument
+			android:name="persisted_show_id"
+			app:argType="integer"
+			android:defaultValue="-1" />
 	</fragment>
 	<activity
 		android:id="@+id/mediathekPlayerActivity"
