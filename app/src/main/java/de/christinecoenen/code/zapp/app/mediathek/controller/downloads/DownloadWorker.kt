@@ -83,7 +83,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		reportProgress()
 
 		if (sourceUrl == null || targetFileUri == null || persistedShowId == -1) {
-			return@withContext failure()
+			return@withContext failure(ErrorType.InitializationFailed)
 		}
 
 		if (SupportRangeHeaderForRetries) {
@@ -98,11 +98,21 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			request.header("Range", "bytes=$existingFileSize-")
 		}
 
-		val response = httpClient.newCall(request.build()).execute()
+		val response = try {
+			httpClient.newCall(request.build()).execute()
+		} catch (e: Exception) {
+			Timber.w("could not connect to server")
+			return@withContext retry(ErrorType.FileReadFailed)
+		}
 
-		if (!response.isSuccessful || response.body() == null) {
-			Timber.w("server response not successful")
-			return@withContext failure()
+		if (!response.isSuccessful) {
+			Timber.w("server response not successful - response code: %s", response.code())
+			return@withContext failure(response.code().toErrorType())
+		}
+
+		if (response.body() == null) {
+			Timber.w("server response was empty")
+			return@withContext failure(ErrorType.Unknown)
 		}
 
 		val body = response.body()!!
@@ -120,12 +130,12 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		val outputStream = try {
 			downloadFileInfoManager.openOutputStream(targetFileUri!!, shouldResume)
 		} catch (e: Exception) {
-			return@withContext failure()
+			return@withContext failure(ErrorType.FileWriteFailed)
 		}
 
 		if (outputStream == null) {
 			Timber.w("fileoutputstream not readable")
-			return@withContext failure()
+			return@withContext failure(ErrorType.FileWriteFailed)
 		}
 
 		try {
@@ -140,7 +150,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		} catch (e: Exception) {
 			// this is most likely a connection issue we can recover from - so we retry
 			Timber.w(e)
-			return@withContext retry()
+			return@withContext retry(ErrorType.FileReadFailed)
 		}
 
 		progress = 100
@@ -164,7 +174,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		return Result.success()
 	}
 
-	private fun failure(): Result {
+	private fun failure(errorType: ErrorType): Result {
 		MainScope().launch {
 			delay(NotificationDelay)
 
@@ -176,6 +186,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 				applicationContext,
 				title,
 				persistedShowId,
+				errorType,
 				retryIntent
 			)
 			notificationManager.notify(notificationId, notification.build())
@@ -184,10 +195,10 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		return Result.failure()
 	}
 
-	private fun retry() = if (runAttemptCount < MaxRetries) {
+	private fun retry(errorType: ErrorType) = if (runAttemptCount < MaxRetries) {
 		Result.retry()
 	} else {
-		failure()
+		failure(errorType)
 	}
 
 	private suspend fun download(
@@ -228,4 +239,22 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 
 	private fun getCancelIntent(): PendingIntent = WorkManager.getInstance(applicationContext)
 		.createCancelPendingIntent(id)
+
+	private fun Int.toErrorType(): ErrorType = when (this) {
+		HttpURLConnection.HTTP_NOT_FOUND,
+		HttpURLConnection.HTTP_GONE ->
+			ErrorType.FileNotFound
+		HttpURLConnection.HTTP_UNAUTHORIZED,
+		HttpURLConnection.HTTP_FORBIDDEN,
+		451 ->
+			ErrorType.FileForbidden
+		429 ->
+			ErrorType.TooManyRequests
+		in 400..499 ->
+			ErrorType.ClientError
+		in 500..600 ->
+			ErrorType.ServerError
+		else ->
+			ErrorType.Unknown
+	}
 }
