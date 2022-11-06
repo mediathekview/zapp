@@ -240,7 +240,7 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 			DownloadStatus.FAILED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_retry)
-				binding.buttons.download.setIconResource(R.drawable.ic_warning_white_24dp)
+				binding.buttons.download.setIconResource(R.drawable.ic_outline_warning_amber_24)
 			}
 		}
 	}

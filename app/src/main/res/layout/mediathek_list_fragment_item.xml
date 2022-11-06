@@ -62,7 +62,7 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/download_progress"
 		app:layout_constraintTop_toTopOf="@id/topic"
-		app:srcCompat="@drawable/ic_warning_white_24dp" />
+		app:srcCompat="@drawable/ic_outline_warning_amber_24" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"

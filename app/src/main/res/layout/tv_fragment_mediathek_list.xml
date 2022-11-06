@@ -149,7 +149,7 @@
 			android:layout_height="@dimen/lb_error_image_max_height"
 			android:contentDescription="@null"
 			android:focusable="false"
-			android:src="@drawable/ic_warning_white_24dp" />
+			android:src="@drawable/ic_outline_warning_amber_24" />
 
 		<TextView
 			android:id="@+id/error_message"

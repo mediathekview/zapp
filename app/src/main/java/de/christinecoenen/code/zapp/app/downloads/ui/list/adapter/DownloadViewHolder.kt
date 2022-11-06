@@ -44,7 +44,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.duration.text = show.mediathekShow.formattedDuration
 		binding.channel.text = show.mediathekShow.channel
 		binding.time.text = show.mediathekShow.formattedTimestamp
-		
+
 		binding.root.visibility = View.VISIBLE
 
 		coroutineScope {
@@ -105,7 +105,7 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 				binding.progressBarAnimated.isVisible = false
 			}
 			DownloadStatus.FAILED -> {
-				binding.icon.setImageResource(R.drawable.ic_warning_white_24dp)
+				binding.icon.setImageResource(R.drawable.ic_outline_warning_amber_24)
 				updateThumbnail(null)
 				hideProgess()
 				binding.progressBarAnimated.isVisible = false

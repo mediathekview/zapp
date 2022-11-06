@@ -19,7 +19,7 @@ class DownloadFailedEventNotification(
 		notificationBuilder
 			.setChannelId(NotificationHelper.CHANNEL_ID_DOWNLOAD_EVENT)
 			.setPriority(NotificationManager.IMPORTANCE_DEFAULT)
-			.setSmallIcon(R.drawable.ic_warning_white_24dp)
+			.setSmallIcon(R.drawable.ic_outline_warning_amber_24)
 			.setAutoCancel(true)
 			.setSubText(errorType.toString())
 			.setContentText(appContext.getString(R.string.notification_download_failed))
