@@ -1,22 +1,21 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
-import android.graphics.Bitmap
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
-import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
+import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 
 class MediathekItemViewHolder(
 	private val binding: MediathekListFragmentItemBinding
@@ -24,57 +23,83 @@ class MediathekItemViewHolder(
 
 	private val mediathekRepository: MediathekRepository by inject()
 
-	private var thumbnailJob: Job? = null
-	private var playbackPositionJob: Job? = null
+	private val bgColorDefault = binding.root.context.themeColor(R.attr.backgroundColor)
+	private val bgColorHighlight by lazy { binding.root.context.themeColor(R.attr.colorSurfaceVariant) }
+
+	private var downloadProgressJob: Job? = null
+	private var downloadStatusJob: Job? = null
 
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
 		binding.root.visibility = View.GONE
 
-		thumbnailJob?.cancel()
-		playbackPositionJob?.cancel()
+		downloadProgressJob?.cancel()
+		downloadStatusJob?.cancel()
 
-		binding.thumbnail.setImageBitmap(null)
-		binding.thumbnail.visibility = View.GONE
-		binding.viewingProgress.scaleX = 0f
 		binding.title.text = show.title
 		binding.topic.text = show.topic
+		// fix layout_constraintWidth_max not be applied correctly
+		binding.topic.requestLayout()
+
 		binding.duration.text = show.formattedDuration
 		binding.channel.text = show.channel
 		binding.time.text = show.formattedTimestamp
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.subtitleDivider.isVisible = show.hasSubtitle
 
+		binding.downloadProgress.isVisible = false
+		binding.downloadStatusIcon.isVisible = false
+
+		binding.root.setBackgroundColor(bgColorDefault)
+
 		binding.root.visibility = View.VISIBLE
 
-		thumbnailJob = launch { loadThumbnailFlow(show) }
-		thumbnailJob = launch { updatePlaybackPositionFlow(show) }
+		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
+		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
 	}
 
-	private suspend fun loadThumbnailFlow(show: MediathekShow) {
+	private suspend fun updateDownloadProgressFlow(show: MediathekShow) {
 		mediathekRepository
-			.getPersistedShowByApiId(show.apiId)
-			.filter { it.downloadStatus === DownloadStatus.COMPLETED }
-			.map { it.downloadedVideoPath }
-			.filterNotNull()
-			.distinctUntilChanged()
-			.map { loadThumbnailAsync(binding.root.context, it) }
-			.catch { e -> Timber.e(e) }
-			.collectLatest(::updatethumbnail)
+			.getDownloadProgress(show.apiId)
+			.collectLatest(::updateDownloadProgress)
 	}
 
-	private suspend fun updatePlaybackPositionFlow(show: MediathekShow) {
+	private suspend fun updateDownloadStatusFlow(show: MediathekShow) {
 		mediathekRepository
-			.getPlaybackPositionPercent(show.apiId)
-			.filter { it > 0 }
-			.collectLatest(::updatePlaybackPosition)
+			.getDownloadStatus(show.apiId)
+			.collectLatest(::updateDownloadStatus)
 	}
 
-	private fun updatePlaybackPosition(progressPercent: Float) {
-		binding.viewingProgress.scaleX = progressPercent
+	private fun updateDownloadProgress(progress: Int) {
+		binding.downloadProgress.progress = progress
 	}
 
-	private fun updatethumbnail(thumbnail: Bitmap) {
-		binding.thumbnail.setImageBitmap(thumbnail)
-		binding.thumbnail.visibility = View.VISIBLE
+	private fun updateDownloadStatus(status: DownloadStatus) {
+		binding.downloadStatusIcon.isVisible = status == DownloadStatus.FAILED ||
+			status == DownloadStatus.COMPLETED
+
+		binding.downloadStatusIcon.setImageResource(
+			when (status) {
+				DownloadStatus.COMPLETED -> R.drawable.ic_outline_check_24
+				DownloadStatus.FAILED -> R.drawable.ic_warning_white_24dp
+				else -> 0
+			}
+		)
+
+		binding.downloadProgress.isVisible = status == DownloadStatus.QUEUED ||
+			status == DownloadStatus.DOWNLOADING ||
+			status == DownloadStatus.PAUSED ||
+			status == DownloadStatus.ADDED
+
+		binding.downloadProgress.isIndeterminate = status != DownloadStatus.DOWNLOADING
+
+		binding.root.setBackgroundColor(
+			when (status) {
+				DownloadStatus.NONE,
+				DownloadStatus.CANCELLED,
+				DownloadStatus.REMOVED,
+				DownloadStatus.DELETED -> bgColorDefault
+				else -> bgColorHighlight
+			}
+		)
 	}
 }

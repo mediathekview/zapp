@@ -97,10 +97,29 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
+	fun getDownloadStatus(apiId: String): Flow<DownloadStatus> {
+		return database
+			.mediathekShowDao()
+			.getDownloadStatus(apiId)
+			.filterNotNull()
+			.distinctUntilChanged()
+			.onStart { emit(DownloadStatus.NONE) }
+			.flowOn(Dispatchers.IO)
+	}
+
 	fun getDownloadProgress(id: Int): Flow<Int> {
 		return database
 			.mediathekShowDao()
 			.getDownloadProgress(id)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	fun getDownloadProgress(apiId: String): Flow<Int> {
+		return database
+			.mediathekShowDao()
+			.getDownloadProgress(apiId)
+			.filterNotNull()
 			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}

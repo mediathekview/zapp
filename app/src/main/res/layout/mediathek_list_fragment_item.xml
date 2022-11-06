@@ -13,35 +13,9 @@
 	tools:ignore="UnusedAttribute"
 	tools:visibility="visible">
 
-	<androidx.appcompat.widget.AppCompatImageView
-		android:id="@+id/thumbnail"
-		android:layout_width="80dp"
-		android:layout_height="0dp"
-		android:layout_marginEnd="4dp"
-		android:background="?colorSurface"
-		android:scaleType="centerCrop"
-		android:visibility="gone"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toStartOf="@id/topic"
-		app:layout_constraintHorizontal_bias="0"
-		app:layout_constraintHorizontal_chainStyle="packed"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
-
-	<View
-		android:id="@+id/viewing_progress"
-		android:layout_width="0dp"
-		android:layout_height="4dp"
-		android:background="?colorSecondary"
-		android:scaleX="0"
-		android:transformPivotX="0dp"
-		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
-		app:layout_constraintEnd_toEndOf="@id/thumbnail"
-		app:layout_constraintStart_toStartOf="@id/thumbnail" />
-
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/topic"
-		android:layout_width="wrap_content"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:background="?colorSecondaryContainer"
 		android:ellipsize="end"
@@ -52,11 +26,43 @@
 		android:textColor="?colorOnSecondaryContainer"
 		app:layout_constrainedWidth="true"
 		app:layout_constraintBottom_toTopOf="@id/title"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toEndOf="@id/thumbnail"
+		app:layout_constraintEnd_toStartOf="@id/download_progress"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintHorizontal_weight="5"
+		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintVertical_chainStyle="packed"
+		app:layout_constraintWidth_max="wrap"
 		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
+
+	<com.google.android.material.progressindicator.CircularProgressIndicator
+		android:id="@+id/download_progress"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_marginStart="4dp"
+		android:max="100"
+		app:layout_constraintBottom_toBottomOf="@id/topic"
+		app:layout_constraintDimensionRatio="1"
+		app:layout_constraintEnd_toStartOf="@id/download_status_icon"
+		app:layout_constraintStart_toEndOf="@id/topic"
+		app:layout_constraintTop_toTopOf="@id/topic"
+		app:trackThickness="6dp"
+		tools:progress="25" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/download_status_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_marginStart="4dp"
+		android:paddingVertical="1dp"
+		android:tint="?colorAccent"
+		app:layout_constraintBottom_toBottomOf="@id/topic"
+		app:layout_constraintDimensionRatio="1"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/download_progress"
+		app:layout_constraintTop_toTopOf="@id/topic"
+		app:srcCompat="@drawable/ic_warning_white_24dp" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
