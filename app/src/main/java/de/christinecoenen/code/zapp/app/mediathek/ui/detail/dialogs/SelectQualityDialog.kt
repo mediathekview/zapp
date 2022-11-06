@@ -60,7 +60,7 @@ class SelectQualityDialog : AppCompatDialogFragment() {
 			.setIcon(
 				when (mode) {
 					Mode.DOWNLOAD -> R.drawable.ic_baseline_save_alt_24
-					Mode.SHARE -> R.drawable.ic_share_white_24dp
+					Mode.SHARE -> R.drawable.ic_outline_share_24
 				}
 			)
 			.setItems(qualityLabels.toTypedArray()) { _, i ->
