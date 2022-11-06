@@ -18,6 +18,7 @@ import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -51,7 +52,7 @@ class WorkManagerDownloadController(
 		NotificationHelper.createDownloadProgressChannel(applicationContext)
 		NotificationHelper.createDownloadEventChannel(applicationContext)
 
-		scope.launch {
+		scope.launch(Dispatchers.IO) {
 			workManager
 				.getWorkInfosByTagLiveData(WorkTag)
 				.asFlow()
