@@ -45,6 +45,10 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.channel.text = show.mediathekShow.channel
 		binding.time.text = show.mediathekShow.formattedTimestamp
 
+		binding.progressBarAnimated.isVisible = false
+		binding.progressBar.isVisible = false
+		binding.icon.setImageDrawable(null)
+
 		binding.root.visibility = View.VISIBLE
 
 		coroutineScope {
