@@ -43,7 +43,7 @@
 	<string name="fragment_mediathek_query_info">%1$s Suchergebnisse vom %2$s</string>
 
 	<!-- downloads -->
-	<string name="fragment_downloads_no_results">keine Downloads vorhanden</string>
+	<string name="fragment_downloads_no_results">keine Downloads gefunden</string>
 	<string name="fragment_downloads_confirm_show_removal_dialog_title">Sendung aus der Download-Liste entfernen?</string>
 	<string name="fragment_downloads_confirm_show_removal_dialog_text">Noch laufende Downloads werden abgrebrochen und vorhandene Video-Dateien gelöscht.</string>
 
@@ -81,6 +81,7 @@
 	<string name="action_remove">Entfernen</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
+	<string name="search_query_hint_downloads">Downloads durchsuchen…</string>
 	<string name="delete_search_query_content_description">Suche löschen</string>
 
 	<string name="menu_refresh">Aktualisieren</string>

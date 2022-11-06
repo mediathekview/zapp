@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
@@ -60,6 +61,10 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener, MenuProvider
 		binding.list.adapter = downloadAdapter
 
 		downloadAdapter.registerAdapterDataObserver(adapterDataObserver)
+
+		binding.search.addTextChangedListener { editable ->
+			viewModel.setSearchQueryFilter(editable.toString())
+		}
 
 		viewModel.downloadList.observe(viewLifecycleOwner) {
 			lifecycleScope.launchWhenCreated {

@@ -12,8 +12,9 @@ import org.joda.time.DateTime
 
 class MediathekRepository(private val database: Database) {
 
-	val downloads: PagingSource<Int, PersistedMediathekShow>
-		get() = database.mediathekShowDao().getAllDownloads()
+	fun getDownloads(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
+		return database.mediathekShowDao().getAllDownloads("%$searchQuery%")
+	}
 
 	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
 		withContext(Dispatchers.IO) {

@@ -6,6 +6,8 @@
 * Springen der Mediathek-Liste beim Scrollen behoben
 * Download-Funktionalität überarbeitet
 * Fehlgeschlagene Downloads werden automatisch fortgesetzt
+* Durchsuchbare Download-Liste
+
 # 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen
 * Hängende Status-Bar im Vollbild-Modus auf manchen Geräten behoben
