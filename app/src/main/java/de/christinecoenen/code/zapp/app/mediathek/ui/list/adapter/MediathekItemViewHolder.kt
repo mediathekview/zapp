@@ -24,16 +24,18 @@ class MediathekItemViewHolder(
 	private val mediathekRepository: MediathekRepository by inject()
 
 	private val bgColorDefault = binding.root.context.themeColor(R.attr.backgroundColor)
-	private val bgColorHighlight by lazy { binding.root.context.themeColor(R.attr.colorSurfaceVariant) }
+	private val bgColorHighlight by lazy { binding.root.context.themeColor(R.attr.colorSurface) }
 
 	private var downloadProgressJob: Job? = null
 	private var downloadStatusJob: Job? = null
+	private var playbackPositionJob: Job? = null
 
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
 		binding.root.visibility = View.GONE
 
 		downloadProgressJob?.cancel()
 		downloadStatusJob?.cancel()
+		playbackPositionJob?.cancel()
 
 		binding.title.text = show.title
 		binding.topic.text = show.topic
@@ -47,7 +49,10 @@ class MediathekItemViewHolder(
 		binding.subtitleDivider.isVisible = show.hasSubtitle
 
 		binding.downloadProgress.isVisible = false
+		binding.downloadProgressIcon.isVisible = false
 		binding.downloadStatusIcon.isVisible = false
+		binding.viewingStatus.isVisible = false
+		binding.viewingProgress.isVisible = false
 
 		binding.root.setBackgroundColor(bgColorDefault)
 
@@ -55,6 +60,7 @@ class MediathekItemViewHolder(
 
 		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
 		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
+		playbackPositionJob = launch { updatePlaybackPositionPercent(show) }
 	}
 
 	private suspend fun updateDownloadProgressFlow(show: MediathekShow) {
@@ -67,6 +73,12 @@ class MediathekItemViewHolder(
 		mediathekRepository
 			.getDownloadStatus(show.apiId)
 			.collectLatest(::updateDownloadStatus)
+	}
+
+	private suspend fun updatePlaybackPositionPercent(show: MediathekShow) {
+		mediathekRepository
+			.getPlaybackPositionPercent(show.apiId)
+			.collectLatest(::updatePlaybackPositionPercent)
 	}
 
 	private fun updateDownloadProgress(progress: Int) {
@@ -89,6 +101,7 @@ class MediathekItemViewHolder(
 			status == DownloadStatus.DOWNLOADING ||
 			status == DownloadStatus.PAUSED ||
 			status == DownloadStatus.ADDED
+		binding.downloadProgressIcon.isVisible = binding.downloadProgress.isVisible
 
 		binding.downloadProgress.isIndeterminate = status != DownloadStatus.DOWNLOADING
 
@@ -101,5 +114,11 @@ class MediathekItemViewHolder(
 				else -> bgColorHighlight
 			}
 		)
+	}
+
+	private fun updatePlaybackPositionPercent(percent: Float) {
+		binding.viewingStatus.isVisible = percent > 0
+		binding.viewingProgress.progress = (percent * binding.viewingProgress.max).toInt()
+		binding.viewingProgress.isVisible = percent > 0
 	}
 }

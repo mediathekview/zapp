@@ -122,6 +122,11 @@
 		<item name="trackColor">@color/color_on_secondary_container_20_alpha</item>
 	</style>
 
+	<style name="Widget.App.CircularProgressIndicator.Small.OnSurface" parent="Widget.Material3.CircularProgressIndicator.Small">
+		<item name="indicatorColor">?colorSecondary</item>
+		<item name="trackColor">@color/color_on_surface_20_alpha</item>
+	</style>
+
 	<style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.OutlinedButton</item>
 	</style>

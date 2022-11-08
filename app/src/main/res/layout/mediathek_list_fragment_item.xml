@@ -38,6 +38,7 @@
 
 	<com.google.android.material.progressindicator.CircularProgressIndicator
 		android:id="@+id/download_progress"
+		style="@style/Widget.App.CircularProgressIndicator.Small.OnSurface"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		android:layout_marginStart="4dp"
@@ -47,8 +48,20 @@
 		app:layout_constraintEnd_toStartOf="@id/download_status_icon"
 		app:layout_constraintStart_toEndOf="@id/topic"
 		app:layout_constraintTop_toTopOf="@id/topic"
-		app:trackThickness="6dp"
 		tools:progress="25" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/download_progress_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:paddingVertical="5dp"
+		android:tint="?colorAccent"
+		app:layout_constraintBottom_toBottomOf="@id/topic"
+		app:layout_constraintDimensionRatio="1"
+		app:layout_constraintEnd_toEndOf="@id/download_progress"
+		app:layout_constraintStart_toStartOf="@id/download_progress"
+		app:layout_constraintTop_toTopOf="@id/topic"
+		app:srcCompat="@drawable/ic_outline_arrow_downward_24" />
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/download_status_icon"
@@ -59,10 +72,37 @@
 		android:tint="?colorAccent"
 		app:layout_constraintBottom_toBottomOf="@id/topic"
 		app:layout_constraintDimensionRatio="1"
-		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/viewing_status"
 		app:layout_constraintStart_toEndOf="@id/download_progress"
 		app:layout_constraintTop_toTopOf="@id/topic"
 		app:srcCompat="@drawable/ic_outline_warning_amber_24" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/viewing_status"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_marginStart="4dp"
+		android:paddingVertical="5dp"
+		android:tint="?colorAccent"
+		app:layout_constraintBottom_toBottomOf="@id/topic"
+		app:layout_constraintDimensionRatio="1"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/download_status_icon"
+		app:layout_constraintTop_toTopOf="@id/topic"
+		app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
+
+	<com.google.android.material.progressindicator.CircularProgressIndicator
+		android:id="@+id/viewing_progress"
+		style="@style/Widget.App.CircularProgressIndicator.Small.OnSurface"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:max="100"
+		app:layout_constraintBottom_toBottomOf="@id/topic"
+		app:layout_constraintDimensionRatio="1"
+		app:layout_constraintEnd_toEndOf="@id/viewing_status"
+		app:layout_constraintStart_toStartOf="@id/viewing_status"
+		app:layout_constraintTop_toTopOf="@id/topic"
+		tools:progress="20" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
