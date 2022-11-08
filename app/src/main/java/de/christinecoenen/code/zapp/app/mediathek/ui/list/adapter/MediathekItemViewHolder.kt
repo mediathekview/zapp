@@ -91,7 +91,7 @@ class MediathekItemViewHolder(
 
 		binding.downloadStatusIcon.setImageResource(
 			when (status) {
-				DownloadStatus.COMPLETED -> R.drawable.ic_outline_check_24
+				DownloadStatus.COMPLETED -> R.drawable.ic_baseline_save_alt_24
 				DownloadStatus.FAILED -> R.drawable.ic_outline_warning_amber_24
 				else -> 0
 			}
