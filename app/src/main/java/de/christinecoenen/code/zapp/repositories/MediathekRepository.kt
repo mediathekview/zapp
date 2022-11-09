@@ -125,6 +125,16 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
+	fun getIsRelevantForUser(apiId: String): Flow<Boolean> {
+		return database
+			.mediathekShowDao()
+			.getIsRelevantForUser(apiId)
+			.distinctUntilChanged()
+			.filterNotNull()
+			.onStart { emit(false) }
+			.flowOn(Dispatchers.IO)
+	}
+
 	suspend fun getPlaybackPosition(showId: Int): Long = withContext(Dispatchers.IO) {
 		database
 			.mediathekShowDao()

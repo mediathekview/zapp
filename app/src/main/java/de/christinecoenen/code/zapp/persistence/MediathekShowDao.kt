@@ -41,6 +41,9 @@ interface MediathekShowDao {
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getDownloadProgress(apiId: String): Flow<Int?>
 
+	@Query("SELECT 1 FROM PersistedMediathekShow WHERE apiId=:apiId AND (playbackPosition > 0 OR downloadStatus IN (1,2,3,4,6,9))")
+	fun getIsRelevantForUser(apiId: String): Flow<Boolean?>
+
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus=4")
 	fun getCompletedDownloads(): Flow<List<PersistedMediathekShow>>
 

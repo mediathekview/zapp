@@ -26,6 +26,7 @@ class MediathekItemViewHolder(
 	private val bgColorDefault = binding.root.context.themeColor(R.attr.backgroundColor)
 	private val bgColorHighlight by lazy { binding.root.context.themeColor(R.attr.colorSurface) }
 
+	private var isRelevantForUserJob: Job? = null
 	private var downloadProgressJob: Job? = null
 	private var downloadStatusJob: Job? = null
 	private var playbackPositionJob: Job? = null
@@ -33,6 +34,7 @@ class MediathekItemViewHolder(
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
 		binding.root.visibility = View.GONE
 
+		isRelevantForUserJob?.cancel()
 		downloadProgressJob?.cancel()
 		downloadStatusJob?.cancel()
 		playbackPositionJob?.cancel()
@@ -58,9 +60,16 @@ class MediathekItemViewHolder(
 
 		binding.root.visibility = View.VISIBLE
 
+		isRelevantForUserJob = launch { getIsRelevantForUserFlow(show) }
 		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
 		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
 		playbackPositionJob = launch { updatePlaybackPositionPercent(show) }
+	}
+
+	private suspend fun getIsRelevantForUserFlow(show: MediathekShow) {
+		mediathekRepository
+			.getIsRelevantForUser(show.apiId)
+			.collectLatest(::updateIsRelevantForUser)
 	}
 
 	private suspend fun updateDownloadProgressFlow(show: MediathekShow) {
@@ -79,6 +88,10 @@ class MediathekItemViewHolder(
 		mediathekRepository
 			.getPlaybackPositionPercent(show.apiId)
 			.collectLatest(::updatePlaybackPositionPercent)
+	}
+
+	private fun updateIsRelevantForUser(isRelevant: Boolean) {
+		binding.root.setBackgroundColor(if (isRelevant) bgColorHighlight else bgColorDefault)
 	}
 
 	private fun updateDownloadProgress(progress: Int) {
@@ -104,16 +117,6 @@ class MediathekItemViewHolder(
 		binding.downloadProgressIcon.isVisible = binding.downloadProgress.isVisible
 
 		binding.downloadProgress.isIndeterminate = status != DownloadStatus.DOWNLOADING
-
-		binding.root.setBackgroundColor(
-			when (status) {
-				DownloadStatus.NONE,
-				DownloadStatus.CANCELLED,
-				DownloadStatus.REMOVED,
-				DownloadStatus.DELETED -> bgColorDefault
-				else -> bgColorHighlight
-			}
-		)
 	}
 
 	private fun updatePlaybackPositionPercent(percent: Float) {
