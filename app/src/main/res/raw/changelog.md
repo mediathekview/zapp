@@ -7,6 +7,7 @@
 * Download-Funktionalität überarbeitet
 * Fehlgeschlagene Downloads werden automatisch fortgesetzt
 * Durchsuchbare Download-Liste
+* Moderner Netzwerk-Stack für die Video-Wiedergabe
 
 # 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen

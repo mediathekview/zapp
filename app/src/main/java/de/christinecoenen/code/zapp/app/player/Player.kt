@@ -11,8 +11,11 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.VideoInfoArtworkExtensions.getArtworkByteArray
@@ -27,6 +30,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import timber.log.Timber
 import java.io.IOException
 
@@ -34,6 +38,7 @@ import java.io.IOException
 class Player(
 	private val context: Context,
 	private val applicationScope: CoroutineScope,
+	private val httpClient: OkHttpClient,
 	private val playbackPositionRepository: IPlaybackPositionRepository
 ) {
 
@@ -100,10 +105,16 @@ class Player(
 			.setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
 			.build()
 
+		// use okhttp as network stack
+		val dataSourceFactory = DefaultDataSource.Factory(
+			context,
+			OkHttpDataSource.Factory(httpClient)
+		)
 		exoPlayer = ExoPlayer.Builder(context)
 			.setTrackSelector(trackSelector)
 			.setWakeMode(C.WAKE_MODE_NETWORK)
 			.setAudioAttributes(audioAttributes, true)
+			.setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
 			.build()
 
 		// media session setup

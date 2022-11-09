@@ -106,18 +106,18 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		}
 
 		if (!response.isSuccessful) {
-			Timber.w("server response not successful - response code: %s", response.code())
-			return@withContext failure(response.code().toErrorType())
+			Timber.w("server response not successful - response code: %s", response.code)
+			return@withContext failure(response.code.toErrorType())
 		}
 
-		if (response.body() == null) {
+		if (response.body == null) {
 			Timber.w("server response was empty")
 			return@withContext failure(ErrorType.Unknown)
 		}
 
-		val body = response.body()!!
+		val body = response.body!!
 
-		if (response.code() == HttpURLConnection.HTTP_PARTIAL) {
+		if (response.code == HttpURLConnection.HTTP_PARTIAL) {
 			// server does support ranges
 			downloadedBytes = existingFileSize
 			totalBytes = existingFileSize + body.contentLength()

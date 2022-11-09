@@ -152,6 +152,7 @@ dependencies {
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 	implementation "com.google.android.exoplayer:extension-mediasession:$exoplayer_version"
 	implementation "com.google.android.exoplayer:extension-leanback:$exoplayer_version"
+	implementation "com.google.android.exoplayer:extension-okhttp:$exoplayer_version"
 
 	// retrofit rest client
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
