@@ -64,7 +64,7 @@ class KoinModules {
 
 			viewModel { AbstractPlayerActivityViewModel(get()) }
 			viewModel { ChannelPlayerActivityViewModel(get()) }
-			viewModel { PersonalViewModel() }
+			viewModel { PersonalViewModel(get()) }
 			viewModel { DownloadsViewModel(get(), get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
 			viewModel { MediathekListFragmentViewModel(get()) }

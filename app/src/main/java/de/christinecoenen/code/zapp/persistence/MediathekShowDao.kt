@@ -17,6 +17,9 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY downloadedAt DESC")
 	fun getAllDownloads(searchQuery: String): PagingSource<Int, PersistedMediathekShow>
 
+	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) ORDER BY downloadedAt DESC LIMIT :limit")
+	fun getDownloads(limit: Int): Flow<List<PersistedMediathekShow>>
+
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
 	fun getFromId(id: Int): Flow<PersistedMediathekShow>
 
