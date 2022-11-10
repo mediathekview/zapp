@@ -167,4 +167,12 @@ class MediathekRepository(private val database: Database) {
 			.onStart { emit(0f) }
 			.flowOn(Dispatchers.IO)
 	}
+
+	fun getCompletetlyDownloadedVideoPath(showId: Int): Flow<String?> {
+		return database
+			.mediathekShowDao()
+			.getCompletetlyDownloadedVideoPath(showId)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
 }

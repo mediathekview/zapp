@@ -1,9 +1,7 @@
 package de.christinecoenen.code.zapp.app.downloads.ui.list.adapter
 
-import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -11,33 +9,36 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
-class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
-	RecyclerView.ViewHolder(binding.root) {
+class DownloadViewHolder(
+	val binding: DownloadsFragmentListItemBinding
+) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
-	private var loadThumbnailJob: Job? = null
+	private val mediathekRepository: MediathekRepository by inject()
+
 	private var downloadProgressJob: Job? = null
 	private var downloadStatusJob: Job? = null
 	private var playbackPositionJob: Job? = null
+	private var videoPathJob: Job? = null
 
-	suspend fun bindItem(
-		show: PersistedMediathekShow,
-		showFlow: Flow<PersistedMediathekShow>
-	) {
+	private var showt: PersistedMediathekShow? = null
+
+	suspend fun bindItem(show: PersistedMediathekShow) = withContext(Dispatchers.Main) {
 		binding.root.visibility = View.GONE
 
-		loadThumbnailJob?.cancel()
+		showt = show
+
 		downloadProgressJob?.cancel()
 		downloadStatusJob?.cancel()
 		playbackPositionJob?.cancel()
+		videoPathJob?.cancel()
 
 		binding.topic.text = show.mediathekShow.topic
 		binding.title.text = show.mediathekShow.title
@@ -45,98 +46,95 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.channel.text = show.mediathekShow.channel
 		binding.time.text = show.mediathekShow.formattedTimestamp
 
-		binding.progressBarAnimated.isVisible = false
-		binding.progressBar.isVisible = false
+		binding.downloadProgress.isVisible = false
+		binding.downloadProgress.progress = 0
 		binding.icon.setImageDrawable(null)
+		updateThumbnail(null)
 
 		binding.root.visibility = View.VISIBLE
 
-		coroutineScope {
-
-			downloadProgressJob = launch(Dispatchers.Main) {
-				showFlow
-					.distinctUntilChangedBy { it.downloadProgress }
-					.catch { exception -> Timber.e(exception) }
-					.collect(::onDownloadProgressChanged)
-			}
-
-			downloadStatusJob = launch(Dispatchers.Main) {
-				showFlow
-					.distinctUntilChangedBy { it.downloadStatus }
-					.catch { exception -> Timber.e(exception) }
-					.collect(::onDownloadStatusChanged)
-			}
-
-			playbackPositionJob = launch(Dispatchers.Main) {
-				showFlow
-					.map { it.playBackPercent }
-					.onStart { emit(0f) }
-					.catch { exception -> Timber.e(exception) }
-					.collect(::onPlaybackPositionChanged)
-			}
-		}
+		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
+		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
+		playbackPositionJob = launch { updatePlaybackPositionPercentFlow(show) }
+		videoPathJob = launch { getCompletetlyDownloadedVideoPathFlow(show) }
 	}
 
-	private fun onDownloadProgressChanged(show: PersistedMediathekShow) {
-		when (show.downloadStatus) {
-			DownloadStatus.DOWNLOADING -> {
-				animateToProgress(show.downloadProgress)
-				setProgressBarVisibilityDuringDownload(show.downloadProgress)
-			}
-			else -> {
-			}
-		}
+	private suspend fun updateDownloadProgressFlow(show: PersistedMediathekShow) {
+		mediathekRepository
+			.getDownloadProgress(show.id)
+			.collectLatest(::onDownloadProgressChanged)
 	}
 
-	private suspend fun onDownloadStatusChanged(show: PersistedMediathekShow) {
-		when (show.downloadStatus) {
+	private suspend fun updateDownloadStatusFlow(show: PersistedMediathekShow) {
+		mediathekRepository
+			.getDownloadStatus(show.id)
+			.collectLatest(::onDownloadStatusChanged)
+	}
+
+	private suspend fun updatePlaybackPositionPercentFlow(show: PersistedMediathekShow) {
+		mediathekRepository
+			.getPlaybackPositionPercent(show.mediathekShow.apiId)
+			.collectLatest(::onPlaybackPositionChanged)
+	}
+
+	private suspend fun getCompletetlyDownloadedVideoPathFlow(show: PersistedMediathekShow) {
+		mediathekRepository
+			.getCompletetlyDownloadedVideoPath(show.id)
+			.collectLatest(::onVideoPathChanged)
+	}
+
+	private fun onDownloadProgressChanged(downloadProgress: Int) {
+		binding.downloadProgress.progress = downloadProgress
+	}
+
+	private fun onDownloadStatusChanged(status: DownloadStatus) {
+		when (status) {
 			DownloadStatus.ADDED, DownloadStatus.QUEUED -> {
 				binding.icon.setImageDrawable(null)
-				updateThumbnail(null)
-				binding.progressBarAnimated.isVisible = true
-				binding.progressBar.isVisible = false
 			}
 			DownloadStatus.DOWNLOADING -> {
 				binding.icon.setImageDrawable(null)
-				updateThumbnail(null)
-				setProgressBarVisibilityDuringDownload(show.downloadProgress)
-				binding.progressBar.progress = show.downloadProgress
 			}
 			DownloadStatus.COMPLETED -> {
 				binding.icon.setImageDrawable(null)
-				loadThumbnail(show)
-				hideProgess()
-				binding.progressBarAnimated.isVisible = false
 			}
 			DownloadStatus.FAILED -> {
 				binding.icon.setImageResource(R.drawable.ic_outline_warning_amber_24)
-				updateThumbnail(null)
-				hideProgess()
-				binding.progressBarAnimated.isVisible = false
 			}
 			else -> {
 				binding.icon.setImageResource(R.drawable.ic_baseline_help_outline_24)
-				updateThumbnail(null)
-				hideProgess()
-				binding.progressBarAnimated.isVisible = false
 			}
 		}
+
+		binding.downloadProgress.isVisible = status == DownloadStatus.QUEUED ||
+			status == DownloadStatus.DOWNLOADING ||
+			status == DownloadStatus.PAUSED ||
+			status == DownloadStatus.ADDED
+
+		binding.downloadProgress.isIndeterminate = status != DownloadStatus.DOWNLOADING
 	}
 
 	private fun onPlaybackPositionChanged(playBackPercent: Float) {
 		binding.viewingProgress.scaleX = playBackPercent
 	}
 
-	private suspend fun loadThumbnail(show: PersistedMediathekShow) = coroutineScope {
-		loadThumbnailJob = launch(Dispatchers.Main) {
-			try {
-				val thumbnail =
-					ImageHelper.loadThumbnailAsync(binding.root.context, show.downloadedVideoPath)
-				updateThumbnail(thumbnail)
+	private suspend fun onVideoPathChanged(videoPath: String?) {
+		loadThumbnail(videoPath)
+	}
 
-			} catch (e: Exception) {
-				onLoadThumbnailError()
-			}
+	private suspend fun loadThumbnail(path: String?) = coroutineScope {
+		if (path == null) {
+			updateThumbnail(null)
+			return@coroutineScope
+		}
+
+		try {
+			val thumbnail =
+				ImageHelper.loadThumbnailAsync(binding.root.context, path)
+			updateThumbnail(thumbnail)
+
+		} catch (e: Exception) {
+			onLoadThumbnailError()
 		}
 	}
 
@@ -150,25 +148,5 @@ class DownloadViewHolder(val binding: DownloadsFragmentListItemBinding) :
 		binding.thumbnail.setImageBitmap(thumbnail)
 		binding.thumbnail.imageAlpha = 255
 		binding.thumbnail.scaleType = ImageView.ScaleType.CENTER_CROP
-	}
-
-	private fun hideProgess() {
-		binding.progressBar.progress = 0
-		binding.progressBar.clearAnimation()
-		binding.progressBar.isVisible = false
-	}
-
-	private fun setProgressBarVisibilityDuringDownload(progress: Int) {
-		binding.progressBarAnimated.isVisible = progress == 0
-		binding.progressBar.isVisible = !binding.progressBarAnimated.isVisible
-	}
-
-	private fun animateToProgress(progress: Int) {
-		ObjectAnimator.ofInt(binding.progressBar, "progress", progress)
-			.apply {
-				duration = 500
-				interpolator = DecelerateInterpolator()
-			}
-			.start()
 	}
 }

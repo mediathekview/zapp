@@ -11,7 +11,6 @@ import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 
@@ -38,10 +37,6 @@ class DownloadsViewModel(
 		}
 		.asLiveData()
 		.cachedIn(viewModelScope)
-
-	fun getPersistedShow(id: Int): Flow<PersistedMediathekShow> {
-		return mediathekRepository.getPersistedShow(id)
-	}
 
 	suspend fun remove(show: PersistedMediathekShow?) {
 		if (show == null) {

@@ -63,7 +63,7 @@ class MediathekItemViewHolder(
 		isRelevantForUserJob = launch { getIsRelevantForUserFlow(show) }
 		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
 		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
-		playbackPositionJob = launch { updatePlaybackPositionPercent(show) }
+		playbackPositionJob = launch { updatePlaybackPositionPercentFlow(show) }
 	}
 
 	private suspend fun getIsRelevantForUserFlow(show: MediathekShow) {
@@ -84,10 +84,10 @@ class MediathekItemViewHolder(
 			.collectLatest(::updateDownloadStatus)
 	}
 
-	private suspend fun updatePlaybackPositionPercent(show: MediathekShow) {
+	private suspend fun updatePlaybackPositionPercentFlow(show: MediathekShow) {
 		mediathekRepository
 			.getPlaybackPositionPercent(show.apiId)
-			.collectLatest(::updatePlaybackPositionPercent)
+			.collectLatest(::updatePlaybackPositionPercentFlow)
 	}
 
 	private fun updateIsRelevantForUser(isRelevant: Boolean) {
@@ -119,7 +119,7 @@ class MediathekItemViewHolder(
 		binding.downloadProgress.isIndeterminate = status != DownloadStatus.DOWNLOADING
 	}
 
-	private fun updatePlaybackPositionPercent(percent: Float) {
+	private fun updatePlaybackPositionPercentFlow(percent: Float) {
 		binding.viewingStatus.isVisible = percent > 0
 		binding.viewingProgress.progress = (percent * binding.viewingProgress.max).toInt()
 		binding.viewingProgress.isVisible = percent > 0

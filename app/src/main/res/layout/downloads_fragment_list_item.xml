@@ -28,18 +28,7 @@
 		app:layout_constraintTop_toTopOf="parent" />
 
 	<com.google.android.material.progressindicator.CircularProgressIndicator
-		android:id="@+id/progress_bar_animated"
-		android:layout_width="40dp"
-		android:layout_height="40dp"
-		android:indeterminate="true"
-		android:padding="5dp"
-		app:layout_constraintBottom_toBottomOf="@id/thumbnail"
-		app:layout_constraintEnd_toEndOf="@id/thumbnail"
-		app:layout_constraintStart_toStartOf="@id/thumbnail"
-		app:layout_constraintTop_toTopOf="@id/thumbnail" />
-
-	<com.google.android.material.progressindicator.CircularProgressIndicator
-		android:id="@+id/progress_bar"
+		android:id="@+id/download_progress"
 		android:layout_width="40dp"
 		android:layout_height="40dp"
 		android:max="100"

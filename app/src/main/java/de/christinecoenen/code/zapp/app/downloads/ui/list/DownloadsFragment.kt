@@ -46,7 +46,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		downloadAdapter = DownloadListAdapter(lifecycleScope, this, viewModel)
+		downloadAdapter = DownloadListAdapter(lifecycleScope, this)
 	}
 
 	override fun onCreateView(
