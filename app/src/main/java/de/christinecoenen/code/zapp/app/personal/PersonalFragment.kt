@@ -31,7 +31,10 @@ class PersonalFragment : Fragment(), MenuProvider {
 		downloadsAdapter = DownloadListAdapter(lifecycleScope)
 
 		outerAdapter = ConcatAdapter(
-			HeaderAdapater(R.string.activity_main_tab_downloads),
+			HeaderAdapater(
+				R.string.activity_main_tab_downloads,
+				R.drawable.ic_baseline_save_alt_24
+			),
 			downloadsAdapter
 		)
 	}

@@ -1,20 +1,25 @@
 package de.christinecoenen.code.zapp.app.personal.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
+import de.christinecoenen.code.zapp.databinding.PersonalFragmentHeaderItemBinding
 
 class HeaderAdapater(
-	@StringRes private val labelResId: Int
+	@StringRes private val labelResId: Int,
+	@DrawableRes private val iconResId: Int,
 ) : RecyclerView.Adapter<HeaderViewHolder>() {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
-		return HeaderViewHolder(MaterialTextView(parent.context))
+		val layoutInflater = LayoutInflater.from(parent.context)
+		val binding = PersonalFragmentHeaderItemBinding.inflate(layoutInflater, parent, false)
+		return HeaderViewHolder(binding)
 	}
 
 	override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
-		(holder.itemView as MaterialTextView).setText(labelResId)
+		holder.bind(labelResId, iconResId)
 	}
 
 	override fun getItemCount() = 1
