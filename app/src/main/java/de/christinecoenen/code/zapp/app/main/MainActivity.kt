@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			setOf(
 				R.id.channelListFragment,
 				R.id.mediathekListFragment,
-				R.id.downloadsFragment,
+				R.id.personalFragment,
 			),
 			fallbackOnNavigateUpListener = ::onSupportNavigateUp
 		)
