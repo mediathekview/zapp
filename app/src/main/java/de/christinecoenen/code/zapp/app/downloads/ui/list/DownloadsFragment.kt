@@ -3,12 +3,10 @@ package de.christinecoenen.code.zapp.app.downloads.ui.list
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
-import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +19,7 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DownloadsFragment : Fragment(), DownloadListAdapter.Listener, MenuProvider {
+class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 
 	private var _binding: DownloadsFragmentBinding? = null
 	private val binding: DownloadsFragmentBinding get() = _binding!!
@@ -73,8 +71,6 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener, MenuProvider
 		}
 		updateNoDownloadsVisibility()
 
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
 		return binding.root
 	}
 
@@ -83,12 +79,6 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener, MenuProvider
 		downloadAdapter.unregisterAdapterDataObserver(adapterDataObserver)
 		_binding = null
 	}
-
-	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-		menuInflater.inflate(R.menu.activity_main_toolbar, menu)
-	}
-
-	override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
 
 	override fun onShowClicked(show: PersistedMediathekShow) {
 		val directions =

@@ -10,11 +10,17 @@ import de.christinecoenen.code.zapp.databinding.PersonalFragmentHeaderItemBindin
 class HeaderAdapater(
 	@StringRes private val labelResId: Int,
 	@DrawableRes private val iconResId: Int,
+	private val listener: Listener,
 ) : RecyclerView.Adapter<HeaderViewHolder>() {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = PersonalFragmentHeaderItemBinding.inflate(layoutInflater, parent, false)
+
+		binding.more.setOnClickListener {
+			listener.onMoreClicked()
+		}
+
 		return HeaderViewHolder(binding)
 	}
 
@@ -23,4 +29,8 @@ class HeaderAdapater(
 	}
 
 	override fun getItemCount() = 1
+
+	fun interface Listener {
+		fun onMoreClicked()
+	}
 }

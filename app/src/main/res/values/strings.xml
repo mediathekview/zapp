@@ -80,6 +80,7 @@
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
 	<string name="action_start_picture_in_picture">Bild im Bild</string>
 	<string name="action_remove">Entfernen</string>
+	<string name="action_view_all">Alle ansehen</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
 	<string name="search_query_hint_downloads">Downloads durchsuchen…</string>

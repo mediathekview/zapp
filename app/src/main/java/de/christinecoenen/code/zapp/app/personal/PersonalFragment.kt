@@ -6,6 +6,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.personal.adapter.DownloadListAdapter
@@ -34,7 +35,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 			HeaderAdapater(
 				R.string.activity_main_tab_downloads,
 				R.drawable.ic_baseline_save_alt_24
-			),
+			) { navigateToDownloads() },
 			downloadsAdapter
 		)
 	}
@@ -69,4 +70,9 @@ class PersonalFragment : Fragment(), MenuProvider {
 	}
 
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
+
+	private fun navigateToDownloads() {
+		val directions = PersonalFragmentDirections.toDownloadsFragment()
+		findNavController().navigate(directions)
+	}
 }
