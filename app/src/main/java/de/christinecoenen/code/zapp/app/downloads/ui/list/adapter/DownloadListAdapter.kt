@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilItemCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 class DownloadListAdapter(
 	private val scope: LifecycleCoroutineScope,
 	private val listener: Listener
-) : PagingDataAdapter<PersistedMediathekShow, DownloadViewHolder>(DownloadDiffUtilCallback()) {
+) : PagingDataAdapter<PersistedMediathekShow, DownloadViewHolder>(PersistedMediathekShowDiffUtilItemCallback()) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
