@@ -12,6 +12,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.personal.adapter.DownloadListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentBinding
+import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,11 +26,20 @@ class PersonalFragment : Fragment(), MenuProvider {
 	private lateinit var outerAdapter: ConcatAdapter
 	private lateinit var downloadsAdapter: DownloadListAdapter
 
+	private val showClickListener = object : DownloadListAdapter.Listener {
+		override fun onShowClicked(show: PersistedMediathekShow) {
+			navigateToShow(show)
+		}
+
+		override fun onShowLongClicked(show: PersistedMediathekShow, view: View) {
+			// TODO: implement
+		}
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		downloadsAdapter = DownloadListAdapter(lifecycleScope)
+		downloadsAdapter = DownloadListAdapter(lifecycleScope, showClickListener)
 
 		outerAdapter = ConcatAdapter(
 			HeaderAdapater(
@@ -73,6 +83,12 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 	private fun navigateToDownloads() {
 		val directions = PersonalFragmentDirections.toDownloadsFragment()
+		findNavController().navigate(directions)
+	}
+
+	private fun navigateToShow(show: PersistedMediathekShow) {
+		val directions =
+			PersonalFragmentDirections.toMediathekDetailFragment(persistedShowId = show.id)
 		findNavController().navigate(directions)
 	}
 }
