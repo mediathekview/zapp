@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
+import android.animation.LayoutTransition
 import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.core.view.isVisible
@@ -64,6 +65,10 @@ class MediathekItemViewHolder(
 		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
 		playbackPositionJob = launch { updatePlaybackPositionPercentFlow(show) }
 		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
+
+		binding.root.layoutTransition = LayoutTransition()
+		binding.root.layoutTransition.disableTransitionType(LayoutTransition.CHANGE_APPEARING)
+		binding.root.layoutTransition.disableTransitionType(LayoutTransition.CHANGING)
 	}
 
 	fun recycle() {
@@ -74,6 +79,8 @@ class MediathekItemViewHolder(
 		videoPathJob?.cancel()
 
 		updateThumbnail(null)
+
+		binding.root.layoutTransition = null
 	}
 
 	private suspend fun getIsRelevantForUserFlow(show: MediathekShow) {
