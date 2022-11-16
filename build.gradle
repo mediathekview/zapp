@@ -2,8 +2,8 @@
 
 buildscript {
 	ext.koin_version = '3.1.6'
-	ext.about_libraries_version = '10.1.0'
-	ext.nav_version = '2.5.2'
+	ext.about_libraries_version = '10.5.1'
+	ext.nav_version = '2.5.3'
 
 	repositories {
 		google()
