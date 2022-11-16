@@ -14,8 +14,10 @@ import de.christinecoenen.code.zapp.utils.system.ColorHelper.themeColor
 import de.christinecoenen.code.zapp.utils.system.ImageHelper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.transform
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.time.Duration.Companion.milliseconds
 
 class MediathekItemViewHolder(
 	private val binding: MediathekListFragmentItemBinding,
@@ -106,6 +108,10 @@ class MediathekItemViewHolder(
 	private suspend fun getCompletetlyDownloadedVideoPathFlow(show: MediathekShow) {
 		mediathekRepository
 			.getCompletetlyDownloadedVideoPath(show.apiId)
+			.transform {
+				emit(it)
+				delay(500.milliseconds)
+			}
 			.collectLatest(::onVideoPathChanged)
 	}
 
