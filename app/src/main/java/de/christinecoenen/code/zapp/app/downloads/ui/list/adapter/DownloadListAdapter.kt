@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
-import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilItemCallback
 import kotlinx.coroutines.Dispatchers
@@ -15,12 +17,14 @@ import kotlinx.coroutines.launch
 class DownloadListAdapter(
 	private val scope: LifecycleCoroutineScope,
 	private val listener: Listener
-) : PagingDataAdapter<PersistedMediathekShow, DownloadViewHolder>(PersistedMediathekShowDiffUtilItemCallback()) {
+) : PagingDataAdapter<PersistedMediathekShow, MediathekItemViewHolder>(
+	PersistedMediathekShowDiffUtilItemCallback()
+) {
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
-		val binding = DownloadsFragmentListItemBinding.inflate(layoutInflater, parent, false)
-		val holder = DownloadViewHolder(binding)
+		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
+		val holder = MediathekItemViewHolder(binding, MediathekItemType.Download)
 
 		binding.root.setOnClickListener {
 			getItem(holder.bindingAdapterPosition)?.let {
@@ -37,10 +41,10 @@ class DownloadListAdapter(
 		return holder
 	}
 
-	override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
+	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		getItem(position)?.let {
 			scope.launch(Dispatchers.Main) {
-				holder.bindItem(it)
+				holder.setShow(it.mediathekShow)
 			}
 		}
 	}

@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.app.downloads.ui.list.adapter.DownloadViewHolder
-import de.christinecoenen.code.zapp.databinding.DownloadsFragmentListItemBinding
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
+import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilCallback
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 class DownloadListAdapter(
 	private val scope: LifecycleCoroutineScope,
 	private val listener: Listener? = null
-) : RecyclerView.Adapter<DownloadViewHolder>() {
+) : RecyclerView.Adapter<MediathekItemViewHolder>() {
 
 	private var persistedShows = mutableListOf<PersistedMediathekShow>()
 
@@ -29,10 +30,10 @@ class DownloadListAdapter(
 		diffResult.dispatchUpdatesTo(this)
 	}
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
-		val binding = DownloadsFragmentListItemBinding.inflate(layoutInflater, parent, false)
-		val holder = DownloadViewHolder(binding)
+		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
+		val holder = MediathekItemViewHolder(binding, MediathekItemType.Download)
 
 		binding.root.setOnClickListener {
 			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition])
@@ -49,9 +50,9 @@ class DownloadListAdapter(
 		return holder
 	}
 
-	override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
+	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		scope.launch {
-			holder.bindItem(persistedShows[holder.bindingAdapterPosition])
+			holder.setShow(persistedShows[holder.bindingAdapterPosition].mediathekShow)
 		}
 	}
 

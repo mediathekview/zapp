@@ -13,6 +13,23 @@
 	tools:ignore="UnusedAttribute"
 	tools:visibility="visible">
 
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/thumbnail"
+		android:layout_width="80dp"
+		android:layout_height="0dp"
+		android:layout_marginEnd="4dp"
+		android:background="?colorSurface"
+		android:backgroundTint="?colorSurfaceVariant"
+		android:scaleType="centerCrop"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/topic"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:visibility="visible" />
+
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/topic"
 		android:layout_width="0dp"
@@ -30,7 +47,7 @@
 		app:layout_constraintHorizontal_bias="0"
 		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintHorizontal_weight="5"
-		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintStart_toEndOf="@id/thumbnail"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintVertical_chainStyle="packed"
 		app:layout_constraintWidth_max="wrap"
@@ -111,7 +128,7 @@
 		app:layout_constraintBottom_toBottomOf="@id/topic"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/viewing_status"
-		app:layout_constraintTop_toTopOf="@id/topic"/>
+		app:layout_constraintTop_toTopOf="@id/topic" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"

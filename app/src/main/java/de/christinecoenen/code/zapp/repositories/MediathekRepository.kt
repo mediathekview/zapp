@@ -168,10 +168,10 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getCompletetlyDownloadedVideoPath(showId: Int): Flow<String?> {
+	fun getCompletetlyDownloadedVideoPath(apiId: String): Flow<String?> {
 		return database
 			.mediathekShowDao()
-			.getCompletetlyDownloadedVideoPath(showId)
+			.getCompletetlyDownloadedVideoPath(apiId)
 			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
