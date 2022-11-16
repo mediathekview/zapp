@@ -13,8 +13,9 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilCallback
 import kotlinx.coroutines.launch
 
-class DownloadListAdapter(
+class MediathekShowListAdapter(
 	private val scope: LifecycleCoroutineScope,
+	private val mediathekItemType: MediathekItemType,
 	private val listener: Listener? = null
 ) : RecyclerView.Adapter<MediathekItemViewHolder>() {
 
@@ -33,7 +34,7 @@ class DownloadListAdapter(
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
-		val holder = MediathekItemViewHolder(binding, MediathekItemType.Download)
+		val holder = MediathekItemViewHolder(binding, mediathekItemType)
 
 		binding.root.setOnClickListener {
 			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition])

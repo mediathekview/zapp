@@ -16,5 +16,15 @@ enum class MediathekItemType {
 	 * For shows in the downloads list.
 	 * A thumbnail will be loaded.
 	 */
-	Download
+	Download,
+
+	/**
+	 * For shows that the user has started watching.
+	 */
+	History,
+
+	/**
+	 * For shows that have been bookmarked by the user.
+	 */
+	Bookmark,
 }

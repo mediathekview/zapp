@@ -20,6 +20,9 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) ORDER BY downloadedAt DESC LIMIT :limit")
 	fun getDownloads(limit: Int): Flow<List<PersistedMediathekShow>>
 
+	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition ORDER BY lastPlayedBackAt DESC LIMIT :limit")
+	fun getStarted(limit: Int): Flow<List<PersistedMediathekShow>>
+
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
 	fun getFromId(id: Int): Flow<PersistedMediathekShow>
 

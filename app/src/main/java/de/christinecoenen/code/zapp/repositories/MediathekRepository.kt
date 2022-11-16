@@ -26,6 +26,14 @@ class MediathekRepository(private val database: Database) {
 			.getAllDownloads("%$searchQuery%")
 	}
 
+	fun getStarted(limit: Int): Flow<List<PersistedMediathekShow>> {
+		return database
+			.mediathekShowDao()
+			.getStarted(limit)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
 	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
 		withContext(Dispatchers.IO) {
 			database
