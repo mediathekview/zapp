@@ -109,6 +109,7 @@ dependencies {
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
+	implementation 'androidx.activity:activity-ktx:1.6.1'
 	implementation 'androidx.appcompat:appcompat:1.5.1'
 	implementation 'com.google.android.material:material:1.7.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
