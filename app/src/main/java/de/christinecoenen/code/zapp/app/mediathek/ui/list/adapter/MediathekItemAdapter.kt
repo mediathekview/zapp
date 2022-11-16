@@ -40,4 +40,9 @@ class MediathekItemAdapter(
 			}
 		}
 	}
+
+	override fun onViewRecycled(holder: MediathekItemViewHolder) {
+		super.onViewRecycled(holder)
+		holder.recycle()
+	}
 }

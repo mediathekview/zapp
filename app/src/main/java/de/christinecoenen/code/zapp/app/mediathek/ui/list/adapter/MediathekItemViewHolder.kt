@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
 import android.graphics.Bitmap
-import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -36,20 +35,12 @@ class MediathekItemViewHolder(
 	private var videoPathJob: Job? = null
 
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
-		binding.root.visibility = View.GONE
-
-		isRelevantForUserJob?.cancel()
-		downloadProgressJob?.cancel()
-		downloadStatusJob?.cancel()
-		playbackPositionJob?.cancel()
-		videoPathJob?.cancel()
+		recycle()
 
 		binding.title.text = show.title
 		binding.topic.text = show.topic
 		// fix layout_constraintWidth_max not be applied correctly
 		binding.topic.requestLayout()
-
-		binding.thumbnail.isVisible = itemType == MediathekItemType.Download
 
 		binding.duration.text = show.formattedDuration
 		binding.channel.text = show.channel
@@ -65,20 +56,24 @@ class MediathekItemViewHolder(
 
 		binding.root.setBackgroundColor(bgColorDefault)
 
-		binding.root.visibility = View.VISIBLE
-
 		if (itemType == MediathekItemType.Default) {
 			isRelevantForUserJob = launch { getIsRelevantForUserFlow(show) }
 		}
 
-		if (itemType == MediathekItemType.Download) {
-			updateThumbnail(null)
-			videoPathJob = launch { getCompletetlyDownloadedVideoPathFlow(show) }
-		}
-
+		videoPathJob = launch { getCompletetlyDownloadedVideoPathFlow(show) }
 		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
 		playbackPositionJob = launch { updatePlaybackPositionPercentFlow(show) }
 		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
+	}
+
+	fun recycle() {
+		isRelevantForUserJob?.cancel()
+		downloadProgressJob?.cancel()
+		downloadStatusJob?.cancel()
+		playbackPositionJob?.cancel()
+		videoPathJob?.cancel()
+
+		updateThumbnail(null)
 	}
 
 	private suspend fun getIsRelevantForUserFlow(show: MediathekShow) {
@@ -156,9 +151,11 @@ class MediathekItemViewHolder(
 
 	private suspend fun loadThumbnail(path: String?) = coroutineScope {
 		if (path == null) {
-			updateThumbnail(null)
+			binding.thumbnail.isVisible = false
 			return@coroutineScope
 		}
+
+		binding.thumbnail.isVisible = true
 
 		try {
 			val thumbnail = ImageHelper.loadThumbnailAsync(binding.root.context, path)
@@ -177,6 +174,7 @@ class MediathekItemViewHolder(
 	}
 
 	private fun updateThumbnail(thumbnail: Bitmap?) {
+		binding.thumbnail.isVisible = thumbnail != null
 		binding.thumbnail.setImageBitmap(thumbnail)
 		binding.thumbnail.imageAlpha = 255
 		binding.thumbnail.scaleType = ImageView.ScaleType.CENTER_CROP

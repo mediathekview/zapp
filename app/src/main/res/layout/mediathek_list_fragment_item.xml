@@ -9,9 +9,8 @@
 	android:focusable="true"
 	android:foreground="?selectableItemBackground"
 	android:paddingVertical="10dp"
-	android:visibility="gone"
 	tools:ignore="UnusedAttribute"
-	tools:visibility="visible">
+	tools:showIn="@layout/mediathek_list_fragment">
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/thumbnail"

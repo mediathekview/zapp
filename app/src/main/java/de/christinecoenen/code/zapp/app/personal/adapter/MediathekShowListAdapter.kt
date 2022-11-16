@@ -57,6 +57,11 @@ class MediathekShowListAdapter(
 		}
 	}
 
+	override fun onViewRecycled(holder: MediathekItemViewHolder) {
+		super.onViewRecycled(holder)
+		holder.recycle()
+	}
+
 	override fun getItemCount() = persistedShows.size
 
 	interface Listener {

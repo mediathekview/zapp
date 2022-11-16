@@ -49,6 +49,11 @@ class DownloadListAdapter(
 		}
 	}
 
+	override fun onViewRecycled(holder: MediathekItemViewHolder) {
+		super.onViewRecycled(holder)
+		holder.recycle()
+	}
+
 	interface Listener {
 		fun onShowClicked(show: PersistedMediathekShow)
 		fun onShowLongClicked(show: PersistedMediathekShow, view: View)
