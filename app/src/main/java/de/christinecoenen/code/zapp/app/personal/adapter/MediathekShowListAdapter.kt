@@ -34,7 +34,7 @@ class MediathekShowListAdapter(
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
-		val holder = MediathekItemViewHolder(binding, mediathekItemType)
+		val holder = MediathekItemViewHolder(binding, mediathekItemType, true)
 
 		binding.root.setOnClickListener {
 			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition])

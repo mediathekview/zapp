@@ -20,7 +20,7 @@ class MediathekItemAdapter(
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val inflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(inflater, parent, false)
-		return MediathekItemViewHolder(binding, MediathekItemType.Default)
+		return MediathekItemViewHolder(binding, MediathekItemType.Default, true)
 	}
 
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {

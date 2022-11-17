@@ -24,7 +24,7 @@ class DownloadListAdapter(
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
-		val holder = MediathekItemViewHolder(binding, MediathekItemType.Download)
+		val holder = MediathekItemViewHolder(binding, MediathekItemType.Download, false)
 
 		binding.root.setOnClickListener {
 			getItem(holder.bindingAdapterPosition)?.let {

@@ -4,6 +4,7 @@ import android.animation.LayoutTransition
 import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import androidx.leanback.widget.FocusHighlight
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
@@ -22,6 +23,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class MediathekItemViewHolder(
 	private val binding: MediathekListFragmentItemBinding,
 	private val itemType: MediathekItemType,
+	private val highlightRelevantForUser: Boolean,
 ) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
 	private val mediathekRepository: MediathekRepository by inject()
@@ -41,7 +43,7 @@ class MediathekItemViewHolder(
 		binding.title.text = show.title
 		// fix max lines not applied correctly
 		binding.title.requestLayout()
-		
+
 		binding.topic.text = show.topic
 		// fix layout_constraintWidth_max not be applied correctly
 		binding.topic.requestLayout()
@@ -60,7 +62,7 @@ class MediathekItemViewHolder(
 
 		binding.root.setBackgroundColor(bgColorDefault)
 
-		if (itemType == MediathekItemType.Default) {
+		if (highlightRelevantForUser) {
 			isRelevantForUserJob = launch { getIsRelevantForUserFlow(show) }
 		}
 
