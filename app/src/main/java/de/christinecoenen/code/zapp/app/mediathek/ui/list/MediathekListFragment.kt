@@ -21,9 +21,9 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +39,7 @@ import java.util.*
 import javax.net.ssl.SSLHandshakeException
 
 
-class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefreshListener {
+class MediathekListFragment : Fragment(), MenuProvider, MediathekShowListItemListener, OnRefreshListener {
 
 	private var _binding: MediathekListFragmentBinding? = null
 	private val binding: MediathekListFragmentBinding

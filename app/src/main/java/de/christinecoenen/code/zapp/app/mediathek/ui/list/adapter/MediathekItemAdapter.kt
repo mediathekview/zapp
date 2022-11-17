@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class MediathekItemAdapter(
 	private val scope: LifecycleCoroutineScope,
 	diffCallback: DiffUtil.ItemCallback<MediathekShow>,
-	private val listener: ListItemListener?
+	private val listener: MediathekShowListItemListener?
 ) :
 	PagingDataAdapter<MediathekShow, MediathekItemViewHolder>(diffCallback) {
 

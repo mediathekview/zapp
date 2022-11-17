@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilItemCallback
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class DownloadListAdapter(
 	private val scope: LifecycleCoroutineScope,
-	private val listener: Listener
+	private val listener: MediathekShowListItemListener
 ) : PagingDataAdapter<PersistedMediathekShow, MediathekItemViewHolder>(
 	PersistedMediathekShowDiffUtilItemCallback()
 ) {
@@ -28,12 +29,12 @@ class DownloadListAdapter(
 
 		binding.root.setOnClickListener {
 			getItem(holder.bindingAdapterPosition)?.let {
-				listener.onShowClicked(it)
+				listener.onShowClicked(it.mediathekShow)
 			}
 		}
 		binding.root.setOnLongClickListener {
 			getItem(holder.bindingAdapterPosition)?.let {
-				listener.onShowLongClicked(it, binding.root)
+				listener.onShowLongClicked(it.mediathekShow, binding.root)
 			}
 			true
 		}
@@ -52,10 +53,5 @@ class DownloadListAdapter(
 	override fun onViewRecycled(holder: MediathekItemViewHolder) {
 		super.onViewRecycled(holder)
 		holder.recycle()
-	}
-
-	interface Listener {
-		fun onShowClicked(show: PersistedMediathekShow)
-		fun onShowLongClicked(show: PersistedMediathekShow, view: View)
 	}
 }

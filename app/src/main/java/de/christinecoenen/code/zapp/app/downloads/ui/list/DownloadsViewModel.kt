@@ -8,10 +8,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 
 
@@ -38,13 +39,18 @@ class DownloadsViewModel(
 		.asLiveData()
 		.cachedIn(viewModelScope)
 
-	suspend fun remove(show: PersistedMediathekShow?) {
+	suspend fun remove(show: MediathekShow?) {
 		if (show == null) {
 			return
 		}
 
-		downloadController.deleteDownload(show.id)
-		mediathekRepository.updateDownloadStatus(show.downloadId, DownloadStatus.REMOVED)
+		mediathekRepository
+			.getPersistedShowByApiId(show.apiId)
+			.firstOrNull()
+			?.let {
+				downloadController.deleteDownload(it.id)
+				mediathekRepository.updateDownloadStatus(it.downloadId, DownloadStatus.REMOVED)
+			}
 	}
 
 	fun setSearchQueryFilter(query: String?) {

@@ -28,7 +28,7 @@ import javax.net.ssl.SSLHandshakeException
 
 
 class MediathekListFragment : Fragment(),
-	de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener {
+	de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener {
 
 	private val mediathekRepository: MediathekRepository by inject()
 

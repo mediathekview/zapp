@@ -1,13 +1,13 @@
 package de.christinecoenen.code.zapp.app.personal.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilCallback
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class MediathekShowListAdapter(
 	private val scope: LifecycleCoroutineScope,
 	private val mediathekItemType: MediathekItemType,
-	private val listener: Listener? = null
+	private val listener: MediathekShowListItemListener? = null
 ) : RecyclerView.Adapter<MediathekItemViewHolder>() {
 
 	private var persistedShows = mutableListOf<PersistedMediathekShow>()
@@ -37,12 +37,12 @@ class MediathekShowListAdapter(
 		val holder = MediathekItemViewHolder(binding, mediathekItemType, true)
 
 		binding.root.setOnClickListener {
-			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition])
+			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition].mediathekShow)
 		}
 
 		binding.root.setOnLongClickListener {
 			listener?.onShowLongClicked(
-				persistedShows[holder.bindingAdapterPosition],
+				persistedShows[holder.bindingAdapterPosition].mediathekShow,
 				binding.root
 			)
 			true
@@ -63,9 +63,4 @@ class MediathekShowListAdapter(
 	}
 
 	override fun getItemCount() = persistedShows.size
-
-	interface Listener {
-		fun onShowClicked(show: PersistedMediathekShow)
-		fun onShowLongClicked(show: PersistedMediathekShow, view: View)
-	}
 }

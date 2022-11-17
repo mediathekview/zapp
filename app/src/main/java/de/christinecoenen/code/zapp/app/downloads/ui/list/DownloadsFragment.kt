@@ -14,12 +14,13 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.downloads.ui.list.adapter.DownloadListAdapter
 import de.christinecoenen.code.zapp.app.downloads.ui.list.dialogs.ConfirmShowRemovalDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.DownloadsFragmentBinding
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
+class DownloadsFragment : Fragment(), MediathekShowListItemListener {
 
 	private var _binding: DownloadsFragmentBinding? = null
 	private val binding: DownloadsFragmentBinding get() = _binding!!
@@ -27,7 +28,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	private val viewModel: DownloadsViewModel by viewModel()
 	private lateinit var downloadAdapter: DownloadListAdapter
 
-	private var longClickShow: PersistedMediathekShow? = null
+	private var longClickShow: MediathekShow? = null
 
 	private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 		override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -80,13 +81,13 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		_binding = null
 	}
 
-	override fun onShowClicked(show: PersistedMediathekShow) {
+	override fun onShowClicked(show: MediathekShow) {
 		val directions =
-			MediathekListFragmentDirections.toMediathekDetailFragment(show.mediathekShow)
+			MediathekListFragmentDirections.toMediathekDetailFragment(show)
 		findNavController().navigate(directions)
 	}
 
-	override fun onShowLongClicked(show: PersistedMediathekShow, view: View) {
+	override fun onShowLongClicked(show: MediathekShow, view: View) {
 		longClickShow = show
 
 		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
@@ -99,7 +100,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_share -> {
-				longClickShow?.mediathekShow?.shareExternally(requireContext())
+				longClickShow?.shareExternally(requireContext())
 				return true
 			}
 			R.id.menu_remove -> {
@@ -110,7 +111,7 @@ class DownloadsFragment : Fragment(), DownloadListAdapter.Listener {
 		return false
 	}
 
-	private fun showConfirmRmovalDialog(show: PersistedMediathekShow) {
+	private fun showConfirmRmovalDialog(show: MediathekShow) {
 		val dialog = ConfirmShowRemovalDialog()
 
 		setFragmentResultListener(ConfirmShowRemovalDialog.REQUEST_KEY_CONFIRMED) { _, _ ->

@@ -10,11 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentBinding
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,12 +35,12 @@ class PersonalFragment : Fragment(), MenuProvider {
 	private val historyLoadStatusAdapter = LoadStatusAdapter()
 	private val bookmarkLoadStatusAdapter = LoadStatusAdapter()
 
-	private val showClickListener = object : MediathekShowListAdapter.Listener {
-		override fun onShowClicked(show: PersistedMediathekShow) {
+	private val showClickListener = object : MediathekShowListItemListener {
+		override fun onShowClicked(show: MediathekShow) {
 			navigateToShow(show)
 		}
 
-		override fun onShowLongClicked(show: PersistedMediathekShow, view: View) {
+		override fun onShowLongClicked(show: MediathekShow, view: View) {
 			// TODO: implement
 		}
 	}
@@ -129,9 +130,9 @@ class PersonalFragment : Fragment(), MenuProvider {
 		findNavController().navigate(directions)
 	}
 
-	private fun navigateToShow(show: PersistedMediathekShow) {
+	private fun navigateToShow(show: MediathekShow) {
 		val directions =
-			PersonalFragmentDirections.toMediathekDetailFragment(persistedShowId = show.id)
+			PersonalFragmentDirections.toMediathekDetailFragment(mediathekShow = show)
 		findNavController().navigate(directions)
 	}
 }

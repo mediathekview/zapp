@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListItemBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class MediathekItemAdapter(
 	private val scope: LifecycleCoroutineScope,
 	diffCallback: DiffUtil.ItemCallback<MediathekShow>,
-	private val listener: ListItemListener?
+	private val listener: MediathekShowListItemListener?
 ) :
 	PagingDataAdapter<MediathekShow, MediathekItemViewHolder>(diffCallback) {
 
