@@ -18,7 +18,7 @@ enum class MediathekItemType {
 	/**
 	 * For shows that the user has started watching.
 	 */
-	History,
+	ContinueWatching,
 
 	/**
 	 * For shows that have been bookmarked by the user.

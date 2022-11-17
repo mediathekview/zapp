@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.repositories
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -32,6 +33,32 @@ class MediathekRepository(private val database: Database) {
 			.getStarted(limit)
 			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
+	}
+
+	fun getStarted(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getAllStarted("%$searchQuery%")
+	}
+
+	fun getBookmarked(limit: Int): Flow<List<PersistedMediathekShow>> {
+		// TODO: implement
+		return flow {
+			emit(listOf())
+		}
+	}
+
+	fun getBookmarked(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
+		// TODO: implement
+		return object : PagingSource<Int, PersistedMediathekShow>() {
+			override fun getRefreshKey(state: PagingState<Int, PersistedMediathekShow>): Int? {
+				return null
+			}
+
+			override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PersistedMediathekShow> {
+				return LoadResult.Page(listOf(), null, null)
+			}
+		}
 	}
 
 	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =

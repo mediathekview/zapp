@@ -5,7 +5,7 @@
 	<string name="activity_main_tab_live">Live</string>
 	<string name="activity_main_tab_mediathek">Mediathek</string>
 	<string name="activity_main_tab_downloads">Downloads</string>
-	<string name="activity_main_tab_history">Weiterschauen</string>
+	<string name="activity_main_tab_continue_watching">Weiterschauen</string>
 	<string name="activity_main_tab_bookmarks">Bookmarks</string>
 	<string name="activity_main_tab_personal">Meine Sendungen</string>
 

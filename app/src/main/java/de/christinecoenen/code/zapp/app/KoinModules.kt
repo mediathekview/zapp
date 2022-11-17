@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app
 
-import de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsViewModel
 import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.ZappBackendApiServiceFactory
 import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoRepository
@@ -13,6 +12,9 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownload
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.WorkManagerDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.personal.PersonalViewModel
+import de.christinecoenen.code.zapp.app.personal.details.BookmarksViewModel
+import de.christinecoenen.code.zapp.app.personal.details.DownloadsViewModel
+import de.christinecoenen.code.zapp.app.personal.details.ContinueWatchingViewModel
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
@@ -48,7 +50,15 @@ class KoinModules {
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
-			single { WorkManagerDownloadController(androidContext(), get(), get(), get(), get())} bind IDownloadController::class
+			single {
+				WorkManagerDownloadController(
+					androidContext(),
+					get(),
+					get(),
+					get(),
+					get()
+				)
+			} bind IDownloadController::class
 			single {
 				ZappBackendApiServiceFactory(androidContext(), get()).create()
 			} bind IZappBackendApiService::class
@@ -65,6 +75,8 @@ class KoinModules {
 			viewModel { AbstractPlayerActivityViewModel(get()) }
 			viewModel { ChannelPlayerActivityViewModel(get()) }
 			viewModel { PersonalViewModel(get()) }
+			viewModel { BookmarksViewModel(get(), get()) }
+			viewModel { ContinueWatchingViewModel(get(), get()) }
 			viewModel { DownloadsViewModel(get(), get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
 			viewModel { MediathekListFragmentViewModel(get()) }

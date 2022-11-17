@@ -28,11 +28,11 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 	private lateinit var outerAdapter: ConcatAdapter
 	private lateinit var downloadsAdapter: MediathekShowListAdapter
-	private lateinit var historyAdapter: MediathekShowListAdapter
+	private lateinit var continueWatchingAdapter: MediathekShowListAdapter
 	private lateinit var bookmarkAdapter: MediathekShowListAdapter
 
 	private val downloadsLoadStatusAdapter = LoadStatusAdapter()
-	private val historyLoadStatusAdapter = LoadStatusAdapter()
+	private val continueWatchingLoadStatusAdapter = LoadStatusAdapter()
 	private val bookmarkLoadStatusAdapter = LoadStatusAdapter()
 
 	private val showClickListener = object : MediathekShowListItemListener {
@@ -50,8 +50,8 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 		downloadsAdapter =
 			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Download, showClickListener)
-		historyAdapter =
-			MediathekShowListAdapter(lifecycleScope, MediathekItemType.History, showClickListener)
+		continueWatchingAdapter =
+			MediathekShowListAdapter(lifecycleScope, MediathekItemType.ContinueWatching, showClickListener)
 		bookmarkAdapter =
 			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Bookmark, showClickListener)
 
@@ -63,17 +63,15 @@ class PersonalFragment : Fragment(), MenuProvider {
 			downloadsAdapter,
 			downloadsLoadStatusAdapter,
 			HeaderAdapater(
-				R.string.activity_main_tab_history,
-				R.drawable.ic_outline_play_circle_24,
-				null
-			),
-			historyAdapter,
-			historyLoadStatusAdapter,
+				R.string.activity_main_tab_continue_watching,
+				R.drawable.ic_outline_play_circle_24
+			) { navigateToContinueWatching() },
+			continueWatchingAdapter,
+			continueWatchingLoadStatusAdapter,
 			HeaderAdapater(
 				R.string.activity_main_tab_bookmarks,
-				R.drawable.ic_baseline_bookmark_border_24,
-				null
-			),
+				R.drawable.ic_baseline_bookmark_border_24
+			) { navigateToBookmarks() },
 			bookmarkAdapter,
 			bookmarkLoadStatusAdapter,
 		)
@@ -96,9 +94,9 @@ class PersonalFragment : Fragment(), MenuProvider {
 		}
 
 		lifecycleScope.launch {
-			viewModel.historyFlow.collect {
-				historyAdapter.setShows(it)
-				historyLoadStatusAdapter.onShowsLoaded(it.size)
+			viewModel.continueWatchingFlow.collect {
+				continueWatchingAdapter.setShows(it)
+				continueWatchingLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
 
@@ -127,6 +125,16 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 	private fun navigateToDownloads() {
 		val directions = PersonalFragmentDirections.toDownloadsFragment()
+		findNavController().navigate(directions)
+	}
+
+	private fun navigateToContinueWatching() {
+		val directions = PersonalFragmentDirections.toContinueWatchingFragment()
+		findNavController().navigate(directions)
+	}
+
+	private fun navigateToBookmarks() {
+		val directions = PersonalFragmentDirections.toBookmarksFragment()
 		findNavController().navigate(directions)
 	}
 
