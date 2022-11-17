@@ -9,8 +9,9 @@
 	android:clickable="true"
 	android:focusable="true"
 	android:orientation="horizontal"
-	android:paddingVertical="@dimen/activity_vertical_margin"
-	tools:ignore="Overdraw">
+	android:paddingVertical="12dp"
+	tools:ignore="Overdraw"
+	tools:showIn="@layout/mediathek_list_fragment">
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/logo"
@@ -50,7 +51,7 @@
 		android:layout_marginBottom="4dp"
 		android:ellipsize="end"
 		android:maxLines="2"
-		android:textAppearance="?textAppearanceTitleLarge"
+		android:textAppearance="?textAppearanceTitleMedium"
 		app:layout_constraintBottom_toTopOf="@id/text_show_subtitle"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/logo"
@@ -65,7 +66,7 @@
 		android:layout_marginBottom="@dimen/view_program_info_subtitle_margin_bottom"
 		android:ellipsize="end"
 		android:maxLines="1"
-		android:textAppearance="?textAppearanceTitleMedium"
+		android:textAppearance="?textAppearanceBodyLarge"
 		app:layout_constraintBottom_toTopOf="@id/text_show_time"
 		app:layout_constraintEnd_toEndOf="@id/text_show_title"
 		app:layout_constraintStart_toStartOf="@id/text_show_title"
@@ -76,7 +77,7 @@
 		android:id="@+id/text_show_time"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:textAppearance="?textAppearanceBodyMedium"
+		android:textAppearance="?textAppearanceLabelMedium"
 		app:layout_constraintBottom_toTopOf="@id/progressbar_show_progress"
 		app:layout_constraintEnd_toEndOf="@id/text_show_title"
 		app:layout_constraintStart_toStartOf="@id/text_show_title"
