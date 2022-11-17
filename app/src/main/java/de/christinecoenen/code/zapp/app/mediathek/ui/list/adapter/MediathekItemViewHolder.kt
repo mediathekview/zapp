@@ -39,6 +39,9 @@ class MediathekItemViewHolder(
 		recycle()
 
 		binding.title.text = show.title
+		// fix max lines not applied correctly
+		binding.title.requestLayout()
+		
 		binding.topic.text = show.topic
 		// fix layout_constraintWidth_max not be applied correctly
 		binding.topic.requestLayout()
