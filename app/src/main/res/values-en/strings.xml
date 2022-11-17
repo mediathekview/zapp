@@ -45,6 +45,11 @@
 	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
 	<string name="fragment_mediathek_query_info">%1$s search results from %2$s</string>
 
+	<!-- personal -->
+	<string name="fragment_personal_no_results_downloads">no downloads found</string>
+	<string name="fragment_personal_no_results_continue_watching">no started shows found</string>
+	<string name="fragment_personal_no_results_bookmarks">no bookmarks found</string>
+
 	<!-- downloads -->
 	<string name="fragment_downloads_no_results">no downloads found</string>
 	<string name="fragment_downloads_confirm_show_removal_dialog_title">Remove show from download list?</string>

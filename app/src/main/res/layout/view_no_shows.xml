@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<androidx.constraintlayout.widget.Group
+		android:id="@+id/group"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:visibility="gone"
+		app:constraint_referenced_ids="icon,text"
+		tools:visibility="visible" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/icon"
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:contentDescription="@null"
+		app:layout_constraintBottom_toTopOf="@id/text"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_chainStyle="packed"
+		app:srcCompat="@drawable/ic_sad_tv"
+		app:tint="?android:textColorHint" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/text"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="32dp"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:gravity="center"
+		android:text="@string/fragment_mediathek_no_results"
+		android:textAppearance="?textAppearanceHeadlineSmall"
+		android:textColor="?android:textColorHint"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/icon"
+		app:layout_constraintWidth_max="250dp" />
+
+</merge>

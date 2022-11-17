@@ -6,33 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<androidx.appcompat.widget.LinearLayoutCompat
-		android:id="@+id/no_shows"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:gravity="center"
-		android:orientation="vertical"
-		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:visibility="gone"
-		tools:ignore="UseCompoundDrawables"
-		tools:visibility="visible">
-
-		<androidx.appcompat.widget.AppCompatImageView
-			android:layout_width="match_parent"
-			android:layout_height="100dp"
-			android:contentDescription="@null"
-			android:src="@drawable/ic_sad_tv"
-			android:tint="?colorOnSurfaceVariant" />
-
-		<com.google.android.material.textview.MaterialTextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:text="@string/fragment_downloads_no_results"
-			android:textAppearance="?textAppearanceDisplaySmall"
-			android:textColor="?colorOnSurfaceVariant" />
-
-	</androidx.appcompat.widget.LinearLayoutCompat>
+	<include layout="@layout/view_no_shows" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/list"
@@ -42,8 +16,7 @@
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 		app:layout_constraintBottom_toTopOf="@id/searchField"
 		app:layout_constraintTop_toTopOf="parent"
-		tools:context=".app.downloads.ui.list.DownloadsFragment"
-		tools:listitem="@layout/downloads_fragment_list_item"
+		tools:listitem="@layout/mediathek_list_fragment_item"
 		tools:visibility="visible" />
 
 	<com.google.android.material.textfield.TextInputLayout

@@ -16,6 +16,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentD
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.personal.details.adapter.PagedPersistedShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
+import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,12 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	private var _binding: PersonalDetailsFragmentBinding? = null
 	private val binding: PersonalDetailsFragmentBinding get() = _binding!!
 
+	private var _noShowsBinding: ViewNoShowsBinding? = null
+	private val noShowsBinding: ViewNoShowsBinding get() = _noShowsBinding!!
+
 	protected abstract val viewModel: DetailsBaseViewModel
+	protected abstract val noShowsStringResId: Int
+	protected abstract val noShowsIconResId: Int
 
 	private lateinit var showAdapter: PagedPersistedShowListAdapter
 
@@ -56,6 +62,10 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 		savedInstanceState: Bundle?
 	): View {
 		_binding = PersonalDetailsFragmentBinding.inflate(inflater, container, false)
+		_noShowsBinding = ViewNoShowsBinding.bind(binding.root)
+
+		noShowsBinding.text.setText(noShowsStringResId)
+		noShowsBinding.icon.setImageResource(noShowsIconResId)
 
 		binding.list.adapter = showAdapter
 
@@ -78,6 +88,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 		super.onDestroyView()
 		showAdapter.unregisterAdapterDataObserver(adapterDataObserver)
 		_binding = null
+		_noShowsBinding = null
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
@@ -123,6 +134,6 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	}
 
 	private fun updateNoShowsVisibility() {
-		binding.noShows.isVisible = showAdapter.itemCount == 0
+		noShowsBinding.group.isVisible = showAdapter.itemCount == 0
 	}
 }

@@ -25,6 +25,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemA
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
+import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -39,11 +40,16 @@ import java.util.*
 import javax.net.ssl.SSLHandshakeException
 
 
-class MediathekListFragment : Fragment(), MenuProvider, MediathekShowListItemListener, OnRefreshListener {
+class MediathekListFragment : Fragment(),
+	MenuProvider,
+	MediathekShowListItemListener,
+	OnRefreshListener {
 
 	private var _binding: MediathekListFragmentBinding? = null
-	private val binding: MediathekListFragmentBinding
-		get() = _binding!!
+	private val binding: MediathekListFragmentBinding get() = _binding!!
+
+	private var _noShowsBinding: ViewNoShowsBinding? = null
+	private val noShowsBinding: ViewNoShowsBinding get() = _noShowsBinding!!
 
 	private val numberFormat = NumberFormat.getInstance(Locale.getDefault())
 	private val queryInfoDateFormatter = DateFormat.getDateTimeInstance(
@@ -73,6 +79,7 @@ class MediathekListFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		savedInstanceState: Bundle?
 	): View {
 		_binding = MediathekListFragmentBinding.inflate(inflater, container, false)
+		_noShowsBinding = ViewNoShowsBinding.bind(binding.root)
 
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
@@ -164,6 +171,7 @@ class MediathekListFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+		_noShowsBinding = null
 		_bottomSheetBehavior = null
 	}
 
@@ -277,7 +285,7 @@ class MediathekListFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 
 	private fun updateNoShowsMessage(loadState: LoadState) {
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
-		binding.noShows.isVisible = isAdapterEmpty
+		noShowsBinding.group.isVisible = isAdapterEmpty
 	}
 
 	private fun setUpLengthFilter() {
