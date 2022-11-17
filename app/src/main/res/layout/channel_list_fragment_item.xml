@@ -57,6 +57,7 @@
 		app:layout_constraintStart_toEndOf="@id/logo"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintVertical_chainStyle="packed"
+		app:lineHeight="20sp"
 		tools:text="Very very long and complicated show title" />
 
 	<com.google.android.material.textview.MaterialTextView

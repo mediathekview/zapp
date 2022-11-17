@@ -143,6 +143,7 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="@id/topic"
 		app:layout_constraintTop_toBottomOf="@id/topic"
+		app:lineHeight="20sp"
 		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
 
 	<com.google.android.material.textview.MaterialTextView
