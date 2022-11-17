@@ -70,7 +70,6 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 				showAdapter.submitData(it)
 			}
 		}
-		updateNoShowsVisibility()
 
 		return binding.root
 	}
