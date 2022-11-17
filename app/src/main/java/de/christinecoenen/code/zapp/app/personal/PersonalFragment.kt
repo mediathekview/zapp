@@ -10,8 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
-import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
+import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
+import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import kotlinx.coroutines.launch
@@ -28,6 +29,10 @@ class PersonalFragment : Fragment(), MenuProvider {
 	private lateinit var downloadsAdapter: MediathekShowListAdapter
 	private lateinit var historyAdapter: MediathekShowListAdapter
 	private lateinit var bookmarkAdapter: MediathekShowListAdapter
+
+	private val downloadsLoadStatusAdapter = LoadStatusAdapter()
+	private val historyLoadStatusAdapter = LoadStatusAdapter()
+	private val bookmarkLoadStatusAdapter = LoadStatusAdapter()
 
 	private val showClickListener = object : MediathekShowListAdapter.Listener {
 		override fun onShowClicked(show: PersistedMediathekShow) {
@@ -55,18 +60,21 @@ class PersonalFragment : Fragment(), MenuProvider {
 				R.drawable.ic_baseline_save_alt_24
 			) { navigateToDownloads() },
 			downloadsAdapter,
+			downloadsLoadStatusAdapter,
 			HeaderAdapater(
 				R.string.activity_main_tab_history,
 				R.drawable.ic_outline_play_circle_24,
 				null
 			),
 			historyAdapter,
+			historyLoadStatusAdapter,
 			HeaderAdapater(
 				R.string.activity_main_tab_bookmarks,
 				R.drawable.ic_baseline_bookmark_border_24,
 				null
 			),
 			bookmarkAdapter,
+			bookmarkLoadStatusAdapter,
 		)
 	}
 
@@ -82,18 +90,21 @@ class PersonalFragment : Fragment(), MenuProvider {
 		lifecycleScope.launch {
 			viewModel.downloadsFlow.collect {
 				downloadsAdapter.setShows(it)
+				downloadsLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
 
 		lifecycleScope.launch {
 			viewModel.historyFlow.collect {
 				historyAdapter.setShows(it)
+				historyLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
 
 		lifecycleScope.launch {
 			viewModel.bookmarkFlow.collect {
-				bookmarkAdapter.setShows(it)
+				bookmarkAdapter.setShows(listOf())
+				bookmarkLoadStatusAdapter.onShowsLoaded(0)
 			}
 		}
 
