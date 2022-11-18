@@ -1,24 +1,22 @@
 package de.christinecoenen.code.zapp.app.personal.details
 
 import android.os.Bundle
-import android.view.*
-import android.widget.PopupMenu
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.downloads.ui.list.dialogs.ConfirmShowRemovalDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.personal.details.adapter.PagedPersistedShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import kotlinx.coroutines.launch
 
 abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 
@@ -33,8 +31,6 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	protected abstract val noShowsIconResId: Int
 
 	private lateinit var showAdapter: PagedPersistedShowListAdapter
-
-	private var longClickShow: MediathekShow? = null
 
 	private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 		override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -98,39 +94,9 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	}
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
-		longClickShow = show
-
-		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.download_fragment_context)
-			show()
-			setOnMenuItemClickListener(::onContextMenuItemClicked)
+		ShowMenuHelper(this, show).apply {
+			showContextMenu(view)
 		}
-	}
-
-	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
-		when (menuItem.itemId) {
-			R.id.menu_share -> {
-				longClickShow?.shareExternally(requireContext())
-				return true
-			}
-			R.id.menu_remove -> {
-				showConfirmRemovalDialog(longClickShow!!)
-				return true
-			}
-		}
-		return false
-	}
-
-	private fun showConfirmRemovalDialog(show: MediathekShow) {
-		val dialog = ConfirmShowRemovalDialog()
-
-		setFragmentResultListener(ConfirmShowRemovalDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
-			viewLifecycleOwner.lifecycleScope.launch {
-				viewModel.remove(show)
-			}
-		}
-
-		dialog.show(parentFragmentManager, null)
 	}
 
 	private fun updateNoShowsVisibility() {

@@ -17,6 +17,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -42,6 +43,8 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 	private var startDownloadJob: Job? = null
 	private var persistedMediathekShow: PersistedMediathekShow? = null
 	private var downloadStatus = DownloadStatus.NONE
+
+	private var showMenuHelper: ShowMenuHelper? = null
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -76,17 +79,11 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 	}
 
 	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-		menuInflater.inflate(R.menu.mediathek_detail_fragment, menu)
+		showMenuHelper?.inflateShowMenu(menu, menuInflater)
 	}
 
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-		return when (menuItem.itemId) {
-			R.id.menu_share -> {
-				persistedMediathekShow?.mediathekShow?.shareExternally(requireContext())
-				true
-			}
-			else -> false
-		}
+		return showMenuHelper?.onMenuItemSelected(menuItem) == true
 	}
 
 	private suspend fun loadOrPersistShowFromArguments() {
@@ -121,6 +118,9 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
 
 		binding.root.isVisible = true
+
+		showMenuHelper = ShowMenuHelper(this, show)
+		requireActivity().invalidateOptionsMenu()
 
 		lifecycleScope.launchWhenCreated {
 			downloadController

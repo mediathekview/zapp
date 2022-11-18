@@ -19,10 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-abstract class DetailsBaseViewModel(
-	private val mediathekRepository: MediathekRepository,
-	private val downloadController: IDownloadController
-) : ViewModel() {
+abstract class DetailsBaseViewModel() : ViewModel() {
 
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
@@ -38,20 +35,6 @@ abstract class DetailsBaseViewModel(
 		}
 		.asLiveData()
 		.cachedIn(viewModelScope)
-
-	suspend fun remove(show: MediathekShow?) {
-		if (show == null) {
-			return
-		}
-
-		mediathekRepository
-			.getPersistedShowByApiId(show.apiId)
-			.firstOrNull()
-			?.let {
-				downloadController.deleteDownload(it.id)
-				mediathekRepository.updateDownloadStatus(it.downloadId, DownloadStatus.REMOVED)
-			}
-	}
 
 	fun setSearchQueryFilter(query: String?) {
 		_searchQuery.tryEmit(query ?: "")
