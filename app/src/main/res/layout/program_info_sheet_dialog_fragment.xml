@@ -21,7 +21,7 @@
 		android:id="@+id/subtitle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="@dimen/view_program_info_subtitle_margin_bottom"
+		android:layout_marginBottom="4dp"
 		android:hyphenationFrequency="full"
 		android:textAppearance="?textAppearanceTitleMedium"
 		tools:text="Show subtitle" />
