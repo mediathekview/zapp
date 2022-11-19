@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.downloads.ui.list.dialogs
+package de.christinecoenen.code.zapp.app.mediathek.ui.dialogs
 
 import android.app.Dialog
 import android.os.Bundle

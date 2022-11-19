@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.downloads.ui.list.dialogs.ConfirmShowRemovalDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmShowRemovalDialog
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,7 +53,6 @@ class ShowMenuHelper(
 		if (item == null) false else onMenuItemSelected(item)
 
 	private fun showConfirmRemovalDialog() {
-		// TODO: move to other package
 		val dialog = ConfirmShowRemovalDialog()
 
 		fragment.setFragmentResultListener(ConfirmShowRemovalDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
