@@ -5,9 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import de.christinecoenen.code.zapp.models.shows.Quality
-import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -17,12 +15,16 @@ class RetryDownloadBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
 	companion object {
 
-		private const val EXTRA_DOWNLOAD_ID = "EXTRA_DOWNLOAD_ID"
+		private const val EXTRA_PERSISTED_SHOW_ID = "EXTRA_PERSISTED_SHOW_ID"
 		private const val EXTRA_DOWNLOAD_QUALITY = "EXTRA_DOWNLOAD_QUALITY"
 
-		fun getPendingIntent(context: Context, downloadId: Int, quality: Quality): PendingIntent {
+		fun getPendingIntent(
+			context: Context,
+			persistedShowId: Int,
+			quality: Quality
+		): PendingIntent {
 			val intent = Intent(context, RetryDownloadBroadcastReceiver::class.java)
-			intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId)
+			intent.putExtra(EXTRA_PERSISTED_SHOW_ID, persistedShowId)
 			intent.putExtra(EXTRA_DOWNLOAD_QUALITY, quality)
 
 			return PendingIntent.getBroadcast(
@@ -35,14 +37,13 @@ class RetryDownloadBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 	}
 
 	private val downloadController: IDownloadController by inject()
-	private val mediathekRepository: MediathekRepository by inject()
 
 	override fun onReceive(context: Context?, intent: Intent?) {
-		val downloadId = intent?.extras?.getInt(EXTRA_DOWNLOAD_ID)
+		val persistedShowId = intent?.extras?.getInt(EXTRA_PERSISTED_SHOW_ID)
 		val quality = intent?.extras?.getSerializable(EXTRA_DOWNLOAD_QUALITY) as Quality?
 
-		if (downloadId == null) {
-			Timber.w("no download id set")
+		if (persistedShowId == null) {
+			Timber.w("no persisted show id set")
 			return
 		}
 
@@ -52,15 +53,8 @@ class RetryDownloadBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 		}
 
 		MainScope().launch {
-			val show = mediathekRepository.getPersistedShowByDownloadId(downloadId).firstOrNull()
-
-			if (show == null) {
-				Timber.w("show with download id $downloadId not found")
-				return@launch
-			}
-
-			Timber.d("retry download: $downloadId")
-			downloadController.startDownload(show.id, quality)
+			Timber.d("retry download: $persistedShowId")
+			downloadController.startDownload(persistedShowId, quality)
 		}
 	}
 

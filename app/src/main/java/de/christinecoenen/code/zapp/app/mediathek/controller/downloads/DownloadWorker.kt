@@ -179,7 +179,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			delay(NotificationDelay)
 
 			val retryIntent = RetryDownloadBroadcastReceiver.getPendingIntent(
-				applicationContext, downloadId, quality
+				applicationContext, persistedShowId, quality
 			)
 
 			val notification = DownloadFailedEventNotification(
