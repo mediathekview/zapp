@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmRemoveDownloadDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -65,10 +65,21 @@ class ShowMenuHelper(
 				true
 			}
 			R.id.menu_remove_download -> {
-				showConfirmRemoveDownloadDialog()
+				showConfirmDeleteDownloadDialog()
 				return true
 			}
-			// TODO: handle other cases
+			R.id.menu_cancel_download -> {
+				fragment.lifecycleScope.launchWhenResumed {
+					viewModel.cancelDownload(show)
+				}
+				return true
+			}
+			R.id.menu_mark_unwatched -> {
+				fragment.lifecycleScope.launchWhenResumed {
+					viewModel.markUnwatched(show)
+				}
+				return true
+			}
 			else -> false
 		}
 	}
@@ -92,12 +103,12 @@ class ShowMenuHelper(
 		}
 	}
 
-	private fun showConfirmRemoveDownloadDialog() {
-		val dialog = ConfirmRemoveDownloadDialog()
+	private fun showConfirmDeleteDownloadDialog() {
+		val dialog = ConfirmDeleteDownloadDialog()
 
-		fragment.setFragmentResultListener(ConfirmRemoveDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
+		fragment.setFragmentResultListener(ConfirmDeleteDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
 			fragment.viewLifecycleOwner.lifecycleScope.launch {
-				viewModel.remove(show)
+				viewModel.deleteDownload(show)
 			}
 		}
 

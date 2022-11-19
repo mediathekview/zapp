@@ -96,6 +96,9 @@ interface MediathekShowDao {
 		lastPlayedBackAt: DateTime
 	)
 
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0 WHERE apiId=:apiId")
+	suspend fun resetPlaybackPosition(apiId: String)
+
 	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
 	suspend fun getPlaybackPosition(id: Int): Long
 

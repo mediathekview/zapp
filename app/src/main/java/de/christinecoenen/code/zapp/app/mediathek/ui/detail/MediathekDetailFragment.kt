@@ -16,7 +16,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuProvider
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
@@ -179,9 +179,9 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun showConfirmDeleteDialog() {
-		val dialog = ConfirmFileDeletionDialog()
+		val dialog = ConfirmDeleteDownloadDialog()
 
-		setFragmentResultListener(ConfirmFileDeletionDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
+		setFragmentResultListener(ConfirmDeleteDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
 			downloadController.deleteDownload(persistedMediathekShow!!.id)
 		}
 

@@ -50,11 +50,6 @@
 	<string name="fragment_personal_no_results_continue_watching">keine begonnenen Sendungen gefunden</string>
 	<string name="fragment_personal_no_results_bookmarks">keine Bookmarks gefunden</string>
 
-	<!-- downloads -->
-	<string name="fragment_downloads_no_results">keine Downloads gefunden</string>
-	<string name="fragment_downloads_confirm_show_removal_dialog_title">Sendung aus der Download-Liste entfernen?</string>
-	<string name="fragment_downloads_confirm_show_removal_dialog_text">Noch laufende Downloads werden abgrebrochen und vorhandene Video-Dateien gelöscht.</string>
-
 	<!-- error messages -->
 	<string name="error_informal">Upsi!</string>
 	<string name="error_report">Fehler melden</string>

@@ -34,14 +34,25 @@ class ShowMenuHelperViewModel(
 			.distinctUntilChanged()
 	}
 
-	suspend fun remove(show: MediathekShow) {
+	suspend fun deleteDownload(show: MediathekShow) {
 		mediathekRepository
 			.getPersistedShowByApiId(show.apiId)
 			.firstOrNull()
 			?.let {
 				downloadController.deleteDownload(it.id)
-				mediathekRepository.updateDownloadStatus(it.downloadId, DownloadStatus.REMOVED)
 			}
 	}
 
+	suspend fun cancelDownload(show: MediathekShow) {
+		mediathekRepository
+			.getPersistedShowByApiId(show.apiId)
+			.firstOrNull()
+			?.let {
+				downloadController.stopDownload(it.id)
+			}
+	}
+
+	suspend fun markUnwatched(show: MediathekShow) {
+		mediathekRepository.resetPlaybackPosition(show.apiId)
+	}
 }
