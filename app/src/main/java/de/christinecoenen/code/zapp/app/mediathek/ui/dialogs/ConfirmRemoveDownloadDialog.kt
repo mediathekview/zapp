@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.christinecoenen.code.zapp.R
 
-class ConfirmShowRemovalDialog : AppCompatDialogFragment() {
+class ConfirmRemoveDownloadDialog : AppCompatDialogFragment() {
 
 	companion object {
 		const val REQUEST_KEY_CONFIRMED = "REQUEST_KEY_CONFIRMED"

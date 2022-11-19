@@ -1,8 +1,9 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail
 
 import android.os.Bundle
-import android.view.*
-import androidx.core.view.MenuProvider
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -17,7 +18,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exception
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuProvider
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-class MediathekDetailFragment : Fragment(), MenuProvider {
+class MediathekDetailFragment : Fragment() {
 
 	private val args: MediathekDetailFragmentArgs by navArgs()
 
@@ -44,8 +45,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 	private var persistedMediathekShow: PersistedMediathekShow? = null
 	private var downloadStatus = DownloadStatus.NONE
 
-	private var showMenuHelper: ShowMenuHelper? = null
-
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
@@ -57,8 +56,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 		lifecycleScope.launchWhenCreated {
 			loadOrPersistShowFromArguments()
 		}
-
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
 		return binding.root
 	}
@@ -76,14 +73,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 		super.onResume()
 
 		downloadController.deleteDownloadsWithDeletedFiles()
-	}
-
-	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-		showMenuHelper?.inflateShowMenu(menu, menuInflater)
-	}
-
-	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-		return showMenuHelper?.onMenuItemSelected(menuItem) == true
 	}
 
 	private suspend fun loadOrPersistShowFromArguments() {
@@ -119,8 +108,11 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 
 		binding.root.isVisible = true
 
-		showMenuHelper = ShowMenuHelper(this, show)
-		requireActivity().invalidateOptionsMenu()
+		requireActivity().addMenuProvider(
+			ShowMenuProvider(this, show),
+			viewLifecycleOwner,
+			Lifecycle.State.RESUMED
+		)
 
 		lifecycleScope.launchWhenCreated {
 			downloadController
