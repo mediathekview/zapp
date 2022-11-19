@@ -7,14 +7,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.cachedIn
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
-import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 
 
@@ -40,5 +35,5 @@ abstract class DetailsBaseViewModel() : ViewModel() {
 		_searchQuery.tryEmit(query ?: "")
 	}
 
-	protected abstract fun getPagingSource(searchQuery: String): PagingSource<Int, PersistedMediathekShow>
+	protected abstract fun getPagingSource(searchQuery: String): PagingSource<Int, MediathekShow>
 }

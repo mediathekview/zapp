@@ -8,8 +8,8 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemT
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilItemCallback
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.view.MediathekShowDiffUtilItemCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 class PagedPersistedShowListAdapter(
 	private val scope: LifecycleCoroutineScope,
 	private val listener: MediathekShowListItemListener
-) : PagingDataAdapter<PersistedMediathekShow, MediathekItemViewHolder>(
-	PersistedMediathekShowDiffUtilItemCallback()
+) : PagingDataAdapter<MediathekShow, MediathekItemViewHolder>(
+	MediathekShowDiffUtilItemCallback()
 ) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
@@ -28,12 +28,12 @@ class PagedPersistedShowListAdapter(
 
 		binding.root.setOnClickListener {
 			getItem(holder.bindingAdapterPosition)?.let {
-				listener.onShowClicked(it.mediathekShow)
+				listener.onShowClicked(it)
 			}
 		}
 		binding.root.setOnLongClickListener {
 			getItem(holder.bindingAdapterPosition)?.let {
-				listener.onShowLongClicked(it.mediathekShow, binding.root)
+				listener.onShowLongClicked(it, binding.root)
 			}
 			true
 		}
@@ -44,7 +44,7 @@ class PagedPersistedShowListAdapter(
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		getItem(position)?.let {
 			scope.launch(Dispatchers.Main) {
-				holder.setShow(it.mediathekShow)
+				holder.setShow(it)
 			}
 		}
 	}

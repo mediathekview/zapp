@@ -21,7 +21,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloads(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
+	fun getDownloads(searchQuery: String): PagingSource<Int, MediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllDownloads("%$searchQuery%")
@@ -35,27 +35,27 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getStarted(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
+	fun getStarted(searchQuery: String): PagingSource<Int, MediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllStarted("%$searchQuery%")
 	}
 
-	fun getBookmarked(limit: Int): Flow<List<PersistedMediathekShow>> {
+	fun getBookmarked(limit: Int): Flow<List<MediathekShow>> {
 		// TODO: implement
 		return flow {
 			emit(listOf())
 		}
 	}
 
-	fun getBookmarked(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
+	fun getBookmarked(searchQuery: String): PagingSource<Int, MediathekShow> {
 		// TODO: implement
-		return object : PagingSource<Int, PersistedMediathekShow>() {
-			override fun getRefreshKey(state: PagingState<Int, PersistedMediathekShow>): Int? {
+		return object : PagingSource<Int, MediathekShow>() {
+			override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
 				return null
 			}
 
-			override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PersistedMediathekShow> {
+			override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediathekShow> {
 				return LoadResult.Page(listOf(), null, null)
 			}
 		}

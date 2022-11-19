@@ -15,13 +15,13 @@ interface MediathekShowDao {
 	fun getAll(): Flow<List<PersistedMediathekShow>>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY downloadedAt DESC")
-	fun getAllDownloads(searchQuery: String): PagingSource<Int, PersistedMediathekShow>
+	fun getAllDownloads(searchQuery: String): PagingSource<Int, MediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) ORDER BY downloadedAt DESC LIMIT :limit")
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY lastPlayedBackAt DESC")
-	fun getAllStarted(searchQuery: String): PagingSource<Int, PersistedMediathekShow>
+	fun getAllStarted(searchQuery: String): PagingSource<Int, MediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition ORDER BY lastPlayedBackAt DESC LIMIT :limit")
 	fun getStarted(limit: Int): Flow<List<MediathekShow>>
