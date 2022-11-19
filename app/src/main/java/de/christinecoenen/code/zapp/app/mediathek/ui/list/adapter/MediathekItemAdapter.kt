@@ -26,7 +26,7 @@ class MediathekItemAdapter(
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		val show = getItem(position) ?: throw RuntimeException("null show not supported")
 
-		scope.launch(Dispatchers.Main) {
+		scope.launch {
 			holder.setShow(show)
 		}
 

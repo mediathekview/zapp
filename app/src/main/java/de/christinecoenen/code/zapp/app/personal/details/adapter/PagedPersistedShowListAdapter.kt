@@ -10,7 +10,6 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowL
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.view.MediathekShowDiffUtilItemCallback
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -43,7 +42,7 @@ class PagedPersistedShowListAdapter(
 
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		getItem(position)?.let {
-			scope.launch(Dispatchers.Main) {
+			scope.launch {
 				holder.setShow(it)
 			}
 		}
