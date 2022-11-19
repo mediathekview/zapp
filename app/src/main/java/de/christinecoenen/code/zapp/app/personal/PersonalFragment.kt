@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
@@ -41,7 +42,9 @@ class PersonalFragment : Fragment(), MenuProvider {
 		}
 
 		override fun onShowLongClicked(show: MediathekShow, view: View) {
-			// TODO: implement
+			ShowMenuHelper(this@PersonalFragment, show).apply {
+				showContextMenu(view)
+			}
 		}
 	}
 
@@ -51,7 +54,11 @@ class PersonalFragment : Fragment(), MenuProvider {
 		downloadsAdapter =
 			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Download, showClickListener)
 		continueWatchingAdapter =
-			MediathekShowListAdapter(lifecycleScope, MediathekItemType.ContinueWatching, showClickListener)
+			MediathekShowListAdapter(
+				lifecycleScope,
+				MediathekItemType.ContinueWatching,
+				showClickListener
+			)
 		bookmarkAdapter =
 			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Bookmark, showClickListener)
 

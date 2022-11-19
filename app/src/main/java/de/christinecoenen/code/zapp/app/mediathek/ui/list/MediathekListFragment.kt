@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list
 
 import android.os.Bundle
 import android.view.*
-import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -24,6 +23,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStat
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -63,8 +63,6 @@ class MediathekListFragment : Fragment(),
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 	private lateinit var adapter: MediathekItemAdapter
-
-	private var longClickShow: MediathekShow? = null
 
 	private val backPressedCallback = object : OnBackPressedCallback(false) {
 		override fun handleOnBackPressed() {
@@ -210,12 +208,8 @@ class MediathekListFragment : Fragment(),
 	}
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
-		longClickShow = show
-
-		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.mediathek_detail_fragment)
-			show()
-			setOnMenuItemClickListener(::onContextMenuItemClicked)
+		ShowMenuHelper(this, show).apply {
+			showContextMenu(view)
 		}
 	}
 
@@ -229,16 +223,6 @@ class MediathekListFragment : Fragment(),
 		} else {
 			toggleFilterBottomSheet()
 		}
-	}
-
-	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
-		when (menuItem.itemId) {
-			R.id.menu_share -> {
-				longClickShow?.shareExternally(requireContext())
-				return true
-			}
-		}
-		return false
 	}
 
 	private fun onQueryInfoResultChanged(queryInfoResult: QueryInfoResult?) {
