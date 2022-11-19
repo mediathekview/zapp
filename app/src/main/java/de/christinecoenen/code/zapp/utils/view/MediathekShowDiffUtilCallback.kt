@@ -1,14 +1,14 @@
 package de.christinecoenen.code.zapp.utils.view
 
 import androidx.recyclerview.widget.DiffUtil
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 
-class PersistedMediathekShowDiffUtilCallback(
-	private val oldShows: List<PersistedMediathekShow>,
-	private val newShows: List<PersistedMediathekShow>
+class MediathekShowDiffUtilCallback(
+	private val oldShows: List<MediathekShow>,
+	private val newShows: List<MediathekShow>
 ) : DiffUtil.Callback() {
 
-	private val itemCallback = PersistedMediathekShowDiffUtilItemCallback()
+	private val itemCallback = MediathekShowDiffUtilItemCallback()
 
 	override fun getOldListSize() = oldShows.size
 

@@ -13,7 +13,7 @@ import org.joda.time.DateTime
 
 class MediathekRepository(private val database: Database) {
 
-	fun getDownloads(limit: Int): Flow<List<PersistedMediathekShow>> {
+	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
 		return database
 			.mediathekShowDao()
 			.getDownloads(limit)
@@ -27,7 +27,7 @@ class MediathekRepository(private val database: Database) {
 			.getAllDownloads("%$searchQuery%")
 	}
 
-	fun getStarted(limit: Int): Flow<List<PersistedMediathekShow>> {
+	fun getStarted(limit: Int): Flow<List<MediathekShow>> {
 		return database
 			.mediathekShowDao()
 			.getStarted(limit)
@@ -193,7 +193,7 @@ class MediathekRepository(private val database: Database) {
 				.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
 		}
 
-	suspend fun resetPlaybackPosition(apiId: String)= withContext(Dispatchers.IO) {
+	suspend fun resetPlaybackPosition(apiId: String) = withContext(Dispatchers.IO) {
 		database
 			.mediathekShowDao()
 			.resetPlaybackPosition(apiId)

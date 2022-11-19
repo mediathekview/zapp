@@ -9,8 +9,8 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemT
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
-import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.utils.view.PersistedMediathekShowDiffUtilCallback
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.view.MediathekShowDiffUtilCallback
 import kotlinx.coroutines.launch
 
 class MediathekShowListAdapter(
@@ -19,10 +19,10 @@ class MediathekShowListAdapter(
 	private val listener: MediathekShowListItemListener? = null
 ) : RecyclerView.Adapter<MediathekItemViewHolder>() {
 
-	private var persistedShows = mutableListOf<PersistedMediathekShow>()
+	private var persistedShows = mutableListOf<MediathekShow>()
 
-	fun setShows(shows: List<PersistedMediathekShow>) {
-		val diffCallback = PersistedMediathekShowDiffUtilCallback(persistedShows, shows)
+	fun setShows(shows: List<MediathekShow>) {
+		val diffCallback = MediathekShowDiffUtilCallback(persistedShows, shows)
 		val diffResult = DiffUtil.calculateDiff(diffCallback)
 
 		this.persistedShows.clear()
@@ -37,12 +37,12 @@ class MediathekShowListAdapter(
 		val holder = MediathekItemViewHolder(binding, mediathekItemType, true)
 
 		binding.root.setOnClickListener {
-			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition].mediathekShow)
+			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition])
 		}
 
 		binding.root.setOnLongClickListener {
 			listener?.onShowLongClicked(
-				persistedShows[holder.bindingAdapterPosition].mediathekShow,
+				persistedShows[holder.bindingAdapterPosition],
 				binding.root
 			)
 			true
@@ -53,7 +53,7 @@ class MediathekShowListAdapter(
 
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		scope.launch {
-			holder.setShow(persistedShows[holder.bindingAdapterPosition].mediathekShow)
+			holder.setShow(persistedShows[holder.bindingAdapterPosition])
 		}
 	}
 
