@@ -60,7 +60,7 @@ class RetryDownloadBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 			}
 
 			Timber.d("retry download: $downloadId")
-			downloadController.startDownload(show, quality)
+			downloadController.startDownload(show.id, quality)
 		}
 	}
 

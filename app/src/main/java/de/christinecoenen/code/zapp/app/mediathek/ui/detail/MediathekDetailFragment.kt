@@ -265,7 +265,7 @@ class MediathekDetailFragment : Fragment() {
 		startDownloadJob = lifecycleScope.launchWhenCreated {
 
 			try {
-				downloadController.startDownload(persistedMediathekShow!!, downloadQuality)
+				downloadController.startDownload(persistedMediathekShow!!.id, downloadQuality)
 			} catch (e: Exception) {
 				onStartDownloadException(e)
 			}

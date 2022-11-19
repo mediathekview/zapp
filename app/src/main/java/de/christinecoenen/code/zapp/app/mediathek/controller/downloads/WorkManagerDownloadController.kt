@@ -65,7 +65,9 @@ class WorkManagerDownloadController(
 		}
 	}
 
-	override suspend fun startDownload(show: PersistedMediathekShow, quality: Quality) {
+	override suspend fun startDownload(persistedShowId: Int, quality: Quality) {
+		val show = mediathekRepository.getPersistedShow(persistedShowId).first()
+
 		val downloadUrl = show.mediathekShow.getVideoUrl(quality)
 			?: throw DownloadException("$quality is no valid download quality.")
 
@@ -90,7 +92,7 @@ class WorkManagerDownloadController(
 			.build()
 
 		val workerInput = DownloadWorker.constructInputData(
-			show.id,
+			persistedShowId,
 			downloadUrl,
 			filePathUri,
 			show.mediathekShow.title,
