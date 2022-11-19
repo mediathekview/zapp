@@ -29,8 +29,7 @@ class ShowMenuHelper(
 	}
 
 	fun inflateShowMenu(menu: Menu, menuInflater: MenuInflater) {
-		// TODO: use other menu resource
-		menuInflater.inflate(R.menu.download_fragment_context, menu)
+		menuInflater.inflate(R.menu.mediathek_show, menu)
 		// TODO: load persisted show if available
 		// TODO: show / hide items
 	}
