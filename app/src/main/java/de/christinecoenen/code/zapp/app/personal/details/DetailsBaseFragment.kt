@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.personal.details.adapter.PagedPersistedShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
@@ -29,6 +29,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	protected abstract val viewModel: DetailsBaseViewModel
 	protected abstract val noShowsStringResId: Int
 	protected abstract val noShowsIconResId: Int
+	protected abstract val searchQueryHintResId: Int
 
 	private lateinit var showAdapter: PagedPersistedShowListAdapter
 
@@ -62,6 +63,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 
 		noShowsBinding.text.setText(noShowsStringResId)
 		noShowsBinding.icon.setImageResource(noShowsIconResId)
+		binding.search.setHint(searchQueryHintResId)
 
 		binding.list.adapter = showAdapter
 

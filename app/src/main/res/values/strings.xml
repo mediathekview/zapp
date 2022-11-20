@@ -88,6 +88,8 @@
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
 	<string name="search_query_hint_downloads">Downloads durchsuchen…</string>
+	<string name="search_query_hint_continue_watching">Begonnene Sendungen durchsuchen…</string>
+	<string name="search_query_hint_bookmarks">Bookmarks durchsuchen…</string>
 	<string name="delete_search_query_content_description">Suche löschen</string>
 
 	<string name="menu_refresh">Aktualisieren</string>

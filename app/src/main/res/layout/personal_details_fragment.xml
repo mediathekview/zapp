@@ -33,11 +33,11 @@
 			android:id="@+id/search"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/search_query_hint_downloads"
 			android:imeOptions="actionSearch"
 			android:inputType="textFilter"
 			android:maxLines="1"
-			android:paddingVertical="0dp" />
+			android:paddingVertical="0dp"
+			tools:hint="@string/search_query_hint_downloads" />
 
 	</com.google.android.material.textfield.TextInputLayout>
 
