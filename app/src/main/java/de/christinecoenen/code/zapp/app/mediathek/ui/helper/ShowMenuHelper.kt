@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -36,9 +37,16 @@ class ShowMenuHelper(
 	fun showContextMenu(view: View, listener: OnMenuItemClickListener = this) {
 		PopupMenu(fragment.requireContext(), view, Gravity.TOP or Gravity.END).apply {
 			inflateShowMenu(menu, menuInflater)
+			runBlocking {
+				// we need to call this blocking to avoid menu flicker on open
+				prepareMenuAsync(menu)
+			}
+
 			show()
+
 			setOnMenuItemClickListener(listener)
 			setOnDismissListener { updateMenuItemsJob?.cancel() }
+
 			startUpdateMenuJob(menu)
 		}
 	}
@@ -49,13 +57,17 @@ class ShowMenuHelper(
 
 	fun prepareMenu(menu: Menu) {
 		fragment.lifecycleScope.launchWhenResumed {
-			viewModel
-				.getMenuItemsVisibility(show)
-				.first()
-				.let {
-					applyVisibiltyToMenu(menu, it)
-				}
+			prepareMenuAsync(menu)
 		}
+	}
+
+	suspend fun prepareMenuAsync(menu: Menu) {
+		viewModel
+			.getMenuItemsVisibility(show)
+			.first()
+			.let {
+				applyVisibiltyToMenu(menu, it)
+			}
 	}
 
 	fun onMenuItemSelected(item: MenuItem): Boolean {
