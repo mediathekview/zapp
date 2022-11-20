@@ -126,33 +126,31 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 				totalBytes = body.contentLength()
 			}
 
-			body
-		}
-
-		val outputStream = try {
-			downloadFileInfoManager.openOutputStream(targetFileUri!!, shouldResume)
-		} catch (e: Exception) {
-			return@withContext failure(ErrorType.FileWriteFailed)
-		}
-
-		if (outputStream == null) {
-			Timber.w("fileoutputstream not readable")
-			return@withContext failure(ErrorType.FileWriteFailed)
-		}
-
-		try {
-			outputStream.use {
-				body.byteStream().use { inputStream ->
-					download(inputStream, outputStream)
-				}
+			val outputStream = try {
+				downloadFileInfoManager.openOutputStream(targetFileUri!!, shouldResume)
+			} catch (e: Exception) {
+				return@withContext failure(ErrorType.FileWriteFailed)
 			}
-		} catch (e: CancellationException) {
-			// cancelled - no not show any notification
-			return@withContext Result.failure()
-		} catch (e: Exception) {
-			// this is most likely a connection issue we can recover from - so we retry
-			Timber.w(e)
-			return@withContext retry(ErrorType.FileReadFailed)
+
+			if (outputStream == null) {
+				Timber.w("fileoutputstream not readable")
+				return@withContext failure(ErrorType.FileWriteFailed)
+			}
+
+			try {
+				outputStream.use {
+					body.byteStream().use { inputStream ->
+						download(inputStream, outputStream)
+					}
+				}
+			} catch (e: CancellationException) {
+				// cancelled - no not show any notification
+				return@withContext Result.failure()
+			} catch (e: Exception) {
+				// this is most likely a connection issue we can recover from - so we retry
+				Timber.w(e)
+				return@withContext retry(ErrorType.FileReadFailed)
+			}
 		}
 
 		progress = 100

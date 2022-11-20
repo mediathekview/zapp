@@ -17,11 +17,8 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -65,64 +62,69 @@ class WorkManagerDownloadController(
 		}
 	}
 
-	override suspend fun startDownload(persistedShowId: Int, quality: Quality) {
-		val show = mediathekRepository.getPersistedShow(persistedShowId).first()
+	override suspend fun startDownload(persistedShowId: Int, quality: Quality) =
+		withContext(Dispatchers.IO) {
+			val show = mediathekRepository.getPersistedShow(persistedShowId).first()
 
-		val downloadUrl = show.mediathekShow.getVideoUrl(quality)
-			?: throw DownloadException("$quality is no valid download quality.")
+			val downloadUrl = show.mediathekShow.getVideoUrl(quality)
+				?: throw DownloadException("$quality is no valid download quality.")
 
-		deleteDownload(show)
+			deleteDownload(show)
 
-		val filePathUri =
-			downloadFileInfoManager.getDownloadFilePath(show.mediathekShow, quality)
+			val filePathUri =
+				downloadFileInfoManager.getDownloadFilePath(show.mediathekShow, quality)
 
-		val networkType = if (settingsRepository.downloadOverUnmeteredNetworkOnly)
-			NetworkType.UNMETERED else NetworkType.CONNECTED
+			val networkType = if (settingsRepository.downloadOverUnmeteredNetworkOnly)
+				NetworkType.UNMETERED else NetworkType.CONNECTED
 
-		if (connectivityManager.activeNetwork == null) {
-			throw NoNetworkException("No active network available.")
-		}
-		if (settingsRepository.downloadOverUnmeteredNetworkOnly && connectivityManager.isActiveNetworkMetered) {
-			throw WrongNetworkConditionException("Download over metered networks prohibited.")
-		}
+			if (connectivityManager.activeNetwork == null) {
+				throw NoNetworkException("No active network available.")
+			}
+			if (settingsRepository.downloadOverUnmeteredNetworkOnly && connectivityManager.isActiveNetworkMetered) {
+				throw WrongNetworkConditionException("Download over metered networks prohibited.")
+			}
 
-		val constraints = Constraints.Builder()
-			.setRequiresStorageNotLow(true)
-			.setRequiredNetworkType(networkType)
-			.build()
+			val constraints = Constraints.Builder()
+				.setRequiresStorageNotLow(true)
+				.setRequiredNetworkType(networkType)
+				.build()
 
-		val workerInput = DownloadWorker.constructInputData(
-			persistedShowId,
-			downloadUrl,
-			filePathUri,
-			show.mediathekShow.title,
-			quality
-		)
-
-		val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-			.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-			.setConstraints(constraints)
-			.setInputData(workerInput)
-			.setBackoffCriteria(
-				BackoffPolicy.LINEAR, OneTimeWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS
+			val workerInput = DownloadWorker.constructInputData(
+				persistedShowId,
+				downloadUrl,
+				filePathUri,
+				show.mediathekShow.title,
+				quality
 			)
-			.addTag(show.id.toString())
-			.addTag(WorkTag)
-			.build()
 
-		show.downloadId = downloadWorkRequest.id.hashCode()
-		show.downloadedVideoPath = filePathUri
-		show.downloadedAt = DateTime.now()
-		show.downloadProgress = 0
+			val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+				.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+				.setConstraints(constraints)
+				.setInputData(workerInput)
+				.setBackoffCriteria(
+					BackoffPolicy.LINEAR,
+					OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+					TimeUnit.MILLISECONDS
+				)
+				.addTag(show.id.toString())
+				.addTag(WorkTag)
+				.build()
 
-		mediathekRepository.updateShow(show)
+			show.downloadId = downloadWorkRequest.id.hashCode()
+			show.downloadedVideoPath = filePathUri
+			show.downloadedAt = DateTime.now()
+			show.downloadProgress = 0
 
-		workManager.enqueueUniqueWork(
-			downloadUrl,
-			ExistingWorkPolicy.KEEP,
-			downloadWorkRequest
-		)
-	}
+			mediathekRepository.updateShow(show)
+
+			workManager.enqueueUniqueWork(
+				downloadUrl,
+				ExistingWorkPolicy.KEEP,
+				downloadWorkRequest
+			)
+
+			Unit
+		}
 
 	override fun stopDownload(persistedShowId: Int) {
 		deleteDownload(persistedShowId)
@@ -140,7 +142,7 @@ class WorkManagerDownloadController(
 		}
 	}
 
-	private suspend fun deleteDownload(show: PersistedMediathekShow) {
+	private suspend fun deleteDownload(show: PersistedMediathekShow) = withContext(Dispatchers.IO) {
 		deleteFile(show)
 
 		notificationManager.cancel(show.downloadId)
@@ -175,10 +177,10 @@ class WorkManagerDownloadController(
 		return mediathekRepository.getDownloadProgress(persistedShowId)
 	}
 
-	private suspend fun updateWorkInDatabase(workInfo: WorkInfo) {
+	private suspend fun updateWorkInDatabase(workInfo: WorkInfo) = withContext(Dispatchers.IO) {
 		val show = mediathekRepository
 			.getPersistedShowByDownloadId(workInfo.id.hashCode())
-			.firstOrNull() ?: return
+			.firstOrNull() ?: return@withContext
 
 		show.downloadProgress = DownloadWorker.getProgress(workInfo)
 
@@ -211,15 +213,16 @@ class WorkManagerDownloadController(
 		)
 	}
 
-	private suspend fun deleteFileOnStatusChangeIfNeeded(show: PersistedMediathekShow) {
-		when (show.downloadStatus) {
-			DownloadStatus.FAILED,
-			DownloadStatus.CANCELLED -> {
-				deleteFile(show)
+	private suspend fun deleteFileOnStatusChangeIfNeeded(show: PersistedMediathekShow) =
+		withContext(Dispatchers.IO) {
+			when (show.downloadStatus) {
+				DownloadStatus.FAILED,
+				DownloadStatus.CANCELLED -> {
+					deleteFile(show)
+				}
+				else -> {}
 			}
-			else -> {}
 		}
-	}
 
 	private fun showStatusChangeNotificationIfNeeded(
 		workInfo: WorkInfo,
@@ -271,12 +274,13 @@ class WorkManagerDownloadController(
 		}
 	}
 
-	private suspend fun deleteFile(mediathekShow: PersistedMediathekShow) {
-		mediathekShow.downloadedVideoPath?.let {
-			downloadFileInfoManager.deleteDownloadFile(it)
-		}
+	private suspend fun deleteFile(mediathekShow: PersistedMediathekShow) =
+		withContext(Dispatchers.IO) {
+			mediathekShow.downloadedVideoPath?.let {
+				downloadFileInfoManager.deleteDownloadFile(it)
+			}
 
-		mediathekRepository.updateDownloadedVideoPath(mediathekShow.downloadId, null)
-		mediathekRepository.updateDownloadProgress(mediathekShow.downloadId, 0)
-	}
+			mediathekRepository.updateDownloadedVideoPath(mediathekShow.downloadId, null)
+			mediathekRepository.updateDownloadProgress(mediathekShow.downloadId, 0)
+		}
 }
