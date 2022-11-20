@@ -8,25 +8,24 @@
 		android:title="@string/action_share"
 		app:showAsAction="ifRoom" />
 
-	<!-- TODO: move texts to string resources -->
 	<item
 		android:id="@+id/menu_remove_download"
 		android:icon="@drawable/ic_baseline_delete_outline_24"
-		android:title="Download löschen"
+		android:title="@string/action_delete_download"
 		android:visible="false"
 		app:showAsAction="never" />
 
 	<item
 		android:id="@+id/menu_cancel_download"
 		android:icon="@drawable/ic_stop_white_24dp"
-		android:title="Download abbrechen"
+		android:title="@string/action_cancel_download"
 		android:visible="false"
 		app:showAsAction="never" />
 
 	<item
 		android:id="@+id/menu_mark_unwatched"
 		android:icon="@drawable/ic_outline_play_disabled_24"
-		android:title="Als ungesehen markieren"
+		android:title="@string/action_mark_unwatched"
 		android:visible="false"
 		app:showAsAction="never" />
 

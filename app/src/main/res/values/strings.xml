@@ -81,7 +81,9 @@
 	<string name="action_send_mail">Mail senden</string>
 	<string name="action_play_in_background">Im Hintergrund abspielen</string>
 	<string name="action_start_picture_in_picture">Bild im Bild</string>
-	<string name="action_remove">Entfernen</string>
+	<string name="action_delete_download">Download löschen</string>
+	<string name="action_cancel_download">Download abbrechen</string>
+	<string name="action_mark_unwatched">Als ungesehen markieren</string>
 	<string name="action_view_all">Alle ansehen</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
