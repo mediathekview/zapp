@@ -28,6 +28,15 @@ internal class PlayerEventHandler : AnalyticsListener {
 	override fun onPlayerError(eventTime: EventTime, error: PlaybackException) {
 		val errorMessageResourceId =
 			when (error.errorCode) {
+				PlaybackException.ERROR_CODE_IO_NO_PERMISSION,
+				PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND -> {
+					Timber.e(error, "exo player error %s", error.errorCodeName)
+					R.string.error_stream_no_file_access
+				}
+				PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS -> {
+					Timber.e(error, "exo player error %s", error.errorCodeName)
+					R.string.error_stream_no_bad_http_status
+				}
 				in PlaybackException.ERROR_CODE_IO_UNSPECIFIED until
 					PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED -> {
 					Timber.e(error, "exo player error %s", error.errorCodeName)

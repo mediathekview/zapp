@@ -56,6 +56,8 @@
 	<string name="error_app_crash_mail_body">Vielen Dank für die Rückmeldung!\n\nFolgende Informationen helfen den Entwicklern von Zapp, den Fehler zu beheben:\n</string>
 
 	<string name="error_stream_unknown">Das Video kann wegen eines unbekannten Fehlers nicht wiedergegeben werden.</string>
+	<string name="error_stream_no_file_access">Zapp kann nicht auf die Videodatei zugreifen.</string>
+	<string name="error_stream_no_bad_http_status">Das Video existiert nicht mehr oder ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_io">Das Video konnte nicht geladen werden. Vielleicht besteht keine Internet-Verbindung oder das Video ist in deinem Land nicht verfügbar.</string>
 	<string name="error_stream_unsupported">Das Video ist beschädigt oder das Format wird nicht unterstützt.</string>
 	<string name="error_stream_not_in_unmetered_network">Das Abspielen über kostenpflichtige Netzwerke wurde in den Einstellungen deaktiviert.</string>

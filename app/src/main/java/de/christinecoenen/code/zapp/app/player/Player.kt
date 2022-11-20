@@ -38,7 +38,7 @@ import java.io.IOException
 class Player(
 	private val context: Context,
 	private val applicationScope: CoroutineScope,
-	private val httpClient: OkHttpClient,
+	httpClient: OkHttpClient,
 	private val playbackPositionRepository: IPlaybackPositionRepository
 ) {
 

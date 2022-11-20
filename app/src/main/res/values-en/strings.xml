@@ -56,6 +56,8 @@
 	<string name="error_app_crash_mail_body">Thank you very much for this report!\n\nFollowing information will help fix this error:\n</string>
 
 	<string name="error_stream_unknown">The video could not be played because of an unknown error.</string>
+	<string name="error_stream_no_file_access">Zapp cannot access this video file.</string>
+	<string name="error_stream_no_bad_http_status">This video does no longer exist or is not available in your country.</string>
 	<string name="error_stream_io">The video could not be loaded. Maybe you have no internet connection or this video is not available in your country.</string>
 	<string name="error_stream_unsupported">The video is broken or the format is not supported.</string>
 	<string name="error_stream_not_in_unmetered_network">Playback over metered connections has been disabled in the settings.</string>
