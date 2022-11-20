@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter

@@ -23,7 +23,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStat
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow

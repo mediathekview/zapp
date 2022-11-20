@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.personal.details.adapter.PagedPersistedShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding

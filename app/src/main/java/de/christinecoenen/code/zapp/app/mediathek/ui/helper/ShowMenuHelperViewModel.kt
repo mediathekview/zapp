@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.ui.list.helper
+package de.christinecoenen.code.zapp.app.mediathek.ui.helper
 
 import androidx.lifecycle.ViewModel
 import de.christinecoenen.code.zapp.R

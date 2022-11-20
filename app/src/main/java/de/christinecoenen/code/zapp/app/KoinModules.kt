@@ -11,7 +11,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadF
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.WorkManagerDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.helper.ShowMenuHelperViewModel
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelperViewModel
 import de.christinecoenen.code.zapp.app.personal.PersonalViewModel
 import de.christinecoenen.code.zapp.app.personal.details.BookmarksViewModel
 import de.christinecoenen.code.zapp.app.personal.details.ContinueWatchingViewModel

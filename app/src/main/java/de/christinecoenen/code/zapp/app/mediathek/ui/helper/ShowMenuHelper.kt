@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.ui.list.helper
+package de.christinecoenen.code.zapp.app.mediathek.ui.helper
 
 import android.view.*
 import android.widget.PopupMenu
