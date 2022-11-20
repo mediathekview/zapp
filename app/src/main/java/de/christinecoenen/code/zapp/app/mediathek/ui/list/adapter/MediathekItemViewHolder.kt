@@ -32,6 +32,7 @@ class MediathekItemViewHolder(
 	private val bgColorHighlight by lazy { binding.root.context.themeColor(R.attr.colorSurface) }
 
 	private var isRelevantForUserJob: Job? = null
+	private var isBookmarkedJob: Job? = null
 	private var downloadProgressJob: Job? = null
 	private var downloadStatusJob: Job? = null
 	private var playbackPositionJob: Job? = null
@@ -54,6 +55,7 @@ class MediathekItemViewHolder(
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.subtitleDivider.isVisible = show.hasSubtitle
 
+		binding.bookmarkIcon.isVisible = false
 		binding.downloadProgress.isVisible = false
 		binding.downloadProgressIcon.isVisible = false
 		binding.downloadStatusIcon.isVisible = false
@@ -66,6 +68,7 @@ class MediathekItemViewHolder(
 			isRelevantForUserJob = launch { getIsRelevantForUserFlow(show) }
 		}
 
+		isBookmarkedJob = launch { isBookmarkedFlow(show) }
 		videoPathJob = launch { getCompletetlyDownloadedVideoPathFlow(show) }
 		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
 		playbackPositionJob = launch { updatePlaybackPositionPercentFlow(show) }
@@ -78,6 +81,7 @@ class MediathekItemViewHolder(
 
 	fun recycle() {
 		isRelevantForUserJob?.cancel()
+		isBookmarkedJob?.cancel()
 		downloadProgressJob?.cancel()
 		downloadStatusJob?.cancel()
 		playbackPositionJob?.cancel()
@@ -92,6 +96,12 @@ class MediathekItemViewHolder(
 		mediathekRepository
 			.getIsRelevantForUser(show.apiId)
 			.collectLatest(::updateIsRelevantForUser)
+	}
+
+	private suspend fun isBookmarkedFlow(show: MediathekShow) {
+		mediathekRepository
+			.getIsBookmarked(show.apiId)
+			.collectLatest(::updateIsBookmarked)
 	}
 
 	private suspend fun updateDownloadProgressFlow(show: MediathekShow) {
@@ -124,6 +134,10 @@ class MediathekItemViewHolder(
 
 	private fun updateIsRelevantForUser(isRelevant: Boolean) {
 		binding.root.setBackgroundColor(if (isRelevant) bgColorHighlight else bgColorDefault)
+	}
+
+	private fun updateIsBookmarked(isBookmarked: Boolean) {
+		binding.bookmarkIcon.isVisible = isBookmarked
 	}
 
 	private fun updateDownloadProgress(progress: Int) {

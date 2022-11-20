@@ -9,6 +9,27 @@
 		app:showAsAction="ifRoom" />
 
 	<item
+		android:id="@+id/menu_add_bookmark"
+		android:icon="@drawable/ic_baseline_bookmark_border_24"
+		android:title="@string/action_bookmark"
+		android:visible="false"
+		app:showAsAction="ifRoom" />
+
+	<item
+		android:id="@+id/menu_remove_bookmark"
+		android:icon="@drawable/ic_outline_bookmark_remove_24"
+		android:title="@string/action_remove_bookmark"
+		android:visible="false"
+		app:showAsAction="ifRoom" />
+
+	<item
+		android:id="@+id/menu_mark_unwatched"
+		android:icon="@drawable/ic_outline_play_disabled_24"
+		android:title="@string/action_mark_unwatched"
+		android:visible="false"
+		app:showAsAction="never" />
+
+	<item
 		android:id="@+id/menu_remove_download"
 		android:icon="@drawable/ic_baseline_delete_outline_24"
 		android:title="@string/action_delete_download"
@@ -19,13 +40,6 @@
 		android:id="@+id/menu_cancel_download"
 		android:icon="@drawable/ic_stop_white_24dp"
 		android:title="@string/action_cancel_download"
-		android:visible="false"
-		app:showAsAction="never" />
-
-	<item
-		android:id="@+id/menu_mark_unwatched"
-		android:icon="@drawable/ic_outline_play_disabled_24"
-		android:title="@string/action_mark_unwatched"
 		android:visible="false"
 		app:showAsAction="never" />
 

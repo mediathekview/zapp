@@ -31,7 +31,9 @@ class ShowMenuHelperViewModel(
 							DownloadStatus.QUEUED,
 							DownloadStatus.DOWNLOADING
 						)),
-					R.id.menu_mark_unwatched to (it.playbackPosition > 0)
+					R.id.menu_mark_unwatched to (it.playbackPosition > 0),
+					R.id.menu_add_bookmark to !it.isBookmarked,
+					R.id.menu_remove_bookmark to it.isBookmarked
 				)
 			}
 			.distinctUntilChanged()
@@ -57,5 +59,13 @@ class ShowMenuHelperViewModel(
 
 	suspend fun markUnwatched(show: MediathekShow) {
 		mediathekRepository.resetPlaybackPosition(show.apiId)
+	}
+
+	suspend fun bookmark(show: MediathekShow) {
+		mediathekRepository.setBookmarked(show.apiId, true)
+	}
+
+	suspend fun removeBookmark(show: MediathekShow) {
+		mediathekRepository.setBookmarked(show.apiId, false)
 	}
 }

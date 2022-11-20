@@ -8,7 +8,7 @@ class BookmarksFragment : DetailsBaseFragment() {
 	override val viewModel: BookmarksViewModel by viewModel()
 
 	override val noShowsStringResId = R.string.fragment_personal_no_results_bookmarks
-	override val noShowsIconResId = R.drawable.ic_baseline_bookmark_border_24
+	override val noShowsIconResId = R.drawable.ic_outline_bookmarks_24
 	override val searchQueryHintResId = R.string.search_query_hint_bookmarks
 
 }

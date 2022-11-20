@@ -133,7 +133,7 @@
 	<fragment
 		android:id="@+id/mediathekDetailFragment"
 		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailFragment"
-		android:label="@string/fragment_mediathek_title"
+		android:label=" "
 		tools:layout="@layout/mediathek_detail_fragment">
 		<argument
 			android:name="mediathek_show"

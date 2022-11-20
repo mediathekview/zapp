@@ -76,6 +76,18 @@ class ShowMenuHelper(
 				show.shareExternally(fragment.requireContext())
 				true
 			}
+			R.id.menu_add_bookmark -> {
+				fragment.lifecycleScope.launchWhenResumed {
+					viewModel.bookmark(show)
+				}
+				return true
+			}
+			R.id.menu_remove_bookmark -> {
+				fragment.lifecycleScope.launchWhenResumed {
+					viewModel.removeBookmark(show)
+				}
+				return true
+			}
 			R.id.menu_remove_download -> {
 				showConfirmDeleteDownloadDialog()
 				return true

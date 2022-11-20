@@ -9,11 +9,20 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 
-@Database(entities = [PersistedMediathekShow::class], version = 2, exportSchema = true)
+@Database(entities = [PersistedMediathekShow::class], version = 3, exportSchema = true)
 @TypeConverters(DownloadStatusConverter::class, DateTimeConverter::class)
 abstract class Database : RoomDatabase() {
 
 	companion object {
+
+		/**
+		 * Add bookmark feature
+		 */
+		private val MIGRATION_2_3 = object : Migration(2, 3) {
+			override fun migrate(database: SupportSQLiteDatabase) {
+				database.execSQL("ALTER TABLE PersistedMediathekShow ADD COLUMN bookmarked INTEGER NOT NULL DEFAULT 0")
+			}
+		}
 
 		/**
 		 * Migration to kotlin where some columns are now no longer nullable.
@@ -45,8 +54,12 @@ abstract class Database : RoomDatabase() {
 
 		fun getInstance(applicationContext: Context): de.christinecoenen.code.zapp.persistence.Database {
 			return Room
-				.databaseBuilder(applicationContext, de.christinecoenen.code.zapp.persistence.Database::class.java, "zapp.db")
-				.addMigrations(MIGRATION_1_2)
+				.databaseBuilder(
+					applicationContext,
+					de.christinecoenen.code.zapp.persistence.Database::class.java,
+					"zapp.db"
+				)
+				.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
 				.build()
 		}
 

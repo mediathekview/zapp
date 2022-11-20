@@ -26,7 +26,6 @@
 
 	<!-- mediathek -->
 	<string name="fragment_mediathek_no_results">no shows found</string>
-	<string name="fragment_mediathek_title">Show details</string>
 	<string name="fragment_mediathek_time">Online since</string>
 	<string name="fragment_mediathek_channel">Channel</string>
 	<string name="fragment_mediathek_duration">Duration</string>
@@ -75,6 +74,8 @@
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
 	<string name="action_share">Share</string>
+	<string name="action_bookmark">Bookmark</string>
+	<string name="action_remove_bookmark">Remove bookmark</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
 	<string name="action_cancel">Cancel</string>

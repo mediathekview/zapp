@@ -26,6 +26,14 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition ORDER BY lastPlayedBackAt DESC LIMIT :limit")
 	fun getStarted(limit: Int): Flow<List<MediathekShow>>
 
+	// TODO: make order right
+	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY lastPlayedBackAt DESC")
+	fun getAllBookarked(searchQuery: String): PagingSource<Int, MediathekShow>
+
+	// TODO: make order right
+	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked ORDER BY lastPlayedBackAt DESC LIMIT :limit")
+	fun getBookmarked(limit: Int): Flow<List<MediathekShow>>
+
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
 	fun getFromId(id: Int): Flow<PersistedMediathekShow>
 
@@ -50,7 +58,10 @@ interface MediathekShowDao {
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getDownloadProgress(apiId: String): Flow<Int?>
 
-	@Query("SELECT 1 FROM PersistedMediathekShow WHERE apiId=:apiId AND (playbackPosition > 0 OR downloadStatus IN (1,2,3,4,6,9))")
+	@Query("SELECT bookmarked FROM PersistedMediathekShow WHERE apiId=:apiId")
+	fun getIsBookmarked(apiId: String): Flow<Boolean>
+
+	@Query("SELECT 1 FROM PersistedMediathekShow WHERE apiId=:apiId AND (bookmarked == 1 OR playbackPosition > 0 OR downloadStatus IN (1,2,3,4,6,9))")
 	fun getIsRelevantForUser(apiId: String): Flow<Boolean?>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus=4")
@@ -87,6 +98,9 @@ interface MediathekShowDao {
 
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
 	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?)
+
+	@Query("UPDATE PersistedMediathekShow SET bookmarked=:isBookmarked WHERE apiId=:apiId")
+	suspend fun updateIsBookmarked(apiId: String, isBookmarked: Boolean)
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
 	suspend fun setPlaybackPosition(

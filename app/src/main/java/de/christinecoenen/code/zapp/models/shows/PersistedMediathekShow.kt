@@ -1,7 +1,9 @@
 package de.christinecoenen.code.zapp.models.shows
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.joda.time.DateTime
@@ -29,6 +31,9 @@ data class PersistedMediathekShow(
 	var downloadStatus: DownloadStatus = DownloadStatus.NONE,
 
 	var downloadProgress: Int = 0,
+
+	@ColumnInfo(name = "bookmarked")
+	var isBookmarked: Boolean = false,
 
 	var lastPlayedBackAt: DateTime? = null,
 

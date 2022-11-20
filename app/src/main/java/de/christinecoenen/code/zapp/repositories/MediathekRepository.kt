@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.repositories
 
 import androidx.paging.PagingSource
-import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -42,23 +41,17 @@ class MediathekRepository(private val database: Database) {
 	}
 
 	fun getBookmarked(limit: Int): Flow<List<MediathekShow>> {
-		// TODO: implement
-		return flow {
-			emit(listOf())
-		}
+		return database
+			.mediathekShowDao()
+			.getBookmarked(limit)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
 	}
 
 	fun getBookmarked(searchQuery: String): PagingSource<Int, MediathekShow> {
-		// TODO: implement
-		return object : PagingSource<Int, MediathekShow>() {
-			override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
-				return null
-			}
-
-			override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediathekShow> {
-				return LoadResult.Page(listOf(), null, null)
-			}
-		}
+		return database
+			.mediathekShowDao()
+			.getAllBookarked("%$searchQuery%")
 	}
 
 	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
@@ -168,6 +161,21 @@ class MediathekRepository(private val database: Database) {
 			.filterNotNull()
 			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
+	}
+
+	fun getIsBookmarked(apiId: String): Flow<Boolean> {
+		return database
+			.mediathekShowDao()
+			.getIsBookmarked(apiId)
+			.filterNotNull()
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	suspend fun setBookmarked(apiId: String, isBookmarked: Boolean) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.updateIsBookmarked(apiId, isBookmarked)
 	}
 
 	fun getIsRelevantForUser(apiId: String): Flow<Boolean> {

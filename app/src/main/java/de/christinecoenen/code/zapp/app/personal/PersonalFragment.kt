@@ -9,9 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
@@ -77,7 +77,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 			continueWatchingLoadStatusAdapter,
 			HeaderAdapater(
 				R.string.activity_main_tab_bookmarks,
-				R.drawable.ic_baseline_bookmark_border_24
+				R.drawable.ic_outline_bookmarks_24
 			) { navigateToBookmarks() },
 			bookmarkAdapter,
 			bookmarkLoadStatusAdapter,
@@ -109,8 +109,8 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 		lifecycleScope.launch {
 			viewModel.bookmarkFlow.collect {
-				bookmarkAdapter.setShows(listOf())
-				bookmarkLoadStatusAdapter.onShowsLoaded(0)
+				bookmarkAdapter.setShows(it)
+				bookmarkLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
 
