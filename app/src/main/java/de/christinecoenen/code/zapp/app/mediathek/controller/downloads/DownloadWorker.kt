@@ -98,7 +98,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			request.header("Range", "bytes=$existingFileSize-")
 		}
 
-		val body = try {
+		try {
 			httpClient.newCall(request.build()).execute()
 		} catch (e: Exception) {
 			Timber.w("could not connect to server")
