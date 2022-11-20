@@ -175,7 +175,7 @@ class MediathekRepository(private val database: Database) {
 	suspend fun setBookmarked(apiId: String, isBookmarked: Boolean) = withContext(Dispatchers.IO) {
 		database
 			.mediathekShowDao()
-			.updateIsBookmarked(apiId, isBookmarked)
+			.updateIsBookmarked(apiId, isBookmarked, DateTime.now())
 	}
 
 	fun getIsRelevantForUser(apiId: String): Flow<Boolean> {

@@ -26,12 +26,10 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition ORDER BY lastPlayedBackAt DESC LIMIT :limit")
 	fun getStarted(limit: Int): Flow<List<MediathekShow>>
 
-	// TODO: make order right
-	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY lastPlayedBackAt DESC")
+	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY bookmarkedAt DESC")
 	fun getAllBookarked(searchQuery: String): PagingSource<Int, MediathekShow>
 
-	// TODO: make order right
-	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked ORDER BY lastPlayedBackAt DESC LIMIT :limit")
+	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked ORDER BY bookmarkedAt DESC LIMIT :limit")
 	fun getBookmarked(limit: Int): Flow<List<MediathekShow>>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
@@ -99,8 +97,8 @@ interface MediathekShowDao {
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
 	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?)
 
-	@Query("UPDATE PersistedMediathekShow SET bookmarked=:isBookmarked WHERE apiId=:apiId")
-	suspend fun updateIsBookmarked(apiId: String, isBookmarked: Boolean)
+	@Query("UPDATE PersistedMediathekShow SET bookmarked=:isBookmarked, bookmarkedAt=:bookmarkedAt WHERE apiId=:apiId")
+	suspend fun updateIsBookmarked(apiId: String, isBookmarked: Boolean, bookmarkedAt: DateTime?)
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
 	suspend fun setPlaybackPosition(

@@ -35,6 +35,8 @@ data class PersistedMediathekShow(
 	@ColumnInfo(name = "bookmarked")
 	var isBookmarked: Boolean = false,
 
+	var bookmarkedAt: DateTime? = null,
+
 	var lastPlayedBackAt: DateTime? = null,
 
 	var playbackPosition: Long = 0,
