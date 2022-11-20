@@ -14,6 +14,17 @@ class HeaderAdapater(
 	private val listener: Listener?,
 ) : RecyclerView.Adapter<HeaderViewHolder>() {
 
+	private var showMoreButton = false
+
+	fun setShowMoreButton(showMoreButton: Boolean) {
+		if (this.showMoreButton == showMoreButton) {
+			return
+		}
+
+		this.showMoreButton = showMoreButton
+		notifyItemChanged(1)
+	}
+
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = PersonalFragmentHeaderItemBinding.inflate(layoutInflater, parent, false)
@@ -30,7 +41,7 @@ class HeaderAdapater(
 	}
 
 	override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
-		holder.bind(labelResId, iconResId)
+		holder.bind(labelResId, iconResId, showMoreButton)
 	}
 
 	override fun getItemCount() = 1

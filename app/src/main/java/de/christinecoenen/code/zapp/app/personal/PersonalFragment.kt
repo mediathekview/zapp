@@ -32,6 +32,19 @@ class PersonalFragment : Fragment(), MenuProvider {
 	private lateinit var continueWatchingAdapter: MediathekShowListAdapter
 	private lateinit var bookmarkAdapter: MediathekShowListAdapter
 
+	private val downloadsHeaderAdapter = HeaderAdapater(
+		R.string.activity_main_tab_downloads,
+		R.drawable.ic_baseline_save_alt_24,
+	) { navigateToDownloads() }
+	private val continueWatchingHeaderAdapter = HeaderAdapater(
+		R.string.activity_main_tab_continue_watching,
+		R.drawable.ic_outline_play_circle_24
+	) { navigateToDownloads() }
+	private val bookmarksHeaderAdapter = HeaderAdapater(
+		R.string.activity_main_tab_bookmarks,
+		R.drawable.ic_outline_bookmarks_24
+	) { navigateToDownloads() }
+
 	private val downloadsLoadStatusAdapter = LoadStatusAdapter()
 	private val continueWatchingLoadStatusAdapter = LoadStatusAdapter()
 	private val bookmarkLoadStatusAdapter = LoadStatusAdapter()
@@ -63,22 +76,13 @@ class PersonalFragment : Fragment(), MenuProvider {
 			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Bookmark, showClickListener)
 
 		outerAdapter = ConcatAdapter(
-			HeaderAdapater(
-				R.string.activity_main_tab_downloads,
-				R.drawable.ic_baseline_save_alt_24
-			) { navigateToDownloads() },
+			downloadsHeaderAdapter,
 			downloadsAdapter,
 			downloadsLoadStatusAdapter,
-			HeaderAdapater(
-				R.string.activity_main_tab_continue_watching,
-				R.drawable.ic_outline_play_circle_24
-			) { navigateToContinueWatching() },
+			continueWatchingHeaderAdapter,
 			continueWatchingAdapter,
 			continueWatchingLoadStatusAdapter,
-			HeaderAdapater(
-				R.string.activity_main_tab_bookmarks,
-				R.drawable.ic_outline_bookmarks_24
-			) { navigateToBookmarks() },
+			bookmarksHeaderAdapter,
 			bookmarkAdapter,
 			bookmarkLoadStatusAdapter,
 		)
@@ -93,23 +97,26 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 		binding.list.adapter = outerAdapter
 
-		lifecycleScope.launch {
+		lifecycleScope.launchWhenCreated {
 			viewModel.downloadsFlow.collect {
 				downloadsAdapter.setShows(it)
+				downloadsHeaderAdapter.setShowMoreButton(it.isNotEmpty())
 				downloadsLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
 
-		lifecycleScope.launch {
+		lifecycleScope.launchWhenCreated {
 			viewModel.continueWatchingFlow.collect {
 				continueWatchingAdapter.setShows(it)
+				continueWatchingHeaderAdapter.setShowMoreButton(it.isNotEmpty())
 				continueWatchingLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
 
-		lifecycleScope.launch {
+		lifecycleScope.launchWhenCreated {
 			viewModel.bookmarkFlow.collect {
 				bookmarkAdapter.setShows(it)
+				bookmarksHeaderAdapter.setShowMoreButton(it.isNotEmpty())
 				bookmarkLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
