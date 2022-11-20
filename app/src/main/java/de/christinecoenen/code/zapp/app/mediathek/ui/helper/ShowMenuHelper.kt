@@ -61,15 +61,6 @@ class ShowMenuHelper(
 		}
 	}
 
-	suspend fun prepareMenuAsync(menu: Menu) {
-		viewModel
-			.getMenuItemsVisibility(show)
-			.first()
-			.let {
-				applyVisibiltyToMenu(menu, it)
-			}
-	}
-
 	fun onMenuItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
 			R.id.menu_share -> {
@@ -119,6 +110,15 @@ class ShowMenuHelper(
 				.getMenuItemsVisibility(show)
 				.collectLatest { applyVisibiltyToMenu(menu, it) }
 		}
+	}
+
+	private suspend fun prepareMenuAsync(menu: Menu) {
+		viewModel
+			.getMenuItemsVisibility(show)
+			.first()
+			.let {
+				applyVisibiltyToMenu(menu, it)
+			}
 	}
 
 	private fun applyVisibiltyToMenu(menu: Menu, menuVisibilityMap: Map<Int, Boolean>) {

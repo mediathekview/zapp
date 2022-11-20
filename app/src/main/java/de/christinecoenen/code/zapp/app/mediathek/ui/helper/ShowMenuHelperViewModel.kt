@@ -15,6 +15,15 @@ class ShowMenuHelperViewModel(
 	private val downloadController: IDownloadController
 ) : ViewModel() {
 
+	private val defaultMapping = mapOf(
+		R.id.menu_share to true,
+		R.id.menu_remove_download to false,
+		R.id.menu_cancel_download to false,
+		R.id.menu_mark_unwatched to false,
+		R.id.menu_add_bookmark to true,
+		R.id.menu_remove_bookmark to false
+	)
+
 	fun getMenuItemsVisibility(show: MediathekShow): Flow<Map<Int, Boolean>> {
 		return mediathekRepository
 			.getPersistedShowByApiId(show.apiId)
@@ -35,6 +44,10 @@ class ShowMenuHelperViewModel(
 					R.id.menu_add_bookmark to !it.isBookmarked,
 					R.id.menu_remove_bookmark to it.isBookmarked
 				)
+			}
+			.onStart {
+				// for when the show has not yet been persisted
+				emit(defaultMapping)
 			}
 			.distinctUntilChanged()
 	}
@@ -62,6 +75,8 @@ class ShowMenuHelperViewModel(
 	}
 
 	suspend fun bookmark(show: MediathekShow) {
+		// we need to persist this first, because it might not yet be persisted!
+		mediathekRepository.persistOrUpdateShow(show)
 		mediathekRepository.setBookmarked(show.apiId, true)
 	}
 
