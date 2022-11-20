@@ -14,21 +14,27 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY downloadedAt DESC")
 	fun getAllDownloads(searchQuery: String): PagingSource<Int, MediathekShow>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) ORDER BY downloadedAt DESC LIMIT :limit")
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY lastPlayedBackAt DESC")
 	fun getAllStarted(searchQuery: String): PagingSource<Int, MediathekShow>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition ORDER BY lastPlayedBackAt DESC LIMIT :limit")
 	fun getStarted(limit: Int): Flow<List<MediathekShow>>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY bookmarkedAt DESC")
 	fun getAllBookarked(searchQuery: String): PagingSource<Int, MediathekShow>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked ORDER BY bookmarkedAt DESC LIMIT :limit")
 	fun getBookmarked(limit: Int): Flow<List<MediathekShow>>
 
