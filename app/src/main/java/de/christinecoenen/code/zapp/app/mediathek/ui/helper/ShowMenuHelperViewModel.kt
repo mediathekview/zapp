@@ -22,7 +22,10 @@ class ShowMenuHelperViewModel(
 				mapOf(
 					R.id.menu_share to true,
 					R.id.menu_remove_download to
-						(it.downloadStatus == DownloadStatus.COMPLETED),
+						(it.downloadStatus in listOf(
+							DownloadStatus.FAILED,
+							DownloadStatus.COMPLETED
+						)),
 					R.id.menu_cancel_download to
 						(it.downloadStatus in listOf(
 							DownloadStatus.QUEUED,
