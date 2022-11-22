@@ -27,9 +27,11 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 class MediathekDetailFragment : Fragment() {
 
@@ -131,6 +133,8 @@ class MediathekDetailFragment : Fragment() {
 				.getPlaybackPositionPercent(show.apiId)
 				.collect(::updatePlaybackPosition)
 		}
+
+		updateVideoThumbnail()
 	}
 
 	private fun updatePlaybackPosition(viewingProgress: Float) {
@@ -203,8 +207,6 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun adjustUiToDownloadStatus(status: DownloadStatus) {
-		binding.texts.thumbnail.visibility = View.GONE
-
 		when (status) {
 			DownloadStatus.NONE, DownloadStatus.CANCELLED, DownloadStatus.DELETED, DownloadStatus.PAUSED, DownloadStatus.REMOVED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
@@ -227,7 +229,6 @@ class MediathekDetailFragment : Fragment() {
 				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete)
 				binding.buttons.download.setIconResource(R.drawable.ic_baseline_delete_outline_24)
-				updateVideoThumbnail()
 			}
 			DownloadStatus.FAILED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
@@ -242,15 +243,16 @@ class MediathekDetailFragment : Fragment() {
 
 			// reload show for up to date file path and then update thumbnail
 			mediathekRepository
-				.getPersistedShow(persistedMediathekShow!!.id)
-				.map { it.downloadedVideoPath }
-				.filterNotNull()
-				.distinctUntilChanged()
-				.map { loadThumbnailAsync(binding.root.context, it) }
+				.getCompletetlyDownloadedVideoPath(persistedMediathekShow!!.mediathekShow.apiId)
+				.transform {
+					emit(it)
+					delay(500.milliseconds)
+				}
+				.map { if (it == null) null else loadThumbnailAsync(binding.root.context, it) }
 				.catch { e -> Timber.e(e) }
 				.collectLatest {
 					binding.texts.thumbnail.setImageBitmap(it)
-					binding.texts.thumbnail.visibility = View.VISIBLE
+					binding.texts.thumbnail.isVisible = (it != null)
 				}
 		}
 	}
