@@ -39,11 +39,11 @@ class PersonalFragment : Fragment(), MenuProvider {
 	private val continueWatchingHeaderAdapter = HeaderAdapater(
 		R.string.activity_main_tab_continue_watching,
 		R.drawable.ic_outline_play_circle_24
-	) { navigateToDownloads() }
+	) { navigateToContinueWatching() }
 	private val bookmarksHeaderAdapter = HeaderAdapater(
 		R.string.activity_main_tab_bookmarks,
 		R.drawable.ic_outline_bookmarks_24
-	) { navigateToDownloads() }
+	) { navigateToBookmarks() }
 
 	private val downloadsLoadStatusAdapter = LoadStatusAdapter()
 	private val continueWatchingLoadStatusAdapter = LoadStatusAdapter()
