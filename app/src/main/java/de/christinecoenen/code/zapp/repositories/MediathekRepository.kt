@@ -183,7 +183,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getIsRelevantForUser(apiId)
 			.distinctUntilChanged()
-			.filterNotNull()
+			.map { it == true }
 			.onStart { emit(false) }
 			.flowOn(Dispatchers.IO)
 	}
