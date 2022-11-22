@@ -26,11 +26,18 @@ class ShowMenuHelperViewModel(
 		R.id.menu_remove_bookmark to false
 	)
 
+	/**
+	 * This will only keep up to date if anyone is consuming
+	 * getMenuItemsVisibility.
+	 */
+	var lastMapping = defaultMapping
+		private set
+
 	fun getMenuItemsVisibility(show: MediathekShow): Flow<Map<Int, Boolean>> {
 		return mediathekRepository
 			.getPersistedShowByApiId(show.apiId)
 			.mapLatest {
-				mapOf(
+				lastMapping = mapOf(
 					R.id.menu_share to true,
 					R.id.menu_start_download to
 						(it.downloadStatus in listOf(
@@ -54,6 +61,7 @@ class ShowMenuHelperViewModel(
 					R.id.menu_add_bookmark to !it.isBookmarked,
 					R.id.menu_remove_bookmark to it.isBookmarked
 				)
+				lastMapping
 			}
 			.onStart {
 				// for when the show has not yet been persisted

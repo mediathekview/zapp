@@ -50,9 +50,7 @@ class ShowMenuHelper(
 	}
 
 	fun prepareMenu(menu: Menu) {
-		fragment.lifecycleScope.launchWhenResumed {
-			startUpdateMenuJob(menu)
-		}
+		applyVisibiltyToMenu(menu, viewModel.lastMapping)
 	}
 
 	fun onMenuItemSelected(item: MenuItem): Boolean {
