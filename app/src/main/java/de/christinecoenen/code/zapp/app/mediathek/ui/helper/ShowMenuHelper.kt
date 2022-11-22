@@ -12,9 +12,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -38,17 +36,12 @@ class ShowMenuHelper(
 	fun showContextMenu(view: View, listener: OnMenuItemClickListener = this) {
 		PopupMenu(fragment.requireContext(), view, Gravity.TOP or Gravity.END).apply {
 			inflateShowMenu(menu, menuInflater)
-			runBlocking {
-				// we need to call this blocking to avoid menu flicker on open
-				prepareMenuAsync(menu)
-			}
+			startUpdateMenuJob(menu)
 
 			show()
 
 			setOnMenuItemClickListener(listener)
 			setOnDismissListener { updateMenuItemsJob?.cancel() }
-
-			startUpdateMenuJob(menu)
 		}
 	}
 
@@ -58,7 +51,7 @@ class ShowMenuHelper(
 
 	fun prepareMenu(menu: Menu) {
 		fragment.lifecycleScope.launchWhenResumed {
-			prepareMenuAsync(menu)
+			startUpdateMenuJob(menu)
 		}
 	}
 
@@ -115,15 +108,6 @@ class ShowMenuHelper(
 				.getMenuItemsVisibility(show)
 				.collectLatest { applyVisibiltyToMenu(menu, it) }
 		}
-	}
-
-	private suspend fun prepareMenuAsync(menu: Menu) {
-		viewModel
-			.getMenuItemsVisibility(show)
-			.first()
-			.let {
-				applyVisibiltyToMenu(menu, it)
-			}
 	}
 
 	private fun applyVisibiltyToMenu(menu: Menu, menuVisibilityMap: Map<Int, Boolean>) {
