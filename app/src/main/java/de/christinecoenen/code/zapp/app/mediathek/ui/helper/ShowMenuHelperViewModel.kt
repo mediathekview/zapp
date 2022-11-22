@@ -5,6 +5,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -17,6 +18,7 @@ class ShowMenuHelperViewModel(
 
 	private val defaultMapping = mapOf(
 		R.id.menu_share to true,
+		R.id.menu_start_download to true,
 		R.id.menu_remove_download to false,
 		R.id.menu_cancel_download to false,
 		R.id.menu_mark_unwatched to false,
@@ -30,15 +32,23 @@ class ShowMenuHelperViewModel(
 			.mapLatest {
 				mapOf(
 					R.id.menu_share to true,
+					R.id.menu_start_download to
+						(it.downloadStatus in listOf(
+							DownloadStatus.NONE,
+							DownloadStatus.DELETED,
+							DownloadStatus.CANCELLED,
+							DownloadStatus.REMOVED,
+						)),
 					R.id.menu_remove_download to
 						(it.downloadStatus in listOf(
 							DownloadStatus.FAILED,
-							DownloadStatus.COMPLETED
+							DownloadStatus.COMPLETED,
 						)),
 					R.id.menu_cancel_download to
 						(it.downloadStatus in listOf(
 							DownloadStatus.QUEUED,
-							DownloadStatus.DOWNLOADING
+							DownloadStatus.DOWNLOADING,
+							DownloadStatus.PAUSED,
 						)),
 					R.id.menu_mark_unwatched to (it.playbackPosition > 0),
 					R.id.menu_add_bookmark to !it.isBookmarked,
@@ -82,5 +92,11 @@ class ShowMenuHelperViewModel(
 
 	suspend fun removeBookmark(show: MediathekShow) {
 		mediathekRepository.setBookmarked(show.apiId, false)
+	}
+
+	suspend fun startDownload(show: MediathekShow, quality: Quality) {
+		// we need to persist this first, because it might not yet be persisted!
+		val persistedShow = mediathekRepository.persistOrUpdateShow(show).first()
+		downloadController.startDownload(persistedShow.id, quality)
 	}
 }

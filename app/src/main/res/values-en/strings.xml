@@ -82,6 +82,7 @@
 	<string name="action_send_mail">Send e-mail</string>
 	<string name="action_play_in_background">Play in background</string>
 	<string name="action_start_picture_in_picture">Picture in picture</string>
+	<string name="action_start_download">Download</string>
 	<string name="action_delete_download">Delete download</string>
 	<string name="action_cancel_download">Cancel download</string>
 	<string name="action_mark_unwatched">Mark as unwatched</string>

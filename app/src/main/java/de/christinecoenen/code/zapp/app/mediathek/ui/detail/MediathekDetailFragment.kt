@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownload
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuProvider
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus

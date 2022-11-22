@@ -8,6 +8,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -79,6 +80,10 @@ class ShowMenuHelper(
 				}
 				return true
 			}
+			R.id.menu_start_download -> {
+				showSelectQualityDialog()
+				return true
+			}
 			R.id.menu_remove_download -> {
 				showConfirmDeleteDownloadDialog()
 				return true
@@ -133,6 +138,19 @@ class ShowMenuHelper(
 		fragment.setFragmentResultListener(ConfirmDeleteDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
 			fragment.viewLifecycleOwner.lifecycleScope.launch {
 				viewModel.deleteDownload(show)
+			}
+		}
+
+		dialog.show(fragment.parentFragmentManager, null)
+	}
+
+	private fun showSelectQualityDialog() {
+		val dialog = SelectQualityDialog.newInstance(show, SelectQualityDialog.Mode.DOWNLOAD)
+
+		fragment.setFragmentResultListener(SelectQualityDialog.REQUEST_KEY_SELECT_QUALITY) { _, bundle ->
+			val quality = SelectQualityDialog.getSelectedQuality(bundle)
+			fragment.viewLifecycleOwner.lifecycleScope.launch {
+				viewModel.startDownload(show, quality)
 			}
 		}
 

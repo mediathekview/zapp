@@ -30,6 +30,13 @@
 		app:showAsAction="never" />
 
 	<item
+		android:id="@+id/menu_start_download"
+		android:icon="@drawable/ic_baseline_save_alt_24"
+		android:title="@string/action_start_download"
+		android:visible="false"
+		app:showAsAction="never" />
+
+	<item
 		android:id="@+id/menu_remove_download"
 		android:icon="@drawable/ic_baseline_delete_outline_24"
 		android:title="@string/action_delete_download"
