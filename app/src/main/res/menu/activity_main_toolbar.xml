@@ -4,14 +4,14 @@
 
 	<item
 		android:id="@+id/settingsFragment"
-		android:icon="@drawable/ic_baseline_settings_24"
+		android:icon="@drawable/ic_outline_settings_24"
 		android:menuCategory="secondary"
 		android:title="@string/menu_settings"
 		app:showAsAction="never" />
 
 	<item
 		android:id="@+id/aboutFragment"
-		android:icon="@drawable/ic_info_white_24dp"
+		android:icon="@drawable/ic_outline_info_24"
 		android:menuCategory="secondary"
 		android:title="@string/menu_about"
 		app:showAsAction="never" />
