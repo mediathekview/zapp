@@ -217,13 +217,13 @@ class MediathekDetailFragment : Fragment() {
 				binding.buttons.downloadProgress.visibility = View.VISIBLE
 				binding.buttons.downloadProgress.isIndeterminate = true
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_queued)
-				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp)
+				binding.buttons.download.setIconResource(R.drawable.ic_outline_stop_24)
 			}
 			DownloadStatus.DOWNLOADING -> {
 				binding.buttons.downloadProgress.visibility = View.VISIBLE
 				binding.buttons.downloadProgress.isIndeterminate = false
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_running)
-				binding.buttons.download.setIconResource(R.drawable.ic_stop_white_24dp)
+				binding.buttons.download.setIconResource(R.drawable.ic_outline_stop_24)
 			}
 			DownloadStatus.COMPLETED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE

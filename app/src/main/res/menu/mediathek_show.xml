@@ -45,7 +45,7 @@
 
 	<item
 		android:id="@+id/menu_cancel_download"
-		android:icon="@drawable/ic_stop_white_24dp"
+		android:icon="@drawable/ic_outline_stop_24"
 		android:title="@string/action_cancel_download"
 		android:visible="false"
 		app:showAsAction="never" />
