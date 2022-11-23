@@ -8,7 +8,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.TvActivityChangelogBinding
 import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
 import de.christinecoenen.code.zapp.utils.system.IStartableActivity
-import ru.noties.markwon.Markwon
+import io.noties.markwon.Markwon
 
 class ChangelogActivity : Activity() {
 
@@ -25,6 +25,7 @@ class ChangelogActivity : Activity() {
 		setContentView(binding.root)
 
 		val markdown = resources.readAllText(R.raw.changelog)
-		Markwon.setMarkdown(binding.txtChangelog, markdown)
+		val markwon = Markwon.create(this)
+		markwon.setMarkdown(binding.txtChangelog, markdown)
 	}
 }

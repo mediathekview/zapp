@@ -140,7 +140,7 @@ dependencies {
 	implementation 'com.github.woxthebox:draglistview:1.7.2'
 
 	// markdown
-	implementation 'ru.noties:markwon:2.0.2'
+	implementation 'io.noties.markwon:core:4.6.2'
 
 	// work manager
 	def work_version = "2.7.1"

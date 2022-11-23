@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ChangelogFragmentBinding
 import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
-import ru.noties.markwon.Markwon
+import io.noties.markwon.Markwon
+import org.koin.android.ext.android.inject
 
 class ChangelogFragment : Fragment() {
+
+	private val markwon: Markwon by inject()
 
 	private var _binding: ChangelogFragmentBinding? = null
 	private val binding: ChangelogFragmentBinding get() = _binding!!
@@ -24,7 +27,7 @@ class ChangelogFragment : Fragment() {
 		_binding = ChangelogFragmentBinding.inflate(inflater, container, false)
 
 		val markdown = resources.readAllText(R.raw.changelog)
-		Markwon.setMarkdown(binding.txtChangelog, markdown)
+		markwon.setMarkdown(binding.txtChangelog, markdown)
 
 		return binding.root
 	}

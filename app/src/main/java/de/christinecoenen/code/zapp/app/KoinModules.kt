@@ -26,6 +26,7 @@ import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
+import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
@@ -46,6 +47,8 @@ class KoinModules {
 			}
 
 			single { MainScope() }
+
+			single { Markwon.create(androidContext()) }
 
 			single { ChannelRepository(androidContext(), get(), get()) }
 			single { Database.getInstance(androidContext()) }
