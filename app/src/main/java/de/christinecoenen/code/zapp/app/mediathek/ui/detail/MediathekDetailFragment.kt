@@ -1,8 +1,9 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail
 
 import android.os.Bundle
-import android.view.*
-import androidx.core.view.MenuProvider
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -15,8 +16,9 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.ConfirmFileDeletionDialog
-import de.christinecoenen.code.zapp.app.mediathek.ui.detail.dialogs.SelectQualityDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuProvider
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -25,11 +27,13 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
-class MediathekDetailFragment : Fragment(), MenuProvider {
+class MediathekDetailFragment : Fragment() {
 
 	private val args: MediathekDetailFragmentArgs by navArgs()
 
@@ -55,8 +59,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 			loadOrPersistShowFromArguments()
 		}
 
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
 		return binding.root
 	}
 
@@ -73,20 +75,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 		super.onResume()
 
 		downloadController.deleteDownloadsWithDeletedFiles()
-	}
-
-	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-		menuInflater.inflate(R.menu.mediathek_detail_fragment, menu)
-	}
-
-	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-		return when (menuItem.itemId) {
-			R.id.menu_share -> {
-				persistedMediathekShow?.mediathekShow?.shareExternally(requireContext())
-				true
-			}
-			else -> false
-		}
 	}
 
 	private suspend fun loadOrPersistShowFromArguments() {
@@ -122,6 +110,12 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 
 		binding.root.isVisible = true
 
+		requireActivity().addMenuProvider(
+			ShowMenuProvider(this, show),
+			viewLifecycleOwner,
+			Lifecycle.State.RESUMED
+		)
+
 		lifecycleScope.launchWhenCreated {
 			downloadController
 				.getDownloadStatus(persistedMediathekShow.id)
@@ -139,6 +133,8 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 				.getPlaybackPositionPercent(show.apiId)
 				.collect(::updatePlaybackPosition)
 		}
+
+		updateVideoThumbnail()
 	}
 
 	private fun updatePlaybackPosition(viewingProgress: Float) {
@@ -187,9 +183,9 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 	}
 
 	private fun showConfirmDeleteDialog() {
-		val dialog = ConfirmFileDeletionDialog()
+		val dialog = ConfirmDeleteDownloadDialog()
 
-		setFragmentResultListener(ConfirmFileDeletionDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
+		setFragmentResultListener(ConfirmDeleteDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
 			downloadController.deleteDownload(persistedMediathekShow!!.id)
 		}
 
@@ -211,8 +207,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 	}
 
 	private fun adjustUiToDownloadStatus(status: DownloadStatus) {
-		binding.texts.thumbnail.visibility = View.GONE
-
 		when (status) {
 			DownloadStatus.NONE, DownloadStatus.CANCELLED, DownloadStatus.DELETED, DownloadStatus.PAUSED, DownloadStatus.REMOVED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
@@ -235,7 +229,6 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete)
 				binding.buttons.download.setIconResource(R.drawable.ic_baseline_delete_outline_24)
-				updateVideoThumbnail()
 			}
 			DownloadStatus.FAILED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
@@ -250,15 +243,16 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 
 			// reload show for up to date file path and then update thumbnail
 			mediathekRepository
-				.getPersistedShow(persistedMediathekShow!!.id)
-				.map { it.downloadedVideoPath }
-				.filterNotNull()
-				.distinctUntilChanged()
-				.map { loadThumbnailAsync(binding.root.context, it) }
+				.getCompletetlyDownloadedVideoPath(persistedMediathekShow!!.mediathekShow.apiId)
+				.transform {
+					emit(it)
+					delay(500.milliseconds)
+				}
+				.map { if (it == null) null else loadThumbnailAsync(binding.root.context, it) }
 				.catch { e -> Timber.e(e) }
 				.collectLatest {
 					binding.texts.thumbnail.setImageBitmap(it)
-					binding.texts.thumbnail.visibility = View.VISIBLE
+					binding.texts.thumbnail.isVisible = (it != null)
 				}
 		}
 	}
@@ -273,7 +267,7 @@ class MediathekDetailFragment : Fragment(), MenuProvider {
 		startDownloadJob = lifecycleScope.launchWhenCreated {
 
 			try {
-				downloadController.startDownload(persistedMediathekShow!!, downloadQuality)
+				downloadController.startDownload(persistedMediathekShow!!.id, downloadQuality)
 			} catch (e: Exception) {
 				onStartDownloadException(e)
 			}

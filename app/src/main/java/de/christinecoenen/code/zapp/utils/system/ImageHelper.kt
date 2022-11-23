@@ -41,7 +41,7 @@ object ImageHelper {
 
 				} catch (e: IOException) {
 					// complete failure
-					throw Exception("Could not generate thumbnail for file $filePath")
+					throw Exception("Could not generate thumbnail for file $filePath", e)
 				}
 			}
 		} else {

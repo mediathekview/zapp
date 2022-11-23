@@ -14,8 +14,29 @@ interface MediathekShowDao {
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
 
+	@RewriteQueriesToDropUnusedColumns
 	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY downloadedAt DESC")
-	fun getAllDownloads(searchQuery: String): PagingSource<Int, PersistedMediathekShow>
+	fun getAllDownloads(searchQuery: String): PagingSource<Int, MediathekShow>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query("SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) ORDER BY downloadedAt DESC LIMIT :limit")
+	fun getDownloads(limit: Int): Flow<List<MediathekShow>>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY lastPlayedBackAt DESC")
+	fun getAllStarted(searchQuery: String): PagingSource<Int, MediathekShow>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query("SELECT * FROM PersistedMediathekShow WHERE playbackPosition ORDER BY lastPlayedBackAt DESC LIMIT :limit")
+	fun getStarted(limit: Int): Flow<List<MediathekShow>>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked AND (topic LIKE :searchQuery OR title LIKE :searchQuery) ORDER BY bookmarkedAt DESC")
+	fun getAllBookarked(searchQuery: String): PagingSource<Int, MediathekShow>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query("SELECT * FROM PersistedMediathekShow WHERE bookmarked ORDER BY bookmarkedAt DESC LIMIT :limit")
+	fun getBookmarked(limit: Int): Flow<List<MediathekShow>>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE id=:id")
 	fun getFromId(id: Int): Flow<PersistedMediathekShow>
@@ -41,7 +62,10 @@ interface MediathekShowDao {
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getDownloadProgress(apiId: String): Flow<Int?>
 
-	@Query("SELECT 1 FROM PersistedMediathekShow WHERE apiId=:apiId AND (playbackPosition > 0 OR downloadStatus IN (1,2,3,4,6,9))")
+	@Query("SELECT bookmarked FROM PersistedMediathekShow WHERE apiId=:apiId")
+	fun getIsBookmarked(apiId: String): Flow<Boolean>
+
+	@Query("SELECT 1 FROM PersistedMediathekShow WHERE apiId=:apiId AND (bookmarked == 1 OR playbackPosition > 0 OR downloadStatus IN (1,2,3,4,6,9))")
 	fun getIsRelevantForUser(apiId: String): Flow<Boolean?>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadStatus=4")
@@ -79,6 +103,9 @@ interface MediathekShowDao {
 	@Query("UPDATE PersistedMediathekShow SET downloadedVideoPath=:videoPath WHERE downloadId=:downloadId")
 	suspend fun updateDownloadedVideoPath(downloadId: Int, videoPath: String?)
 
+	@Query("UPDATE PersistedMediathekShow SET bookmarked=:isBookmarked, bookmarkedAt=:bookmarkedAt WHERE apiId=:apiId")
+	suspend fun updateIsBookmarked(apiId: String, isBookmarked: Boolean, bookmarkedAt: DateTime?)
+
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=:positionMillis, videoDuration=:durationMillis, lastPlayedBackAt=:lastPlayedBackAt WHERE id=:id")
 	suspend fun setPlaybackPosition(
 		id: Int,
@@ -87,11 +114,17 @@ interface MediathekShowDao {
 		lastPlayedBackAt: DateTime
 	)
 
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0 WHERE apiId=:apiId")
+	suspend fun resetPlaybackPosition(apiId: String)
+
 	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
 	suspend fun getPlaybackPosition(id: Int): Long
 
 	@Query("SELECT (CAST(playbackPosition AS FLOAT) / videoDuration) FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getPlaybackPositionPercent(apiId: String): Flow<Float>
+
+	@Query("SELECT downloadedVideoPath FROM PersistedMediathekShow WHERE apiId=:apiId AND downloadStatus=4")
+	fun getCompletetlyDownloadedVideoPath(apiId: String): Flow<String?>
 
 	@Delete
 	suspend fun delete(show: PersistedMediathekShow)

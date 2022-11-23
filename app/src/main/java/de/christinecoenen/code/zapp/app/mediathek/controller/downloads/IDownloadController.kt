@@ -21,7 +21,7 @@ interface IDownloadController {
 	 * @throws WrongNetworkConditionException When user has prohibited downloads for the network type currently used.
 	 * @throws NoNetworkException When no network connection is there to download.
 	 */
-	suspend fun startDownload(show: PersistedMediathekShow, quality: Quality)
+	suspend fun startDownload(persistedShowId: Int, quality: Quality)
 
 	/**
 	 * Cancels the download with the given id and deletes all related (partly) downloaded files.

@@ -3,8 +3,11 @@
 	<string name="app_website_url">https://github.com/mediathekview/zapp</string>
 
 	<string name="activity_main_tab_live">Live</string>
-	<string name="activity_main_tab_mediathek">Media center</string>
+	<string name="activity_main_tab_mediathek">Media Center</string>
 	<string name="activity_main_tab_downloads">Downloads</string>
+	<string name="activity_main_tab_bookmarks">Bookmarks</string>
+	<string name="activity_main_tab_continue_watching">Continue Watching</string>
+	<string name="activity_main_tab_personal">My Shows</string>
 
 	<string name="about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
 	<string name="about_feedback_mail_subject">Zapp Feedback</string>
@@ -23,7 +26,6 @@
 
 	<!-- mediathek -->
 	<string name="fragment_mediathek_no_results">no shows found</string>
-	<string name="fragment_mediathek_title">Show details</string>
 	<string name="fragment_mediathek_time">Online since</string>
 	<string name="fragment_mediathek_channel">Channel</string>
 	<string name="fragment_mediathek_duration">Duration</string>
@@ -42,10 +44,10 @@
 	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
 	<string name="fragment_mediathek_query_info">%1$s search results from %2$s</string>
 
-	<!-- downloads -->
-	<string name="fragment_downloads_no_results">no downloads found</string>
-	<string name="fragment_downloads_confirm_show_removal_dialog_title">Remove show from download list?</string>
-	<string name="fragment_downloads_confirm_show_removal_dialog_text">Running downloads will be canceled and existing video files deleted.</string>
+	<!-- personal -->
+	<string name="fragment_personal_no_results_downloads">no downloads found</string>
+	<string name="fragment_personal_no_results_continue_watching">no started shows found</string>
+	<string name="fragment_personal_no_results_bookmarks">no bookmarks found</string>
 
 	<!-- error messages -->
 	<string name="error_informal">Oops!</string>
@@ -74,16 +76,24 @@
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
 	<string name="action_share">Share</string>
+	<string name="action_bookmark">Bookmark</string>
+	<string name="action_remove_bookmark">Remove bookmark</string>
 	<string name="action_continue">Continue</string>
 	<string name="action_open">Open</string>
 	<string name="action_cancel">Cancel</string>
 	<string name="action_send_mail">Send e-mail</string>
 	<string name="action_play_in_background">Play in background</string>
 	<string name="action_start_picture_in_picture">Picture in picture</string>
-	<string name="action_remove">Remove</string>
+	<string name="action_start_download">Download</string>
+	<string name="action_delete_download">Delete download</string>
+	<string name="action_cancel_download">Cancel download</string>
+	<string name="action_mark_unwatched">Mark as unwatched</string>
+	<string name="action_view_all">View all</string>
 
 	<string name="search_query_hint_mediathek">Search media center…</string>
 	<string name="search_query_hint_downloads">Search downloads…</string>
+	<string name="search_query_hint_continue_watching">Search started shows…</string>
+	<string name="search_query_hint_bookmarks">Search bookmarks…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
 
 	<string name="menu_refresh">Refresh</string>

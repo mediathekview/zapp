@@ -29,13 +29,61 @@
 			app:destination="@id/mediathekDetailFragment" />
 	</fragment>
 	<fragment
-		android:id="@+id/downloadsFragment"
-		android:name="de.christinecoenen.code.zapp.app.downloads.ui.list.DownloadsFragment"
+		android:id="@+id/personalFragment"
+		android:name="de.christinecoenen.code.zapp.app.personal.PersonalFragment"
 		android:label="@string/app_name"
-		tools:layout="@layout/downloads_fragment">
+		tools:layout="@layout/personal_fragment">
 		<argument
 			android:name="is_main_destination"
 			android:defaultValue="true"
+			app:argType="boolean" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
+		<action
+			android:id="@+id/to_downloadsFragment"
+			app:destination="@id/downloadsFragment" />
+		<action
+			android:id="@+id/to_continueWatchingFragment"
+			app:destination="@id/continueWatchingFragment" />
+		<action
+			android:id="@+id/to_bookmarksFragment"
+			app:destination="@id/bookmarksFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/downloadsFragment"
+		android:name="de.christinecoenen.code.zapp.app.personal.details.DownloadsFragment"
+		android:label="@string/activity_main_tab_downloads"
+		tools:layout="@layout/personal_details_fragment">
+		<argument
+			android:name="is_main_destination"
+			android:defaultValue="false"
+			app:argType="boolean" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/continueWatchingFragment"
+		android:name="de.christinecoenen.code.zapp.app.personal.details.ContinueWatchingFragment"
+		android:label="@string/activity_main_tab_continue_watching"
+		tools:layout="@layout/personal_details_fragment">
+		<argument
+			android:name="is_main_destination"
+			android:defaultValue="false"
+			app:argType="boolean" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/bookmarksFragment"
+		android:name="de.christinecoenen.code.zapp.app.personal.details.BookmarksFragment"
+		android:label="@string/activity_main_tab_bookmarks"
+		tools:layout="@layout/personal_details_fragment">
+		<argument
+			android:name="is_main_destination"
+			android:defaultValue="false"
 			app:argType="boolean" />
 		<action
 			android:id="@+id/to_mediathekDetailFragment"
@@ -85,13 +133,13 @@
 	<fragment
 		android:id="@+id/mediathekDetailFragment"
 		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.detail.MediathekDetailFragment"
-		android:label="@string/fragment_mediathek_title"
+		android:label=" "
 		tools:layout="@layout/mediathek_detail_fragment">
 		<argument
 			android:name="mediathek_show"
+			android:defaultValue="@null"
 			app:argType="de.christinecoenen.code.zapp.models.shows.MediathekShow"
-			app:nullable="true"
-			android:defaultValue="@null" />
+			app:nullable="true" />
 		<action
 			android:id="@+id/to_settingsFragment"
 			app:destination="@id/settingsFragment" />
@@ -100,8 +148,8 @@
 			app:destination="@id/mediathekPlayerActivity" />
 		<argument
 			android:name="persisted_show_id"
-			app:argType="integer"
-			android:defaultValue="-1" />
+			android:defaultValue="-1"
+			app:argType="integer" />
 	</fragment>
 	<activity
 		android:id="@+id/mediathekPlayerActivity"

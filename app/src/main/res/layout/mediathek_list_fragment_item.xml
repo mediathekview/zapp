@@ -8,10 +8,9 @@
 	android:clickable="true"
 	android:focusable="true"
 	android:foreground="?selectableItemBackground"
-	android:paddingVertical="10dp"
-	android:visibility="gone"
+	android:paddingVertical="8dp"
 	tools:ignore="UnusedAttribute"
-	tools:visibility="visible">
+	tools:showIn="@layout/mediathek_list_fragment">
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/topic"
@@ -22,11 +21,11 @@
 		android:maxLines="1"
 		android:paddingStart="@dimen/activity_horizontal_margin"
 		android:paddingEnd="@dimen/activity_horizontal_margin"
-		android:textAppearance="?textAppearanceTitleMedium"
+		android:textAppearance="?textAppearanceBodyMedium"
 		android:textColor="?colorOnSecondaryContainer"
 		app:layout_constrainedWidth="true"
 		app:layout_constraintBottom_toTopOf="@id/title"
-		app:layout_constraintEnd_toStartOf="@id/download_progress"
+		app:layout_constraintEnd_toStartOf="@id/bookmark_icon"
 		app:layout_constraintHorizontal_bias="0"
 		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintHorizontal_weight="5"
@@ -35,6 +34,19 @@
 		app:layout_constraintVertical_chainStyle="packed"
 		app:layout_constraintWidth_max="wrap"
 		tools:text="service:zuhause ein ganz ganz langer text über zwei Zeilen" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/bookmark_icon"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_marginStart="4dp"
+		android:tint="?colorAccent"
+		app:layout_constraintBottom_toBottomOf="@id/topic"
+		app:layout_constraintDimensionRatio="1"
+		app:layout_constraintEnd_toStartOf="@id/download_progress"
+		app:layout_constraintStart_toEndOf="@id/topic"
+		app:layout_constraintTop_toTopOf="@id/topic"
+		app:srcCompat="@drawable/ic_baseline_bookmark_border_24" />
 
 	<com.google.android.material.progressindicator.CircularProgressIndicator
 		android:id="@+id/download_progress"
@@ -46,7 +58,7 @@
 		app:layout_constraintBottom_toBottomOf="@id/topic"
 		app:layout_constraintDimensionRatio="1"
 		app:layout_constraintEnd_toStartOf="@id/download_status_icon"
-		app:layout_constraintStart_toEndOf="@id/topic"
+		app:layout_constraintStart_toEndOf="@id/bookmark_icon"
 		app:layout_constraintTop_toTopOf="@id/topic"
 		tools:progress="25" />
 
@@ -65,10 +77,9 @@
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/download_status_icon"
-		android:layout_width="wrap_content"
+		android:layout_width="0dp"
 		android:layout_height="0dp"
 		android:layout_marginStart="4dp"
-		android:paddingVertical="1dp"
 		android:tint="?colorAccent"
 		app:layout_constraintBottom_toBottomOf="@id/topic"
 		app:layout_constraintDimensionRatio="1"
@@ -81,7 +92,7 @@
 		android:id="@+id/viewing_status"
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
-		android:layout_marginStart="4dp"
+		android:layout_marginStart="2dp"
 		android:paddingVertical="5dp"
 		android:tint="?colorAccent"
 		app:layout_constraintBottom_toBottomOf="@id/topic"
@@ -106,12 +117,12 @@
 
 	<Space
 		android:id="@+id/status_space_end"
-		android:layout_width="8dp"
+		android:layout_width="@dimen/activity_horizontal_margin"
 		android:layout_height="wrap_content"
 		app:layout_constraintBottom_toBottomOf="@id/topic"
-		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/thumbnail"
 		app:layout_constraintStart_toEndOf="@id/viewing_status"
-		app:layout_constraintTop_toTopOf="@id/topic"/>
+		app:layout_constraintTop_toTopOf="@id/topic" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/title"
@@ -121,11 +132,12 @@
 		android:ellipsize="end"
 		android:maxLines="2"
 		android:paddingHorizontal="@dimen/activity_horizontal_margin"
-		android:textAppearance="?textAppearanceTitleLarge"
+		android:textAppearance="?textAppearanceTitleMedium"
 		app:layout_constraintBottom_toTopOf="@id/duration"
-		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/thumbnail"
 		app:layout_constraintStart_toStartOf="@id/topic"
 		app:layout_constraintTop_toBottomOf="@id/topic"
+		app:lineHeight="20sp"
 		tools:text="Von grünem Rasen, Grüner Soße und braunen Buchsbäumen" />
 
 	<com.google.android.material.textview.MaterialTextView
@@ -133,7 +145,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="@dimen/activity_horizontal_margin"
-		android:textAppearance="?textAppearanceBodyMedium"
+		android:textAppearance="?textAppearanceLabelMedium"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/channel_divider"
 		app:layout_constraintHorizontal_bias="0"
@@ -156,7 +168,7 @@
 		android:id="@+id/channel"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?textAppearanceBodyMedium"
+		android:textAppearance="?textAppearanceLabelMedium"
 		app:layout_constraintBottom_toBottomOf="@id/duration"
 		app:layout_constraintEnd_toStartOf="@id/time_divider"
 		app:layout_constraintStart_toEndOf="@id/channel_divider"
@@ -177,7 +189,7 @@
 		android:id="@+id/time"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?textAppearanceBodyMedium"
+		android:textAppearance="?textAppearanceLabelMedium"
 		app:layout_constraintBottom_toBottomOf="@id/duration"
 		app:layout_constraintEnd_toStartOf="@id/subtitle_divider"
 		app:layout_constraintStart_toEndOf="@id/time_divider"
@@ -199,10 +211,27 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/fragment_mediathek_batch_subtitle"
-		android:textAppearance="?textAppearanceBodyMedium"
+		android:textAppearance="?textAppearanceLabelMedium"
 		app:layout_constraintBottom_toBottomOf="@id/duration"
-		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/thumbnail"
 		app:layout_constraintStart_toEndOf="@id/subtitle_divider"
 		app:layout_constraintTop_toTopOf="@id/duration" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/thumbnail"
+		android:layout_width="80dp"
+		android:layout_height="0dp"
+		android:layout_marginEnd="8dp"
+		android:background="?colorSurface"
+		android:backgroundTint="?colorSurfaceVariant"
+		android:scaleType="centerCrop"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintStart_toEndOf="@id/title"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

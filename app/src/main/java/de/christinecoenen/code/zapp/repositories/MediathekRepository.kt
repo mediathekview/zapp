@@ -12,8 +12,46 @@ import org.joda.time.DateTime
 
 class MediathekRepository(private val database: Database) {
 
-	fun getDownloads(searchQuery: String): PagingSource<Int, PersistedMediathekShow> {
-		return database.mediathekShowDao().getAllDownloads("%$searchQuery%")
+	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
+		return database
+			.mediathekShowDao()
+			.getDownloads(limit)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	fun getDownloads(searchQuery: String): PagingSource<Int, MediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getAllDownloads("%$searchQuery%")
+	}
+
+	fun getStarted(limit: Int): Flow<List<MediathekShow>> {
+		return database
+			.mediathekShowDao()
+			.getStarted(limit)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	fun getStarted(searchQuery: String): PagingSource<Int, MediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getAllStarted("%$searchQuery%")
+	}
+
+	fun getBookmarked(limit: Int): Flow<List<MediathekShow>> {
+		return database
+			.mediathekShowDao()
+			.getBookmarked(limit)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	fun getBookmarked(searchQuery: String): PagingSource<Int, MediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getAllBookarked("%$searchQuery%")
 	}
 
 	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
@@ -125,12 +163,27 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
+	fun getIsBookmarked(apiId: String): Flow<Boolean> {
+		return database
+			.mediathekShowDao()
+			.getIsBookmarked(apiId)
+			.filterNotNull()
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
+	}
+
+	suspend fun setBookmarked(apiId: String, isBookmarked: Boolean) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.updateIsBookmarked(apiId, isBookmarked, DateTime.now())
+	}
+
 	fun getIsRelevantForUser(apiId: String): Flow<Boolean> {
 		return database
 			.mediathekShowDao()
 			.getIsRelevantForUser(apiId)
 			.distinctUntilChanged()
-			.filterNotNull()
+			.map { it == true }
 			.onStart { emit(false) }
 			.flowOn(Dispatchers.IO)
 	}
@@ -148,6 +201,12 @@ class MediathekRepository(private val database: Database) {
 				.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
 		}
 
+	suspend fun resetPlaybackPosition(apiId: String) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.resetPlaybackPosition(apiId)
+	}
+
 	fun getPlaybackPositionPercent(apiId: String): Flow<Float> {
 		return database
 			.mediathekShowDao()
@@ -155,6 +214,14 @@ class MediathekRepository(private val database: Database) {
 			.distinctUntilChanged()
 			.filterNotNull()
 			.onStart { emit(0f) }
+			.flowOn(Dispatchers.IO)
+	}
+
+	fun getCompletetlyDownloadedVideoPath(apiId: String): Flow<String?> {
+		return database
+			.mediathekShowDao()
+			.getCompletetlyDownloadedVideoPath(apiId)
+			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
 }

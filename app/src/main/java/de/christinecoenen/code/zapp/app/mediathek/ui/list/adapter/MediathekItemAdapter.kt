@@ -13,20 +13,20 @@ import kotlinx.coroutines.launch
 class MediathekItemAdapter(
 	private val scope: LifecycleCoroutineScope,
 	diffCallback: DiffUtil.ItemCallback<MediathekShow>,
-	private val listener: ListItemListener?
+	private val listener: MediathekShowListItemListener?
 ) :
 	PagingDataAdapter<MediathekShow, MediathekItemViewHolder>(diffCallback) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val inflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(inflater, parent, false)
-		return MediathekItemViewHolder(binding)
+		return MediathekItemViewHolder(binding, MediathekItemType.Default, true)
 	}
 
 	override fun onBindViewHolder(holder: MediathekItemViewHolder, position: Int) {
 		val show = getItem(position) ?: throw RuntimeException("null show not supported")
 
-		scope.launch(Dispatchers.Main) {
+		scope.launch {
 			holder.setShow(show)
 		}
 
@@ -39,5 +39,10 @@ class MediathekItemAdapter(
 				false
 			}
 		}
+	}
+
+	override fun onViewRecycled(holder: MediathekItemViewHolder) {
+		super.onViewRecycled(holder)
+		holder.recycle()
 	}
 }

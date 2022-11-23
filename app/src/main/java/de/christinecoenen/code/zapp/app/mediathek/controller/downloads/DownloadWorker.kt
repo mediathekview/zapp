@@ -98,59 +98,59 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			request.header("Range", "bytes=$existingFileSize-")
 		}
 
-		val response = try {
+		try {
 			httpClient.newCall(request.build()).execute()
 		} catch (e: Exception) {
 			Timber.w("could not connect to server")
 			return@withContext retry(ErrorType.FileReadFailed)
-		}
-
-		if (!response.isSuccessful) {
-			Timber.w("server response not successful - response code: %s", response.code)
-			return@withContext failure(response.code.toErrorType())
-		}
-
-		if (response.body == null) {
-			Timber.w("server response was empty")
-			return@withContext failure(ErrorType.Unknown)
-		}
-
-		val body = response.body!!
-
-		if (response.code == HttpURLConnection.HTTP_PARTIAL) {
-			// server does support ranges
-			downloadedBytes = existingFileSize
-			totalBytes = existingFileSize + body.contentLength()
-		} else {
-			// server does not support range header - download regularly
-			shouldResume = false
-			totalBytes = body.contentLength()
-		}
-
-		val outputStream = try {
-			downloadFileInfoManager.openOutputStream(targetFileUri!!, shouldResume)
-		} catch (e: Exception) {
-			return@withContext failure(ErrorType.FileWriteFailed)
-		}
-
-		if (outputStream == null) {
-			Timber.w("fileoutputstream not readable")
-			return@withContext failure(ErrorType.FileWriteFailed)
-		}
-
-		try {
-			outputStream.use {
-				body.byteStream().use { inputStream ->
-					download(inputStream, outputStream)
-				}
+		}.use { response ->
+			if (!response.isSuccessful) {
+				Timber.w("server response not successful - response code: %s", response.code)
+				return@withContext failure(response.code.toErrorType())
 			}
-		} catch (e: CancellationException) {
-			// cancelled - no not show any notification
-			return@withContext Result.failure()
-		} catch (e: Exception) {
-			// this is most likely a connection issue we can recover from - so we retry
-			Timber.w(e)
-			return@withContext retry(ErrorType.FileReadFailed)
+
+			if (response.body == null) {
+				Timber.w("server response was empty")
+				return@withContext failure(ErrorType.Unknown)
+			}
+
+			val body = response.body!!
+
+			if (response.code == HttpURLConnection.HTTP_PARTIAL) {
+				// server does support ranges
+				downloadedBytes = existingFileSize
+				totalBytes = existingFileSize + body.contentLength()
+			} else {
+				// server does not support range header - download regularly
+				shouldResume = false
+				totalBytes = body.contentLength()
+			}
+
+			val outputStream = try {
+				downloadFileInfoManager.openOutputStream(targetFileUri!!, shouldResume)
+			} catch (e: Exception) {
+				return@withContext failure(ErrorType.FileWriteFailed)
+			}
+
+			if (outputStream == null) {
+				Timber.w("fileoutputstream not readable")
+				return@withContext failure(ErrorType.FileWriteFailed)
+			}
+
+			try {
+				outputStream.use {
+					body.byteStream().use { inputStream ->
+						download(inputStream, outputStream)
+					}
+				}
+			} catch (e: CancellationException) {
+				// cancelled - no not show any notification
+				return@withContext Result.failure()
+			} catch (e: Exception) {
+				// this is most likely a connection issue we can recover from - so we retry
+				Timber.w(e)
+				return@withContext retry(ErrorType.FileReadFailed)
+			}
 		}
 
 		progress = 100
@@ -179,7 +179,7 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 			delay(NotificationDelay)
 
 			val retryIntent = RetryDownloadBroadcastReceiver.getPendingIntent(
-				applicationContext, downloadId, quality
+				applicationContext, persistedShowId, quality
 			)
 
 			val notification = DownloadFailedEventNotification(

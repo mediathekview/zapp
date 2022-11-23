@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list
 
 import android.os.Bundle
 import android.view.*
-import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -21,10 +20,12 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
+import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -39,11 +40,16 @@ import java.util.*
 import javax.net.ssl.SSLHandshakeException
 
 
-class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefreshListener {
+class MediathekListFragment : Fragment(),
+	MenuProvider,
+	MediathekShowListItemListener,
+	OnRefreshListener {
 
 	private var _binding: MediathekListFragmentBinding? = null
-	private val binding: MediathekListFragmentBinding
-		get() = _binding!!
+	private val binding: MediathekListFragmentBinding get() = _binding!!
+
+	private var _noShowsBinding: ViewNoShowsBinding? = null
+	private val noShowsBinding: ViewNoShowsBinding get() = _noShowsBinding!!
 
 	private val numberFormat = NumberFormat.getInstance(Locale.getDefault())
 	private val queryInfoDateFormatter = DateFormat.getDateTimeInstance(
@@ -58,8 +64,6 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
 	private lateinit var adapter: MediathekItemAdapter
 
-	private var longClickShow: MediathekShow? = null
-
 	private val backPressedCallback = object : OnBackPressedCallback(false) {
 		override fun handleOnBackPressed() {
 			// close bottom sheet first, before using system back button setting
@@ -73,6 +77,7 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 		savedInstanceState: Bundle?
 	): View {
 		_binding = MediathekListFragmentBinding.inflate(inflater, container, false)
+		_noShowsBinding = ViewNoShowsBinding.bind(binding.root)
 
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
@@ -164,6 +169,7 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+		_noShowsBinding = null
 		_bottomSheetBehavior = null
 	}
 
@@ -202,12 +208,8 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 	}
 
 	override fun onShowLongClicked(show: MediathekShow, view: View) {
-		longClickShow = show
-
-		PopupMenu(context, view, Gravity.TOP or Gravity.END).apply {
-			inflate(R.menu.mediathek_detail_fragment)
-			show()
-			setOnMenuItemClickListener(::onContextMenuItemClicked)
+		ShowMenuHelper(this, show).apply {
+			showContextMenu(view)
 		}
 	}
 
@@ -221,16 +223,6 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 		} else {
 			toggleFilterBottomSheet()
 		}
-	}
-
-	private fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
-		when (menuItem.itemId) {
-			R.id.menu_share -> {
-				longClickShow?.shareExternally(requireContext())
-				return true
-			}
-		}
-		return false
 	}
 
 	private fun onQueryInfoResultChanged(queryInfoResult: QueryInfoResult?) {
@@ -277,7 +269,7 @@ class MediathekListFragment : Fragment(), MenuProvider, ListItemListener, OnRefr
 
 	private fun updateNoShowsMessage(loadState: LoadState) {
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
-		binding.noShows.isVisible = isAdapterEmpty
+		noShowsBinding.group.isVisible = isAdapterEmpty
 	}
 
 	private fun setUpLengthFilter() {
