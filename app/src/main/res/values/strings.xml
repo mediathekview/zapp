@@ -48,6 +48,7 @@
 	<string name="fragment_personal_no_results_downloads">keine Downloads gefunden</string>
 	<string name="fragment_personal_no_results_continue_watching">keine begonnenen Sendungen gefunden</string>
 	<string name="fragment_personal_no_results_bookmarks">keine Lesezeichen gefunden</string>
+	<string name="fragment_personal_today">Heute</string>
 
 	<!-- error messages -->
 	<string name="error_informal">Upsi!</string>

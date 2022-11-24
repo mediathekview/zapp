@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
+import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.persistence.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -20,7 +21,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloads(searchQuery: String): PagingSource<Int, MediathekShow> {
+	fun getDownloads(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllDownloads("%$searchQuery%")
@@ -34,7 +35,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getStarted(searchQuery: String): PagingSource<Int, MediathekShow> {
+	fun getStarted(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllStarted("%$searchQuery%")
@@ -48,7 +49,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getBookmarked(searchQuery: String): PagingSource<Int, MediathekShow> {
+	fun getBookmarked(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllBookarked("%$searchQuery%")

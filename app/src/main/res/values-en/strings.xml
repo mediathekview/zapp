@@ -48,6 +48,7 @@
 	<string name="fragment_personal_no_results_downloads">no downloads found</string>
 	<string name="fragment_personal_no_results_continue_watching">no started shows found</string>
 	<string name="fragment_personal_no_results_bookmarks">no bookmarks found</string>
+	<string name="fragment_personal_today">Today</string>
 
 	<!-- error messages -->
 	<string name="error_informal">Oops!</string>

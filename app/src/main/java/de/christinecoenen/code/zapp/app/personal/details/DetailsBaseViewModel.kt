@@ -3,14 +3,13 @@ package de.christinecoenen.code.zapp.app.personal.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingSource
-import androidx.paging.cachedIn
-import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import androidx.paging.*
+import de.christinecoenen.code.zapp.app.personal.details.adapter.UiModel
+import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -27,6 +26,22 @@ abstract class DetailsBaseViewModel() : ViewModel() {
 	val showList = _searchQuery
 		.flatMapLatest { searchQuery ->
 			Pager(pagingConfig) { getPagingSource(searchQuery) }.flow
+		}.map { pagingData ->
+
+			pagingData
+				.map { sortableMediathekShow ->
+					UiModel.MediathekShowModel(sortableMediathekShow)
+				}
+				.insertSeparators { before, after ->
+					// null = no separator
+					when {
+						after == null -> null
+						before == null -> UiModel.DateSeparatorModel(after.date)
+						!before.isOnSameDay(after) -> UiModel.DateSeparatorModel(after.date)
+						else -> null
+					}
+				}
+
 		}
 		.asLiveData()
 		.cachedIn(viewModelScope)
@@ -35,5 +50,5 @@ abstract class DetailsBaseViewModel() : ViewModel() {
 		_searchQuery.tryEmit(query ?: "")
 	}
 
-	protected abstract fun getPagingSource(searchQuery: String): PagingSource<Int, MediathekShow>
+	protected abstract fun getPagingSource(searchQuery: String): PagingSource<Int, SortableMediathekShow>
 }
