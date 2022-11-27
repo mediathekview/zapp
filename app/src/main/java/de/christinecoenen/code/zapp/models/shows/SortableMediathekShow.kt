@@ -5,7 +5,7 @@ import org.joda.time.DateTime
 
 data class SortableMediathekShow(
 
-	var sortDate: DateTime? = null,
+	var sortDate: DateTime,
 
 	@Embedded
 	var mediathekShow: MediathekShow

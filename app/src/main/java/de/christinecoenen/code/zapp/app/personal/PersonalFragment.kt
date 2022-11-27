@@ -10,14 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonalFragment : Fragment(), MenuProvider {
@@ -64,16 +62,9 @@ class PersonalFragment : Fragment(), MenuProvider {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		downloadsAdapter =
-			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Download, showClickListener)
-		continueWatchingAdapter =
-			MediathekShowListAdapter(
-				lifecycleScope,
-				MediathekItemType.ContinueWatching,
-				showClickListener
-			)
-		bookmarkAdapter =
-			MediathekShowListAdapter(lifecycleScope, MediathekItemType.Bookmark, showClickListener)
+		downloadsAdapter = MediathekShowListAdapter(lifecycleScope, showClickListener)
+		continueWatchingAdapter = MediathekShowListAdapter(lifecycleScope, showClickListener)
+		bookmarkAdapter = MediathekShowListAdapter(lifecycleScope, showClickListener)
 
 		outerAdapter = ConcatAdapter(
 			downloadsHeaderAdapter,

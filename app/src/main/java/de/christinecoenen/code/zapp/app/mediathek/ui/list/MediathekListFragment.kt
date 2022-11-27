@@ -20,10 +20,9 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemAdapter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowComparator
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -62,7 +61,7 @@ class MediathekListFragment : Fragment(),
 		get() = _bottomSheetBehavior!!
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
-	private lateinit var adapter: MediathekItemAdapter
+	private lateinit var adapter: PagedMediathekShowListAdapter
 
 	private val backPressedCallback = object : OnBackPressedCallback(false) {
 		override fun handleOnBackPressed() {
@@ -113,9 +112,9 @@ class MediathekListFragment : Fragment(),
 		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 		viewmodel.queryInfoResult.observe(viewLifecycleOwner, ::onQueryInfoResultChanged)
 
-		adapter = MediathekItemAdapter(
+		adapter = PagedMediathekShowListAdapter(
 			lifecycleScope,
-			MediathekShowComparator,
+			true,
 			this@MediathekListFragment
 		)
 

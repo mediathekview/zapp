@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.personal.details.adapter
+package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.personal.details.adapter.PagedPersistedShowListAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -31,7 +31,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	protected abstract val noShowsIconResId: Int
 	protected abstract val searchQueryHintResId: Int
 
-	private lateinit var showAdapter: PagedPersistedShowListAdapter
+	private lateinit var showAdapter: PagedMediathekShowListAdapter
 
 	private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 		override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -50,7 +50,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		showAdapter = PagedPersistedShowListAdapter(lifecycleScope, this)
+		showAdapter = PagedMediathekShowListAdapter(lifecycleScope, false, this)
 	}
 
 	override fun onCreateView(

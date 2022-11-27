@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.leanback.widget.FocusHighlight
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
@@ -22,8 +23,8 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class MediathekItemViewHolder(
 	private val binding: MediathekListFragmentItemBinding,
-	private val itemType: MediathekItemType,
 	private val highlightRelevantForUser: Boolean,
+	private val scope: LifecycleCoroutineScope,
 ) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
 	private val mediathekRepository: MediathekRepository by inject()
@@ -38,7 +39,7 @@ class MediathekItemViewHolder(
 	private var playbackPositionJob: Job? = null
 	private var videoPathJob: Job? = null
 
-	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
+	fun setShow(show: MediathekShow) {
 		recycle()
 
 		binding.title.text = show.title
@@ -65,14 +66,14 @@ class MediathekItemViewHolder(
 		binding.root.setBackgroundColor(bgColorDefault)
 
 		if (highlightRelevantForUser) {
-			isRelevantForUserJob = launch { getIsRelevantForUserFlow(show) }
+			isRelevantForUserJob = scope.launch { getIsRelevantForUserFlow(show) }
 		}
 
-		isBookmarkedJob = launch { isBookmarkedFlow(show) }
-		videoPathJob = launch { getCompletetlyDownloadedVideoPathFlow(show) }
-		downloadProgressJob = launch { updateDownloadProgressFlow(show) }
-		playbackPositionJob = launch { updatePlaybackPositionPercentFlow(show) }
-		downloadStatusJob = launch { updateDownloadStatusFlow(show) }
+		isBookmarkedJob = scope.launch { isBookmarkedFlow(show) }
+		videoPathJob = scope.launch { getCompletetlyDownloadedVideoPathFlow(show) }
+		downloadProgressJob = scope.launch { updateDownloadProgressFlow(show) }
+		playbackPositionJob = scope.launch { updatePlaybackPositionPercentFlow(show) }
+		downloadStatusJob = scope.launch { updateDownloadStatusFlow(show) }
 
 		binding.root.layoutTransition = LayoutTransition()
 		binding.root.layoutTransition.disableTransitionType(LayoutTransition.CHANGE_APPEARING)

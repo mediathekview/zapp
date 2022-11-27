@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 
 class MediathekShowListAdapter(
 	private val scope: LifecycleCoroutineScope,
-	private val mediathekItemType: MediathekItemType,
 	private val listener: MediathekShowListItemListener? = null
 ) : RecyclerView.Adapter<MediathekItemViewHolder>() {
 
@@ -34,7 +32,7 @@ class MediathekShowListAdapter(
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
-		val holder = MediathekItemViewHolder(binding, mediathekItemType, true)
+		val holder = MediathekItemViewHolder(binding, true, scope)
 
 		binding.root.setOnClickListener {
 			listener?.onShowClicked(persistedShows[holder.bindingAdapterPosition])

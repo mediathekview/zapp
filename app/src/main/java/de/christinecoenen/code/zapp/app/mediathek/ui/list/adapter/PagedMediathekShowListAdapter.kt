@@ -1,20 +1,17 @@
-package de.christinecoenen.code.zapp.app.personal.details.adapter
+package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemType
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekItemViewHolder
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemDateSeparatorBinding
-import kotlinx.coroutines.launch
 
 
-class PagedPersistedShowListAdapter(
+class PagedMediathekShowListAdapter(
 	private val scope: LifecycleCoroutineScope,
+	private val highlightRelevantForUser: Boolean,
 	private val listener: MediathekShowListItemListener
 ) : PagingDataAdapter<UiModel, RecyclerView.ViewHolder>(UiModelComparator) {
 
@@ -60,9 +57,7 @@ class PagedPersistedShowListAdapter(
 		(getItem(position) as UiModel.DateSeparatorModel)
 
 	private fun bindItemViewHolder(holder: MediathekItemViewHolder, position: Int) {
-		scope.launch {
-			holder.setShow(getShowItem(position).show)
-		}
+		holder.setShow(getShowItem(position).show)
 	}
 
 	private fun bindHeaderViewHolder(holder: DateSeparatorViewHolder, position: Int) {
@@ -73,7 +68,7 @@ class PagedPersistedShowListAdapter(
 	private fun createItemViewHolder(parent: ViewGroup): MediathekItemViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = MediathekListFragmentItemBinding.inflate(layoutInflater, parent, false)
-		val holder = MediathekItemViewHolder(binding, MediathekItemType.Download, false)
+		val holder = MediathekItemViewHolder(binding, highlightRelevantForUser, scope)
 
 		binding.root.setOnClickListener {
 			getShowItem(holder.bindingAdapterPosition).let {
