@@ -62,7 +62,7 @@ abstract class ZappApplicationBase : Application() {
 
 		if (Thread.getDefaultUncaughtExceptionHandler() != null) {
 			// exclude test environments
-			setUpCrashReporting()
+			//setUpCrashReporting()
 		}
 	}
 

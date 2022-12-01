@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -33,7 +32,7 @@ class MediathekListFragment : Fragment(),
 	private val mediathekRepository: MediathekRepository by inject()
 
 	private val viewmodel: MediathekListFragmentViewModel by viewModel()
-	private lateinit var adapter: PagedMediathekShowListAdapter
+	private lateinit var adapter: MediathekItemAdapter
 
 	private var _binding: TvFragmentMediathekListBinding? = null
 	private val binding: TvFragmentMediathekListBinding
@@ -67,7 +66,7 @@ class MediathekListFragment : Fragment(),
 			}
 		}
 
-		adapter = PagedMediathekShowListAdapter(lifecycleScope, false, this)
+		adapter = MediathekItemAdapter(lifecycleScope, this)
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
 		viewLifecycleOwner.lifecycleScope.launch {
