@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app.settings.ui
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -10,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import de.christinecoenen.code.zapp.utils.system.LanguageHelper
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -17,6 +19,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		private const val PREF_SHORTCUTS = "pref_shortcuts"
 		private const val PREF_UI_MODE = "pref_ui_mode"
+		private const val PREF_LANGUAGE = "pref_key_language"
 		private const val PREF_CHANNEL_SELECTION = "pref_key_channel_selection"
 
 	}
@@ -24,11 +27,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
 	private lateinit var settingsRepository: SettingsRepository
 	private lateinit var shortcutPreference: ShortcutPreference
 	private lateinit var uiModePreference: ListPreference
+	private lateinit var languagePreference: ListPreference
 	private lateinit var channelSelectionPreference: Preference
 
 	private val uiModeChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
 		val uiMode = settingsRepository.prefValueToUiMode(newValue as String?)
 		AppCompatDelegate.setDefaultNightMode(uiMode)
+		true
+	}
+
+	private val languageChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+		val languageTag = newValue as String
+		val appLocale = LocaleListCompat.forLanguageTags(languageTag)
+		AppCompatDelegate.setApplicationLocales(appLocale)
+
 		true
 	}
 
@@ -43,7 +55,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		shortcutPreference = preferenceScreen.findPreference(PREF_SHORTCUTS)!!
 		uiModePreference = preferenceScreen.findPreference(PREF_UI_MODE)!!
+		languagePreference = preferenceScreen.findPreference(PREF_LANGUAGE)!!
 		channelSelectionPreference = preferenceScreen.findPreference(PREF_CHANNEL_SELECTION)!!
+
+		val languages = LanguageHelper.getAvailableLanguages(requireContext())
+		languagePreference.value = LanguageHelper.getCurrentLanguageTag()
+		languagePreference.entries = languages.values.toTypedArray()
+		languagePreference.entryValues = languages.keys.toTypedArray()
 
 		channelSelectionPreference.setOnPreferenceClickListener {
 			val direction =
@@ -58,6 +76,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		shortcutPreference.onPreferenceChangeListener = shortcutPreference
 		uiModePreference.onPreferenceChangeListener = uiModeChangeListener
+		languagePreference.onPreferenceChangeListener = languageChangeListener
 	}
 
 	override fun onPause() {
@@ -65,5 +84,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		shortcutPreference.onPreferenceChangeListener = null
 		uiModePreference.onPreferenceChangeListener = null
+		languagePreference.onPreferenceChangeListener = null
 	}
 }
