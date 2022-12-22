@@ -8,6 +8,8 @@
 * Download-Funktionalität überarbeitet
 * Fehlgeschlagene Downloads werden automatisch fortgesetzt
 * Durchsuchbare Download-Liste
+* Durchsuchbare "Weiterschauen"-Liste
+* Durchsuchbare Lesezeichen
 * Moderner Netzwerk-Stack für die Video-Wiedergabe
 * Bessere Fehlermeldungen während der Videowiedergabe
 
