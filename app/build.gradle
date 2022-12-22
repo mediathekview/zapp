@@ -78,7 +78,7 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.5.4'
+	def fragment_version = '1.5.5'
 
 	// kotlin
 	implementation 'androidx.core:core-ktx:1.9.0'
