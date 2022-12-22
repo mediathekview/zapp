@@ -1,11 +1,6 @@
 package de.christinecoenen.code.zapp.models.shows
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 import org.joda.time.DateTime
 
 /**
@@ -46,9 +41,4 @@ data class PersistedMediathekShow(
 	@Embedded
 	var mediathekShow: MediathekShow
 
-) {
-
-	val playBackPercent
-		get() = (playbackPosition.toFloat() / videoDuration).let { if (it.isNaN()) 0f else it }
-
-}
+)

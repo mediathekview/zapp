@@ -67,7 +67,6 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	private val title by lazy { inputData.getString(TitleKey) ?: "" }
 	private val quality by lazy { Quality.valueOf(inputData.getString(QualityKey)!!) }
 	private val notificationId by lazy { id.hashCode() }
-	private val downloadId by lazy { notificationId }
 
 	private var progress = 0
 	private var downloadedBytes = 0L

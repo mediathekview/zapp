@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-abstract class DetailsBaseViewModel() : ViewModel() {
+abstract class DetailsBaseViewModel : ViewModel() {
 
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30

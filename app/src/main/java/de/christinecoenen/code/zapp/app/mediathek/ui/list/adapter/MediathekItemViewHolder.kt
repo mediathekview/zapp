@@ -4,7 +4,6 @@ import android.animation.LayoutTransition
 import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.core.view.isVisible
-import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R

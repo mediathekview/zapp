@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.TvActivityFaqBinding
-import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
 import de.christinecoenen.code.zapp.utils.system.IStartableActivity
 import io.noties.markwon.Markwon
