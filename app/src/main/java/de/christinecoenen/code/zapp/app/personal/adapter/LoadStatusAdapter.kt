@@ -3,10 +3,13 @@ package de.christinecoenen.code.zapp.app.personal.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentLoadStatusItemBinding
 
-class LoadStatusAdapter : RecyclerView.Adapter<LoadStatusViewHolder>() {
+class LoadStatusAdapter(
+	@StringRes private val labelResId: Int,
+) : RecyclerView.Adapter<LoadStatusViewHolder>() {
 
 	private var isVisible = true
 	private var isLoading = true
@@ -26,6 +29,7 @@ class LoadStatusAdapter : RecyclerView.Adapter<LoadStatusViewHolder>() {
 	}
 
 	override fun onBindViewHolder(holder: LoadStatusViewHolder, position: Int) {
+		holder.bind(labelResId)
 	}
 
 	override fun getItemCount() = if (isVisible) 1 else 0

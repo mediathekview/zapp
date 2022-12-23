@@ -43,9 +43,12 @@ class PersonalFragment : Fragment(), MenuProvider {
 		R.drawable.ic_outline_bookmarks_24
 	) { navigateToBookmarks() }
 
-	private val downloadsLoadStatusAdapter = LoadStatusAdapter()
-	private val continueWatchingLoadStatusAdapter = LoadStatusAdapter()
-	private val bookmarkLoadStatusAdapter = LoadStatusAdapter()
+	private val downloadsLoadStatusAdapter =
+		LoadStatusAdapter(R.string.fragment_personal_no_results_downloads)
+	private val continueWatchingLoadStatusAdapter =
+		LoadStatusAdapter(R.string.fragment_personal_no_results_continue_watching)
+	private val bookmarkLoadStatusAdapter =
+		LoadStatusAdapter(R.string.fragment_personal_no_results_bookmarks)
 
 	private val showClickListener = object : MediathekShowListItemListener {
 		override fun onShowClicked(show: MediathekShow) {
