@@ -1,4 +1,4 @@
-# v-next
+# 8.0.0 Beta 1
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Sprachauswahl in den Einstellungen
 * Keine Unterstützung mehr für Android 7
