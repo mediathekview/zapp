@@ -127,6 +127,12 @@ class Player(
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(::loadStreamQualityByNetworkType)
 		exoPlayer.addListener(screenDimmingHandler)
+
+		PlayerPositionWatcher(exoPlayer) {
+			applicationScope.launch(Dispatchers.Main) {
+				saveCurrentPlaybackPosition()
+			}
+		}
 	}
 
 	fun setView(videoView: StyledPlayerView) {
@@ -141,10 +147,6 @@ class Player(
 	suspend fun load(videoInfo: VideoInfo) = withContext(Dispatchers.Main) {
 		if (videoInfo == currentVideoInfo) {
 			return@withContext
-		}
-
-		if (currentVideoInfo != null) {
-			saveCurrentPlaybackPosition()
 		}
 
 		playerEventHandler.errorResourceId.emit(-1)
@@ -180,7 +182,6 @@ class Player(
 	}
 
 	suspend fun destroy() = withContext(Dispatchers.Main) {
-		saveCurrentPlaybackPosition()
 		networkConnectionHelper.endListenForNetworkChanges()
 		exoPlayer.removeAnalyticsListener(playerEventHandler)
 		exoPlayer.release()
@@ -291,8 +292,6 @@ class Player(
 		)
 
 		applicationScope.launch(Dispatchers.Main) {
-			saveCurrentPlaybackPosition()
-
 			loadStreamQuality(requiredStreamQualityBucket)
 		}
 	}
