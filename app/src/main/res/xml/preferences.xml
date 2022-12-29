@@ -4,14 +4,14 @@
 
 	<PreferenceCategory
 		android:icon="@drawable/ic_outline_palette_24"
-		android:title="Aussehen">
+		android:title="@string/pref_header_appearance">
 
 		<ListPreference
 			android:defaultValue="default"
 			android:entries="@array/pref_ui_mode_names"
 			android:entryValues="@array/pref_ui_mode_values"
 			android:key="@string/pref_key_ui_mode"
-			android:title="@string/pref_header_design"
+			android:title="@string/pref_ui_mode_title"
 			app:useSimpleSummaryProvider="true" />
 
 		<ListPreference
