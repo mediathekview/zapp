@@ -111,11 +111,12 @@
 	<string name="player_zoom_state_boxed">Original</string>
 
 	<!-- preferences -->
-	<string name="pref_header_design">Design</string>
+	<string name="pref_header_appearance">Aussehen</string>
 	<string name="pref_header_network">Netzwerk</string>
 	<string name="pref_header_channels">Sender</string>
 	<string name="pref_header_data">Daten</string>
 
+	<string name="pref_ui_mode_title">Design</string>
 	<string name="pref_language_title">Sprache</string>
 
 	<string name="pref_detail_landscape_title">Videos immer im Querformat</string>
