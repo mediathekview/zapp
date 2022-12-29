@@ -4,6 +4,7 @@
 	<string name="pref_key_ui_mode">pref_ui_mode</string>
 	<string name="pref_key_language">pref_key_language</string>
 	<string name="pref_key_detail_landscape">pref_detail_landscape</string>
+	<string name="pref_key_pip_on_back">pref_key_pip_on_back</string>
 	<string name="pref_key_download_over_unmetered_network_only">pref_download_wifi_only</string>
 	<string name="pref_key_stream_quality_over_metered_network">pref_key_stream_quality_cellular</string>
 	<string name="pref_key_channel_selection">pref_key_channel_selection</string>

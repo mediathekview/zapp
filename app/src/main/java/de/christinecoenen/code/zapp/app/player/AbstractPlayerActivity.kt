@@ -17,10 +17,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -28,6 +30,7 @@ abstract class AbstractPlayerActivity :
 	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
+	private val settingsRepository: SettingsRepository by inject()
 
 	private val windowInsetsControllerCompat by lazy {
 		WindowInsetsControllerCompat(window, binding.fullscreenContent)
@@ -77,12 +80,13 @@ abstract class AbstractPlayerActivity :
 
 		addMenuProvider(this)
 
-		// TODO: make dependent on preferences
-		onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-			override fun handleOnBackPressed() {
-				MultiWindowHelper.enterPictureInPictureMode(this@AbstractPlayerActivity)
-			}
-		})
+		if (settingsRepository.pictureInPictureOnBack) {
+			onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+				override fun handleOnBackPressed() {
+					MultiWindowHelper.enterPictureInPictureMode(this@AbstractPlayerActivity)
+				}
+			})
+		}
 	}
 
 	override fun onNewIntent(intent: Intent) {
