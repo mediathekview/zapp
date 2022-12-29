@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
@@ -75,6 +76,13 @@ abstract class AbstractPlayerActivity :
 		binding.error.setOnClickListener { onErrorViewClick() }
 
 		addMenuProvider(this)
+
+		// TODO: make dependent on preferences
+		onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				MultiWindowHelper.enterPictureInPictureMode(this@AbstractPlayerActivity)
+			}
+		})
 	}
 
 	override fun onNewIntent(intent: Intent) {
