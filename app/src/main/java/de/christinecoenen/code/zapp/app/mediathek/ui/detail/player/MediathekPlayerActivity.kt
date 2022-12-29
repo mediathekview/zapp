@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.detail.player
 
 import android.content.Intent
-import androidx.navigation.navArgs
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.app.player.VideoInfo.Companion.fromShow
@@ -14,7 +13,6 @@ import org.koin.android.ext.android.inject
 
 class MediathekPlayerActivity : AbstractPlayerActivity() {
 
-	private val args: MediathekPlayerActivityArgs by navArgs()
 	private val mediathekRepository: MediathekRepository by inject()
 
 	private var persistedShow: PersistedMediathekShow? = null
@@ -34,8 +32,10 @@ class MediathekPlayerActivity : AbstractPlayerActivity() {
 	}
 
 	override suspend fun getVideoInfoFromIntent(intent: Intent): VideoInfo {
+		val persistedShowId = intent.getIntExtra("persisted_show_id", 0)
+		
 		val persistedMediathekShow = mediathekRepository
-			.getPersistedShow(args.persistedShowId)
+			.getPersistedShow(persistedShowId)
 			.first()
 
 		onShowLoaded(persistedMediathekShow)
