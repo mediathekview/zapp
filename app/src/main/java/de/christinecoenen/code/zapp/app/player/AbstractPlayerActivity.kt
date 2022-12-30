@@ -5,6 +5,7 @@ import android.content.*
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
+import android.os.PowerManager
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -28,6 +29,9 @@ abstract class AbstractPlayerActivity :
 
 	private val windowInsetsControllerCompat by lazy {
 		WindowInsetsControllerCompat(window, binding.fullscreenContent)
+	}
+	private val powerManager by lazy {
+		getSystemService(Context.POWER_SERVICE) as PowerManager
 	}
 
 	protected lateinit var binding: ActivityAbstractPlayerBinding
@@ -239,7 +243,7 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun pauseActivity() {
-		if (!isFinishing) {
+		if (!powerManager.isInteractive) {
 			// resume playback in background, when screen turned off
 			binder!!.movePlaybackToBackground()
 		}
