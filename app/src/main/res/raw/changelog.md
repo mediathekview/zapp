@@ -1,3 +1,6 @@
+# v-next
+* Setze Wiedergabe im Hintergrund fort, wenn der Bildschirm ausgeschaltet wird
+
 # 8.0.0
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Sprachauswahl in den Einstellungen
