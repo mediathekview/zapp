@@ -251,6 +251,8 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun resumeActivity() {
+		binder?.movePlaybackToForeground()
+
 		hideError()
 
 		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
