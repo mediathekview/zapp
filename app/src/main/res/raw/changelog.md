@@ -1,4 +1,8 @@
-# 8.0.0
+# v-next
+* Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet
+* Der Video-Fortschritt wird während der Wiedergabe regelmäßig gespeichert
+
+#8.0.0
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Sprachauswahl in den Einstellungen
 * Keine Unterstützung mehr für Android 7
