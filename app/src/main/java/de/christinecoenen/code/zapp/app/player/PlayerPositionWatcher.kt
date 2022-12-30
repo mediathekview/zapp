@@ -22,6 +22,11 @@ class PlayerPositionWatcher(
 		player.addListener(this)
 	}
 
+	fun dispose() {
+		player.removeListener(this)
+		timer?.cancel()
+	}
+
 	override fun onIsPlayingChanged(isPlaying: Boolean) {
 		timer?.cancel()
 

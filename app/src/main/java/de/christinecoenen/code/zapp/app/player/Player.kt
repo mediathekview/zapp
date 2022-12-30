@@ -69,6 +69,7 @@ class Player(
 	private val networkConnectionHelper: NetworkConnectionHelper = NetworkConnectionHelper(context)
 
 	private val trackSelectorWrapper: TrackSelectorWrapper
+	private val playerPositionWatcher: PlayerPositionWatcher
 
 
 	private val requiredStreamQualityBucket: StreamQualityBucket
@@ -128,7 +129,7 @@ class Player(
 		networkConnectionHelper.startListenForNetworkChanges(::loadStreamQualityByNetworkType)
 		exoPlayer.addListener(screenDimmingHandler)
 
-		PlayerPositionWatcher(exoPlayer) {
+		playerPositionWatcher = PlayerPositionWatcher(exoPlayer) {
 			applicationScope.launch(Dispatchers.Main) {
 				saveCurrentPlaybackPosition()
 			}
@@ -183,6 +184,7 @@ class Player(
 
 	suspend fun destroy() = withContext(Dispatchers.Main) {
 		networkConnectionHelper.endListenForNetworkChanges()
+		playerPositionWatcher.dispose()
 		exoPlayer.removeAnalyticsListener(playerEventHandler)
 		exoPlayer.release()
 		mediaSession.release()
