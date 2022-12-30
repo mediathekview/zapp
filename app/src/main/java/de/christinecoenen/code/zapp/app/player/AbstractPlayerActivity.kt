@@ -1,9 +1,7 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
@@ -241,6 +239,11 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun pauseActivity() {
+		if (!isFinishing) {
+			// resume playback in background, when screen turned off
+			binder!!.movePlaybackToBackground()
+		}
+
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {
