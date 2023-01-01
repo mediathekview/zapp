@@ -16,6 +16,9 @@ class SettingsRepository(context: Context) {
 	val lockVideosInLandcapeFormat: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true)
 
+	val pictureInPictureOnBack: Boolean
+		get() = preferences.getBoolean(context.getString(R.string.pref_key_pip_on_back), false)
+
 	val meteredNetworkStreamQuality: StreamQualityBucket
 		@SuppressLint("DefaultLocale")
 		get() = preferences.getString(context.getString(R.string.pref_key_stream_quality_over_metered_network), null).let { quality ->

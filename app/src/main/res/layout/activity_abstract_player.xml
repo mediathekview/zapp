@@ -53,7 +53,8 @@
 		<com.google.android.material.appbar.MaterialToolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
-			android:layout_height="56dp" />
+			android:layout_height="56dp"
+			app:navigationIcon="@drawable/ic_baseline_close_24" />
 
 	</FrameLayout>
 
