@@ -73,6 +73,8 @@
 
 	<string name="error_prefixed_message">Error: %s</string>
 
+	<!-- warning -->
+	<string name="requires_restart">Please restart the app in order for the changes to come into effect.</string>
 
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
@@ -144,6 +146,9 @@
 
 	<string name="pref_download_to_sd_card_title">Download to sd card</string>
 	<string name="pref_download_to_sd_card_summary">Video files will be saved to sd card if present.</string>
+
+	<string name="pref_dynamic_colors">Dynamic colors</string>
+	<string name="pref_dynamic_colors_summary">Choose accent colors based on the wallpaper.</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>

@@ -7,6 +7,11 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/2016-09_Zapp.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/2016-09_Zapp.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/2016-09_Zapp.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/2016-09_Zapp.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/2016-09_Zapp.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/2016-09_Zapp.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zapp.iml" filepath="$PROJECT_DIR$/.idea/modules/zapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/zapp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/zapp.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/zapp.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/zapp.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/zapp.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/zapp.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/zapp.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/zapp.app.unitTest.iml" />
     </modules>
   </component>
 </project>

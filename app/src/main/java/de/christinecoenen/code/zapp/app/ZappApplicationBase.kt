@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.color.DynamicColors
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
@@ -55,6 +56,11 @@ abstract class ZappApplicationBase : Application() {
 
 		val settingsRepository = SettingsRepository(this)
 		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
+
+		// apply dynamic colors to all activities if enabled by user
+		if (settingsRepository.dynamicColors && DynamicColors.isDynamicColorAvailable()) {
+			DynamicColors.applyToActivitiesIfAvailable(this)
+		}
 	}
 
 	override fun attachBaseContext(base: Context?) {
