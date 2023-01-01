@@ -1,10 +1,10 @@
-# v-next
+# 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet
 * Der Video-Fortschritt wird während der Wiedergabe regelmäßig gespeichert
 * Setze Wiedergabe im Hintergrund fort, wenn der Bildschirm ausgeschaltet wird
 * Einstellung, um automatisch in den Bild-in-Bild-Modus zu wechseln
 
-#8.0.0
+# 8.0.0
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Sprachauswahl in den Einstellungen
 * Keine Unterstützung mehr für Android 7
