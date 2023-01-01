@@ -69,7 +69,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 		languagePreference.entries = languages.values.toTypedArray()
 		languagePreference.entryValues = languages.keys.toTypedArray()
 
-		// only show the preference for dynamic colors when available (Android 12 and up)
+		// only show the preference for dynamic colors when available (Android 12 and up)<
 		dynamicColorsPreference.isVisible = DynamicColors.isDynamicColorAvailable()
 		dynamicColorsPreference.setOnPreferenceChangeListener { _, _ ->
 			view?.let {
