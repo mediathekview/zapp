@@ -15,7 +15,7 @@
 			app:useSimpleSummaryProvider="true" />
 
 		<SwitchPreferenceCompat
-			android:defaultValue="true"
+			android:defaultValue="false"
 			android:title="@string/pref_dynamic_colors"
 			android:summary="@string/pref_dynamic_colors_summary"
 			android:key="@string/pref_key_dynamic_colors"/>

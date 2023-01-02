@@ -44,7 +44,7 @@ class SettingsRepository(context: Context) {
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_download_to_sd_card), true)
 
 	val dynamicColors: Boolean
-		get() = preferences.getBoolean(context.getString(R.string.pref_key_dynamic_colors), true)
+		get() = preferences.getBoolean(context.getString(R.string.pref_key_dynamic_colors), false)
 
 	val uiMode: Int
 		get() {
