@@ -6,12 +6,6 @@
 		android:icon="@drawable/ic_outline_palette_24"
 		android:title="Aussehen">
 
-		<SwitchPreferenceCompat
-			android:defaultValue="true"
-			android:title="@string/pref_dynamic_colors"
-			android:summary="@string/pref_dynamic_colors_summary"
-			android:key="@string/pref_key_dynamic_colors"/>
-
 		<ListPreference
 			android:defaultValue="default"
 			android:entries="@array/pref_ui_mode_names"
@@ -19,6 +13,12 @@
 			android:key="@string/pref_key_ui_mode"
 			android:title="@string/pref_header_design"
 			app:useSimpleSummaryProvider="true" />
+
+		<SwitchPreferenceCompat
+			android:defaultValue="true"
+			android:title="@string/pref_dynamic_colors"
+			android:summary="@string/pref_dynamic_colors_summary"
+			android:key="@string/pref_key_dynamic_colors"/>
 
 		<ListPreference
 			android:defaultValue="de"
