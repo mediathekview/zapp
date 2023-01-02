@@ -1,13 +1,13 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
+import android.os.PowerManager
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
@@ -16,10 +16,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -27,9 +29,13 @@ abstract class AbstractPlayerActivity :
 	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
+	private val settingsRepository: SettingsRepository by inject()
 
 	private val windowInsetsControllerCompat by lazy {
 		WindowInsetsControllerCompat(window, binding.fullscreenContent)
+	}
+	private val powerManager by lazy {
+		getSystemService(Context.POWER_SERVICE) as PowerManager
 	}
 
 	protected lateinit var binding: ActivityAbstractPlayerBinding
@@ -75,6 +81,14 @@ abstract class AbstractPlayerActivity :
 		binding.error.setOnClickListener { onErrorViewClick() }
 
 		addMenuProvider(this)
+
+		if (settingsRepository.pictureInPictureOnBack) {
+			onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+				override fun handleOnBackPressed() {
+					MultiWindowHelper.enterPictureInPictureMode(this@AbstractPlayerActivity)
+				}
+			})
+		}
 	}
 
 	override fun onNewIntent(intent: Intent) {
@@ -241,6 +255,11 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun pauseActivity() {
+		if (!powerManager.isInteractive) {
+			// resume playback in background, when screen turned off
+			binder!!.movePlaybackToBackground()
+		}
+
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {
@@ -248,6 +267,8 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun resumeActivity() {
+		binder?.movePlaybackToForeground()
+
 		hideError()
 
 		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())

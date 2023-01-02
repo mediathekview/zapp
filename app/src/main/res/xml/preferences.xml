@@ -4,14 +4,14 @@
 
 	<PreferenceCategory
 		android:icon="@drawable/ic_outline_palette_24"
-		android:title="Aussehen">
+		android:title="@string/pref_header_appearance">
 
 		<ListPreference
 			android:defaultValue="default"
 			android:entries="@array/pref_ui_mode_names"
 			android:entryValues="@array/pref_ui_mode_values"
 			android:key="@string/pref_key_ui_mode"
-			android:title="@string/pref_header_design"
+			android:title="@string/pref_ui_mode_title"
 			app:useSimpleSummaryProvider="true" />
 
 		<SwitchPreferenceCompat
@@ -26,11 +26,23 @@
 			android:title="@string/pref_language_title"
 			app:useSimpleSummaryProvider="true" />
 
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:icon="@drawable/ic_outline_video_settings_24"
+		android:title="@string/pref_header_video_player">
+
 		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_detail_landscape"
 			android:summary="@string/pref_detail_landscape_summary"
 			android:title="@string/pref_detail_landscape_title" />
+
+		<SwitchPreferenceCompat
+			android:defaultValue="false"
+			android:key="@string/pref_key_pip_on_back"
+			android:summary="@string/pref_key_pip_on_back_summary"
+			android:title="@string/pref_key_pip_on_back_title" />
 
 	</PreferenceCategory>
 

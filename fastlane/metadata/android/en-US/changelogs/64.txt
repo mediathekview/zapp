@@ -1,0 +1,4 @@
+* Fixed videos sometimes not loading when started from within picture in picture mode
+* Video progress is saved periodically during playback
+* Resume playback in background when screen gets turned off
+* Preference for automatically switching to picture in picture mode
