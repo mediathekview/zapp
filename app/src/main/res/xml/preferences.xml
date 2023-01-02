@@ -26,7 +26,7 @@
 			android:title="@string/pref_language_title"
 			app:useSimpleSummaryProvider="true" />
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_detail_landscape"
 			android:summary="@string/pref_detail_landscape_summary"
@@ -46,7 +46,7 @@
 			android:title="@string/pref_stream_quality_cellular_title"
 			app:useSimpleSummaryProvider="true" />
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_download_over_unmetered_network_only"
 			android:summary="@string/pref_download_over_unmetered_network_only_summary"
@@ -76,7 +76,7 @@
 		android:icon="@drawable/ic_outline_save_24"
 		android:title="@string/pref_header_data">
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_download_to_sd_card"
 			android:summary="@string/pref_download_to_sd_card_summary"
