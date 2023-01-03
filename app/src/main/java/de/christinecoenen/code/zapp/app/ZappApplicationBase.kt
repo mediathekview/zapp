@@ -58,7 +58,7 @@ abstract class ZappApplicationBase : Application() {
 		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
 
 		// apply dynamic colors to all activities if enabled by user
-		if (settingsRepository.dynamicColors && DynamicColors.isDynamicColorAvailable()) {
+		if (settingsRepository.dynamicColors) {
 			DynamicColors.applyToActivitiesIfAvailable(this)
 		}
 	}
