@@ -1,3 +1,6 @@
+# v-next
+* Unterstützung für dynamische Gerätefarben
+
 # 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet
 * Der Video-Fortschritt wird während der Wiedergabe regelmäßig gespeichert
