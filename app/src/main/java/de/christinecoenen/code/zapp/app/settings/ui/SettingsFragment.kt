@@ -10,11 +10,12 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.color.DynamicColors
-import com.google.android.material.snackbar.Snackbar
+import com.jakewharton.processphoenix.ProcessPhoenix
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.utils.system.LanguageHelper
+
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -69,12 +70,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 		languagePreference.entries = languages.values.toTypedArray()
 		languagePreference.entryValues = languages.keys.toTypedArray()
 
-		// only show the preference for dynamic colors when available (Android 12 and up)<
+		// only show the preference for dynamic colors when available (Android 12 and up)
 		dynamicColorsPreference.isVisible = DynamicColors.isDynamicColorAvailable()
 		dynamicColorsPreference.setOnPreferenceChangeListener { _, _ ->
-			view?.let {
-				Snackbar.make(it, R.string.requires_restart, Snackbar.LENGTH_SHORT).show()
-			}
+			ProcessPhoenix.triggerRebirth(context)
 			true
 		}
 

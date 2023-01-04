@@ -73,9 +73,6 @@
 
 	<string name="error_prefixed_message">Error: %s</string>
 
-	<!-- warning -->
-	<string name="requires_restart">Please restart the app in order for the changes to come into effect.</string>
-
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
 	<string name="action_share">Share</string>

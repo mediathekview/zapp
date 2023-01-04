@@ -73,9 +73,6 @@
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 
-	<!-- warning -->
-	<string name="requires_restart">Neustart benötigt um die Änderungen anzuwenden.</string>
-
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
 	<string name="action_share">Teilen</string>
