@@ -181,4 +181,5 @@ dependencies {
 	// android tv
 	implementation 'androidx.leanback:leanback:1.1.0-rc02'
 	implementation "androidx.leanback:leanback-tab:1.1.0-beta01"
+	implementation "androidx.leanback:leanback-preference:1.2.0-alpha02"
 }
