@@ -1,7 +1,7 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
+	<style name="AppTheme.Base" parent="Theme.Material3.DynamicColors.DayNight">
 
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -44,10 +44,15 @@
 		<item name="actionBarSize">48dp</item>
 		<item name="android:textAllCaps">false</item>
 		<item name="android:statusBarColor">?colorPrimaryContainer</item>
+		<item name="android:windowLightStatusBar">true</item>
 
 		<item name="android:letterSpacing">0.02</item>
 		<item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
 		<item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
+	</style>
+
+	<!-- may be overwritten with resource selectors -->
+	<style name="AppTheme" parent="AppTheme.Base">
 	</style>
 
 	<style name="FullscreenTheme" parent="AppTheme">
