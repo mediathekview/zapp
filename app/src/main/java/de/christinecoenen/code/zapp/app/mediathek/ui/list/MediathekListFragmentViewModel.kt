@@ -30,6 +30,11 @@ class MediathekListFragmentViewModel(
 		private const val DEBOUNCE_TIME_MILLIS = 300L
 	}
 
+	private val pagingConfig = PagingConfig(
+		pageSize = ITEM_COUNT_PER_PAGE,
+		enablePlaceholders = false
+	)
+
 	private val _searchQuery = MutableStateFlow("")
 
 	private val _lengthFilter = MutableStateFlow(LengthFilter())
@@ -55,7 +60,7 @@ class MediathekListFragmentViewModel(
 	}
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
-			Pager(PagingConfig(pageSize = ITEM_COUNT_PER_PAGE)) {
+			Pager(pagingConfig) {
 				MediathekPagingSource(mediathekApi, queryRequest, _queryInfoResult)
 			}.flow
 		}

@@ -1,3 +1,6 @@
+# v-next
+* Absturz in Mediathek-Liste behoben
+
 # 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet
 * Der Video-Fortschritt wird während der Wiedergabe regelmäßig gespeichert

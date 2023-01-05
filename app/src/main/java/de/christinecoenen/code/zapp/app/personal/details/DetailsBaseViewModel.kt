@@ -19,7 +19,10 @@ abstract class DetailsBaseViewModel : ViewModel() {
 		private const val ITEM_COUNT_PER_PAGE = 30
 	}
 
-	private val pagingConfig = PagingConfig(pageSize = ITEM_COUNT_PER_PAGE)
+	private val pagingConfig = PagingConfig(
+		pageSize = ITEM_COUNT_PER_PAGE,
+		enablePlaceholders = false
+	)
 
 	private val _searchQuery = MutableStateFlow("")
 
