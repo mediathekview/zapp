@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import de.christinecoenen.code.zapp.R
@@ -43,6 +44,8 @@ abstract class AbstractPlayerActivity :
 	protected var player: Player? = null
 	protected var binder: BackgroundPlayerService.Binder? = null
 
+	abstract val shouldShowOverlay: Boolean
+
 	private val backgroundPlayerServiceConnection: ServiceConnection = object : ServiceConnection {
 
 		override fun onServiceConnected(componentName: ComponentName, service: IBinder) {
@@ -61,6 +64,7 @@ abstract class AbstractPlayerActivity :
 
 		override fun onServiceDisconnected(componentName: ComponentName) {
 			player?.pause()
+			player = null
 		}
 	}
 
@@ -93,6 +97,8 @@ abstract class AbstractPlayerActivity :
 
 	override fun onNewIntent(intent: Intent) {
 		super.onNewIntent(intent)
+
+		setIntent(intent)
 
 		// called when coming back from picture in picture mode
 		parseIntent(intent)
@@ -309,9 +315,11 @@ abstract class AbstractPlayerActivity :
 
 	private fun showSystemUi() {
 		supportActionBar?.show()
+		binding.overlay.isVisible = shouldShowOverlay
 	}
 
 	private fun hideSystemUi() {
 		supportActionBar?.hide()
+		binding.overlay.isVisible = false
 	}
 }

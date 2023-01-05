@@ -1,6 +1,7 @@
 # v-next
 * Absturz in Mediathek-Liste behoben
 * Darstellungsfehler in der Mediathekliste auf Android TV behoben
+* Zappen zwischen Live-Streams ist wieder möglich!
 
 # 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet

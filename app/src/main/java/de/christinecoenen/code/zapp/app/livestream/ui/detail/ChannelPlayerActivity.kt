@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.core.view.isVisible
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
@@ -33,10 +34,14 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	private val viewModel: ChannelPlayerActivityViewModel by viewModel()
 	private val programInfoViewModel: ProgramInfoViewModel by viewModel()
 
+	override val shouldShowOverlay = true
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		viewModel.channel.observe(this, ::onChannelLoaded)
+		viewModel.previousChannelLiveData.observe(this, ::onPrevChannelLoaded)
+		viewModel.nextChannelLiveData.observe(this, ::onNextChannelLoaded)
 		programInfoViewModel.title.observe(this, ::onShowTitleChanged)
 	}
 
@@ -77,6 +82,30 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 
 	private fun onChannelLoaded(channel: ChannelModel) {
 		title = channel.name
+	}
+
+	private fun onPrevChannelLoaded(channel: ChannelModel?) {
+		binding.btnPrev.isEnabled = channel != null
+
+		if (channel == null) {
+			return
+		}
+
+		binding.btnPrev.setOnClickListener {
+			startActivity(getStartIntent(this, channel.id))
+		}
+	}
+
+	private fun onNextChannelLoaded(channel: ChannelModel?) {
+		binding.btnNext.isEnabled = channel != null
+
+		if (channel == null) {
+			return
+		}
+
+		binding.btnNext.setOnClickListener {
+			startActivity(getStartIntent(this, channel.id))
+		}
 	}
 
 	private fun onShowTitleChanged(sshowTitle: String) {
