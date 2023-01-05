@@ -7,6 +7,7 @@ interface MediathekShowListItemListener {
 
 	fun onShowClicked(show: MediathekShow)
 
-	fun onShowLongClicked(show: MediathekShow, view: View)
+	fun onShowLongClicked(show: MediathekShow, view: View) {}
 
+	fun onShowFocusChanged(show: MediathekShow, focused: Boolean) {}
 }

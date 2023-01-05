@@ -111,10 +111,6 @@ class MediathekListFragment : Fragment(),
 		}
 	}
 
-	override fun onShowLongClicked(show: MediathekShow, view: View) {
-		// no action
-	}
-
 	private suspend fun saveAndOpenShow(show: MediathekShow) {
 		val persistedShow = mediathekRepository.persistOrUpdateShow(show).first()
 
