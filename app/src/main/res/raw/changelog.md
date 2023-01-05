@@ -1,5 +1,6 @@
 # v-next
 * Absturz in Mediathek-Liste behoben
+* Darstellungsfehler in der Mediathekliste auf Android TV behoben
 
 # 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet

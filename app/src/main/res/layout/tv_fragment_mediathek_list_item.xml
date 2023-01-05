@@ -22,10 +22,12 @@
 		android:maxLines="1"
 		android:paddingHorizontal="16dp"
 		android:textAppearance="@style/TextAppearance.Leanback.Header"
+		app:layout_constrainedWidth="true"
 		app:layout_constraintBottom_toTopOf="@id/title"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintVertical_chainStyle="packed"
+		app:layout_constraintWidth_max="wrap"
 		tools:text="Some show topic" />
 
 	<TextView
@@ -51,10 +53,10 @@
 		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/divider_duration"
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintStart_toStartOf="@id/title"
 		app:layout_constraintTop_toBottomOf="@id/title"
-		app:layout_constraintHorizontal_chainStyle="packed"
-		app:layout_constraintHorizontal_bias="0"
 		tools:text="14m 21s" />
 
 	<TextView
@@ -91,8 +93,8 @@
 		android:layout_height="wrap_content"
 		android:textAppearance="@style/TextAppearance.Leanback.ImageCardView.Title"
 		app:layout_constraintBottom_toBottomOf="@id/divider_channel"
-		app:layout_constraintStart_toEndOf="@id/divider_channel"
 		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/divider_channel"
 		tools:text="14.05.2020" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

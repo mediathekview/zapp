@@ -13,6 +13,9 @@ class MediathekItemViewHolder(
 
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
 		binding.topic.text = show.topic
+		// fix layout_constraintWidth_max not be applied correctly
+		binding.topic.requestLayout()
+
 		binding.title.text = show.title
 		binding.duration.text = show.formattedDuration
 		binding.time.text = show.formattedTimestamp
