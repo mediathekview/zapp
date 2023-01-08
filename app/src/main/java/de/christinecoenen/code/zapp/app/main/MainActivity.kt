@@ -18,12 +18,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private var _binding: ActivityMainBinding? = null
 	private val binding get() = _binding!!
+
+	private val settingsRepository: SettingsRepository by inject()
 
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
@@ -61,6 +66,11 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
 
 		requestPermissions()
+
+		if (!settingsRepository.dynamicColors) {
+			// original zapp colors always require light status bar text (independent from theme)
+			SystemUiHelper.useLightStatusBar(window, false)
+		}
 	}
 
 	@Suppress("UNUSED_PARAMETER")

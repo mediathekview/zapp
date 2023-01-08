@@ -167,6 +167,9 @@ dependencies {
 	// timber logging
 	implementation 'com.jakewharton.timber:timber:5.0.1'
 
+	// phoenix process restart
+	implementation 'com.jakewharton:process-phoenix:2.1.2'
+
 	// joda time
 	implementation 'joda-time:joda-time:2.12.1'
 

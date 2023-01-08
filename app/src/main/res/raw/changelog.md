@@ -1,4 +1,5 @@
 # v-next
+* Unterstützung für dynamische Gerätefarben
 * Absturz in Mediathek-Liste behoben
 * Darstellungsfehler in der Mediathekliste auf Android TV behoben
 * Zappen zwischen Live-Streams ist wieder möglich!

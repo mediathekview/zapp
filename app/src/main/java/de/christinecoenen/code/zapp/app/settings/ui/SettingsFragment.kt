@@ -8,16 +8,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
+import com.google.android.material.color.DynamicColors
+import com.jakewharton.processphoenix.ProcessPhoenix
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.utils.system.LanguageHelper
+
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
 	companion object {
 
 		private const val PREF_SHORTCUTS = "pref_shortcuts"
+		private const val PREF_DYNAMIC_COLORS = "dynamic_colors"
 		private const val PREF_UI_MODE = "pref_ui_mode"
 		private const val PREF_LANGUAGE = "pref_key_language"
 		private const val PREF_CHANNEL_SELECTION = "pref_key_channel_selection"
@@ -26,6 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 	private lateinit var settingsRepository: SettingsRepository
 	private lateinit var shortcutPreference: ShortcutPreference
+	private lateinit var dynamicColorsPreference: SwitchPreferenceCompat
 	private lateinit var uiModePreference: ListPreference
 	private lateinit var languagePreference: ListPreference
 	private lateinit var channelSelectionPreference: Preference
@@ -54,6 +60,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 		addPreferencesFromResource(R.xml.preferences)
 
 		shortcutPreference = preferenceScreen.findPreference(PREF_SHORTCUTS)!!
+		dynamicColorsPreference = preferenceScreen.findPreference(PREF_DYNAMIC_COLORS)!!
 		uiModePreference = preferenceScreen.findPreference(PREF_UI_MODE)!!
 		languagePreference = preferenceScreen.findPreference(PREF_LANGUAGE)!!
 		channelSelectionPreference = preferenceScreen.findPreference(PREF_CHANNEL_SELECTION)!!
@@ -62,6 +69,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 		languagePreference.value = LanguageHelper.getCurrentLanguageTag()
 		languagePreference.entries = languages.values.toTypedArray()
 		languagePreference.entryValues = languages.keys.toTypedArray()
+
+		// only show the preference for dynamic colors when available (Android 12 and up)
+		dynamicColorsPreference.isVisible = DynamicColors.isDynamicColorAvailable()
+		dynamicColorsPreference.setOnPreferenceChangeListener { _, _ ->
+			ProcessPhoenix.triggerRebirth(context)
+			true
+		}
 
 		channelSelectionPreference.setOnPreferenceClickListener {
 			val direction =
