@@ -43,8 +43,17 @@ class SettingsRepository(context: Context) {
 	val downloadToSdCard: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_download_to_sd_card), true)
 
-	val dynamicColors: Boolean
+	var dynamicColors: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_dynamic_colors), false)
+		@SuppressLint("ApplySharedPref")
+		set(enabled) {
+			// "commit" instead of "apply" is fine here, because we need to restart the app
+			// after setting this preference. Doing it synchroniously is the only way to save
+			// the setting across the app restart.
+			preferences.edit()
+				.putBoolean(context.getString(R.string.pref_key_dynamic_colors), enabled)
+				.commit()
+		}
 
 	val uiMode: Int
 		get() {

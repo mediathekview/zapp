@@ -72,7 +72,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 		// only show the preference for dynamic colors when available (Android 12 and up)
 		dynamicColorsPreference.isVisible = DynamicColors.isDynamicColorAvailable()
-		dynamicColorsPreference.setOnPreferenceChangeListener { _, _ ->
+		dynamicColorsPreference.setOnPreferenceChangeListener { _, useDynamicColors ->
+			// save explicitly to persist before app restart
+			settingsRepository.dynamicColors = useDynamicColors as Boolean
+			// app restart
 			ProcessPhoenix.triggerRebirth(context)
 			true
 		}
