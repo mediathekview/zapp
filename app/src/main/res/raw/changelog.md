@@ -1,4 +1,4 @@
-# v-next
+# 8.2.0
 * Unterstützung für dynamische Gerätefarben
 * Absturz in Mediathek-Liste behoben
 * Darstellungsfehler in der Mediathekliste auf Android TV behoben
