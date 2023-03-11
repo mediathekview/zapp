@@ -62,11 +62,9 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-/.idea/caches/build_file_checksums.ser
-/.idea/caches/gradle_models.ser
-/.idea/jarRepositories.xml
-/.idea/deploymentTargetDropDown.xml
+/.idea
+!/.idea/codeStyles
+!/.idea/inspectionProfiles
 
 /app/release
 /app/releases
-/.idea/misc.xml
