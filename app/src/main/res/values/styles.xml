@@ -49,6 +49,8 @@
 		<item name="android:letterSpacing">0.02</item>
 		<item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
 		<item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
+
+		<item name="switchPreferenceCompatStyle">@style/MaterialPreferenceSwitch</item>
 	</style>
 
 	<!-- may be overwritten with resource selectors -->
@@ -177,6 +179,10 @@
 
 	<style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
 		<item name="android:textSize">16sp</item>
+	</style>
+
+	<style name="MaterialPreferenceSwitch" parent="@style/Preference.SwitchPreferenceCompat.Material">
+		<item name="widgetLayout">@layout/view_preference_switch</item>
 	</style>
 
 </resources>
