@@ -17,7 +17,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.utils.system.LanguageHelper
 
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : BaseSettingsFragment() {
 
 	companion object {
 
