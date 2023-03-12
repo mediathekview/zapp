@@ -1,8 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-	ext.koin_version = '3.2.0'
-	ext.about_libraries_version = '10.5.2'
+	ext.koin_version = '3.3.3'
+	ext.about_libraries_version = '10.6.1'
 	ext.nav_version = '2.5.3'
 
 	repositories {
@@ -16,7 +16,7 @@ buildscript {
 	dependencies {
 		classpath 'com.android.tools.build:gradle:7.4.2'
 
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
 
 		classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libraries_version"
 
