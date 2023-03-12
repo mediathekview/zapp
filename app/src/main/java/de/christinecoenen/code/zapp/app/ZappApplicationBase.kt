@@ -81,7 +81,7 @@ abstract class ZappApplicationBase : Application() {
 		initAcra {
 			buildConfigClass = BuildConfig::class.java
 			reportFormat = StringFormat.KEY_VALUE_LIST
-			reportContent = arrayOf(
+			reportContent = listOf(
 				ReportField.REPORT_ID,
 				ReportField.USER_EMAIL,
 				ReportField.USER_COMMENT,
@@ -95,7 +95,7 @@ abstract class ZappApplicationBase : Application() {
 				ReportField.SHARED_PREFERENCES,
 				ReportField.STACK_TRACE
 			)
-			excludeMatchingSharedPreferencesKeys = arrayOf(
+			excludeMatchingSharedPreferencesKeys = listOf(
 				"default.acra.legacyAlreadyConvertedToJson",
 				"default.acra.lastVersionNr",
 				"default.acra.legacyAlreadyConvertedTo4.8.0"

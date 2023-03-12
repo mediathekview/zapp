@@ -160,7 +160,7 @@ dependencies {
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 	// ACRA crash reporting
-	def acra_version = "5.8.4"
+	def acra_version = "5.9.7"
 	implementation "ch.acra:acra-mail:$acra_version"
 	implementation "ch.acra:acra-dialog:$acra_version"
 
