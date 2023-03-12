@@ -1,9 +1,6 @@
 package de.christinecoenen.code.zapp.app.settings.ui
 
-import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.DialogEditTextPreferenceBinding
@@ -14,6 +11,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
 	 */
 	override fun onDisplayPreferenceDialog(preference: Preference) {
 		when (preference) {
+
 			is ListPreference -> {
 				val prefIndex = preference.entryValues.indexOf(preference.value)
 				MaterialAlertDialogBuilder(requireContext())
@@ -28,6 +26,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
 					.setNegativeButton(android.R.string.cancel, null)
 					.show()
 			}
+
 			is EditTextPreference -> {
 				val binding = DialogEditTextPreferenceBinding.inflate(layoutInflater)
 				val preferences = SettingsRepository(requireContext()).preferences
@@ -44,6 +43,31 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
 					.setNegativeButton(android.R.string.cancel, null)
 					.show()
 			}
+
+			is MultiSelectListPreference -> {
+				val selected = preference.entryValues.map {
+					preference.values.contains(it)
+				}
+
+				MaterialAlertDialogBuilder(requireContext())
+					.setTitle(preference.title)
+					.setMultiChoiceItems(
+						preference.entries,
+						selected.toBooleanArray()
+					) { _, index, isChecked ->
+						val newValue = preference.entryValues[index].toString()
+						if (isChecked) {
+							preference.values.add(newValue)
+						} else {
+							preference.values.remove(newValue)
+						}
+					}
+					.setPositiveButton(android.R.string.ok) { _, _ ->
+						preference.callChangeListener(preference.values)
+					}
+					.show()
+			}
+
 			else -> super.onDisplayPreferenceDialog(preference)
 		}
 	}
