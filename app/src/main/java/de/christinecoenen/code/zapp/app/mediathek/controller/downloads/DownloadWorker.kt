@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
@@ -8,6 +9,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notificat
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadFailedEventNotification
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadProgressNotification
 import de.christinecoenen.code.zapp.models.shows.Quality
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -158,7 +160,12 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		return@withContext success()
 	}
 
+	@SuppressLint("MissingPermission")
 	private fun success(): Result {
+		if (!NotificationHelper.hasNotificationPermissionGranted(applicationContext)) {
+			return Result.success()
+		}
+
 		MainScope().launch {
 			delay(NotificationDelay)
 
@@ -167,13 +174,19 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 				title,
 				persistedShowId
 			)
+
 			notificationManager.notify(notificationId, notification.build())
 		}
 
 		return Result.success()
 	}
 
+	@SuppressLint("MissingPermission")
 	private fun failure(errorType: ErrorType): Result {
+		if (!NotificationHelper.hasNotificationPermissionGranted(applicationContext)) {
+			return Result.failure()
+		}
+
 		MainScope().launch {
 			delay(NotificationDelay)
 

@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -224,11 +225,14 @@ class WorkManagerDownloadController(
 			}
 		}
 
+	@SuppressLint("MissingPermission")
 	private fun showStatusChangeNotificationIfNeeded(
 		workInfo: WorkInfo,
 		show: PersistedMediathekShow
 	) {
-		if (!notificationManager.areNotificationsEnabled()) {
+		if (!notificationManager.areNotificationsEnabled() ||
+			!NotificationHelper.hasNotificationPermissionGranted(applicationContext)
+		) {
 			return
 		}
 
