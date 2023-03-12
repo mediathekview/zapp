@@ -23,7 +23,6 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
 						}
 						dialog.dismiss()
 					}
-					.setNegativeButton(android.R.string.cancel, null)
 					.show()
 			}
 
