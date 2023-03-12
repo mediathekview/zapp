@@ -11,7 +11,7 @@ import java.util.*
 class SettingsRepository(context: Context) {
 
 	private val context = context.applicationContext
-	private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+	val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
 	val lockVideosInLandcapeFormat: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true)
