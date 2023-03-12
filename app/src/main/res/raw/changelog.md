@@ -1,3 +1,6 @@
+# v-next
+* Einstellungen im Material-Design (danke an Bnyro)
+
 # 8.2.0
 * Unterstützung für dynamische Gerätefarben
 * Absturz in Mediathek-Liste behoben
