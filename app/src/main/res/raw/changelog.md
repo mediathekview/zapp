@@ -1,5 +1,6 @@
 # v-next
 * Einstellungen im Material-Design (danke an Bnyro)
+* Exo-Player-Update - sollte Playback-Probleme auf einigen Geräten beheben
 
 # 8.2.0
 * Unterstützung für dynamische Gerätefarben

@@ -147,7 +147,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def exoplayer_version = "2.18.2"
+	def exoplayer_version = "2.18.4"
 	implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
