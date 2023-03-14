@@ -87,11 +87,11 @@ dependencies {
 	def androix_test_version = '1.5.0'
 
 	// device tests
-	def espresso_version = '3.5.0'
-	debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+	def espresso_version = '3.5.1'
+	debugImplementation "androidx.fragment:fragment-testing:1.6.0-alpha07"
 	androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
-	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.4'
-	androidTestImplementation 'androidx.test:runner:1.5.1'
+	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
+	androidTestImplementation 'androidx.test:runner:1.5.2'
 	androidTestImplementation 'androidx.test:rules:1.5.0'
 	androidTestImplementation("androidx.test.espresso:espresso-core:$espresso_version") {
 		exclude group: 'org.checkerframework', module: 'checker'
