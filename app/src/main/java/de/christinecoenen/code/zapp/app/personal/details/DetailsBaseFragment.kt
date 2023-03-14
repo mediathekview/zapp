@@ -17,6 +17,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathek
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 
 abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 
@@ -74,7 +75,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 		}
 
 		viewModel.showList.observe(viewLifecycleOwner) {
-			lifecycleScope.launchWhenCreated {
+			launchOnCreated {
 				showAdapter.submitData(it)
 			}
 		}

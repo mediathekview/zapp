@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.tv.error.ErrorActivity
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import org.koin.android.ext.android.inject
 
 class PlayerFragment : VideoSupportFragment() {
@@ -39,12 +40,12 @@ class PlayerFragment : VideoSupportFragment() {
 		transportControlGlue.isSeekEnabled = true
 		transportControlGlue.playWhenPrepared()
 
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			player.load(videoInfo)
 			player.resume()
 		}
 
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			player.errorResourceId.collect {
 				if (it == null || it == -1) {
 					return@collect
@@ -66,7 +67,7 @@ class PlayerFragment : VideoSupportFragment() {
 	}
 
 	override fun onDestroy() {
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			player.destroy()
 		}
 

@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -73,7 +74,7 @@ class BackgroundPlayerService : LifecycleService(),
 	override fun onCreate() {
 		super.onCreate()
 
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			player.errorResourceId.collect(::onPlayerError)
 		}
 	}

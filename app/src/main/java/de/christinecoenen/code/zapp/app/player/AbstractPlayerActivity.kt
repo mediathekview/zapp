@@ -19,6 +19,8 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
@@ -55,7 +57,7 @@ abstract class AbstractPlayerActivity :
 			player = binder!!.getPlayer()
 			player!!.setView(binding.video)
 
-			lifecycleScope.launchWhenResumed {
+			launchOnResumed {
 				player!!.errorResourceId.collect(::onVideoError)
 			}
 
@@ -107,7 +109,7 @@ abstract class AbstractPlayerActivity :
 	private fun onErrorViewClick() {
 		hideError()
 
-		lifecycleScope.launchWhenResumed {
+		launchOnResumed {
 			player?.recreate()
 		}
 	}
@@ -237,7 +239,7 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun loadVideoFromIntent(intent: Intent) {
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			load(getVideoInfoFromIntent(intent))
 		}
 	}

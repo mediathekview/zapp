@@ -4,10 +4,10 @@ import android.view.View
 import android.view.View.OnLongClickListener
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.Job
 import kotlin.math.roundToInt
 
@@ -92,7 +92,7 @@ class ChannelViewHolder(
 		currentViewModel?.progressPercent?.observe(lifecycleOwner, ::onShowProgressPercentChanged)
 
 		// start program info loading
-		loadingJob = lifecycleOwner.lifecycleScope.launchWhenCreated {
+		loadingJob = lifecycleOwner.launchOnCreated {
 			currentViewModel?.setChannelId(channel.id)
 		}
 	}
