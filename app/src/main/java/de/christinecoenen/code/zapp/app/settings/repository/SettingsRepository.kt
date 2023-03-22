@@ -61,6 +61,13 @@ class SettingsRepository(context: Context) {
 			return prefValueToUiMode(uiMode)
 		}
 
+	val startFragment: Int
+		get() = when (preferences.getString(context.getString(R.string.pref_key_start_tab), "live")) {
+			"mediathek" -> R.id.mediathekListFragment
+			"personal" -> R.id.personalFragment
+			else -> R.id.channelListFragment
+		}
+
 	fun prefValueToUiMode(prefSetting: String?): Int {
 		val defaultMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
 			AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY

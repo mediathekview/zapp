@@ -29,6 +29,18 @@
 		<item>@string/stream_quality_cellular_highest</item>
 	</string-array>
 
+	<string-array name="available_tabs_names">
+		<item>@string/activity_main_tab_live</item>
+		<item>@string/activity_main_tab_mediathek</item>
+		<item>@string/activity_main_tab_personal</item>
+	</string-array>
+
+	<string-array name="available_tabs_values">
+		<item>live</item>
+		<item>mediathek</item>
+		<item>personal</item>
+	</string-array>
+
 	<array name="mediathek_filter_show_length_slider_initial_values">
 		<item>@fraction/mediathek_filter_min_duration</item>
 		<item>@fraction/mediathek_filter_max_duration</item>

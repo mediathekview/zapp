@@ -141,6 +141,8 @@
 	<string name="pref_ui_mode_light">Immer hell</string>
 	<string name="pref_ui_mode_dark">Immer dunkel</string>
 
+	<string name="pref_start_tab_title">Startseite</string>
+
 	<string name="stream_quality_cellular_disabled">Videos nicht abspielen</string>
 	<string name="stream_quality_cellular_lowest">Niedrigste Qualität</string>
 	<string name="stream_quality_cellular_medium">Mittlere Qualität</string>

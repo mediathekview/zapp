@@ -141,6 +141,8 @@
 	<string name="pref_ui_mode_light">Always light</string>
 	<string name="pref_ui_mode_dark">Always dark</string>
 
+	<string name="pref_start_tab_title">Start page</string>
+
 	<string name="stream_quality_cellular_disabled">Don\'t play back</string>
 	<string name="stream_quality_cellular_lowest">Lowest quality</string>
 	<string name="stream_quality_cellular_medium">Medium quality</string>

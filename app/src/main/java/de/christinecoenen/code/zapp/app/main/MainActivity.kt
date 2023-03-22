@@ -14,6 +14,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import androidx.preference.PreferenceManager
@@ -43,7 +44,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		setContentView(binding.root)
 
+		val startFragmentId = SettingsRepository(this).startFragment
+
 		navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
+		navController.graph.setStartDestination(startFragmentId)
 
 		appBarConfiguration = AppBarConfiguration(
 			setOf(
@@ -64,6 +68,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		addMenuProvider(this)
 
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
+
+		navController.navigate(startFragmentId)
 
 		requestPermissions()
 
