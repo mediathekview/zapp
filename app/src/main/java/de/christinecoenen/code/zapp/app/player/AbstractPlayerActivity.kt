@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.*
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
 import android.view.*
 import androidx.activity.OnBackPressedCallback
@@ -15,6 +17,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -30,6 +33,8 @@ import timber.log.Timber
 
 abstract class AbstractPlayerActivity :
 	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
+
+	private val handler = Handler(Looper.getMainLooper())
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
 	private val settingsRepository: SettingsRepository by inject()
@@ -68,6 +73,19 @@ abstract class AbstractPlayerActivity :
 			player?.pause()
 			player = null
 		}
+	}
+
+	private val sleepTimerRunnable = Runnable {
+		var goToSleep = true
+		Snackbar.make(binding.root, R.string.going_to_sleep, Snackbar.LENGTH_INDEFINITE)
+			.setAction(R.string.action_cancel) {
+				goToSleep = false
+			}
+			.show()
+		handler.postDelayed({
+			if (!goToSleep) return@postDelayed
+			android.os.Process.killProcess(android.os.Process.myPid())
+		}, 5000)
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,6 +195,15 @@ abstract class AbstractPlayerActivity :
 			}
 			R.id.menu_pip -> {
 				MultiWindowHelper.enterPictureInPictureMode(this)
+				true
+			}
+			R.id.sleep_timer -> {
+				SleepTimerDialog { timerDelaySeconds ->
+					handler.removeCallbacks(sleepTimerRunnable)
+					timerDelaySeconds?.let {
+						handler.postDelayed(sleepTimerRunnable, it * 1000)
+					}
+				}.show(supportFragmentManager, SleepTimerDialog::class.java.name)
 				true
 			}
 			android.R.id.home -> {

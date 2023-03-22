@@ -89,6 +89,7 @@
 	<string name="action_cancel_download">Cancel download</string>
 	<string name="action_mark_unwatched">Mark as unwatched</string>
 	<string name="action_view_all">View all</string>
+	<string name="action_reset">Reset</string>
 
 	<string name="search_query_hint_mediathek">Search media center…</string>
 	<string name="search_query_hint_downloads">Search downloads…</string>
@@ -108,6 +109,9 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Zoomed</string>
 	<string name="player_zoom_state_boxed">Original</string>
+	<string name="sleep_timer">Sleep timer</string>
+	<string name="sleep_timer_delay">Time span (in minutes)</string>
+	<string name="going_to_sleep">Going to sleep …</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Appearance</string>

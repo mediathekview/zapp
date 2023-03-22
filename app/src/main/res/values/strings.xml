@@ -89,6 +89,7 @@
 	<string name="action_cancel_download">Download abbrechen</string>
 	<string name="action_mark_unwatched">Als ungesehen markieren</string>
 	<string name="action_view_all">Alle ansehen</string>
+	<string name="action_reset">Zurücksetzen</string>
 
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
 	<string name="search_query_hint_downloads">Downloads durchsuchen…</string>
@@ -108,6 +109,9 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>
 	<string name="player_zoom_state_boxed">Original</string>
+	<string name="sleep_timer">Schlummerfunktion</string>
+	<string name="sleep_timer_delay">Zeitspanne (in Minuten)</string>
+	<string name="going_to_sleep">Gehe in den Schlafmodus …</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Aussehen</string>
