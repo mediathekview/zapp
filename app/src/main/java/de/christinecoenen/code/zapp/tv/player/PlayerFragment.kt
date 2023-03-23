@@ -14,7 +14,6 @@ import de.christinecoenen.code.zapp.tv.error.ErrorActivity
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import org.koin.android.ext.android.inject
 
-@androidx.media3.common.util.UnstableApi
 class PlayerFragment : VideoSupportFragment() {
 
 	private lateinit var transportControlGlue: PlaybackTransportControlGlue<LeanbackPlayerAdapter>

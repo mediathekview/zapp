@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-@androidx.media3.common.util.UnstableApi
 class BackgroundPlayerService : LifecycleService(),
 	MediaDescriptionAdapter,
 	PlayerNotificationManager.NotificationListener,

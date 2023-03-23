@@ -27,7 +27,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-@androidx.media3.common.util.UnstableApi
 abstract class AbstractPlayerActivity :
 	AppCompatActivity(), MenuProvider, PlayerView.ControllerVisibilityListener {
 

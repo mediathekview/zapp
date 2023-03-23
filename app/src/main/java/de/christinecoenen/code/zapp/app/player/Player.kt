@@ -30,7 +30,6 @@ import timber.log.Timber
 import java.io.IOException
 
 
-@androidx.media3.common.util.UnstableApi
 class Player(
 	private val context: Context,
 	private val applicationScope: CoroutineScope,

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress XmlUnboundNsPrefix -->
 <lint>
-  <issue id="UnusedResources">
+	<issue id="UnusedResources">
 		<ignore path="**/channel_logo_swr.png" />
 		<ignore path="**/channel_logo_tagesschau24.png" />
+	</issue>
+	<issue id="UnsafeOptInUsageError">
+		<ignore regexp='\(markerClass = androidx\.media3\.common\.util\.UnstableApi\.class\)' />
 	</issue>
 </lint>

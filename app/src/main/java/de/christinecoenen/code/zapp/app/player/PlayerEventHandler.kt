@@ -15,7 +15,6 @@ import java.io.IOException
 /**
  * Transforms player events from exo player into RXJava observables.
  */
-@androidx.media3.common.util.UnstableApi
 internal class PlayerEventHandler : AnalyticsListener {
 
 	val isIdle = MutableStateFlow(false)

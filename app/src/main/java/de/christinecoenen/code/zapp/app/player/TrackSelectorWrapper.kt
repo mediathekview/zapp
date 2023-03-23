@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.player
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 
-@androidx.media3.common.util.UnstableApi
 internal class TrackSelectorWrapper(private val trackSelector: DefaultTrackSelector) {
 
 	companion object {
