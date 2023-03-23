@@ -179,6 +179,10 @@ abstract class AbstractPlayerActivity :
 				MultiWindowHelper.enterPictureInPictureMode(this)
 				true
 			}
+			R.id.sleep_timer -> {
+				SleepTimerDialog().show(supportFragmentManager, SleepTimerDialog::class.java.name)
+				true
+			}
 			android.R.id.home -> {
 				finish()
 				true

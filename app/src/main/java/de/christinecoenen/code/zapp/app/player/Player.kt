@@ -50,6 +50,7 @@ class Player(
 
 	val exoPlayer: ExoPlayer
 	val mediaSession: MediaSessionCompat
+	val sleepTimer = SleepTimer { pause() }
 
 	var currentVideoInfo: VideoInfo? = null
 		private set
