@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		setContentView(binding.root)
 
-		val startFragmentId = SettingsRepository(this).startFragment
+		val startFragmentId = settingsRepository.startFragment
 
 		navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
 		navController.graph.setStartDestination(startFragmentId)
