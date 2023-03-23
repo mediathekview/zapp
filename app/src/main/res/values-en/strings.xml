@@ -110,6 +110,8 @@
 	<string name="player_zoom_state_boxed">Original</string>
 	<string name="sleep_timer">Sleep timer</string>
 	<string name="sleep_timer_delay">Time span (in minutes)</string>
+	<string name="sleep_timer_start">Start sleep timer</string>
+	<string name="sleep_timer_stop">Stop sleep timer</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Appearance</string>

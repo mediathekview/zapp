@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingHorizontal="@dimen/activity_horizontal_margin"
+	android:paddingVertical="@dimen/activity_vertical_margin">
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/countdown"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textAppearance="?textAppearanceDisplayMedium"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="00:00:32" />
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/timer_delay_layout"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:hint="@string/sleep_timer_delay"
+		android:theme="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/countdown">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/timer_delay"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="numberSigned"
+			android:text="30"
+			tools:ignore="HardcodedText" />
+
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/start_button"
+		style="@style/Widget.App.Button.OutlinedButton"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:text="@string/sleep_timer_start"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/timer_delay_layout" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/stop_button"
+		style="@style/Widget.App.Button.OutlinedButton"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:text="@string/sleep_timer_stop"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/start_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

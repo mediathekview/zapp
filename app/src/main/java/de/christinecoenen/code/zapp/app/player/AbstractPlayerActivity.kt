@@ -13,7 +13,6 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
@@ -180,7 +179,7 @@ abstract class AbstractPlayerActivity :
 				true
 			}
 			R.id.sleep_timer -> {
-				SleepTimerDialog().show(supportFragmentManager, SleepTimerDialog::class.java.name)
+				SleepTimerBottomSheet().show(supportFragmentManager, SleepTimerBottomSheet::class.java.name)
 				true
 			}
 			android.R.id.home -> {

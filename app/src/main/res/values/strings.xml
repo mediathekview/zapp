@@ -110,6 +110,8 @@
 	<string name="player_zoom_state_boxed">Original</string>
 	<string name="sleep_timer">Schlummerfunktion</string>
 	<string name="sleep_timer_delay">Zeitspanne (in Minuten)</string>
+	<string name="sleep_timer_start">Schlummerfunktion starten</string>
+	<string name="sleep_timer_stop">Schlummerfunktion stoppen</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Aussehen</string>
