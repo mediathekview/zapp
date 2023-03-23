@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 import java.util.*
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
 
 class SettingsRepository(context: Context) {
 
@@ -37,6 +40,20 @@ class SettingsRepository(context: Context) {
 		set(enabled) {
 			preferences.edit()
 				.putBoolean(context.getString(R.string.pref_key_player_zoomed), enabled)
+				.apply()
+		}
+
+	var sleepTimerDelay: Duration
+		get() = preferences.getLong(
+			context.getString(R.string.pref_key_sleep_timer_delay),
+			30.minutes.inWholeMilliseconds
+		).milliseconds
+		set(delay) {
+			preferences.edit()
+				.putLong(
+					context.getString(R.string.pref_key_sleep_timer_delay),
+					delay.inWholeMilliseconds
+				)
 				.apply()
 		}
 

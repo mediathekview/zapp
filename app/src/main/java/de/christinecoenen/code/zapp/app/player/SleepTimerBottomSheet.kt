@@ -13,12 +13,16 @@ import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.BottomSheetSleepTimerBinding
-import java.time.Duration
+import org.koin.android.ext.android.inject
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
+import kotlin.time.Duration.Companion.minutes
 
 class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
+
+	private val settingsRepository: SettingsRepository by inject()
 
 	private var _binding: BottomSheetSleepTimerBinding? = null
 	private val binding: BottomSheetSleepTimerBinding get() = _binding!!
@@ -55,6 +59,8 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 	): View {
 		_binding = BottomSheetSleepTimerBinding.inflate(inflater, container, false)
 
+		binding.timerDelay.setText(settingsRepository.sleepTimerDelay.inWholeMinutes.toString())
+
 		binding.startButton.setOnClickListener { onStartClick() }
 		binding.stopButton.setOnClickListener { onStopClick() }
 
@@ -81,7 +87,8 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 		if (minutes == null) {
 			sleepTimer?.stop()
 		} else {
-			sleepTimer?.start(Duration.ofMinutes(minutes))
+			settingsRepository.sleepTimerDelay = minutes.minutes
+			sleepTimer?.start(settingsRepository.sleepTimerDelay)
 		}
 	}
 
@@ -108,7 +115,7 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 
 	private fun tick() {
 		sleepTimer?.let {
-			binding.countdown.text = DateUtils.formatElapsedTime(it.timeLeft.seconds)
+			binding.countdown.text = DateUtils.formatElapsedTime(it.timeLeft.inWholeSeconds)
 		}
 	}
 }

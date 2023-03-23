@@ -2,15 +2,16 @@ package de.christinecoenen.code.zapp.app.player
 
 import android.os.Handler
 import android.os.Looper
-import java.time.Duration
-import java.time.LocalDateTime
+import java.time.Instant
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 class SleepTimer(
 	private val onTimerEnded: () -> Unit
 ) {
 
 	private val handler = Handler(Looper.getMainLooper())
-	private var timerEndTime: LocalDateTime? = null
+	private var timerEndTime: Instant? = null
 	private var listener: Listener? = null
 
 	private val timerEndedRunnable = Runnable {
@@ -22,13 +23,15 @@ class SleepTimer(
 		get() = timerEndTime != null
 
 	val timeLeft: Duration
-		get() = Duration.between(LocalDateTime.now(), timerEndTime)
+		get() = timerEndTime?.let {
+			(it.toEpochMilli() - Instant.now().toEpochMilli()).milliseconds
+		} ?: Duration.ZERO
 
 	fun start(duration: Duration) {
 		stop()
-		timerEndTime = LocalDateTime.now().plus(duration)
+		timerEndTime = Instant.now().plusMillis(duration.inWholeMilliseconds)
 		listener?.onIsRunningChanged(true)
-		handler.postDelayed(timerEndedRunnable, duration.toMillis())
+		handler.postDelayed(timerEndedRunnable, duration.inWholeMilliseconds)
 	}
 
 	fun stop() {
