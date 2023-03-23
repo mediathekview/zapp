@@ -166,14 +166,6 @@ class Player(
 		exoPlayer.playWhenReady = true
 	}
 
-	fun rewind() {
-		exoPlayer.seekBack()
-	}
-
-	fun fastForward() {
-		exoPlayer.seekForward()
-	}
-
 	suspend fun destroy() = withContext(Dispatchers.Main) {
 		networkConnectionHelper.endListenForNetworkChanges()
 		playerPositionWatcher.dispose()

@@ -187,36 +187,6 @@ abstract class AbstractPlayerActivity :
 		}
 	}
 
-	override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-		return when (keyCode) {
-			KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD, KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD, KeyEvent.KEYCODE_MEDIA_REWIND -> {
-				player?.rewind()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_STEP_FORWARD, KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> {
-				player?.fastForward()
-				true
-			}
-			KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_MEDIA_TOP_MENU -> {
-				binding.video.toggleControls()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_PLAY -> {
-				resumeActivity()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-				pauseActivity()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_CLOSE -> {
-				finish()
-				true
-			}
-			else -> super.onKeyUp(keyCode, event)
-		}
-	}
-
 	override fun onVisibilityChanged(visibility: Int) {
 		if (binding.video.isControllerFullyVisible) {
 			showSystemUi()
