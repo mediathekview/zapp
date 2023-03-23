@@ -13,8 +13,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -28,8 +27,9 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
+@androidx.media3.common.util.UnstableApi
 abstract class AbstractPlayerActivity :
-	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
+	AppCompatActivity(), MenuProvider, PlayerView.ControllerVisibilityListener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
 	private val settingsRepository: SettingsRepository by inject()

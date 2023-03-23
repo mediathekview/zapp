@@ -10,19 +10,20 @@ import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View.OnTouchListener
 import android.widget.Toast
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.AspectRatioListener
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.AspectRatioFrameLayout.AspectRatioListener
+import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
+@androidx.media3.common.util.UnstableApi
 class SwipeablePlayerView @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null
-) : StyledPlayerView(context, attrs), OnTouchListener, AspectRatioListener {
+) : PlayerView(context, attrs), OnTouchListener, AspectRatioListener {
 
 	companion object {
 		private const val INDICATOR_WIDTH = 300

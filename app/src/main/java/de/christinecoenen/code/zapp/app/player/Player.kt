@@ -3,20 +3,15 @@ package de.christinecoenen.code.zapp.app.player
 
 import android.content.Context
 import android.net.Uri
-import android.support.v4.media.session.MediaSessionCompat
 import android.view.View
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.MediaMetadata
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.util.MimeTypes
+import androidx.media3.common.*
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.okhttp.OkHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.session.MediaSession
+import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.VideoInfoArtworkExtensions.getArtworkByteArray
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -35,6 +30,7 @@ import timber.log.Timber
 import java.io.IOException
 
 
+@androidx.media3.common.util.UnstableApi
 class Player(
 	private val context: Context,
 	private val applicationScope: CoroutineScope,
@@ -49,7 +45,7 @@ class Player(
 	}
 
 	val exoPlayer: ExoPlayer
-	val mediaSession: MediaSessionCompat
+	val mediaSession: MediaSession
 
 	var currentVideoInfo: VideoInfo? = null
 		private set
@@ -119,11 +115,7 @@ class Player(
 			.build()
 
 		// media session setup
-		mediaSession = MediaSessionCompat(context, context.packageName)
-
-		val mediaSessionConnector = MediaSessionConnector(mediaSession)
-		mediaSessionConnector.setPlayer(exoPlayer)
-		mediaSession.isActive = true
+		mediaSession = MediaSession.Builder(context, exoPlayer).build()
 
 		// set listeners
 		networkConnectionHelper.startListenForNetworkChanges(::loadStreamQualityByNetworkType)
@@ -136,7 +128,7 @@ class Player(
 		}
 	}
 
-	fun setView(videoView: StyledPlayerView) {
+	fun setView(videoView: PlayerView) {
 		videoView.player = exoPlayer
 		screenDimmingHandler.setScreenToKeepOn(videoView)
 	}

@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.utils.video
 
 import android.view.View
-import com.google.android.exoplayer2.Player
+import androidx.media3.common.Player
 import java.lang.ref.WeakReference
 
 /**
