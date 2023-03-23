@@ -37,12 +37,12 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 
 			binder.getPlayer().sleepTimer.let {
 				sleepTimer = it
-				it.setListener(this@SleepTimerBottomSheet)
+				it.addListener(this@SleepTimerBottomSheet)
 			}
 		}
 
 		override fun onServiceDisconnected(componentName: ComponentName) {
-			sleepTimer?.setListener(null)
+			sleepTimer?.removeListener(this@SleepTimerBottomSheet)
 		}
 	}
 
@@ -73,7 +73,7 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 	}
 
 	override fun onDestroyView() {
-		sleepTimer?.setListener(null)
+		sleepTimer?.removeListener(this)
 		tickTimer?.cancel()
 
 		requireContext().unbindService(backgroundPlayerServiceConnection)

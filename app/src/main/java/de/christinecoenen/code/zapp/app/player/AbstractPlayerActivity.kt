@@ -28,7 +28,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 abstract class AbstractPlayerActivity :
-	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
+	AppCompatActivity(),
+	MenuProvider,
+	StyledPlayerView.ControllerVisibilityListener,
+	SleepTimer.Listener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
 	private val settingsRepository: SettingsRepository by inject()
@@ -53,8 +56,10 @@ abstract class AbstractPlayerActivity :
 			binder = service as BackgroundPlayerService.Binder
 			binder!!.setForegroundActivityIntent(intent)
 
-			player = binder!!.getPlayer()
-			player!!.setView(binding.video)
+			player = binder!!.getPlayer().apply {
+				setView(binding.video)
+				sleepTimer.addListener(this@AbstractPlayerActivity)
+			}
 
 			launchOnResumed {
 				player!!.errorResourceId.collect(::onVideoError)
@@ -64,6 +69,10 @@ abstract class AbstractPlayerActivity :
 		}
 
 		override fun onServiceDisconnected(componentName: ComponentName) {
+			binder?.getPlayer()?.sleepTimer?.apply {
+				removeListener(this@AbstractPlayerActivity)
+			}
+
 			player?.pause()
 			player = null
 		}
@@ -179,7 +188,7 @@ abstract class AbstractPlayerActivity :
 				true
 			}
 			R.id.sleep_timer -> {
-				SleepTimerBottomSheet().show(supportFragmentManager, SleepTimerBottomSheet::class.java.name)
+				showSleepTimerBottomSheet()
 				true
 			}
 			android.R.id.home -> {
@@ -226,6 +235,10 @@ abstract class AbstractPlayerActivity :
 		} else {
 			hideSystemUi()
 		}
+	}
+
+	override fun onTimerEnded() {
+		showSleepTimerBottomSheet()
 	}
 
 	abstract fun onShareMenuItemClicked()
@@ -326,5 +339,13 @@ abstract class AbstractPlayerActivity :
 	private fun hideSystemUi() {
 		supportActionBar?.hide()
 		binding.overlay.isVisible = false
+	}
+
+	private fun showSleepTimerBottomSheet() {
+		if (supportFragmentManager.isDestroyed || isInPictureInPictureMode) {
+			return
+		}
+
+		SleepTimerBottomSheet().show(supportFragmentManager, SleepTimerBottomSheet::class.java.name)
 	}
 }
