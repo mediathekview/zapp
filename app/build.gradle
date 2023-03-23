@@ -88,7 +88,7 @@ dependencies {
 
 	// device tests
 	def espresso_version = '3.5.1'
-	debugImplementation "androidx.fragment:fragment-testing:1.6.0-alpha07"
+	debugImplementation "androidx.fragment:fragment-testing:1.6.0-alpha08"
 	androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
 	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 	androidTestImplementation 'androidx.test:runner:1.5.2'
@@ -109,7 +109,7 @@ dependencies {
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.6.1'
+	implementation 'androidx.activity:activity-ktx:1.7.0'
 	implementation 'androidx.appcompat:appcompat:1.6.1'
 	implementation 'com.google.android.material:material:1.8.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -119,7 +119,7 @@ dependencies {
 	implementation 'androidx.preference:preference-ktx:1.2.0'
 	implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
-	def lifecycle_version = "2.6.0"
+	def lifecycle_version = "2.6.1"
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
@@ -127,7 +127,7 @@ dependencies {
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 	// room database
-	def room_version = "2.5.0"
+	def room_version = "2.5.1"
 	implementation "androidx.room:room-runtime:$room_version"
 	implementation "androidx.room:room-paging:$room_version"
 	kapt "androidx.room:room-compiler:$room_version"
@@ -143,11 +143,11 @@ dependencies {
 	implementation 'io.noties.markwon:core:4.6.2'
 
 	// work manager
-	def work_version = "2.8.0"
+	def work_version = "2.8.1"
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def exoplayer_version = "2.18.4"
+	def exoplayer_version = "2.18.5"
 	implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
