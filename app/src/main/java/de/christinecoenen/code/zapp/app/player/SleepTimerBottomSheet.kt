@@ -73,9 +73,10 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 	}
 
 	override fun onDestroyView() {
-		requireContext().unbindService(backgroundPlayerServiceConnection)
-
+		sleepTimer?.setListener(null)
 		tickTimer?.cancel()
+
+		requireContext().unbindService(backgroundPlayerServiceConnection)
 		_binding = null
 
 		super.onDestroyView()
