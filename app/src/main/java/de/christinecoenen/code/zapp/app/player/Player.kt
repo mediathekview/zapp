@@ -45,6 +45,7 @@ class Player(
 
 	val exoPlayer: ExoPlayer
 	val mediaSession: MediaSession
+	val sleepTimer = SleepTimer { pause() }
 
 	var currentVideoInfo: VideoInfo? = null
 		private set
