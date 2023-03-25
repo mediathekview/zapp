@@ -237,6 +237,10 @@ abstract class AbstractPlayerActivity :
 		}
 	}
 
+	override fun onTimerAlmostEnded() {
+		showSleepTimerBottomSheet()
+	}
+
 	override fun onTimerEnded() {
 		showSleepTimerBottomSheet()
 	}
