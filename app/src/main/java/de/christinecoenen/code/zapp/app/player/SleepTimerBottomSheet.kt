@@ -8,6 +8,7 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.transition.TransitionManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -59,6 +60,12 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 		_binding = BottomSheetSleepTimerBinding.inflate(inflater, container, false)
 
 		binding.timerDelay.setText(settingsRepository.sleepTimerDelay.inWholeMinutes.toString())
+		binding.timerDelay.setOnEditorActionListener { _, actionId, _ ->
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				onStartClick()
+			}
+			false
+		}
 
 		binding.startButton.setOnClickListener { onStartClick() }
 		binding.stopButton.setOnClickListener { onStopClick() }
