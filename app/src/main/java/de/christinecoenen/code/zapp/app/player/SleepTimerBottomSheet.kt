@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.transition.TransitionManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -18,6 +19,7 @@ import de.christinecoenen.code.zapp.databinding.BottomSheetSleepTimerBinding
 import org.koin.android.ext.android.inject
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
@@ -63,6 +65,9 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 
 		binding.startButton.setOnClickListener { onStartClick() }
 		binding.stopButton.setOnClickListener { onStopClick() }
+		binding.addButton5Minutes.setOnClickListener { onAddClicked(5.minutes) }
+		binding.addButton10Minutes.setOnClickListener { onAddClicked(10.minutes) }
+		binding.addButton20Minutes.setOnClickListener { onAddClicked(20.minutes) }
 
 		return binding.root
 	}
@@ -97,12 +102,18 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 		sleepTimer?.stop()
 	}
 
+	private fun onAddClicked(duration: Duration) {
+		sleepTimer?.addTime(duration)
+	}
+
 	override fun onIsRunningChanged(isRunning: Boolean) {
+		if (binding.isNotRunningGroup.isVisible || binding.isRunningGroup.isVisible) {
+			TransitionManager.beginDelayedTransition(requireView().parent as ViewGroup)
+		}
+
 		sleepTimer?.let {
-			binding.startButton.isVisible = !it.isRunning
-			binding.timerDelayLayout.isVisible = !it.isRunning
-			binding.countdown.isVisible = it.isRunning
-			binding.stopButton.isVisible = it.isRunning
+			binding.isNotRunningGroup.isVisible = !it.isRunning
+			binding.isRunningGroup.isVisible = it.isRunning
 		}
 
 		if (isRunning) {

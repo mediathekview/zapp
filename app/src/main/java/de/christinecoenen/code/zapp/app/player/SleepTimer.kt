@@ -28,6 +28,16 @@ class SleepTimer(
 			(it.toEpochMilli() - Instant.now().toEpochMilli()).milliseconds
 		} ?: Duration.ZERO
 
+	fun addTime(duration: Duration) {
+		if (!isRunning) {
+			throw IllegalStateException()
+		}
+
+		val newDuration = timeLeft.plus(duration)
+		stop()
+		start(newDuration)
+	}
+
 	fun start(duration: Duration) {
 		stop()
 		timerEndTime = Instant.now().plusMillis(duration.inWholeMilliseconds)

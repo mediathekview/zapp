@@ -112,6 +112,9 @@
 	<string name="sleep_timer_delay">Time span (in minutes)</string>
 	<string name="sleep_timer_start">Start sleep timer</string>
 	<string name="sleep_timer_stop">Stop sleep timer</string>
+	<string name="sleep_timer_add_5_minutes">+5 min.</string>
+	<string name="sleep_timer_add_10_minutes">+10 min.</string>
+	<string name="sleep_timer_add_20_minutes">+20 min.</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Appearance</string>
