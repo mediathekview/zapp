@@ -16,9 +16,17 @@
 
 		<SwitchPreferenceCompat
 			android:defaultValue="false"
-			android:title="@string/pref_dynamic_colors"
+			android:key="@string/pref_key_dynamic_colors"
 			android:summary="@string/pref_dynamic_colors_summary"
-			android:key="@string/pref_key_dynamic_colors"/>
+			android:title="@string/pref_dynamic_colors" />
+
+		<ListPreference
+			android:defaultValue="live"
+			android:entries="@array/available_tabs_names"
+			android:key="@string/pref_key_start_tab"
+			android:title="@string/pref_start_tab_title"
+			app:entryValues="@array/available_tabs_values"
+			app:useSimpleSummaryProvider="true" />
 
 		<ListPreference
 			android:defaultValue="de"
