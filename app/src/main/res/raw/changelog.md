@@ -2,6 +2,7 @@
 * Einstellungen im Material-Design (danke an Bnyro)
 * Schlummerfunktion (danke an Bnyro)
 * Exo-Player-Update - sollte Playback-Probleme auf einigen Geräten beheben
+* Möglichkeit, Start-Tab in den Einstellungen zu setzen (danke an Bnyro)
 
 # 8.2.0
 * Unterstützung für dynamische Gerätefarben
