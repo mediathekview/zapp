@@ -68,6 +68,9 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 		binding.addButton5Minutes.setOnClickListener { onAddClicked(5.minutes) }
 		binding.addButton10Minutes.setOnClickListener { onAddClicked(10.minutes) }
 		binding.addButton20Minutes.setOnClickListener { onAddClicked(20.minutes) }
+		binding.setButton15Minutes.setOnClickListener { onSetClicked(15.minutes) }
+		binding.setButton30Minutes.setOnClickListener { onSetClicked(30.minutes) }
+		binding.setButton60Minutes.setOnClickListener { onSetClicked(60.minutes) }
 
 		return binding.root
 	}
@@ -100,6 +103,10 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 
 	private fun onStopClick() {
 		sleepTimer?.stop()
+	}
+
+	private fun onSetClicked(duration: Duration) {
+		binding.timerDelay.setText(duration.inWholeMinutes.toString())
 	}
 
 	private fun onAddClicked(duration: Duration) {

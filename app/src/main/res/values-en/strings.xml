@@ -115,6 +115,9 @@
 	<string name="sleep_timer_add_5_minutes">+5 min.</string>
 	<string name="sleep_timer_add_10_minutes">+10 min.</string>
 	<string name="sleep_timer_add_20_minutes">+20 min.</string>
+	<string name="sleep_timer_set_15_minutes">15 min.</string>
+	<string name="sleep_timer_set_30_minutes">30 min.</string>
+	<string name="sleep_timer_set_60_minutes">60 min.</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Appearance</string>

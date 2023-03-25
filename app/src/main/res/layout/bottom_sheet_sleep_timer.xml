@@ -13,15 +13,15 @@
 		android:layout_height="0dp"
 		android:visibility="gone"
 		app:constraint_referenced_ids="countdown,add_button_5_minutes,add_button_10_minutes,add_button_20_minutes,stop_button"
-		tools:visibility="visible" />
+		tools:visibility="gone" />
 
 	<androidx.constraintlayout.widget.Group
 		android:id="@+id/is_not_running_group"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		android:visibility="gone"
-		app:constraint_referenced_ids="timer_delay_layout,start_button"
-		tools:visibility="gone" />
+		app:constraint_referenced_ids="set_button_15_minutes,set_button_30_minutes,set_button_60_minutes,timer_delay_layout,start_button"
+		tools:visibility="visible" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/countdown"
@@ -71,7 +71,6 @@
 		android:id="@+id/timer_delay_layout"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:hint="@string/sleep_timer_delay"
 		android:theme="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +88,39 @@
 	</com.google.android.material.textfield.TextInputLayout>
 
 	<com.google.android.material.button.MaterialButton
+		android:id="@+id/set_button_15_minutes"
+		style="@style/Widget.App.Button.OutlinedButton"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:layout_marginEnd="8dp"
+		android:text="@string/sleep_timer_set_15_minutes"
+		app:layout_constraintEnd_toStartOf="@+id/set_button_30_minutes"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/timer_delay_layout" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/set_button_30_minutes"
+		style="@style/Widget.App.Button.OutlinedButton"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="8dp"
+		android:text="@string/sleep_timer_set_30_minutes"
+		app:layout_constraintEnd_toStartOf="@id/set_button_60_minutes"
+		app:layout_constraintStart_toEndOf="@+id/set_button_15_minutes"
+		app:layout_constraintTop_toTopOf="@id/set_button_15_minutes" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/set_button_60_minutes"
+		style="@style/Widget.App.Button.OutlinedButton"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:text="@string/sleep_timer_set_60_minutes"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/set_button_30_minutes"
+		app:layout_constraintTop_toTopOf="@id/set_button_15_minutes" />
+
+	<com.google.android.material.button.MaterialButton
 		android:id="@+id/start_button"
 		style="@style/Widget.Material3.Button"
 		android:layout_width="0dp"
@@ -97,7 +129,7 @@
 		android:text="@string/sleep_timer_start"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/timer_delay_layout" />
+		app:layout_constraintTop_toBottomOf="@id/set_button_15_minutes" />
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/stop_button"
