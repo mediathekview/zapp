@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.player
 
-import android.app.Dialog
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.Bundle
@@ -48,10 +47,8 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 		}
 	}
 
-	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-		val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-		dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-		return dialog
+	fun expand() {
+		(dialog as BottomSheetDialog).behavior.state = BottomSheetBehavior.STATE_EXPANDED
 	}
 
 	override fun onCreateView(

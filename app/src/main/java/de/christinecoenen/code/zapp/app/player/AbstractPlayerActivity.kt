@@ -350,6 +350,16 @@ abstract class AbstractPlayerActivity :
 			return
 		}
 
-		SleepTimerBottomSheet().show(supportFragmentManager, SleepTimerBottomSheet::class.java.name)
+		val existingBottomSheet =
+			supportFragmentManager.findFragmentByTag(SleepTimerBottomSheet::class.java.name)
+
+		if (existingBottomSheet == null) {
+			SleepTimerBottomSheet().show(
+				supportFragmentManager,
+				SleepTimerBottomSheet::class.java.name
+			)
+		} else {
+			(existingBottomSheet as SleepTimerBottomSheet).expand()
+		}
 	}
 }
