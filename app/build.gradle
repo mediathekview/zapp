@@ -46,6 +46,7 @@ android {
 	buildTypes {
 		debug {
 			shrinkResources false
+			applicationIdSuffix '.debug'
 		}
 		release {
 			shrinkResources true
