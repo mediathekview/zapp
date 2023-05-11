@@ -77,17 +77,17 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.5.5'
+	def fragment_version = '1.5.7'
 
 	// kotlin
-	implementation 'androidx.core:core-ktx:1.9.0'
+	implementation 'androidx.core:core-ktx:1.10.1'
 
 	// tests
 	def androix_test_version = '1.5.0'
 
 	// device tests
 	def espresso_version = '3.5.1'
-	debugImplementation "androidx.fragment:fragment-testing:1.6.0-alpha08"
+	debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 	androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
 	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 	androidTestImplementation 'androidx.test:runner:1.5.2'
@@ -108,9 +108,9 @@ dependencies {
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.7.0'
+	implementation 'androidx.activity:activity-ktx:1.7.1'
 	implementation 'androidx.appcompat:appcompat:1.6.1'
-	implementation 'com.google.android.material:material:1.8.0'
+	implementation 'com.google.android.material:material:1.9.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 	implementation 'androidx.cardview:cardview:1.0.0'
 	implementation 'androidx.annotation:annotation:1.6.0'
@@ -146,7 +146,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def exoplayer_version = "2.18.5"
+	def exoplayer_version = "2.18.6"
 	implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
