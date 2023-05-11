@@ -5,10 +5,16 @@ import android.app.Activity
 import android.content.Context
 import android.media.AudioManager
 import android.util.AttributeSet
-import android.view.*
+import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.AspectRatioListener
@@ -81,6 +87,9 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		} else {
 			setZoomStateBoxed()
 		}
+
+		subtitleView?.setUserDefaultStyle()
+		subtitleView?.setUserDefaultTextSize()
 	}
 
 	fun toggleControls() {
@@ -213,10 +222,12 @@ class SwipeablePlayerView @JvmOverloads constructor(
 					adjustBrightness(yPercent)
 					true
 				}
+
 				e2.x > width - INDICATOR_WIDTH -> {
 					adjustVolume(yPercent)
 					true
 				}
+
 				else -> {
 					endScroll()
 					super.onScroll(e1, e2, distanceX, distanceY)
