@@ -1,0 +1,73 @@
+## Vorname
+Christine
+
+## Nachname
+Coenen
+
+## E-Mail-Adresse
+Aus technischen Gründen bitten wir Dich, für jede Einreichung eine separate E-Mail-Adresse anzugeben.
+zapp.prototypefund@christine-coenen.de
+
+## GitHub/BitBucket/etc. Accounts
+https://github.com/cemrich
+https://gitlab.com/Miracula
+
+## An welchen Open-Source-Projekten hast Du/habt Ihr bisher gearbeitet?
+Max. 3 Projektbeispiele angeben (mit Link)
+- https://github.com/chocolatey/ChocolateyGUI
+- https://github.com/nextcloud/news-android
+- https://gitlab.com/Miracula/fdroidclient
+
+## Bewerbt Ihr Euch als Team um die Förderung?*
+Nein
+
+## Namen der Teammitglieder
+Max. 200 Zeichen
+
+## Projekttitel*
+Max. 70 Zeichen
+Zapp
+
+## Ordne das Projekt einem Bereich zu.*
+[x] Civic Tech
+[ ] Datensicherheit
+[ ] Data Literacy
+[ ] Infrastruktur 
+
+## Beschreibe Dein Projekt kurz.
+Max. 700 Zeichen
+
+Zapp ist eine Android-App für den schnellen Zugang zu fast allen deutschen öffentlich-rechtlichen Fernsehsendern. Zapp macht es einfach, schnell zwischen den Live-Streams von ARD, ZDF und anderen Sendern zu wechseln. Außerdem können die Mediatheken aller Sender gesammelt durchsucht und alte Sendungen direkt in der App nach geschaut werden. Zusätzlich zu aktuellen Programm- und Sendungsinformationen bietet Zapp einen Bild-in-Bild-Modus, Audiowiedergabe im Hintergrund und die Unterstützung von Untertiteln.
+// Programminfos
+
+## Welches gesellschaftliche Problem willst Du mit Deinem Projekt lösen?*
+Max. 700 Zeichen
+Die öffentlich-rechtlichen Sender in Deutschland bieten umfangreiche Inhalte für beinahe alle Zielgruppen und sind unter anderem wichtiger Teil der Demokratiebildung. Leider gehen die Angebote der Sender noch immer oft vom linearen Fernsehen aus, sind senderzentriert und selten an die Lebenswirklichkeit einer jungen und technik-affinen Zielgruppe angepasst. Geschlossene, nicht zeitgemäße APIs (z.B. für Programminformationen) und mehrere unzusammenhängende, nicht öffentlich zugängliche Datensilos verhindern Innovation in Form von freien Programmen und Apps. Zapp möchte diese gebührenfinanzierten Daten in Form von Open-Source-Programmen bündeln und in übersichtlicher Form zugänglich machen.
+
+## Wie willst Du Dein Projekt technisch umsetzen?*
+Max. 1300 Zeichen
+
+## Welche ähnlichen Lösungen gibt es schon, und was wird Dein Projekt anders bzw. besser machen?*
+Max. 400 Zeichen
+Zapp konkurriert direkt mit den Mediathek-Apps der öffentlich-rechtlichen Sendern, bündelt aber alle Inhalte übersichtlich und tracking-frei in einer App mit umfangreicheren und an Android angepassten Player-Features. Im Gegensatz zu kommerzielle Apps wie Joyn oder Zatoo fokusiert sich Zapp ausschließlich auf öffentlich finanzierte Inhalte ohne eine zusätzliche Gebühr, Werbung oder Account-Zwang.
+
+## Wer ist die Zielgruppe und wie soll Dein Tool sie erreichen?*
+Max. 700 Zeichen
+Zapp richtet sich an vor allem jüngere Android-Nutzer in Deutschland, die öffentlich-rechtliche Inhalte ohne lange Suche und zusätzliche Werbung auf ihrem Smartphone oder Smart-TV schauen möchten. Zapp erreicht seit 2016 im alternativen App-Store F-Droid ein technik-affines und datenschutz-bewusstes Publikum. Seit der Mitgliedschaft im MediathekView-Team 2019 ist eine noch breitere Nutzerschaft auf Zapp aufmerksam geworden. 
+Leider kann der Großteil der Zielgruppe momentan gar nicht erreicht werden, da Google die Listung von Zapp im Play-Store abgelehnt hat. Lediglich eine fehlerhafte, werbebehaftete Kopie einer chinesischen Firma ist mit zahlreichen Downloads im Play-Store gelistet.
+
+## Hast Du schon an der Idee gearbeitet? Wenn ja, beschreibe kurz den aktuellen Stand und erkläre die Neuerung.*
+Max. 700 Zeichen
+
+## Link zum bestehenden Projekt (falls vorhanden)
+https://github.com/mediathekview/zapp
+
+## Wie viele Stunden willst Du (bzw. will das Team) insgesamt in den 6 Monaten Förderzeitraum an der Umsetzung arbeiten?*
+Bitte eine Zahl eintragen.
+
+## Skizziere kurz die wichtigsten Meilensteine, die Du (bzw. das Team) im Förderzeitraum umsetzen willst.*
+Max. 700 Zeichen
+
+## Wenn meine Projektidee nicht gefördert wird, darf sie trotzdem auf prototypefund.de und in wissenschaftlichen Publikationen rund um das Programm veröffentlicht werden?*
+[x] Ja
+[ ] Nein
