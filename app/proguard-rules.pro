@@ -9,6 +9,10 @@
 -dontwarn org.openjsse.javax.net.ssl.SSLSocket
 -dontwarn org.openjsse.net.ssl.OpenJSSE
 
+# https://r8.googlesource.com/r8/+/refs/heads/main/compatibility-faq.md#troubleshooting-gson-gson
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+
 # https://github.com/square/retrofit/issues/3751#issuecomment-1564410089
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call
