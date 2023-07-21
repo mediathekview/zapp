@@ -1,3 +1,6 @@
+# 8.3.1
+* Absturz bei geänderter Sender-Anordnung gefixt
+
 # 8.3.0
 * Einstellungen im Material-Design (danke an Bnyro)
 * Schlummerfunktion (danke an Bnyro)
