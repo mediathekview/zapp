@@ -77,7 +77,7 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.5.7'
+	def fragment_version = '1.6.0'
 
 	// kotlin
 	implementation 'androidx.core:core-ktx:1.10.1'
@@ -103,12 +103,12 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core-ktx:$androix_test_version"
 	testImplementation 'org.robolectric:robolectric:4.10.3'
-	testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
-	testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+	testImplementation 'org.mockito.kotlin:mockito-kotlin:5.0.0'
+	testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2'
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.7.1'
+	implementation 'androidx.activity:activity-ktx:1.7.2'
 	implementation 'androidx.appcompat:appcompat:1.6.1'
 	implementation 'com.google.android.material:material:1.9.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -126,7 +126,7 @@ dependencies {
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 	// room database
-	def room_version = "2.5.1"
+	def room_version = "2.5.2"
 	implementation "androidx.room:room-runtime:$room_version"
 	implementation "androidx.room:room-paging:$room_version"
 	kapt "androidx.room:room-compiler:$room_version"
@@ -136,7 +136,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10.1'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.7.2'
+	implementation 'com.github.woxthebox:draglistview:1.7.3'
 
 	// markdown
 	implementation 'io.noties.markwon:core:4.6.2'
@@ -146,7 +146,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def exoplayer_version = "2.18.6"
+	def exoplayer_version = "2.19.0"
 	implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
 	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
@@ -159,7 +159,7 @@ dependencies {
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 	// ACRA crash reporting
-	def acra_version = "5.9.7"
+	def acra_version = "5.11.0"
 	implementation "ch.acra:acra-mail:$acra_version"
 	implementation "ch.acra:acra-dialog:$acra_version"
 
@@ -170,7 +170,7 @@ dependencies {
 	implementation 'com.jakewharton:process-phoenix:2.1.2'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.12.2'
+	implementation 'joda-time:joda-time:2.12.5'
 
 	// about libraries view
 	implementation "com.mikepenz:aboutlibraries:$about_libraries_version"
