@@ -192,12 +192,18 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			return super.onDown(e)
 		}
 
+		// removing this leads to a compilation error with sdk 33
+		@Suppress("NOTHING_TO_OVERRIDE")
 		override fun onScroll(
-			e1: MotionEvent,
+			e1: MotionEvent?,
 			e2: MotionEvent,
 			distanceX: Float,
 			distanceY: Float
 		): Boolean {
+			if (e1 == null) {
+				return false
+			}
+
 			if (!canUseWipeControls || e1.y <= forbiddenAreaSizeTop) {
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}
