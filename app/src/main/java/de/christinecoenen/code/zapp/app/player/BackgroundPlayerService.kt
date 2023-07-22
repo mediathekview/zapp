@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.player
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -87,7 +86,7 @@ class BackgroundPlayerService : LifecycleService(),
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		super.onStartCommand(intent, flags, startId)
 		handleIntent(intent)
-		return Service.START_STICKY
+		return START_STICKY
 	}
 
 	override fun onTaskRemoved(rootIntent: Intent) {
@@ -169,7 +168,7 @@ class BackgroundPlayerService : LifecycleService(),
 	private fun movePlaybackToForeground() {
 		isPlaybackInBackground = false
 
-		stopForeground(Service.STOP_FOREGROUND_REMOVE)
+		stopForeground(STOP_FOREGROUND_REMOVE)
 		stopSelf()
 
 		playerNotificationManager?.apply {
@@ -238,7 +237,7 @@ class BackgroundPlayerService : LifecycleService(),
 		if (ongoing) {
 			startForeground(notificationId, notification)
 		} else {
-			stopForeground(Service.STOP_FOREGROUND_REMOVE)
+			stopForeground(STOP_FOREGROUND_REMOVE)
 		}
 	}
 

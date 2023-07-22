@@ -92,14 +92,6 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		subtitleView?.setUserDefaultTextSize()
 	}
 
-	fun toggleControls() {
-		if (isControllerFullyVisible) {
-			hideController()
-		} else {
-			showController()
-		}
-	}
-
 	private fun adjustBrightness(yPercent: Float) {
 		val lp = window.attributes
 		lp.screenBrightness = yPercent
