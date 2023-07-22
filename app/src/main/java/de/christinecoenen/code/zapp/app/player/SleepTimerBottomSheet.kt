@@ -82,6 +82,7 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		BackgroundPlayerService.bind(requireContext(), backgroundPlayerServiceConnection)
+		expand()
 	}
 
 	override fun onDestroyView() {

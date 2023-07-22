@@ -1,7 +1,12 @@
-# v-next
+# 8.3.1
+* Absturz bei geänderter Sender-Anordnung gefixt
+
+# 8.3.0
 * Einstellungen im Material-Design (danke an Bnyro)
 * Schlummerfunktion (danke an Bnyro)
 * Exo-Player-Update - sollte Playback-Probleme auf einigen Geräten beheben
+* Möglichkeit, Start-Tab in den Einstellungen zu setzen (danke an Bnyro)
+* Videos nutzen Untertitel-Stil aus den Android-Systemeinstellungen
 
 # 8.2.0
 * Unterstützung für dynamische Gerätefarben

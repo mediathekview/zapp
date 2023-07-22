@@ -5,10 +5,16 @@ import android.app.Activity
 import android.content.Context
 import android.media.AudioManager
 import android.util.AttributeSet
-import android.view.*
+import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.AspectRatioFrameLayout.AspectRatioListener
@@ -81,6 +87,9 @@ class SwipeablePlayerView @JvmOverloads constructor(
 		} else {
 			setZoomStateBoxed()
 		}
+
+		subtitleView?.setUserDefaultStyle()
+		subtitleView?.setUserDefaultTextSize()
 	}
 
 	fun toggleControls() {
@@ -183,12 +192,18 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			return super.onDown(e)
 		}
 
+		// removing this leads to a compilation error with sdk 33
+		@Suppress("NOTHING_TO_OVERRIDE")
 		override fun onScroll(
-			e1: MotionEvent,
+			e1: MotionEvent?,
 			e2: MotionEvent,
 			distanceX: Float,
 			distanceY: Float
 		): Boolean {
+			if (e1 == null) {
+				return false
+			}
+
 			if (!canUseWipeControls || e1.y <= forbiddenAreaSizeTop) {
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}
@@ -213,10 +228,12 @@ class SwipeablePlayerView @JvmOverloads constructor(
 					adjustBrightness(yPercent)
 					true
 				}
+
 				e2.x > width - INDICATOR_WIDTH -> {
 					adjustVolume(yPercent)
 					true
 				}
+
 				else -> {
 					endScroll()
 					super.onScroll(e1, e2, distanceX, distanceY)

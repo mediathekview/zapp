@@ -3,6 +3,8 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
+import android.content.pm.ServiceInfo
+import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.notifications.DownloadCompletedEventNotification
@@ -237,10 +239,18 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 	}
 
 	override suspend fun getForegroundInfo() =
-		ForegroundInfo(
-			id.hashCode(),
-			downloadProgressNotification.build(progress, downloadedBytes, totalBytes)
-		)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+			ForegroundInfo(
+				id.hashCode(),
+				downloadProgressNotification.build(progress, downloadedBytes, totalBytes),
+				ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+			)
+		} else {
+			ForegroundInfo(
+				id.hashCode(),
+				downloadProgressNotification.build(progress, downloadedBytes, totalBytes)
+			)
+		}
 
 	private suspend fun reportProgress() {
 		val update = workDataOf(ProgressKey to progress)
@@ -256,16 +266,21 @@ class DownloadWorker(appContext: Context, workerParams: WorkerParameters) :
 		HttpURLConnection.HTTP_NOT_FOUND,
 		HttpURLConnection.HTTP_GONE ->
 			ErrorType.FileNotFound
+
 		HttpURLConnection.HTTP_UNAUTHORIZED,
 		HttpURLConnection.HTTP_FORBIDDEN,
 		451 ->
 			ErrorType.FileForbidden
+
 		429 ->
 			ErrorType.TooManyRequests
+
 		in 400..499 ->
 			ErrorType.ClientError
+
 		in 500..600 ->
 			ErrorType.ServerError
+
 		else ->
 			ErrorType.Unknown
 	}

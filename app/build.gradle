@@ -6,26 +6,26 @@ apply plugin: 'koin'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
-	compileSdkVersion 33
-	buildToolsVersion '33.0.2'
+	compileSdkVersion 34
+	buildToolsVersion '34.0.0'
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
 		minSdkVersion 26
-		targetSdkVersion 33
-		versionCode 65
-		versionName "8.2.0"
+		targetSdkVersion 34
+		versionCode 67
+		versionName "8.3.1"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resConfigs 'de', 'en'
+        resourceConfigurations += ['de', 'en']
     }
 
 	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_8
-		targetCompatibility JavaVersion.VERSION_1_8
+		sourceCompatibility JavaVersion.VERSION_17
+		targetCompatibility JavaVersion.VERSION_17
 	}
 
 	kotlinOptions {
-		jvmTarget = JavaVersion.VERSION_1_8.toString()
+		jvmTarget = JavaVersion.VERSION_17.toString()
 		freeCompilerArgs += [
 			'-opt-in=kotlin.RequiresOptIn',
 		]
@@ -38,14 +38,13 @@ android {
 	}
 
 	buildFeatures {
-		viewBinding {
-			enabled = true
-		}
+		viewBinding = true
 	}
 
 	buildTypes {
 		debug {
 			shrinkResources false
+			applicationIdSuffix '.debug'
 		}
 		release {
 			shrinkResources true
@@ -78,17 +77,17 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.5.5'
+	def fragment_version = '1.6.0'
 
 	// kotlin
-	implementation 'androidx.core:core-ktx:1.9.0'
+	implementation 'androidx.core:core-ktx:1.10.1'
 
 	// tests
 	def androix_test_version = '1.5.0'
 
 	// device tests
 	def espresso_version = '3.5.1'
-	debugImplementation "androidx.fragment:fragment-testing:1.6.0-alpha08"
+	debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 	androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
 	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 	androidTestImplementation 'androidx.test:runner:1.5.2'
@@ -103,15 +102,15 @@ dependencies {
 	// unit tests
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core-ktx:$androix_test_version"
-	testImplementation 'org.robolectric:robolectric:4.6.1'
-	testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
-	testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+	testImplementation 'org.robolectric:robolectric:4.10.3'
+	testImplementation 'org.mockito.kotlin:mockito-kotlin:5.0.0'
+	testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2'
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.7.0'
+	implementation 'androidx.activity:activity-ktx:1.7.2'
 	implementation 'androidx.appcompat:appcompat:1.6.1'
-	implementation 'com.google.android.material:material:1.8.0'
+	implementation 'com.google.android.material:material:1.9.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 	implementation 'androidx.cardview:cardview:1.0.0'
 	implementation 'androidx.annotation:annotation:1.6.0'
@@ -127,7 +126,7 @@ dependencies {
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 	// room database
-	def room_version = "2.5.1"
+	def room_version = "2.5.2"
 	implementation "androidx.room:room-runtime:$room_version"
 	implementation "androidx.room:room-paging:$room_version"
 	kapt "androidx.room:room-compiler:$room_version"
@@ -137,7 +136,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10.1'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.7.2'
+	implementation 'com.github.woxthebox:draglistview:1.7.3'
 
 	// markdown
 	implementation 'io.noties.markwon:core:4.6.2'
@@ -147,7 +146,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.0.0"
+	def media3_version = "1.1.0"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"
@@ -160,7 +159,7 @@ dependencies {
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 	// ACRA crash reporting
-	def acra_version = "5.9.7"
+	def acra_version = "5.11.0"
 	implementation "ch.acra:acra-mail:$acra_version"
 	implementation "ch.acra:acra-dialog:$acra_version"
 
@@ -171,7 +170,7 @@ dependencies {
 	implementation 'com.jakewharton:process-phoenix:2.1.2'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.12.2'
+	implementation 'joda-time:joda-time:2.12.5'
 
 	// about libraries view
 	implementation "com.mikepenz:aboutlibraries:$about_libraries_version"

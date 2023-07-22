@@ -26,6 +26,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathek
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -120,13 +121,13 @@ class MediathekListFragment : Fragment(),
 
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		viewLifecycleOwner.launchOnCreated {
 			viewmodel.pageFlow.collectLatest { pagingData ->
 				adapter.submitData(pagingData)
 			}
 		}
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		viewLifecycleOwner.launchOnCreated {
 			viewmodel
 				.pageFlow
 				.drop(1)
@@ -138,7 +139,7 @@ class MediathekListFragment : Fragment(),
 				}
 		}
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		viewLifecycleOwner.launchOnCreated {
 			adapter.loadStateFlow
 				.map { it.refresh }
 				.distinctUntilChanged()

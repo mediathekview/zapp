@@ -1,0 +1,5 @@
+* Settings in material design (thanks to Bnyro)
+* Sleep timer (thanks to Bnyro)
+* Exo player update - should fix playback problems on some devices
+* Possibility to set start tab in settings (thanks to Bnyro)
+* Videos use subtitle style from Android system settings

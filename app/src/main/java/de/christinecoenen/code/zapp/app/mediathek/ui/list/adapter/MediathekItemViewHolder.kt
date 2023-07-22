@@ -28,8 +28,8 @@ class MediathekItemViewHolder(
 
 	private val mediathekRepository: MediathekRepository by inject()
 
-	private val bgColorDefault = binding.root.context.themeColor(R.attr.backgroundColor)
-	private val bgColorHighlight by lazy { binding.root.context.themeColor(R.attr.colorSurface) }
+	private val bgColorDefault = binding.root.context.themeColor(com.google.android.material.R.attr.backgroundColor)
+	private val bgColorHighlight by lazy { binding.root.context.themeColor(com.google.android.material.R.attr.colorSurface) }
 
 	private var isRelevantForUserJob: Job? = null
 	private var isBookmarkedJob: Job? = null
