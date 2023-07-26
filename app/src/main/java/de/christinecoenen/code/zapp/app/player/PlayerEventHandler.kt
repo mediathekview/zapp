@@ -1,12 +1,12 @@
 package de.christinecoenen.code.zapp.app.player
 
-import com.google.android.exoplayer2.PlaybackException
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.analytics.AnalyticsListener
-import com.google.android.exoplayer2.analytics.AnalyticsListener.EventTime
-import com.google.android.exoplayer2.source.LoadEventInfo
-import com.google.android.exoplayer2.source.MediaLoadData
-import com.google.android.exoplayer2.upstream.HttpDataSource.HttpDataSourceException
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.datasource.HttpDataSource.HttpDataSourceException
+import androidx.media3.exoplayer.analytics.AnalyticsListener
+import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
+import androidx.media3.exoplayer.source.LoadEventInfo
+import androidx.media3.exoplayer.source.MediaLoadData
 import de.christinecoenen.code.zapp.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber

@@ -7,7 +7,12 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.persistence.Database
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 
@@ -73,13 +78,6 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.update(show!!)
 	}
-
-	suspend fun updateDownloadStatus(downloadId: Int, downloadStatus: DownloadStatus?) =
-		withContext(Dispatchers.IO) {
-			database
-				.mediathekShowDao()
-				.updateDownloadStatus(downloadId, downloadStatus!!)
-		}
 
 	suspend fun updateDownloadProgress(downloadId: Int, progress: Int) =
 		withContext(Dispatchers.IO) {

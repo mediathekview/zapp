@@ -1,7 +1,12 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -19,9 +24,9 @@ import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
@@ -31,12 +36,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownServiceException
 import java.text.DateFormat
 import java.text.NumberFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import javax.net.ssl.SSLHandshakeException
 
 

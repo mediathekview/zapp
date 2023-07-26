@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.player
 
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 
 internal class TrackSelectorWrapper(private val trackSelector: DefaultTrackSelector) {

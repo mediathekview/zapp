@@ -74,7 +74,6 @@ class DownloadFileInfoManager(
 		} else {
 			val resolver = applicationContext.contentResolver
 
-			@Suppress("NON_EXHAUSTIVE_WHEN")
 			when (status) {
 				DownloadStatus.DELETED,
 				DownloadStatus.FAILED -> try {

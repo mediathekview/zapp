@@ -22,6 +22,7 @@ object LifecycleOwnerHelper {
 		return launchOnLifecycle(Lifecycle.State.RESUMED, block)
 	}
 
+	@Suppress("MemberVisibilityCanBePrivate")
 	fun LifecycleOwner.launchOnLifecycle(
 		state: Lifecycle.State,
 		block: suspend CoroutineScope.() -> Unit

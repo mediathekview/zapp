@@ -7,8 +7,7 @@ import androidx.leanback.app.VideoSupportFragment
 import androidx.leanback.app.VideoSupportFragmentGlueHost
 import androidx.leanback.media.PlaybackTransportControlGlue
 import androidx.leanback.widget.PlaybackControlsRow
-import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter
+import androidx.media3.ui.leanback.LeanbackPlayerAdapter
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.tv.error.ErrorActivity

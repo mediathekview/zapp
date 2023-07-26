@@ -11,5 +11,5 @@ class ShowResponse(
 		get() = shows!![0]
 
 	val isSuccess: Boolean
-		get() = shows != null && shows.isNotEmpty()
+		get() = !shows.isNullOrEmpty()
 }

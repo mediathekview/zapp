@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.player
 
-import com.google.android.exoplayer2.Player
+import androidx.media3.common.Player
 import java.time.Duration
 import java.util.*
 import kotlin.concurrent.timer

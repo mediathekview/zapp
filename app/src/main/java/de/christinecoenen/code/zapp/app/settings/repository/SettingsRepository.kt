@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.settings.repository
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
@@ -14,7 +15,7 @@ import kotlin.time.Duration.Companion.minutes
 class SettingsRepository(context: Context) {
 
 	private val context = context.applicationContext
-	val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+	val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
 	val lockVideosInLandcapeFormat: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true)

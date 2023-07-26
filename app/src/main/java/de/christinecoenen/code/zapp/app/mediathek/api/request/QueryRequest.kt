@@ -8,13 +8,8 @@ import java.io.Serializable
 @Keep
 class QueryRequest : Serializable {
 
-	@Suppress("unused")
 	private val sortBy: String = "timestamp"
-
-	@Suppress("unused")
 	private val sortOrder: String = "desc"
-
-	@Suppress("unused")
 	private val future: Boolean = true
 
 	var offset: Int = 0

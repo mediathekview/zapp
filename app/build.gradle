@@ -145,13 +145,13 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def exoplayer_version = "2.19.0"
-	implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-	implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
-	implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-	implementation "com.google.android.exoplayer:extension-mediasession:$exoplayer_version"
-	implementation "com.google.android.exoplayer:extension-leanback:$exoplayer_version"
-	implementation "com.google.android.exoplayer:extension-okhttp:$exoplayer_version"
+	def media3_version = "1.1.0"
+	implementation "androidx.media3:media3-exoplayer:$media3_version"
+	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
+	implementation "androidx.media3:media3-ui:$media3_version"
+	implementation "androidx.media3:media3-ui-leanback:$media3_version"
+	implementation "androidx.media3:media3-session:$media3_version"
+	implementation "androidx.media3:media3-datasource-okhttp:$media3_version"
 
 	// retrofit rest client
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
