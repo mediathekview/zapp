@@ -1,5 +1,6 @@
 # v-next
 * Von Exoplayer auf neue Media-3-Bibliothek umgestiegen
+* Zapp auf Android 14 vorbereitet
 
 # 8.3.1
 * Absturz bei geänderter Sender-Anordnung gefixt
