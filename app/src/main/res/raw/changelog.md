@@ -2,6 +2,10 @@
 * Von Exoplayer auf neue Media-3-Bibliothek umgestiegen
 * Zapp auf Android 14 vorbereitet
 
+# 8.3.2
+* Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen
+* Behoben, dass nach einer Bildschirmdrehung der falsche Tab zu sehen ist
+
 # 8.3.1
 * Absturz bei geänderter Sender-Anordnung gefixt
 
