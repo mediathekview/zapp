@@ -1,3 +1,7 @@
+# v-next
+* Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen
+* Behoben, dass nach einer Bildschirmdrehung der falsche Tab zu sehen ist
+
 # 8.3.1
 * Absturz bei geänderter Sender-Anordnung gefixt
 

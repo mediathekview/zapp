@@ -69,7 +69,12 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
 
-		navController.navigate(startFragmentId)
+		if (savedInstanceState == null &&
+			navController.currentDestination?.id == R.id.channelListFragment
+		) {
+			// new app start - explicitly navigate to start fragment defined in settings
+			navController.navigate(startFragmentId)
+		}
 
 		requestPermissions()
 
