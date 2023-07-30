@@ -11,24 +11,21 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -37,13 +34,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.net.UnknownServiceException
-import java.text.DateFormat
-import java.text.NumberFormat
-import java.util.Date
-import java.util.Locale
 import javax.net.ssl.SSLHandshakeException
 
 
@@ -58,17 +52,11 @@ class MediathekListFragment : Fragment(),
 	private var _noShowsBinding: ViewNoShowsBinding? = null
 	private val noShowsBinding: ViewNoShowsBinding get() = _noShowsBinding!!
 
-	private val numberFormat = NumberFormat.getInstance(Locale.getDefault())
-	private val queryInfoDateFormatter = DateFormat.getDateTimeInstance(
-		DateFormat.SHORT,
-		DateFormat.SHORT
-	)
-
 	private var _bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>? = null
 	private val bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
 		get() = _bottomSheetBehavior!!
 
-	private val filterViewModel: MediathekFilterViewModel by viewModel()
+	private val filterViewModel: MediathekFilterViewModel by activityViewModel()
 	private val viewmodel: MediathekListFragmentViewModel by viewModel {
 		parametersOf(
 			filterViewModel.searchQuery,
@@ -96,14 +84,8 @@ class MediathekListFragment : Fragment(),
 		val layoutManager = LinearLayoutManager(binding.root.context)
 		binding.list.layoutManager = layoutManager
 
-		binding.filter.search.addTextChangedListener { editable ->
-			filterViewModel.setSearchQueryFilter(editable.toString())
-		}
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
-
-		setUpLengthFilter()
-		createChannelFilterView(inflater)
 
 		// only consume backPressedCallback when bottom sheet is not collapsed
 		_bottomSheetBehavior = BottomSheetBehavior.from(binding.filterBottomSheet)
@@ -242,20 +224,7 @@ class MediathekListFragment : Fragment(),
 	}
 
 	private fun onQueryInfoResultChanged(queryInfoResult: QueryInfoResult?) {
-		if (queryInfoResult == null) {
-			binding.filter.queryInfo.visibility = View.INVISIBLE
-			return
-		}
-
-		val date = Date(queryInfoResult.filmlisteTimestamp * 1000)
-		val queryInfoMessage = getString(
-			R.string.fragment_mediathek_query_info,
-			numberFormat.format(queryInfoResult.totalResults),
-			queryInfoDateFormatter.format(date)
-		)
-
-		binding.filter.queryInfo.text = queryInfoMessage
-		binding.filter.queryInfo.visibility = View.VISIBLE
+		filterViewModel.setQueryInfoResult(queryInfoResult)
 	}
 
 	private fun onIsFilterAppliedChanged() {
@@ -286,96 +255,5 @@ class MediathekListFragment : Fragment(),
 	private fun updateNoShowsMessage(loadState: LoadState) {
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
 		noShowsBinding.group.isVisible = isAdapterEmpty
-	}
-
-	private fun setUpLengthFilter() {
-		val showLengthLabelFormatter =
-			ShowLengthLabelFormatter(binding.filter.showLengthSlider.valueTo)
-
-		updateLengthFilterLabels(showLengthLabelFormatter)
-		binding.filter.showLengthSlider.setLabelFormatter(showLengthLabelFormatter)
-
-		// from ui to viewmodel
-		binding.filter.showLengthSlider.addOnChangeListener { rangeSlider, _, fromUser ->
-
-			updateLengthFilterLabels(showLengthLabelFormatter)
-
-			if (fromUser) {
-				val min = rangeSlider.values[0] * 60
-				val max =
-					if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
-				filterViewModel.setLengthFilter(min, max)
-			}
-		}
-
-		// from viewmodel to ui
-		filterViewModel.lengthFilter
-			.asLiveData(lifecycleScope.coroutineContext)
-			.observe(viewLifecycleOwner) { lengthFilter ->
-				val min = lengthFilter.minDurationMinutes
-				val max = lengthFilter.maxDurationMinutes ?: binding.filter.showLengthSlider.valueTo
-				binding.filter.showLengthSlider.setValues(min, max)
-			}
-	}
-
-	private fun createChannelFilterView(inflater: LayoutInflater) {
-		val chipMap = mutableMapOf<MediathekChannel, Chip>()
-
-		for (channel in MediathekChannel.values()) {
-			// create view
-			val chip = inflater.inflate(
-				R.layout.view_mediathek_filter_channel_chip,
-				binding.filter.channels,
-				false
-			) as Chip
-
-			// view properties
-			chip.text = channel.apiId
-
-			// ui listeners
-			chip.setOnCheckedChangeListener { _, isChecked ->
-				onChannelFilterCheckChanged(channel, isChecked)
-			}
-			chip.setOnLongClickListener {
-				onChannelFilterLongClick(channel)
-				true
-			}
-
-			// add to hierarchy
-			binding.filter.channels.addView(chip)
-
-			// cache for listeners
-			chipMap[channel] = chip
-		}
-
-		// viewmodel listener
-		filterViewModel.channelFilter
-			.asLiveData(lifecycleScope.coroutineContext)
-			.observe(viewLifecycleOwner) { channelFilter ->
-				for (filterItem in channelFilter) {
-					val chip = chipMap[filterItem.key]!!
-					if (chip.isChecked != filterItem.value) {
-						chip.isChecked = filterItem.value
-					}
-				}
-			}
-	}
-
-	private fun onChannelFilterCheckChanged(channel: MediathekChannel, isChecked: Boolean) {
-		filterViewModel.setChannelFilter(channel, isChecked)
-	}
-
-	private fun onChannelFilterLongClick(clickedChannel: MediathekChannel) {
-		for (channel in MediathekChannel.values()) {
-			val isChecked = clickedChannel == channel
-			filterViewModel.setChannelFilter(channel, isChecked)
-		}
-	}
-
-	private fun updateLengthFilterLabels(formatter: ShowLengthLabelFormatter) {
-		binding.filter.showLengthLabelMin.text =
-			formatter.getFormattedValue(binding.filter.showLengthSlider.values[0])
-		binding.filter.showLengthLabelMax.text =
-			formatter.getFormattedValue(binding.filter.showLengthSlider.values[1])
 	}
 }

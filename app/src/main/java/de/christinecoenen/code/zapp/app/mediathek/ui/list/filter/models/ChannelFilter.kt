@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.mediathek.ui.list.models
+package de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models
 
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 

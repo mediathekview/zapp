@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekFilterViewModel
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.player.VideoInfo

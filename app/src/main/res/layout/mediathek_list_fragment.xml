@@ -66,9 +66,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 
-			<include
+			<androidx.fragment.app.FragmentContainerView
 				android:id="@+id/filter"
-				layout="@layout/mediathek_filter_content"
+				android:name="de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterFragment"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:layout_constraintEnd_toEndOf="parent"

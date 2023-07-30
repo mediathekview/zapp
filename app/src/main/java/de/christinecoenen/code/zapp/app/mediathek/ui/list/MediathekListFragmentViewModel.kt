@@ -10,8 +10,8 @@ import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.ChannelFilter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.LengthFilter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models.ChannelFilter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models.LengthFilter
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

@@ -1,10 +1,11 @@
-package de.christinecoenen.code.zapp.app.mediathek.ui.list
+package de.christinecoenen.code.zapp.app.mediathek.ui.list.filter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.ChannelFilter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.LengthFilter
+import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models.ChannelFilter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models.LengthFilter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -20,6 +21,9 @@ class MediathekFilterViewModel : ViewModel() {
 
 	private val _channelFilter = MutableStateFlow(ChannelFilter())
 	val channelFilter = _channelFilter.asStateFlow()
+
+	private val _queryInfoResult = MutableStateFlow<QueryInfoResult?>(null)
+	val queryInfoResult = _queryInfoResult.asStateFlow()
 
 	val isFilterApplied = combine(_lengthFilter, _channelFilter) { lengthFilter, channelFilter ->
 		channelFilter.isApplied || lengthFilter.isApplied
@@ -47,5 +51,9 @@ class MediathekFilterViewModel : ViewModel() {
 
 	fun setSearchQueryFilter(query: String?) {
 		_searchQuery.tryEmit(query ?: "")
+	}
+
+	fun setQueryInfoResult(queryInfoResult: QueryInfoResult?) {
+		_queryInfoResult.tryEmit(queryInfoResult)
 	}
 }
