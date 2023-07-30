@@ -12,6 +12,7 @@ import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownload
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.WorkManagerDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelperViewModel
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.personal.PersonalViewModel
 import de.christinecoenen.code.zapp.app.personal.details.BookmarksViewModel
 import de.christinecoenen.code.zapp.app.personal.details.ContinueWatchingViewModel
@@ -83,7 +84,8 @@ class KoinModules {
 			viewModel { ContinueWatchingViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
-			viewModel { MediathekListFragmentViewModel(get()) }
+			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get(), parameters.get(), parameters.get()) }
+			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
 		}
 

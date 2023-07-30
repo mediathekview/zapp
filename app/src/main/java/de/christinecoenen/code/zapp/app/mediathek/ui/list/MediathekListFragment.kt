@@ -14,6 +14,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -37,6 +38,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.net.UnknownServiceException
 import java.text.DateFormat
 import java.text.NumberFormat
@@ -66,7 +68,14 @@ class MediathekListFragment : Fragment(),
 	private val bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
 		get() = _bottomSheetBehavior!!
 
-	private val viewmodel: MediathekListFragmentViewModel by viewModel()
+	private val filterViewModel: MediathekFilterViewModel by viewModel()
+	private val viewmodel: MediathekListFragmentViewModel by viewModel {
+		parametersOf(
+			filterViewModel.searchQuery,
+			filterViewModel.lengthFilter,
+			filterViewModel.channelFilter
+		)
+	}
 	private lateinit var adapter: PagedMediathekShowListAdapter
 
 	private val backPressedCallback = object : OnBackPressedCallback(false) {
@@ -88,7 +97,7 @@ class MediathekListFragment : Fragment(),
 		binding.list.layoutManager = layoutManager
 
 		binding.filter.search.addTextChangedListener { editable ->
-			viewmodel.setSearchQueryFilter(editable.toString())
+			filterViewModel.setSearchQueryFilter(editable.toString())
 		}
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
@@ -115,7 +124,7 @@ class MediathekListFragment : Fragment(),
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		viewmodel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
+		filterViewModel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
 		viewmodel.queryInfoResult.observe(viewLifecycleOwner, ::onQueryInfoResultChanged)
 
 		adapter = PagedMediathekShowListAdapter(
@@ -189,16 +198,18 @@ class MediathekListFragment : Fragment(),
 				onFilterMenuClicked()
 				true
 			}
+
 			R.id.menu_refresh -> {
 				onRefresh()
 				true
 			}
+
 			else -> false
 		}
 	}
 
 	override fun onPrepareMenu(menu: Menu) {
-		val filterIconResId = if (viewmodel.isFilterApplied.value == true) {
+		val filterIconResId = if (filterViewModel.isFilterApplied.value == true) {
 			R.drawable.ic_sharp_filter_list_off_24
 		} else {
 			R.drawable.ic_sharp_filter_list_24
@@ -223,8 +234,8 @@ class MediathekListFragment : Fragment(),
 	}
 
 	private fun onFilterMenuClicked() {
-		if (viewmodel.isFilterApplied.value == true) {
-			viewmodel.clearFilter()
+		if (filterViewModel.isFilterApplied.value == true) {
+			filterViewModel.clearFilter()
 		} else {
 			toggleFilterBottomSheet()
 		}
@@ -293,16 +304,18 @@ class MediathekListFragment : Fragment(),
 				val min = rangeSlider.values[0] * 60
 				val max =
 					if (rangeSlider.values[1] == rangeSlider.valueTo) null else rangeSlider.values[1] * 60
-				viewmodel.setLengthFilter(min, max)
+				filterViewModel.setLengthFilter(min, max)
 			}
 		}
 
 		// from viewmodel to ui
-		viewmodel.lengthFilter.observe(viewLifecycleOwner) { lengthFilter ->
-			val min = lengthFilter.minDurationMinutes
-			val max = lengthFilter.maxDurationMinutes ?: binding.filter.showLengthSlider.valueTo
-			binding.filter.showLengthSlider.setValues(min, max)
-		}
+		filterViewModel.lengthFilter
+			.asLiveData(lifecycleScope.coroutineContext)
+			.observe(viewLifecycleOwner) { lengthFilter ->
+				val min = lengthFilter.minDurationMinutes
+				val max = lengthFilter.maxDurationMinutes ?: binding.filter.showLengthSlider.valueTo
+				binding.filter.showLengthSlider.setValues(min, max)
+			}
 	}
 
 	private fun createChannelFilterView(inflater: LayoutInflater) {
@@ -336,24 +349,26 @@ class MediathekListFragment : Fragment(),
 		}
 
 		// viewmodel listener
-		viewmodel.channelFilter.observe(viewLifecycleOwner) { channelFilter ->
-			for (filterItem in channelFilter) {
-				val chip = chipMap[filterItem.key]!!
-				if (chip.isChecked != filterItem.value) {
-					chip.isChecked = filterItem.value
+		filterViewModel.channelFilter
+			.asLiveData(lifecycleScope.coroutineContext)
+			.observe(viewLifecycleOwner) { channelFilter ->
+				for (filterItem in channelFilter) {
+					val chip = chipMap[filterItem.key]!!
+					if (chip.isChecked != filterItem.value) {
+						chip.isChecked = filterItem.value
+					}
 				}
 			}
-		}
 	}
 
 	private fun onChannelFilterCheckChanged(channel: MediathekChannel, isChecked: Boolean) {
-		viewmodel.setChannelFilter(channel, isChecked)
+		filterViewModel.setChannelFilter(channel, isChecked)
 	}
 
 	private fun onChannelFilterLongClick(clickedChannel: MediathekChannel) {
 		for (channel in MediathekChannel.values()) {
 			val isChecked = clickedChannel == channel
-			viewmodel.setChannelFilter(channel, isChecked)
+			filterViewModel.setChannelFilter(channel, isChecked)
 		}
 	}
 
