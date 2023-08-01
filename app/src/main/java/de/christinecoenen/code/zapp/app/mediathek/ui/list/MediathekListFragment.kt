@@ -7,10 +7,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
@@ -52,10 +49,6 @@ class MediathekListFragment : Fragment(),
 	private var _noShowsBinding: ViewNoShowsBinding? = null
 	private val noShowsBinding: ViewNoShowsBinding get() = _noShowsBinding!!
 
-	private var _bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>? = null
-	private val bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
-		get() = _bottomSheetBehavior!!
-
 	private val filterViewModel: MediathekFilterViewModel by activityViewModel()
 	private val viewmodel: MediathekListFragmentViewModel by viewModel {
 		parametersOf(
@@ -65,13 +58,6 @@ class MediathekListFragment : Fragment(),
 		)
 	}
 	private lateinit var adapter: PagedMediathekShowListAdapter
-
-	private val backPressedCallback = object : OnBackPressedCallback(false) {
-		override fun handleOnBackPressed() {
-			// close bottom sheet first, before using system back button setting
-			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-		}
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -86,17 +72,6 @@ class MediathekListFragment : Fragment(),
 
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
-
-		// only consume backPressedCallback when bottom sheet is not collapsed
-		_bottomSheetBehavior = BottomSheetBehavior.from(binding.filterBottomSheet)
-		bottomSheetBehavior.addBottomSheetCallback(object :
-			BottomSheetBehavior.BottomSheetCallback() {
-			override fun onStateChanged(bottomSheet: View, newState: Int) {
-				backPressedCallback.isEnabled = newState != BottomSheetBehavior.STATE_COLLAPSED
-			}
-
-			override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-		})
 
 		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -152,21 +127,10 @@ class MediathekListFragment : Fragment(),
 		}
 	}
 
-	override fun onResume() {
-		super.onResume()
-		requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
-	}
-
-	override fun onPause() {
-		super.onPause()
-		backPressedCallback.remove()
-	}
-
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
 		_noShowsBinding = null
-		_bottomSheetBehavior = null
 	}
 
 	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -176,10 +140,6 @@ class MediathekListFragment : Fragment(),
 
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 		return when (menuItem.itemId) {
-			R.id.menu_filter -> {
-				onFilterMenuClicked()
-				true
-			}
 
 			R.id.menu_refresh -> {
 				onRefresh()
@@ -188,16 +148,6 @@ class MediathekListFragment : Fragment(),
 
 			else -> false
 		}
-	}
-
-	override fun onPrepareMenu(menu: Menu) {
-		val filterIconResId = if (filterViewModel.isFilterApplied.value == true) {
-			R.drawable.ic_sharp_filter_list_off_24
-		} else {
-			R.drawable.ic_sharp_filter_list_24
-		}
-		val filterItem = menu.findItem(R.id.menu_filter)
-		filterItem.setIcon(filterIconResId)
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
@@ -215,14 +165,6 @@ class MediathekListFragment : Fragment(),
 		adapter.refresh()
 	}
 
-	private fun onFilterMenuClicked() {
-		if (filterViewModel.isFilterApplied.value == true) {
-			filterViewModel.clearFilter()
-		} else {
-			toggleFilterBottomSheet()
-		}
-	}
-
 	private fun onQueryInfoResultChanged(queryInfoResult: QueryInfoResult?) {
 		filterViewModel.setQueryInfoResult(queryInfoResult)
 	}
@@ -236,14 +178,6 @@ class MediathekListFragment : Fragment(),
 			showError(R.string.error_mediathek_ssl_error)
 		} else {
 			showError(R.string.error_mediathek_info_not_available)
-		}
-	}
-
-	private fun toggleFilterBottomSheet() {
-		if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-			bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-		} else {
-			bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 		}
 	}
 
