@@ -12,11 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import androidx.preference.PreferenceManager
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
@@ -94,12 +99,12 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		// hide bottom navigation for non main destinations
 		binding.bottomNavigation.isVisible = isMainDestination
 
-		// hide toolbar logo for non main destinations
-		if (isMainDestination) {
-			binding.toolbar.setLogo(R.drawable.ic_zapp_tv_small)
-		} else {
-			binding.toolbar.logo = null
-			binding.toolbar.titleMarginStart = 0
+		binding.toolbar.updateLayoutParams<AppBarLayout.LayoutParams> {
+			scrollFlags = if (isMainDestination) {
+				SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS
+			} else {
+				SCROLL_FLAG_NO_SCROLL
+			}
 		}
 	}
 
