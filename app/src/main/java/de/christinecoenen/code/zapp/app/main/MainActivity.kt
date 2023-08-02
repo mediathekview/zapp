@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		binding.bottomNavigation.setupWithNavController(navController)
 
+		binding.searchView.updateSoftInputMode()
+
 		addMenuProvider(this)
 
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
@@ -98,6 +100,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		// hide bottom navigation for non main destinations
 		binding.bottomNavigation.isVisible = isMainDestination
+
+		// hide search for non main destinations
+		binding.searchbar.isVisible = isMainDestination
 
 		binding.toolbar.updateLayoutParams<AppBarLayout.LayoutParams> {
 			scrollFlags = if (isMainDestination) {
