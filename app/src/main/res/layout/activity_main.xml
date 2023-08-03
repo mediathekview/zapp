@@ -32,7 +32,7 @@
 				android:id="@+id/searchbar"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/search_query_hint_mediathek"
+				android:hint="@string/search_query_hint_zapp"
 				app:defaultScrollFlagsEnabled="false" />
 
 		</com.google.android.material.appbar.AppBarLayout>
@@ -41,6 +41,7 @@
 			android:id="@+id/search_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:hint="@string/search_query_hint_zapp"
 			app:layout_anchor="@id/searchbar">
 			<!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
 		</com.google.android.material.search.SearchView>

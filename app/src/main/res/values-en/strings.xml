@@ -90,6 +90,7 @@
 	<string name="action_mark_unwatched">Mark as unwatched</string>
 	<string name="action_view_all">View all</string>
 
+	<string name="search_query_hint_zapp">Search in Zapp…</string>
 	<string name="search_query_hint_mediathek">Search media center…</string>
 	<string name="search_query_hint_downloads">Search downloads…</string>
 	<string name="search_query_hint_continue_watching">Search started shows…</string>
