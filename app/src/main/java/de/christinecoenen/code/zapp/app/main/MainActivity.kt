@@ -23,6 +23,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+import com.google.android.material.search.SearchView
+import com.google.android.material.search.SearchView.TransitionListener
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
@@ -41,6 +43,15 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private val requestPermissionLauncher =
 		registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
+	private val searchViewTransitionListener =
+		TransitionListener { _, _, newState ->
+			if (newState == SearchView.TransitionState.SHOWN) {
+				binding.bottomNavigation.isVisible = false
+			} else if (newState == SearchView.TransitionState.HIDDEN) {
+				binding.bottomNavigation.isVisible = true
+			}
+		}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -70,7 +81,12 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		binding.bottomNavigation.setupWithNavController(navController)
 
-		binding.searchView.updateSoftInputMode()
+		binding.searchView.addTransitionListener(searchViewTransitionListener)
+		searchViewTransitionListener.onStateChanged(
+			binding.searchView,
+			binding.searchView.currentTransitionState,
+			binding.searchView.currentTransitionState
+		)
 
 		addMenuProvider(this)
 
@@ -129,6 +145,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	override fun onDestroy() {
 		super.onDestroy()
+		binding.searchView.removeTransitionListener(searchViewTransitionListener)
+		navController.removeOnDestinationChangedListener(::onDestinationChanged)
 		_binding = null
 	}
 
