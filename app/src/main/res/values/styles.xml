@@ -41,7 +41,6 @@
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 		<item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
 
-		<item name="actionBarSize">48dp</item>
 		<item name="android:textAllCaps">false</item>
 		<item name="android:statusBarColor">?colorPrimaryContainer</item>
 		<item name="android:windowLightStatusBar">true</item>
@@ -54,8 +53,7 @@
 	</style>
 
 	<!-- may be overwritten with resource selectors -->
-	<style name="AppTheme" parent="AppTheme.Base">
-	</style>
+	<style name="AppTheme" parent="AppTheme.Base" />
 
 	<style name="FullscreenTheme" parent="AppTheme">
 		<item name="android:windowActionBarOverlay">true</item>
@@ -92,16 +90,13 @@
 		<item name="android:text">|</item>
 	</style>
 
-	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
-		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
-		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
-		<item name="titleCentered">true</item>
-		<item name="subtitleCentered">true</item>
-	</style>
+	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.OnSurface" />
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Transparent</item>
 		<item name="android:background">@null</item>
+		<item name="titleCentered">true</item>
+		<item name="subtitleCentered">true</item>
 	</style>
 
 	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
@@ -142,13 +137,6 @@
 		<item name="colorPrimary">?colorOnSurfaceVariant</item>
 	</style>
 
-	<style name="ThemeOverlay.App.Toolbar" parent="">
-		<item name="colorSurface">?colorPrimaryContainer</item>
-		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
-		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
-		<item name="colorControlNormal">?colorOnPrimaryContainer</item>
-	</style>
-
 	<style name="ThemeOverlay.App.Toolbar.Transparent" parent="">
 		<item name="colorOnSurface">@android:color/white</item>
 		<item name="colorOnSurfaceVariant">@android:color/white</item>
@@ -160,10 +148,6 @@
 		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
 		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
 		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>
-	</style>
-
-	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
-		<item name="colorPrimaryContainer">?android:colorBackground</item>
 	</style>
 
 

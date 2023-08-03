@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -110,6 +111,19 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			} else {
 				SCROLL_FLAG_NO_SCROLL
 			}
+		}
+
+		// hide toolbar logo for non main destinations
+		if (isMainDestination) {
+			binding.toolbar.setLogo(R.drawable.ic_zapp_tv_small)
+			binding.toolbar.titleMarginStart = TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP,
+				32f,
+				resources.displayMetrics
+			).toInt()
+		} else {
+			binding.toolbar.logo = null
+			binding.toolbar.titleMarginStart = 0
 		}
 	}
 
