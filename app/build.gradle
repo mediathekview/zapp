@@ -3,9 +3,7 @@ plugins {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 apply plugin: 'kotlin-android'
-apply plugin: 'koin'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.devtools.ksp'
 
@@ -89,6 +87,7 @@ dependencies {
 	// device tests
 	def espresso_version = '3.5.1'
 	debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+	androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
 	androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
 	androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 	androidTestImplementation 'androidx.test:runner:1.5.2'
@@ -177,6 +176,7 @@ dependencies {
 	implementation "com.mikepenz:aboutlibraries:$about_libraries_version"
 
 	// koin dependency injection
+	def koin_version = '3.4.3'
 	implementation "io.insert-koin:koin-android:$koin_version"
 	androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 	testImplementation "io.insert-koin:koin-test:$koin_version"
