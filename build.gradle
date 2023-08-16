@@ -7,18 +7,12 @@ buildscript {
 
 	repositories {
 		google()
-		maven {
-			// about libraries gradle plugin
-			url "https://plugins.gradle.org/m2/"
-		}
 	}
 
 	dependencies {
 		classpath 'com.android.tools.build:gradle:8.1.0'
 
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
-
-		classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libraries_version"
 
 		classpath "io.insert-koin:koin-gradle-plugin:$koin_version"
 
@@ -31,6 +25,7 @@ buildscript {
 
 plugins {
 	id 'com.google.devtools.ksp' version '1.9.0-1.0.12' apply false
+	id 'com.mikepenz.aboutlibraries.plugin' version "$about_libraries_version" apply false
 }
 
 allprojects {
