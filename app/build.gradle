@@ -74,7 +74,7 @@ ksp {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.6.0'
+	def fragment_version = '1.6.1'
 
 	// kotlin
 	implementation 'androidx.core:core-ktx:1.10.1'
@@ -143,7 +143,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.1.0"
+	def media3_version = "1.1.1"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"
@@ -156,7 +156,7 @@ dependencies {
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 	// ACRA crash reporting
-	def acra_version = "5.11.0"
+	def acra_version = "5.11.1"
 	implementation "ch.acra:acra-mail:$acra_version"
 	implementation "ch.acra:acra-dialog:$acra_version"
 
