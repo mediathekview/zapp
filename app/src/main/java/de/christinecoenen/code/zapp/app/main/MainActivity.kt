@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,6 +23,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+import com.google.android.material.search.SearchView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
@@ -40,6 +42,18 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private val requestPermissionLauncher =
 		registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
+	private val onSearchViewPressedCallback = object : OnBackPressedCallback(true) {
+		override fun handleOnBackPressed() {
+			binding.searchView.hide()
+		}
+	}
+
+	private val searchViewTransistionListener = SearchView.TransitionListener { _, _, newState ->
+		val isShowing = newState == SearchView.TransitionState.SHOWN
+		onSearchViewPressedCallback.isEnabled = isShowing
+		binding.bottomNavigation.isVisible = !isShowing
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -69,7 +83,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		binding.bottomNavigation.setupWithNavController(navController)
 
-		binding.searchbar.setOnClickListener { onSearchBarClick() }
+		onBackPressedDispatcher.addCallback(this, onSearchViewPressedCallback)
+
+		binding.searchView.addTransitionListener(searchViewTransistionListener)
 
 		addMenuProvider(this)
 
@@ -116,6 +132,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	override fun onDestroy() {
 		super.onDestroy()
 		navController.removeOnDestinationChangedListener(::onDestinationChanged)
+		_binding?.searchView?.removeTransitionListener(searchViewTransistionListener)
 		_binding = null
 	}
 
