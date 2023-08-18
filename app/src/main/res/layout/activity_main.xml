@@ -40,15 +40,6 @@
 
 		</com.google.android.material.appbar.AppBarLayout>
 
-		<com.google.android.material.search.SearchView
-			android:id="@+id/search_view"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:hint="@string/search_query_hint_zapp"
-			app:layout_anchor="@id/searchbar">
-			<!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
-		</com.google.android.material.search.SearchView>
-
 		<androidx.fragment.app.FragmentContainerView
 			android:id="@+id/nav_host_fragment"
 			android:name="androidx.navigation.fragment.NavHostFragment"
