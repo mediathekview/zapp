@@ -90,7 +90,10 @@
 		<item name="android:text">|</item>
 	</style>
 
-	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.OnSurface" />
+	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
+	</style>
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Transparent</item>
@@ -137,6 +140,13 @@
 		<item name="colorPrimary">?colorOnSurfaceVariant</item>
 	</style>
 
+	<style name="ThemeOverlay.App.Toolbar" parent="">
+		<item name="colorSurface">?colorPrimaryContainer</item>
+		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
+		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
+		<item name="colorControlNormal">?colorOnPrimaryContainer</item>
+	</style>
+
 	<style name="ThemeOverlay.App.Toolbar.Transparent" parent="">
 		<item name="colorOnSurface">@android:color/white</item>
 		<item name="colorOnSurfaceVariant">@android:color/white</item>
@@ -150,6 +160,9 @@
 		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>
 	</style>
 
+	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
+		<item name="colorPrimaryContainer">?android:colorBackground</item>
+	</style>
 
 	<!-- text styles -->
 

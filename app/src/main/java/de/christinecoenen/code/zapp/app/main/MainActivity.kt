@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -115,10 +114,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	) {
 		val isMainDestination = arguments?.getBoolean("is_main_destination", false) == true
 
-		// hide bottom navigation for non main destinations
+		// show bottom navigation for main destinations
 		binding.bottomNavigation.isVisible = isMainDestination
 
-		// hide search for non main destinations
+		// show search for non destinations
 		binding.searchbar.isVisible = isMainDestination
 
 		binding.toolbar.updateLayoutParams<AppBarLayout.LayoutParams> {
@@ -127,19 +126,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			} else {
 				SCROLL_FLAG_NO_SCROLL
 			}
-		}
-
-		// hide toolbar logo for non main destinations
-		if (isMainDestination) {
-			binding.toolbar.setLogo(R.drawable.ic_zapp_tv_small)
-			binding.toolbar.titleMarginStart = TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_DIP,
-				32f,
-				resources.displayMetrics
-			).toInt()
-		} else {
-			binding.toolbar.logo = null
-			binding.toolbar.titleMarginStart = 0
 		}
 	}
 
