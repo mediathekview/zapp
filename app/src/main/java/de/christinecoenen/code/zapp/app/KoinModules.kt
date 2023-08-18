@@ -10,8 +10,8 @@ import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApiServiceFactory
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.WorkManagerDownloadController
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelperViewModel
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.personal.PersonalViewModel
 import de.christinecoenen.code.zapp.app.personal.details.BookmarksViewModel
@@ -21,6 +21,7 @@ import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.Player
+import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
 import de.christinecoenen.code.zapp.persistence.Database
@@ -87,6 +88,7 @@ class KoinModules {
 			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get(), parameters.get(), parameters.get()) }
 			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
+			viewModel { SearchViewModel() }
 		}
 
 	}

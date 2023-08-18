@@ -6,6 +6,12 @@
 	app:startDestination="@id/channelListFragment">
 
 	<fragment
+		android:id="@+id/searchFragment"
+		android:name="de.christinecoenen.code.zapp.app.search.SearchFragment"
+		android:label=" "
+		tools:layout="@layout/search_fragment" />
+
+	<fragment
 		android:id="@+id/channelListFragment"
 		android:name="de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment"
 		android:label="@string/app_name"

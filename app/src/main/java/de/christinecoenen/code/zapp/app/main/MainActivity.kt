@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	}
 
 	private fun onSearchBarClick() {
-
+		navController.navigate(R.id.searchFragment)
 	}
 
 	private fun requestPermissions() {
