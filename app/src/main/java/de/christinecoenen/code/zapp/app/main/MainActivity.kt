@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -25,10 +26,13 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.search.SearchView
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 import de.christinecoenen.code.zapp.utils.system.SystemUiHelper
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : AppCompatActivity(), MenuProvider {
 
@@ -36,6 +40,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	private val binding get() = _binding!!
 
 	private val settingsRepository: SettingsRepository by inject()
+
+	private val searchViewModel: SearchViewModel by viewModel()
 
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
@@ -86,6 +92,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		onBackPressedDispatcher.addCallback(this, onSearchViewPressedCallback)
 
 		binding.searchView.addTransitionListener(searchViewTransistionListener)
+		binding.searchView.editText.addTextChangedListener {
+			searchViewModel.setSearchQuery(it.toString())
+		}
 
 		addMenuProvider(this)
 

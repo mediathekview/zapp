@@ -6,6 +6,7 @@
 	tools:context=".app.search.SearchFragment">
 
 	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/test"
 		style="@style/TextAppearance.AppCompat.Display4"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
