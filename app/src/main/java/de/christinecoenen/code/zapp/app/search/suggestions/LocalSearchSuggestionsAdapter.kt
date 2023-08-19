@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import de.christinecoenen.code.zapp.app.search.StringComparator
 import de.christinecoenen.code.zapp.databinding.SearchSuggestionItemLocalBinding
 
-class LocalSearchSuggestionsAdapter :
+class LocalSearchSuggestionsAdapter(private val listener: Listener) :
 	PagingDataAdapter<String, LocalSearchSuggestionViewHolder>(StringComparator) {
 	override fun onBindViewHolder(holder: LocalSearchSuggestionViewHolder, position: Int) {
 		holder.setSuggestion(getItem(position)!!)
@@ -18,7 +18,16 @@ class LocalSearchSuggestionsAdapter :
 	): LocalSearchSuggestionViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = SearchSuggestionItemLocalBinding.inflate(layoutInflater, parent, false)
-		return LocalSearchSuggestionViewHolder(binding)
+		val holder = LocalSearchSuggestionViewHolder(binding)
+
+		binding.root.setOnClickListener {
+			listener.onSuggestionClicked(getItem(holder.bindingAdapterPosition)!!)
+		}
+
+		return holder
 	}
 
+	interface Listener {
+		fun onSuggestionClicked(suggestion: String)
+	}
 }

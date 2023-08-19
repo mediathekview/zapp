@@ -13,7 +13,7 @@ import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnRe
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 
 	private var _binding: SearchFragmentBinding? = null
 	private val binding: SearchFragmentBinding get() = _binding!!
@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
 		}
 
 		// TODO: also display recent search queries
-		localSuggestionsAdapter = LocalSearchSuggestionsAdapter()
+		localSuggestionsAdapter = LocalSearchSuggestionsAdapter(this)
 		binding.suggestions.adapter = localSuggestionsAdapter
 
 		viewLifecycleOwner.launchOnCreated {
@@ -59,6 +59,11 @@ class SearchFragment : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	override fun onSuggestionClicked(suggestion: String) {
+		viewModel.setSearchQuery(suggestion)
+		viewModel.submit()
 	}
 
 }

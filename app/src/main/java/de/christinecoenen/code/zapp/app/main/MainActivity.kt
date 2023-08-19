@@ -29,7 +29,9 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.SystemUiHelper
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -99,6 +101,14 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			it.editText.setOnEditorActionListener { _, _, _ ->
 				onSubmitSearch()
 				return@setOnEditorActionListener false
+			}
+		}
+
+		launchOnCreated {
+			searchViewModel.searchQuery.collectLatest {
+				if (binding.searchView.text.toString() != it) {
+					binding.searchView.setText(it)
+				}
 			}
 		}
 
