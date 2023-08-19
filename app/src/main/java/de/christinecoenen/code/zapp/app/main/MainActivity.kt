@@ -174,6 +174,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	}
 
 	private fun onSubmitSearch() {
+		binding.fragmentSearch.requestFocus()
 		searchViewModel.submit()
 	}
 
