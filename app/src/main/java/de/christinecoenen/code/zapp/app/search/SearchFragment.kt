@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class SearchFragment : Fragment() {
@@ -24,9 +24,20 @@ class SearchFragment : Fragment() {
 	): View {
 		_binding = SearchFragmentBinding.inflate(inflater, container, false)
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		launchOnResumed {
 			viewModel.searchQuery.collectLatest { query ->
-				binding.test.text = query
+				binding.suggestions.text = "Suggestion: " + query
+			}
+		}
+
+		launchOnResumed {
+			viewModel.isSubmitted.collectLatest { isSubmitted ->
+				binding.suggestions.isVisible = !isSubmitted
+				binding.results.isVisible = isSubmitted
+
+				if (isSubmitted) {
+					binding.results.text = "Results for " + viewModel.searchQuery.value
+				}
 			}
 		}
 

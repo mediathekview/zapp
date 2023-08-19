@@ -91,9 +91,15 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		onBackPressedDispatcher.addCallback(this, onSearchViewPressedCallback)
 
-		binding.searchView.addTransitionListener(searchViewTransistionListener)
-		binding.searchView.editText.addTextChangedListener {
-			searchViewModel.setSearchQuery(it.toString())
+		binding.searchView.let {
+			it.addTransitionListener(searchViewTransistionListener)
+			it.editText.addTextChangedListener { editable ->
+				searchViewModel.setSearchQuery(editable.toString())
+			}
+			it.editText.setOnEditorActionListener { _, _, _ ->
+				onSubmitSearch()
+				return@setOnEditorActionListener false
+			}
 		}
 
 		addMenuProvider(this)
@@ -157,8 +163,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 	}
 
-	private fun onSearchBarClick() {
-		navController.navigate(R.id.searchFragment)
+	private fun onSubmitSearch() {
+		searchViewModel.submit()
 	}
 
 	private fun requestPermissions() {

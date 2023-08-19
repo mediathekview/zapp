@@ -9,7 +9,16 @@ class SearchViewModel : ViewModel() {
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
 
+	private val _isSubmitted = MutableStateFlow(false)
+	val isSubmitted = _isSubmitted.asStateFlow()
+
 	fun setSearchQuery(query: String?) {
+		_isSubmitted.tryEmit(false)
 		_searchQuery.tryEmit(query ?: "")
+	}
+
+	fun submit() {
+		_isSubmitted.tryEmit(true)
+		// TODO: save current query
 	}
 }

@@ -6,10 +6,17 @@
 	tools:context=".app.search.SearchFragment">
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/test"
-		style="@style/TextAppearance.AppCompat.Display4"
+		android:id="@+id/suggestions"
+		style="@style/TextAppearance.AppCompat.Display1"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:text="Search!" />
+		android:text="Suggestions!" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/results"
+		style="@style/TextAppearance.AppCompat.Display1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:text="Results!" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
