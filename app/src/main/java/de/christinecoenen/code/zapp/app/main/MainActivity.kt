@@ -98,6 +98,11 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			it.editText.addTextChangedListener { editable ->
 				searchViewModel.setSearchQuery(editable.toString())
 			}
+			it.editText.setOnFocusChangeListener { _, hasFocus ->
+				if (hasFocus) {
+					searchViewModel.enterQueryMode()
+				}
+			}
 			it.editText.setOnEditorActionListener { _, _, _ ->
 				onSubmitSearch()
 				return@setOnEditorActionListener false

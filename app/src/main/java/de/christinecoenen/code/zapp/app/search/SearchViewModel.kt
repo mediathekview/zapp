@@ -49,4 +49,8 @@ class SearchViewModel(private val mediathekRepository: MediathekRepository) : Vi
 		_isSubmitted.tryEmit(true)
 		// TODO: save current query
 	}
+
+	fun enterQueryMode() {
+		_isSubmitted.tryEmit(false)
+	}
 }
