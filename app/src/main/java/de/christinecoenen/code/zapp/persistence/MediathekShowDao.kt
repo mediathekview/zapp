@@ -129,4 +129,7 @@ interface MediathekShowDao {
 
 	@Delete
 	suspend fun delete(show: PersistedMediathekShow)
+
+	@Query("SELECT DISTINCT CASE WHEN topic LIKE :searchQuery THEN topic ELSE title END FROM PersistedMediathekShow WHERE (topic LIKE :searchQuery OR title LIKE :searchQuery)")
+	fun getLocalSearchSuggestions(searchQuery: String): PagingSource<Int, String>
 }
