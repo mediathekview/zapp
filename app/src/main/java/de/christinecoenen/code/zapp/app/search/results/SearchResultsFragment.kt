@@ -53,6 +53,11 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 			true,
 			this
 		)
+		val mediathekResultAdapter = PagedMediathekShowListAdapter(
+			lifecycleScope,
+			true,
+			this
+		)
 
 		// TODO: hide header when there are no results
 		adapter.addAdapter(
@@ -72,13 +77,19 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 				null
 			)
 		)
-		// TODO: display results from api
+		adapter.addAdapter(mediathekResultAdapter)
 
 		binding.results.adapter = adapter
 
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.localShowsResult.collectLatest { localShows ->
 				localShowsResultAdapter.submitData(localShows)
+			}
+		}
+
+		viewLifecycleOwner.launchOnResumed {
+			viewModel.mediathekResult.collectLatest { apiShows ->
+				mediathekResultAdapter.submitData(apiShows)
 			}
 		}
 	}

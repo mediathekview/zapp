@@ -1,13 +1,20 @@
 package de.christinecoenen.code.zapp.app.search
 
+import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
+import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
+import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
+import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,9 +23,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import org.joda.time.DateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SearchViewModel(private val mediathekRepository: MediathekRepository) : ViewModel() {
+class SearchViewModel(
+	private val mediathekRepository: MediathekRepository,
+	private val mediathekApi: IMediathekApiService
+) : ViewModel() {
+
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
 	}
@@ -62,6 +74,31 @@ class SearchViewModel(private val mediathekRepository: MediathekRepository) : Vi
 		.map<PagingData<SortableMediathekShow>, PagingData<UiModel>> { pagingData ->
 			pagingData.map { show ->
 				UiModel.MediathekShowModel(show.mediathekShow, show.sortDate)
+			}
+		}
+		.cachedIn(viewModelScope)
+
+	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
+	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
+
+	val mediathekResult = _searchQuery
+		.map { query ->
+			QueryRequest().apply {
+				size = ITEM_COUNT_PER_PAGE
+				setQueryString(query)
+			}
+		}
+		.flatMapLatest { queryRequest ->
+			Pager(pagingConfig) {
+				MediathekPagingSource(mediathekApi, queryRequest, _mediathekResultInfo)
+			}.flow
+		}
+		.map<PagingData<MediathekShow>, PagingData<UiModel>> { pagingData ->
+			pagingData.map { show ->
+				UiModel.MediathekShowModel(
+					show,
+					DateTime(show.timestamp.toLong() * DateUtils.SECOND_IN_MILLIS)
+				)
 			}
 		}
 		.cachedIn(viewModelScope)
