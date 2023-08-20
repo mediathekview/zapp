@@ -19,6 +19,12 @@ class SearchViewModel(private val mediathekRepository: MediathekRepository) : Vi
 		private const val ITEM_COUNT_PER_PAGE = 30
 	}
 
+	enum class SeachState {
+		None,
+		Query,
+		Results
+	}
+
 	private val pagingConfig = PagingConfig(
 		pageSize = ITEM_COUNT_PER_PAGE,
 		enablePlaceholders = false
@@ -27,8 +33,8 @@ class SearchViewModel(private val mediathekRepository: MediathekRepository) : Vi
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
 
-	private val _isSubmitted = MutableStateFlow(false)
-	val isSubmitted = _isSubmitted.asStateFlow()
+	private val _searchState = MutableStateFlow(SeachState.None)
+	val searchState = _searchState.asStateFlow()
 
 	val localSearchSuggestions = _searchQuery
 		.flatMapLatest { query ->
@@ -41,16 +47,20 @@ class SearchViewModel(private val mediathekRepository: MediathekRepository) : Vi
 		.cachedIn(viewModelScope)
 
 	fun setSearchQuery(query: String?) {
-		_isSubmitted.tryEmit(false)
+		_searchState.tryEmit(SeachState.Query)
 		_searchQuery.tryEmit(query ?: "")
 	}
 
 	fun submit() {
-		_isSubmitted.tryEmit(true)
+		_searchState.tryEmit(SeachState.Results)
 		// TODO: save current query
 	}
 
 	fun enterQueryMode() {
-		_isSubmitted.tryEmit(false)
+		_searchState.tryEmit(SeachState.Query)
+	}
+
+	fun exit() {
+		_searchState.tryEmit(SeachState.None)
 	}
 }

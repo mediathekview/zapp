@@ -18,11 +18,4 @@
 		app:layout_constraintTop_toTopOf="parent"
 		tools:listitem="@layout/search_suggestion_item_local" />
 
-	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/results"
-		style="@style/TextAppearance.AppCompat.Display1"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:text="Results!" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

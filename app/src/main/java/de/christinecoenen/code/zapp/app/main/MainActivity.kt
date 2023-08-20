@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -18,6 +19,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import androidx.navigation.ui.*
 import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.AppBarLayout
@@ -32,6 +34,7 @@ import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.SystemUiHelper
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.drop
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -53,14 +56,23 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private val onSearchViewPressedCallback = object : OnBackPressedCallback(true) {
 		override fun handleOnBackPressed() {
-			binding.searchView.hide()
+			searchViewModel.exit()
 		}
 	}
 
 	private val searchViewTransistionListener = SearchView.TransitionListener { _, _, newState ->
-		val isShowing = newState == SearchView.TransitionState.SHOWN
-		onSearchViewPressedCallback.isEnabled = isShowing
-		binding.bottomNavigation.isVisible = !isShowing
+		val isShown = newState == SearchView.TransitionState.SHOWN
+		val isHidden = newState == SearchView.TransitionState.HIDDEN
+		onSearchViewPressedCallback.isEnabled = isShown
+		binding.bottomNavigation.isVisible = !isShown
+
+		// set correct state when user pressed back button on searchView
+		if (isHidden) {
+			when (navController.currentDestination?.id) {
+				R.id.searchResultsFragment -> searchViewModel.submit()
+				else -> searchViewModel.exit()
+			}
+		}
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,6 +125,32 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			searchViewModel.searchQuery.collectLatest {
 				if (binding.searchView.text.toString() != it) {
 					binding.searchView.setText(it)
+				}
+			}
+		}
+
+		launchOnCreated {
+			searchViewModel.searchState.drop(1).collectLatest { searchState ->
+				val query = binding.searchView.text.toString()
+
+				when (searchState) {
+					SearchViewModel.SeachState.None -> {
+						binding.searchView.hide()
+					}
+
+					SearchViewModel.SeachState.Query -> {
+						binding.searchView.show()
+						binding.searchView.setText(query)
+						binding.searchView.editText.setSelection(query.length)
+					}
+
+					SearchViewModel.SeachState.Results -> {
+						binding.searchView.hide()
+						navController.navigate(R.id.searchResultsFragment,
+							bundleOf("title" to query),
+							navOptions { launchSingleTop = true }
+						)
+					}
 				}
 			}
 		}
