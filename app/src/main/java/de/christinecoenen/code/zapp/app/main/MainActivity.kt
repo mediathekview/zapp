@@ -63,8 +63,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	private val searchViewTransistionListener = SearchView.TransitionListener { _, _, newState ->
 		val isShown = newState == SearchView.TransitionState.SHOWN
 		val isHidden = newState == SearchView.TransitionState.HIDDEN
+
 		onSearchViewPressedCallback.isEnabled = isShown
-		binding.bottomNavigation.isVisible = !isShown
+
+		updateBottomNavigationVisibility()
 
 		// set correct state when user pressed back button on searchView
 		if (isHidden) {
@@ -184,7 +186,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		val isMainDestination = arguments?.getBoolean("is_main_destination", false) == true
 
 		// show bottom navigation for main destinations
-		binding.bottomNavigation.isVisible = isMainDestination
+		updateBottomNavigationVisibility()
 
 		// show search for non destinations
 		binding.searchbar.isVisible = isMainDestination
@@ -234,5 +236,16 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 			requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
 		}
+	}
+
+	private fun updateBottomNavigationVisibility() {
+		val arguments = navController.currentDestination?.arguments
+		val isMainDestination = arguments?.get("is_main_destination")?.defaultValue == true
+
+		val isSearchOverlayVisible =
+			binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWN ||
+				binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWING
+
+		binding.bottomNavigation.isVisible = isMainDestination && !isSearchOverlayVisible
 	}
 }
