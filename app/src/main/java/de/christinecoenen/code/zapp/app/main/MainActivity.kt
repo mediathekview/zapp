@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		binding.bottomNavigation.setupWithNavController(navController)
 
+		onSearchViewPressedCallback.isEnabled = false
 		onBackPressedDispatcher.addCallback(this, onSearchViewPressedCallback)
 
 		binding.searchView.let {
