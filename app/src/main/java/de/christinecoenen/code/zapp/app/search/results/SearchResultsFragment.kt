@@ -11,8 +11,11 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
@@ -52,11 +55,23 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		)
 
 		// TODO: hide header when there are no results
-		adapter.addAdapter(HeaderAdapater(R.string.activity_main_tab_personal, R.drawable.ic_outline_app_shortcut_24, null))
+		adapter.addAdapter(
+			HeaderAdapater(
+				R.string.activity_main_tab_personal,
+				R.drawable.ic_outline_app_shortcut_24,
+				null
+			)
+		)
 		adapter.addAdapter(localShowsResultAdapter)
 
 		// TODO: hide header when there are no results
-		adapter.addAdapter(HeaderAdapater(R.string.activity_main_tab_mediathek, R.drawable.ic_outline_video_library_24, null))
+		adapter.addAdapter(
+			HeaderAdapater(
+				R.string.activity_main_tab_mediathek,
+				R.drawable.ic_outline_video_library_24,
+				null
+			)
+		)
 		// TODO: display results from api
 
 		binding.results.adapter = adapter
@@ -89,7 +104,13 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
-		TODO("Not yet implemented")
+		val directions = SearchResultsFragmentDirections.toMediathekDetailFragment(show)
+		findNavController().navigate(directions)
 	}
 
+	override fun onShowLongClicked(show: MediathekShow, view: View) {
+		ShowMenuHelper(this, show).apply {
+			showContextMenu(view)
+		}
+	}
 }
