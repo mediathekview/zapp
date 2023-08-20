@@ -10,14 +10,20 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
+import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.databinding.SearchResultsFragmentBinding
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchResultsFragment : Fragment(), MenuProvider {
+class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemListener {
 
 	private var _binding: SearchResultsFragmentBinding? = null
 	private val binding: SearchResultsFragmentBinding get() = _binding!!
@@ -38,9 +44,26 @@ class SearchResultsFragment : Fragment(), MenuProvider {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		val adapter = ConcatAdapter()
+		val localShowsResultAdapter = PagedMediathekShowListAdapter(
+			lifecycleScope,
+			true,
+			this
+		)
+
+		// TODO: hide header when there are no results
+		adapter.addAdapter(HeaderAdapater(R.string.activity_main_tab_personal, R.drawable.ic_outline_app_shortcut_24, null))
+		adapter.addAdapter(localShowsResultAdapter)
+
+		// TODO: hide header when there are no results
+		adapter.addAdapter(HeaderAdapater(R.string.activity_main_tab_mediathek, R.drawable.ic_outline_video_library_24, null))
+		// TODO: display results from api
+
+		binding.results.adapter = adapter
+
 		viewLifecycleOwner.launchOnResumed {
-			viewModel.searchQuery.collectLatest { query ->
-				binding.results.text = "Results for: $query"
+			viewModel.localShowsResult.collectLatest { localShows ->
+				localShowsResultAdapter.submitData(localShows)
 			}
 		}
 	}
@@ -63,6 +86,10 @@ class SearchResultsFragment : Fragment(), MenuProvider {
 
 			else -> false
 		}
+	}
+
+	override fun onShowClicked(show: MediathekShow) {
+		TODO("Not yet implemented")
 	}
 
 }
