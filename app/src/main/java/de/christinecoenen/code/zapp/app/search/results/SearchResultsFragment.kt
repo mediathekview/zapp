@@ -19,6 +19,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
+import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.databinding.SearchResultsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -34,6 +35,20 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 
 	private val viewModel: SearchViewModel by activityViewModel()
 
+	private val localShowsResultHeaderAdapater = HeaderAdapater(
+		R.string.activity_main_tab_personal,
+		R.drawable.ic_outline_app_shortcut_24,
+		null
+	)
+	private val mediathekResultHeaderAdapter = HeaderAdapater(
+		R.string.activity_main_tab_mediathek,
+		R.drawable.ic_outline_video_library_24,
+		null
+	)
+
+	private val mediathekResultLoadStatusAdapter =
+		LoadStatusAdapter(R.string.fragment_mediathek_no_results)
+
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -48,7 +63,6 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val adapter = ConcatAdapter()
 		val localShowsResultAdapter = PagedMediathekShowListAdapter(
 			lifecycleScope,
 			true,
@@ -60,25 +74,14 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 			this
 		)
 
-		// TODO: hide header when there are no results
-		adapter.addAdapter(
-			HeaderAdapater(
-				R.string.activity_main_tab_personal,
-				R.drawable.ic_outline_app_shortcut_24,
-				null
-			)
+		val adapter = ConcatAdapter(
+			// TODO: hide header when there are no results
+			localShowsResultHeaderAdapater,
+			localShowsResultAdapter,
+			mediathekResultHeaderAdapter,
+			mediathekResultAdapter,
+			mediathekResultLoadStatusAdapter
 		)
-		adapter.addAdapter(localShowsResultAdapter)
-
-		// TODO: hide header when there are no results
-		adapter.addAdapter(
-			HeaderAdapater(
-				R.string.activity_main_tab_mediathek,
-				R.drawable.ic_outline_video_library_24,
-				null
-			)
-		)
-		adapter.addAdapter(mediathekResultAdapter)
 
 		binding.results.adapter = adapter
 
@@ -91,6 +94,7 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.mediathekResult.collectLatest { apiShows ->
 				mediathekResultAdapter.submitData(apiShows)
+				mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
 			}
 		}
 
