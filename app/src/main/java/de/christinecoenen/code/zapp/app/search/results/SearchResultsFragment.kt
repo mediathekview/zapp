@@ -39,7 +39,7 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		R.string.activity_main_tab_personal,
 		R.drawable.ic_outline_app_shortcut_24,
 		null
-	)
+	).apply { setIsVisible(false) }
 	private val mediathekResultHeaderAdapter = HeaderAdapater(
 		R.string.activity_main_tab_mediathek,
 		R.drawable.ic_outline_video_library_24,
@@ -90,12 +90,17 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 				localShowsResultAdapter.submitData(localShows)
 			}
 		}
+		localShowsResultAdapter.addOnPagesUpdatedListener {
+			localShowsResultHeaderAdapater.setIsVisible(localShowsResultAdapter.itemCount > 0)
+		}
 
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.mediathekResult.collectLatest { apiShows ->
 				mediathekResultAdapter.submitData(apiShows)
-				mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
 			}
+		}
+		mediathekResultAdapter.addOnPagesUpdatedListener {
+			mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
 		}
 
 		(requireActivity() as MainActivity).addToolbarClickedListener(this)

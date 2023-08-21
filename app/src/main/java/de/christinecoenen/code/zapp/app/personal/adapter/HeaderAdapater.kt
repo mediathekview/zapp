@@ -15,6 +15,21 @@ class HeaderAdapater(
 ) : RecyclerView.Adapter<HeaderViewHolder>() {
 
 	private var showMoreButton = false
+	private var isVisible = true
+
+	fun setIsVisible(isVisible: Boolean) {
+		if (this.isVisible == isVisible) {
+			return
+		}
+
+		this.isVisible = isVisible
+
+		if (isVisible) {
+			notifyItemInserted(0)
+		} else {
+			notifyItemRemoved(0)
+		}
+	}
 
 	fun setShowMoreButton(showMoreButton: Boolean) {
 		if (this.showMoreButton == showMoreButton) {
@@ -44,7 +59,7 @@ class HeaderAdapater(
 		holder.bind(labelResId, iconResId, showMoreButton)
 	}
 
-	override fun getItemCount() = 1
+	override fun getItemCount() = if (isVisible) 1 else 0
 
 	fun interface Listener {
 		fun onMoreClicked()
