@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.WeakHashMap
 
 
 class MainActivity : AppCompatActivity(), MenuProvider {
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	private val settingsRepository: SettingsRepository by inject()
 
 	private val searchViewModel: SearchViewModel by viewModel()
+
+	private val toolbarClickListeners = WeakHashMap<ToolbarClickListener, Void>()
 
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
@@ -77,6 +80,14 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		}
 	}
 
+	fun addToolbarClickedListener(listener: ToolbarClickListener) {
+		toolbarClickListeners[listener] = null
+	}
+
+	fun removeToolbarClickedListener(listener: ToolbarClickListener) {
+		toolbarClickListeners.remove(listener)
+	}
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -100,6 +111,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		setSupportActionBar(binding.toolbar)
 		setupActionBarWithNavController(navController, appBarConfiguration)
+
+		binding.toolbar.setOnClickListener {
+			toolbarClickListeners.forEach { it.key.onToolbarClicked() }
+		}
 
 		navController.addOnDestinationChangedListener(::onDestinationChanged)
 
@@ -247,5 +262,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWING
 
 		binding.bottomNavigation.isVisible = isMainDestination && !isSearchOverlayVisible
+	}
+
+	interface ToolbarClickListener {
+		fun onToolbarClicked()
 	}
 }

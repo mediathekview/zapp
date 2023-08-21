@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
@@ -26,7 +26,8 @@ import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnRe
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemListener {
+class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemListener,
+	MainActivity.ToolbarClickListener {
 
 	private var _binding: SearchResultsFragmentBinding? = null
 	private val binding: SearchResultsFragmentBinding get() = _binding!!
@@ -92,10 +93,14 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 				mediathekResultAdapter.submitData(apiShows)
 			}
 		}
+
+		(requireActivity() as MainActivity).addToolbarClickedListener(this)
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+
+		(requireActivity() as MainActivity).removeToolbarClickedListener(this)
 		_binding = null
 	}
 
@@ -112,6 +117,10 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 
 			else -> false
 		}
+	}
+
+	override fun onToolbarClicked() {
+		viewModel.enterQueryMode()
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
