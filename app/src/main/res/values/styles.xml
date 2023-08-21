@@ -94,6 +94,7 @@
 	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
 		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
+		<item name="titleTextAppearance">@style/TextAppearance.Material3.Title.Toolbar</item>
 	</style>
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
@@ -101,6 +102,11 @@
 		<item name="android:background">@null</item>
 		<item name="titleCentered">true</item>
 		<item name="subtitleCentered">true</item>
+	</style>
+
+	<style name="TextAppearance.Material3.Title.Toolbar" parent="TextAppearance.Material3.TitleMedium">
+		<item name="android:textSize">18sp</item>
+		<item name="android:textStyle">normal</item>
 	</style>
 
 	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
