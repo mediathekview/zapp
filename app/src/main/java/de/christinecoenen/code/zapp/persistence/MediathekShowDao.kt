@@ -12,6 +12,18 @@ import org.joda.time.DateTime
 @Dao
 interface MediathekShowDao {
 
+	@RewriteQueriesToDropUnusedColumns
+	@Query(
+		"SELECT * FROM (" +
+			"SELECT *, downloadedAt as sortDate FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) UNION " +
+			"SELECT *, lastPlayedBackAt as sortDate FROM PersistedMediathekShow WHERE playbackPosition UNION " +
+			"SELECT *, bookmarkedAt as sortDate FROM PersistedMediathekShow WHERE bookmarked" +
+			") " +
+			"WHERE topic LIKE :searchQuery OR title LIKE :searchQuery " +
+			"ORDER BY sortDate DESC"
+	)
+	fun getPersonalShows(searchQuery: String): PagingSource<Int, SortableMediathekShow>
+
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
 

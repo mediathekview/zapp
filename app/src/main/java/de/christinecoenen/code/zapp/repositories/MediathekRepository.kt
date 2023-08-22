@@ -18,6 +18,12 @@ import org.joda.time.DateTime
 
 class MediathekRepository(private val database: Database) {
 
+	fun getPersonalShows(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getPersonalShows("%$searchQuery%")
+	}
+
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
 		return database
 			.mediathekShowDao()

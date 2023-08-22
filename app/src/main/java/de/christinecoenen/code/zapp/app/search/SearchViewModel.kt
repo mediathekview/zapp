@@ -67,8 +67,7 @@ class SearchViewModel(
 			if (query.isEmpty()) {
 				flowOf(PagingData.empty())
 			} else {
-				// TODO: fetch bookmarks and other local shows too
-				Pager(pagingConfig) { mediathekRepository.getDownloads(query) }.flow
+				Pager(pagingConfig) { mediathekRepository.getPersonalShows(query) }.flow
 			}
 		}
 		.map<PagingData<SortableMediathekShow>, PagingData<UiModel>> { pagingData ->
