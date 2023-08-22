@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
@@ -75,11 +76,10 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		)
 
 		val adapter = ConcatAdapter(
-			// TODO: hide header when there are no results
 			localShowsResultHeaderAdapater,
 			localShowsResultAdapter,
 			mediathekResultHeaderAdapter,
-			mediathekResultAdapter,
+			mediathekResultAdapter.withLoadStateFooter(FooterLoadStateAdapter(mediathekResultAdapter::retry)),
 			mediathekResultLoadStatusAdapter
 		)
 
