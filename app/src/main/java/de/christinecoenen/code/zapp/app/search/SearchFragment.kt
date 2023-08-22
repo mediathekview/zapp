@@ -56,9 +56,12 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 		_binding = null
 	}
 
-	override fun onSuggestionClicked(suggestion: String) {
+	override fun onSuggestionSelected(suggestion: String) {
 		viewModel.setSearchQuery(suggestion)
 		viewModel.submit()
 	}
 
+	override fun onSuggestionInserted(suggestion: String) {
+		viewModel.setSearchQuery(suggestion)
+	}
 }

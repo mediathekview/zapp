@@ -26,13 +26,17 @@ class LocalSearchSuggestionsAdapter(
 		val holder = LocalSearchSuggestionViewHolder(binding, typeIcon)
 
 		binding.root.setOnClickListener {
-			listener.onSuggestionClicked(getItem(holder.bindingAdapterPosition)!!)
+			listener.onSuggestionSelected(getItem(holder.bindingAdapterPosition)!!)
+		}
+		binding.insertButton.setOnClickListener {
+			listener.onSuggestionInserted(getItem(holder.bindingAdapterPosition)!!)
 		}
 
 		return holder
 	}
 
 	interface Listener {
-		fun onSuggestionClicked(suggestion: String)
+		fun onSuggestionSelected(suggestion: String)
+		fun onSuggestionInserted(suggestion: String)
 	}
 }
