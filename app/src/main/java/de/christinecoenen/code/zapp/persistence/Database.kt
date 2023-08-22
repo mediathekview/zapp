@@ -68,4 +68,6 @@ abstract class Database : RoomDatabase() {
 
 	abstract fun mediathekShowDao(): MediathekShowDao
 
+	abstract fun searchDao(): SearchDao
+
 }

@@ -17,6 +17,7 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.SearchRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +28,7 @@ import org.joda.time.DateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModel(
+	private val searchRepository: SearchRepository,
 	private val mediathekRepository: MediathekRepository,
 	private val mediathekApi: IMediathekApiService
 ) : ViewModel() {
@@ -57,7 +59,7 @@ class SearchViewModel(
 			if (query.isEmpty()) {
 				flowOf(PagingData.empty())
 			} else {
-				Pager(pagingConfig) { mediathekRepository.getLocalSearchSuggestions(query) }.flow
+				Pager(pagingConfig) { searchRepository.getLocalSearchSuggestions(query) }.flow
 			}
 		}
 		.cachedIn(viewModelScope)

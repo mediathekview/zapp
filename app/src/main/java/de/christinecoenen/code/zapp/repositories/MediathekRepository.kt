@@ -229,10 +229,4 @@ class MediathekRepository(private val database: Database) {
 			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
-
-	fun getLocalSearchSuggestions(searchQuery: String): PagingSource<Int, String> {
-		return database
-			.mediathekShowDao()
-			.getLocalSearchSuggestions("%$searchQuery%")
-	}
 }

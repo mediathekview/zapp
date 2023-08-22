@@ -27,6 +27,7 @@ import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
 import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.SearchRepository
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
@@ -55,6 +56,7 @@ class KoinModules {
 			single { ChannelRepository(androidContext(), get(), get()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
+			single { SearchRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single {
 				WorkManagerDownloadController(
@@ -88,7 +90,7 @@ class KoinModules {
 			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get(), parameters.get(), parameters.get()) }
 			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
-			viewModel { SearchViewModel(get(), get()) }
+			viewModel { SearchViewModel(get(), get(), get()) }
 		}
 
 	}
