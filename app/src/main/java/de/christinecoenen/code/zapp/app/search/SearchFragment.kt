@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ConcatAdapter
+import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.search.suggestions.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
@@ -18,8 +20,6 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 
 	private val viewModel: SearchViewModel by activityViewModel()
 
-	private lateinit var localSuggestionsAdapter: LocalSearchSuggestionsAdapter
-
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -32,9 +32,17 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		// TODO: also display recent search queries
-		localSuggestionsAdapter = LocalSearchSuggestionsAdapter(this)
-		binding.suggestions.adapter = localSuggestionsAdapter
+		val lastQueriesAdapter =
+			LocalSearchSuggestionsAdapter(this, R.drawable.ic_history_24)
+		val localSuggestionsAdapter =
+			LocalSearchSuggestionsAdapter(this, R.drawable.ic_baseline_search_24)
+		binding.suggestions.adapter = ConcatAdapter(lastQueriesAdapter, localSuggestionsAdapter)
+
+		viewLifecycleOwner.launchOnCreated {
+			viewModel.lastQueries.collectLatest { pagingData ->
+				lastQueriesAdapter.submitData(pagingData)
+			}
+		}
 
 		viewLifecycleOwner.launchOnCreated {
 			viewModel.localSearchSuggestions.collectLatest { pagingData ->

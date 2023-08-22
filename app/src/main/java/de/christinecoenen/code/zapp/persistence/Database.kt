@@ -1,15 +1,24 @@
 package de.christinecoenen.code.zapp.persistence
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import de.christinecoenen.code.zapp.models.search.SearchQuery
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 
-@Database(entities = [PersistedMediathekShow::class], version = 3, exportSchema = true)
+@Database(
+	entities = [PersistedMediathekShow::class, SearchQuery::class],
+	version = 4,
+	autoMigrations = [
+		AutoMigration(from = 3, to = 4),
+	],
+	exportSchema = true
+)
 @TypeConverters(DownloadStatusConverter::class, DateTimeConverter::class)
 abstract class Database : RoomDatabase() {
 

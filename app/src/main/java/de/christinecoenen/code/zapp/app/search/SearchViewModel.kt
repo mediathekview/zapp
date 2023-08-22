@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -35,6 +36,7 @@ class SearchViewModel(
 
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
+		private const val LAST_QUERIES_COUNT = 4
 	}
 
 	enum class SeachState {
@@ -61,6 +63,12 @@ class SearchViewModel(
 			} else {
 				Pager(pagingConfig) { searchRepository.getLocalSearchSuggestions(query) }.flow
 			}
+		}
+		.cachedIn(viewModelScope)
+
+	val lastQueries = _searchQuery
+		.flatMapLatest { query ->
+			Pager(pagingConfig) { searchRepository.getLastQueries(query, LAST_QUERIES_COUNT) }.flow
 		}
 		.cachedIn(viewModelScope)
 
@@ -111,7 +119,10 @@ class SearchViewModel(
 
 	fun submit() {
 		_searchState.tryEmit(SeachState.Results)
-		// TODO: save current query
+
+		viewModelScope.launch {
+			searchRepository.saveQuery(_searchQuery.value)
+		}
 	}
 
 	fun enterQueryMode() {
