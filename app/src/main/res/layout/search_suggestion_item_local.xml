@@ -45,6 +45,7 @@
 		android:layout_marginStart="12dp"
 		android:padding="0dp"
 		android:scaleX="-1"
+		android:scrollbars="none"
 		app:icon="@drawable/ic_arrow_outward_24"
 		app:iconTint="@color/colorOnSurfaceVariant"
 		app:layout_constraintBottom_toBottomOf="@id/type_icon"
