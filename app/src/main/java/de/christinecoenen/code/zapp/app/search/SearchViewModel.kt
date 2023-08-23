@@ -53,6 +53,9 @@ class SearchViewModel(
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
 
+	private val _submittedSearchQuery = MutableStateFlow("")
+	val submittedSearchQuery = _submittedSearchQuery.asStateFlow()
+
 	private val _searchState = MutableStateFlow(SeachState.None)
 	val searchState = _searchState.asStateFlow()
 
@@ -72,7 +75,7 @@ class SearchViewModel(
 		}
 		.cachedIn(viewModelScope)
 
-	val localShowsResult = _searchQuery
+	val localShowsResult = _submittedSearchQuery
 		.flatMapLatest { query ->
 			if (query.isEmpty()) {
 				flowOf(PagingData.empty())
@@ -90,7 +93,7 @@ class SearchViewModel(
 	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
 	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
 
-	val mediathekResult = _searchQuery
+	val mediathekResult = _submittedSearchQuery
 		.map { query ->
 			QueryRequest().apply {
 				size = ITEM_COUNT_PER_PAGE
@@ -119,6 +122,7 @@ class SearchViewModel(
 
 	fun submit() {
 		_searchState.tryEmit(SeachState.Results)
+		_submittedSearchQuery.tryEmit(_searchQuery.value)
 
 		viewModelScope.launch {
 			searchRepository.saveQuery(_searchQuery.value)
@@ -129,7 +133,11 @@ class SearchViewModel(
 		_searchState.tryEmit(SeachState.Query)
 	}
 
-	fun exit() {
+	fun exitToNone() {
+		_searchState.tryEmit(SeachState.None)
+	}
+
+	fun exitToResults() {
 		_searchState.tryEmit(SeachState.None)
 	}
 }

@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private val onSearchViewPressedCallback = object : OnBackPressedCallback(true) {
 		override fun handleOnBackPressed() {
-			searchViewModel.exit()
+			searchViewModel.exitToNone()
 		}
 	}
 
@@ -83,8 +83,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		// set correct state when user pressed back button on searchView
 		if (isHidden) {
 			when (navController.currentDestination?.id) {
-				R.id.searchResultsFragment -> searchViewModel.submit()
-				else -> searchViewModel.exit()
+				R.id.searchResultsFragment -> searchViewModel.exitToResults()
+				else -> searchViewModel.exitToNone()
 			}
 		}
 	}
