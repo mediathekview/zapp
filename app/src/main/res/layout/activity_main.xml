@@ -47,6 +47,7 @@
 			android:layout_height="match_parent"
 			android:hint="@string/search_query_hint_zapp"
 			android:textAppearance="@style/TextAppearance.Material3.Title.Toolbar"
+			app:animateMenuItems="false"
 			app:layout_anchor="@id/searchbar">
 
 			<androidx.fragment.app.FragmentContainerView

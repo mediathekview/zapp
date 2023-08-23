@@ -105,6 +105,7 @@
 	<string name="menu_feedback">Feedback</string>
 	<string name="menu_filter">Filter</string>
 	<string name="menu_program_info">Programm-Informationen</string>
+	<string name="menu_voice_search">Sprachsuche</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>

@@ -1,13 +1,16 @@
 package de.christinecoenen.code.zapp.app.main
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -56,6 +59,12 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private val requestPermissionLauncher =
 		registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
+	private val voiceInputLauncher =
+		registerForActivityResult(
+			ActivityResultContracts.StartActivityForResult(),
+			::onVoiceInputReceived
+		)
 
 	private val onSearchViewPressedCallback = object : OnBackPressedCallback(true) {
 		override fun handleOnBackPressed() {
@@ -137,6 +146,11 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				onSubmitSearch()
 				return@setOnEditorActionListener false
 			}
+			it.setOnMenuItemClickListener {
+				startVoiceSearch()
+				true
+			}
+			it.inflateMenu(R.menu.search)
 		}
 
 		launchOnCreated {
@@ -237,6 +251,25 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	private fun onSubmitSearch() {
 		binding.fragmentSearch.requestFocus()
 		searchViewModel.submit()
+	}
+
+	private fun startVoiceSearch() {
+		val voiceInputIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+			putExtra(
+				RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+			)
+		}
+		voiceInputLauncher.launch(voiceInputIntent)
+	}
+
+	private fun onVoiceInputReceived(result: ActivityResult) {
+		if (result.resultCode == RESULT_OK) {
+			val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+				.let { it?.get(0) ?: "" }
+			searchViewModel.setSearchQuery(spokenText)
+			searchViewModel.submit()
+		}
 	}
 
 	private fun requestPermissions() {
