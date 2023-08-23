@@ -1,5 +1,6 @@
 # v-next
 * Sender Funk.net zur Mediathek hinzugefügt
+* Sender SR zur Mediathek hinzugefügt
 
 # 8.3.2
 * Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen

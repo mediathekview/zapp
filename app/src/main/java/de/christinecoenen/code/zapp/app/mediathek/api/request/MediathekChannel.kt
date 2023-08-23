@@ -10,6 +10,7 @@ enum class MediathekChannel(val apiId: String) {
 	Arte("ARTE.DE"),
 	Dw("DW"),
 	DreiSat("3Sat"),
+	Sr("SR"),
 	Srf("SRF"),
 	Mdr("MDR"),
 	KiKa("KiKA"),
