@@ -1,3 +1,6 @@
+# v-next
+* Sender Funk.net zur Mediathek hinzugefügt
+
 # 8.3.2
 * Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen
 * Behoben, dass nach einer Bildschirmdrehung der falsche Tab zu sehen ist

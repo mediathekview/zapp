@@ -17,8 +17,9 @@ enum class MediathekChannel(val apiId: String) {
 	Rbb("RBB"),
 	Orf("ORF"),
 	Wdr("WDR"),
-	RbTv("rbtv"),
 	Phoenix("PHOENIX"),
+	Funk("Funk.net"),
+	RbTv("rbtv"),
 	ZdfTivi("ZDF-tivi"),
 
 }
