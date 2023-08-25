@@ -151,7 +151,8 @@ class SearchViewModel(
 	}
 
 	fun submit() {
-		_searchState.tryEmit(SeachState.Results)
+		exitToResults()
+
 		_submittedSearchQuery.tryEmit(_searchQuery.value)
 
 		viewModelScope.launch {
@@ -165,9 +166,15 @@ class SearchViewModel(
 
 	fun exitToNone() {
 		_searchState.tryEmit(SeachState.None)
+		clearTempData()
 	}
 
 	fun exitToResults() {
-		_searchState.tryEmit(SeachState.None)
+		_searchState.tryEmit(SeachState.Results)
+	}
+
+	private fun clearTempData() {
+		_searchQuery.tryEmit("")
+		_channels.tryEmit(emptySet())
 	}
 }

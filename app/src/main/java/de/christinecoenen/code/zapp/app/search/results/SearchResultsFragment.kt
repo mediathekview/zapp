@@ -113,6 +113,11 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		_binding = null
 	}
 
+	override fun onDestroy() {
+		super.onDestroy()
+		viewModel.exitToNone()
+	}
+
 	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 		menuInflater.inflate(R.menu.search_results_fragment, menu)
 	}
