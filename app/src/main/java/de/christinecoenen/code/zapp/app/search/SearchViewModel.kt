@@ -146,7 +146,9 @@ class SearchViewModel(
 	}
 
 	fun setSearchQuery(query: String?) {
-		_searchState.tryEmit(SeachState.Query)
+		if (_searchState.value != SeachState.Query) {
+			throw IllegalStateException("setting search query is only allowed in query mode")
+		}
 		_searchQuery.tryEmit(query ?: "")
 	}
 

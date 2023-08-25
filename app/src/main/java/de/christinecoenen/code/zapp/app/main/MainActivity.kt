@@ -135,7 +135,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		binding.searchView.let {
 			it.addTransitionListener(searchViewTransistionListener)
 			it.editText.addTextChangedListener { editable ->
-				searchViewModel.setSearchQuery(editable.toString())
+				if (searchViewModel.searchState.value == SearchViewModel.SeachState.Query) {
+					searchViewModel.setSearchQuery(editable.toString())
+				}
 			}
 			it.editText.setOnFocusChangeListener { _, hasFocus ->
 				if (hasFocus) {
