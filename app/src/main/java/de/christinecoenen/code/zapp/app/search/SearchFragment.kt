@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.search.suggestions.ChipsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
@@ -32,6 +33,19 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		// chips
+		val chipsAdapter = ChipsAdapter()
+		binding.chips.adapter = chipsAdapter
+
+		viewLifecycleOwner.launchOnCreated {
+			viewModel.channelSuggestions.collectLatest { channelSuggestions ->
+				chipsAdapter.submitList(channelSuggestions.map { it.apiId })
+			}
+		}
+
+		chipsAdapter.submitList(listOf("ARD", "3Sat", "< 45 min."))
+
+		// suggestions
 		val lastQueriesAdapter =
 			LocalSearchSuggestionsAdapter(this, R.drawable.ic_history_24)
 		val localSuggestionsAdapter =

@@ -11,6 +11,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
@@ -58,6 +59,14 @@ class SearchViewModel(
 
 	private val _searchState = MutableStateFlow(SeachState.None)
 	val searchState = _searchState.asStateFlow()
+
+	val channelSuggestions = _searchQuery
+		.map { query -> query.split("""\s+""".toRegex()) }
+		.map { words ->
+			MediathekChannel.values().filter { channel ->
+				words.any { channel.apiId.contains(it, true) }
+			}
+		}
 
 	val localSearchSuggestions = _searchQuery
 		.flatMapLatest { query ->
