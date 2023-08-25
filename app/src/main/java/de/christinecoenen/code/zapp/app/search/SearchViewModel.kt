@@ -55,8 +55,8 @@ class SearchViewModel(
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
 
-	private val searchQueryWords =
-		_searchQuery.map { query -> query.trim().split("""\s+""".toRegex()) }
+	private val lastWord =
+		_searchQuery.map { query -> query.split("""\s+""".toRegex()).last() }
 
 	private val _channels = MutableStateFlow(emptySet<MediathekChannel>())
 	val channels = _channels.asStateFlow()
@@ -67,14 +67,14 @@ class SearchViewModel(
 	private val _searchState = MutableStateFlow(SeachState.None)
 	val searchState = _searchState.asStateFlow()
 
-	val channelSuggestions = combine(searchQueryWords, _channels) { words, channels ->
-		if (words.size == 1 && words[0].isEmpty()) {
+	val channelSuggestions = combine(lastWord, _channels) { lastWord, channels ->
+		if (lastWord.isEmpty()) {
 			return@combine emptySet<MediathekChannel>()
 		}
 
 		val remainingChannels = MediathekChannel.values().toSet().minus(channels)
 		remainingChannels.filter { channel ->
-			words.any { channel.apiId.contains(it, true) }
+			channel.apiId.contains(lastWord, true)
 		}
 	}
 
@@ -136,7 +136,9 @@ class SearchViewModel(
 
 	fun addChannel(channel: MediathekChannel) {
 		_channels.tryEmit(_channels.value.plus(channel))
-		// TODO: remove channel (part) from search query
+
+		// remove channel (part) from end of query
+		_searchQuery.tryEmit(_searchQuery.value.replace("\\S+$".toRegex(), ""))
 	}
 
 	fun removeChannel(channel: MediathekChannel) {
