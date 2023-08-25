@@ -4,24 +4,61 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.databinding.SearchChipBinding
 
-class ChipsAdapter : ListAdapter<String, ChipViewHolder>(Differ) {
+class ChipsAdapter<T : ChipsAdapter.ChipContent>(
+	private val type: Type,
+	private val listener: Listener<T>
+) :
+	ListAdapter<T, ChipViewHolder>(getDiffer()) {
 
 	companion object {
-		val Differ = object : DiffUtil.ItemCallback<String>() {
-			override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
-			override fun areContentsTheSame(oldItem: String, newItem: String) = oldItem == newItem
+		fun <T : ChipContent> getDiffer(): DiffUtil.ItemCallback<T> {
+			return object : DiffUtil.ItemCallback<T>() {
+				override fun areItemsTheSame(oldItem: T, newItem: T) =
+					oldItem.content == newItem.content
+
+				override fun areContentsTheSame(oldItem: T, newItem: T) =
+					oldItem.label == newItem.label
+			}
 		}
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChipViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)
 		val binding = SearchChipBinding.inflate(layoutInflater, parent, false)
-		return ChipViewHolder(binding)
+		val holder = ChipViewHolder(binding, type)
+
+		binding.root.setOnClickListener {
+			listener.onChipClick(getItem(holder.bindingAdapterPosition))
+		}
+
+		return holder
 	}
 
 	override fun onBindViewHolder(holder: ChipViewHolder, position: Int) {
-		holder.setText(getItem(position))
+		holder.setContent(getItem(position))
+	}
+
+	interface ChipContent {
+		val content: Any
+		val label: String
+	}
+
+	data class ChannelChipContent(
+		val channel: MediathekChannel,
+	) : ChipContent {
+		override val content = channel
+		override val label = channel.apiId
+	}
+
+	interface Listener<T : ChipContent> {
+		fun onChipClick(content: T)
+	}
+
+	enum class Type {
+		Filter,
+		Suggestion
 	}
 }

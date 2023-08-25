@@ -22,6 +22,7 @@ import de.christinecoenen.code.zapp.repositories.SearchRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -54,19 +55,23 @@ class SearchViewModel(
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
 
+	private val searchQueryWords = _searchQuery.map { query -> query.split("""\s+""".toRegex()) }
+
+	private val _channels = MutableStateFlow(emptySet<MediathekChannel>())
+	val channels = _channels.asStateFlow()
+
 	private val _submittedSearchQuery = MutableStateFlow("")
 	val submittedSearchQuery = _submittedSearchQuery.asStateFlow()
 
 	private val _searchState = MutableStateFlow(SeachState.None)
 	val searchState = _searchState.asStateFlow()
 
-	val channelSuggestions = _searchQuery
-		.map { query -> query.split("""\s+""".toRegex()) }
-		.map { words ->
-			MediathekChannel.values().filter { channel ->
-				words.any { channel.apiId.contains(it, true) }
-			}
+	val channelSuggestions = combine(searchQueryWords, _channels) { words, channels ->
+		val remainingChannels = MediathekChannel.values().toSet().minus(channels)
+		remainingChannels.filter { channel ->
+			words.any { channel.apiId.contains(it, true) }
 		}
+	}
 
 	val localSearchSuggestions = _searchQuery
 		.flatMapLatest { query ->
@@ -123,6 +128,15 @@ class SearchViewModel(
 			}
 		}
 		.cachedIn(viewModelScope)
+
+	fun addChannel(channel: MediathekChannel) {
+		_channels.tryEmit(_channels.value.plus(channel))
+		// TODO: remove channel (part) from search query
+	}
+
+	fun removeChannel(channel: MediathekChannel) {
+		_channels.tryEmit(_channels.value.minus(channel))
+	}
 
 	fun setSearchQuery(query: String?) {
 		_searchState.tryEmit(SeachState.Query)

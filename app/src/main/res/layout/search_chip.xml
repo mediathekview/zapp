@@ -7,7 +7,6 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_marginHorizontal="2dp"
-	android:checkable="false"
 	app:chipIcon="@drawable/ic_baseline_search_24"
 	app:chipIconEnabled="true"
 	tools:text="ARD" />

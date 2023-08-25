@@ -34,16 +34,43 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 		super.onViewCreated(view, savedInstanceState)
 
 		// chips
-		val chipsAdapter = ChipsAdapter()
-		binding.chips.adapter = chipsAdapter
+		val selectedChannelsChipsAdapter = ChipsAdapter(
+			ChipsAdapter.Type.Filter,
+			object : ChipsAdapter.Listener<ChipsAdapter.ChannelChipContent> {
+				override fun onChipClick(content: ChipsAdapter.ChannelChipContent) {
+					viewModel.removeChannel(content.channel)
+				}
+			})
+		val suggestedChannelsChipsAdapter = ChipsAdapter(
+			ChipsAdapter.Type.Suggestion,
+			object : ChipsAdapter.Listener<ChipsAdapter.ChannelChipContent> {
+				override fun onChipClick(content: ChipsAdapter.ChannelChipContent) {
+					viewModel.addChannel(content.channel)
+				}
+			})
+		binding.chips.adapter = ConcatAdapter(
+			selectedChannelsChipsAdapter,
+			suggestedChannelsChipsAdapter
+		)
 
 		viewLifecycleOwner.launchOnCreated {
-			viewModel.channelSuggestions.collectLatest { channelSuggestions ->
-				chipsAdapter.submitList(channelSuggestions.map { it.apiId })
+			viewModel.channels.collectLatest { channels ->
+				selectedChannelsChipsAdapter.submitList(channels.map {
+					ChipsAdapter.ChannelChipContent(
+						it
+					)
+				})
 			}
 		}
-
-		chipsAdapter.submitList(listOf("ARD", "3Sat", "< 45 min."))
+		viewLifecycleOwner.launchOnCreated {
+			viewModel.channelSuggestions.collectLatest { channelSuggestions ->
+				suggestedChannelsChipsAdapter.submitList(channelSuggestions.map {
+					ChipsAdapter.ChannelChipContent(
+						it
+					)
+				})
+			}
+		}
 
 		// suggestions
 		val lastQueriesAdapter =
