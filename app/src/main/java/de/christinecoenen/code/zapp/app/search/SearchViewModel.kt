@@ -55,7 +55,8 @@ class SearchViewModel(
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
 
-	private val searchQueryWords = _searchQuery.map { query -> query.split("""\s+""".toRegex()) }
+	private val searchQueryWords =
+		_searchQuery.map { query -> query.trim().split("""\s+""".toRegex()) }
 
 	private val _channels = MutableStateFlow(emptySet<MediathekChannel>())
 	val channels = _channels.asStateFlow()
@@ -67,6 +68,10 @@ class SearchViewModel(
 	val searchState = _searchState.asStateFlow()
 
 	val channelSuggestions = combine(searchQueryWords, _channels) { words, channels ->
+		if (words.size == 1 && words[0].isEmpty()) {
+			return@combine emptySet<MediathekChannel>()
+		}
+
 		val remainingChannels = MediathekChannel.values().toSet().minus(channels)
 		remainingChannels.filter { channel ->
 			words.any { channel.apiId.contains(it, true) }
