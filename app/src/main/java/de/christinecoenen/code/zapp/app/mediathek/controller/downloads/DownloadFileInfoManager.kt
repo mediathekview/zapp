@@ -18,7 +18,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.util.*
+import java.util.UUID
 
 class DownloadFileInfoManager(
 	private val applicationContext: Context,
@@ -80,12 +80,20 @@ class DownloadFileInfoManager(
 					resolver.delete(filePathUri, null, null)
 				} catch (e: SecurityException) {
 					// maybe file is already deleted - that's okay
+				} catch (e: IllegalArgumentException) {
+					// most likely the external volume has been removed -
+					// its not worth raising this error
+					Timber.e(e)
 				}
 
 				DownloadStatus.COMPLETED -> {
 					val videoContentValues = ContentValues()
 					videoContentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
-					resolver.update(filePathUri, videoContentValues, null, null)
+					try {
+						resolver.update(filePathUri, videoContentValues, null, null)
+					} catch (e: SecurityException) {
+						// maybe file is already deleted - that's okay - db entry will adapt
+					}
 				}
 
 				else -> {}
