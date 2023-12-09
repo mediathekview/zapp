@@ -76,7 +76,7 @@ ksp {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.6.1'
+	def fragment_version = '1.6.2'
 
 	// kotlin
 	implementation 'androidx.core:core-ktx:1.12.0'
@@ -108,7 +108,7 @@ dependencies {
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.8.0'
+	implementation 'androidx.activity:activity-ktx:1.8.1'
 	implementation 'androidx.appcompat:appcompat:1.6.1'
 	implementation 'com.google.android.material:material:1.10.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -126,7 +126,7 @@ dependencies {
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 	// room database
-	def room_version = "2.6.0"
+	def room_version = "2.6.1"
 	implementation "androidx.room:room-runtime:$room_version"
 	implementation "androidx.room:room-paging:$room_version"
 	ksp "androidx.room:room-compiler:$room_version"
@@ -142,11 +142,11 @@ dependencies {
 	implementation 'io.noties.markwon:core:4.6.2'
 
 	// work manager
-	def work_version = "2.8.1"
+	def work_version = "2.9.0"
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.1.1"
+	def media3_version = "1.2.0"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"
