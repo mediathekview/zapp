@@ -9,4 +9,10 @@
 		android:icon="@drawable/ic_outline_share_24"
 		app:showAsAction="never"/>
 
+	<item
+		android:id="@+id/menu_program_info"
+		android:icon="@drawable/ic_outline_info_24"
+		android:title="@string/menu_program_info"
+		app:showAsAction="never" />
+
 </menu>

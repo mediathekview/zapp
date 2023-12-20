@@ -33,7 +33,7 @@ class ChannelViewHolder(
 	}
 
 	override fun onLongClick(view: View): Boolean {
-		channel?.let { listener.onItemLongClick(it, view) }
+		channel?.let { listener.onItemLongClick(it, currentViewModel!!, view) }
 		return true
 	}
 
