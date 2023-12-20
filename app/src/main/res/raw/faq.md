@@ -1,54 +1,54 @@
-## The videos are not playing - what should I do?
+## Die Videos laufen nicht – was soll ich tun?
 
-If the video streams are not playable on Android, it can have several reasons:
+Wenn die Video-Streams auf Android nicht abspielbar sind, kann das mehrere Gründe haben:
 
-- Maybe you're using Zapp outside of Germany. Some broadcasters block access to their streams or individual shows for users outside Germany. If you are not sure, go to the corresponding broadcaster's website on your PC and see if the live stream is running there. If you get an error message about **geoblocking**, Zapp can't do anything about it at the moment.
+- Vielleicht benutzt du Zapp außerhalb Deutschlands. Einige Sender blockieren den Zugriff auf ihre Streams oder einzelne Sendungen für Nutzer außerhalb Deutschlands. Wenn du dir nicht sicher bist, rufe die entsprechende Sender-Webseite auf deinem PC auf und schaue, ob der Live-Stream dort läuft. Wenn du dort eine Fehlermeldung über **Geoblocking** bekommst, kann Zapp daran im Moment leider nichts ändern.
 
-- Maybe your internet connection is slow, unreliable or blocked by a firewall.
+- Vielleicht ist deine Internet-Verbindung langsam, unzuverlässig oder wird von einer Firewall blockiert.
 
-- Maybe your device doesn't support the video codec. You can start streaming in another video player by pressing the menu button after selecting a channel. Click "Share" and open the stream with Google Video Player. If Google Video Player can't play the stream either, the video format is almost certainly not supported by your device.
-
-
-## Why don't I see program information for some stations?
-
-Most broadcasters do not have a public API to retrieve program information. Because of this, Zapp tries to search the broadcasters' websites for the shows that are currently running. This approach is not very reliable and can quickly break if a web page is changed or updated.
+- Vielleicht unterstützt dein Gerät den Video-Codec nicht. Du kannst den Stream in einem anderen Videoplayer starten, indem du den Menü-Button drückst, nachdem du einen Sender ausgewählt hast. Klicke auf "Teilen" und öffne den Stream mit Google Video Player. Wenn Google Video Player den Stream auch nicht abspielen kann, wird das Videoformat ziemlich sicher nicht von deinem Gerät unterstützt.
 
 
-## Why are some channels like RTL or Pro7 missing?
+## Warum sehe für einige Sender keine Programminformationen?
 
-Zapp only streams public broadcasters. Channels like RTL and Pro7 belong to private companies and may not be streamed without payment.
-
-
-## Why are shows missing from the Mediathek (media library)?
-
-Zapp is part of [MediathekView](https://mediathekview.de/) and therefore uses the Mediathek API of [MediathekViewWeb](https://mediathekviewweb.de/). However, most broadcasters do not have a public API to query broadcast information. Therefore it can happen that channels or individual programs are missing or program information is incomplete.
+Die meisten Sender haben keine öffentliche API, um Sendungsinformationen abfragen zu können. Deswegen versucht Zapp die Webseiten der Sender nach den gerade laufenden Sendungen zu durchsuchen. Dieser Ansatz ist nicht besonders zuverlässig und kann schnell kaputt gehen, wenn eine Webseite geändert oder aktualisiert wird.
 
 
-## Why are programs shown twice in the Mediathek (media library)?
+## Warum fehlen einige Sender wie RTL oder Pro7?
 
-It often happens that the same program is uploaded in the media libraries of different broadcasters. Since Zapp displays all available shows, it sometimes looks like shows are displayed twice.
-
-
-## Why are subtitles not displayed even though I have them enabled?
-
-Sometimes subtitles are delivered by media libraries in an unexpected format, so Zapp can't display them. Unfortunately, there is no way to detect these errors beforehand. However, it is often enough to wait a bit for the subtitles to finish loading.
+Zapp streamt nur öffentlich-rechtliche Sender. Sender wie RTL und Pro7 gehören privaten Firmen und dürfen ohne Bezahlung nicht gestreamt werden.
 
 
-## Can Zapp show the subtitles of the live streams?
+## Warum fehlen Sendungen in der Mediathek?
 
-Some broadcasters like ZDF offer subtitles in some programs of the live streams. Zapp shows the subtitles automatically if they have been activated system-wide in the Android settings. Here you can also customize the appearance of the subtitles on some systems.
-
-
-## Why does a channel always show the same video snippet?
-
-The channel is no longer available at the address Zapp expects and needs to be updated. Please contact the developers so that the problem can be solved.
+Zapp ist Teil von [MediathekView](https://mediathekview.de/) und nutzt deshalb die Mediathek-API von [MediathekViewWeb](https://mediathekviewweb.de/). Die meisten Sender haben allerdings keine öffentliche API, um Sendungsinformationen abfragen zu können. Daher kann es passieren, dass Sender oder einzelne Sendungen fehlen oder Sendungsinformationen auch einmal unvollständig sind.
 
 
-## Why is the video image cropped or has black borders left and right?
+## Warum werden in der Mediathek Sendungen doppelt angezeigt?
 
-Your display has another aspect ratio than the video. You can use the pinch gesture (pinch two fingers together) to display the video smaller or larger.
+Es kommt öfter vor, dass die gleiche Sendung in den Mediatheken verschiedener Sender hochgeladen wird. Da Zapp alle verfügbaren Sendungen anzeigt, sieht es dann manchmal so aus, als würden Sendungen doppelt angezeigt.
 
 
-## Why doesn't Zapp support Chromecast?
+## Warum werden keine Untertitel angezeigt, obwohl ich sie aktiviert habe?
 
-Chromecast can only be included in Android apps via a non-open source library. Since these libraries are not allowed to be distributed via F-Droid, Zapp cannot support Chromecast.
+Manchmal werden Untertitel von den Mediatheken in einem unerwarteten Format ausgeliefert, sodass Zapp sie nicht darstellen kann. Leider gibt es keinen Weg, diese Fehler vorher zu erkennen. Oft reicht es aber schon aus, ein bisschen zu warten, bis die Untertitel fertig geladen haben.
+
+
+## Kann Zapp die Untertitel der Live-Streams anzeigen?
+
+Manche Sender wie das ZDF bieten Untertitel in einigen Sendungen der Live-Streams. Zapp zeigt die Untertitel automatisch an, wenn sie Systemweit in den Android-Einstellungen aktiviert wurden. Hier kann auf manchen Systemen auch das Aussehen der Untertitel angepasst werden.
+
+
+## Warum wird in einem Sender immer der gleiche Videoschnipsel angezeigt?
+
+Der Sender ist nicht mehr unter der Adresse erreichbar, die Zapp erwartet und muss aktualisiert werden. Bitte wende dich an die Entwickler, damit das Problem gelöst werden kann.
+
+
+## Warum ist das Video-Bild angeschnitten oder hat schwarze Balken links und rechts?
+
+Dein Bildschirm hat ein anderes Seitenverhälnis, als das abgepielte Video. Du kannst das Video mithilfe der Pinch-Geste (zwei Finger zusammen- oder außeinander ziehen) größer oder kleiner ziehen.
+
+
+## Warum unterstützt Zapp kein Chromecast?
+
+Chromecast kann nur über eine nicht-quelloffene Bibliothek in Android-Apps eingebunden werden. Da diese Bibliotheken nicht über F-Droid verteilt werden dürfen, kann Zapp Chromecast nicht unterstützen.
