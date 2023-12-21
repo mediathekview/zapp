@@ -308,7 +308,7 @@ class MediathekListFragment : Fragment(),
 	private fun createChannelFilterView(inflater: LayoutInflater) {
 		val chipMap = mutableMapOf<MediathekChannel, Chip>()
 
-		for (channel in MediathekChannel.values()) {
+		for (channel in MediathekChannel.entries) {
 			// create view
 			val chip = inflater.inflate(
 				R.layout.view_mediathek_filter_channel_chip,
@@ -351,7 +351,7 @@ class MediathekListFragment : Fragment(),
 	}
 
 	private fun onChannelFilterLongClick(clickedChannel: MediathekChannel) {
-		for (channel in MediathekChannel.values()) {
+		for (channel in MediathekChannel.entries) {
 			val isChecked = clickedChannel == channel
 			viewmodel.setChannelFilter(channel, isChecked)
 		}
