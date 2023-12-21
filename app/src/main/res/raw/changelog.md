@@ -4,6 +4,7 @@
 * Zapp auf Android 14 vorbereitet
 * FAQ und Changelog ins Englische übersetzt (danke an eUgEntOptIc)
 * Programm-Informationen sind per Kontext-Menüs der Sender-Liste aufrufbar
+* Sender-Logos aktualisiert
 
 # 8.3.2
 * Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen
