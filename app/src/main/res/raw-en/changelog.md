@@ -1,3 +1,13 @@
+# 8.4.0
+* Switched from exoplayer to new media 3 library
+* Fixed crash on app start if an sd card with downloaded shows had been removed
+* Prepared Zapp for Android 14
+* Translated FAQ and changelog to English (thanks to eUgEntOptIc)
+* Program information can be accessed via the channel list's context menus
+* Updated channel logos
+* Added Funk.net to mediathek
+* Added SR to mediathek
+
 # 8.3.2
 * Fixed download notifications not opening the show
 * Fixed wrong tab displayed after device rotation
