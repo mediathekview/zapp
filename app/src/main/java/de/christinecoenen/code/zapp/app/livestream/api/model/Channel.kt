@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.livestream.api.model
 import androidx.annotation.Keep
 
 @Keep
-@Suppress("unused")
 enum class Channel(private val id: String) {
 
 	DAS_ERSTE("das_erste"),

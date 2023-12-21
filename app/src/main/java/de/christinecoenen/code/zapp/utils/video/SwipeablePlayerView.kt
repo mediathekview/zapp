@@ -16,9 +16,9 @@ import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.AspectRatioListener
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.AspectRatioFrameLayout.AspectRatioListener
+import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import kotlin.math.abs
@@ -28,7 +28,7 @@ import kotlin.math.min
 class SwipeablePlayerView @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null
-) : StyledPlayerView(context, attrs), OnTouchListener, AspectRatioListener {
+) : PlayerView(context, attrs), OnTouchListener, AspectRatioListener {
 
 	companion object {
 		private const val INDICATOR_WIDTH = 300
@@ -90,14 +90,6 @@ class SwipeablePlayerView @JvmOverloads constructor(
 
 		subtitleView?.setUserDefaultStyle()
 		subtitleView?.setUserDefaultTextSize()
-	}
-
-	fun toggleControls() {
-		if (isControllerFullyVisible) {
-			hideController()
-		} else {
-			showController()
-		}
 	}
 
 	private fun adjustBrightness(yPercent: Float) {
@@ -192,12 +184,18 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			return super.onDown(e)
 		}
 
+		// removing this leads to a compilation error with sdk 33
+		@Suppress("NOTHING_TO_OVERRIDE")
 		override fun onScroll(
-			e1: MotionEvent,
+			e1: MotionEvent?,
 			e2: MotionEvent,
 			distanceX: Float,
 			distanceY: Float
 		): Boolean {
+			if (e1 == null) {
+				return false
+			}
+
 			if (!canUseWipeControls || e1.y <= forbiddenAreaSizeTop) {
 				return super.onScroll(e1, e2, distanceX, distanceY)
 			}

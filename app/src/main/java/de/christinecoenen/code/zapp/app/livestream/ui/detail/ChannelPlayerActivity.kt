@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.core.view.isVisible
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
@@ -54,7 +53,10 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_program_info -> {
-				val modalBottomSheet = ProgramInfoSheetDialogFragment(programInfoViewModel)
+				val modalBottomSheet = ProgramInfoSheetDialogFragment(
+					programInfoViewModel,
+					ProgramInfoSheetDialogFragment.Size.Small
+				)
 				modalBottomSheet.show(supportFragmentManager, ProgramInfoSheetDialogFragment.TAG)
 				return true
 			}

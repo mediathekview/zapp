@@ -8,7 +8,7 @@ sealed class UiModel {
 
 	class MediathekShowModel(
 		val show: MediathekShow,
-		val date: DateTime
+		date: DateTime
 	) : UiModel() {
 
 		val localDate = LocalDate(date)

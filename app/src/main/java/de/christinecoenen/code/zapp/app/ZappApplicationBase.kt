@@ -34,6 +34,7 @@ abstract class ZappApplicationBase : Application() {
 
 	private lateinit var koin: Koin
 
+	@Suppress("unused")
 	fun reportError(throwable: Throwable?) {
 		if (ACRA.isInitialised) {
 			ACRA.errorReporter.handleException(throwable)

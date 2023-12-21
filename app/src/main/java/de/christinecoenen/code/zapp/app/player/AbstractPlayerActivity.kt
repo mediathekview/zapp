@@ -13,7 +13,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
@@ -30,7 +30,7 @@ import timber.log.Timber
 abstract class AbstractPlayerActivity :
 	AppCompatActivity(),
 	MenuProvider,
-	StyledPlayerView.ControllerVisibilityListener,
+	PlayerView.ControllerVisibilityListener,
 	SleepTimer.Listener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
@@ -196,36 +196,6 @@ abstract class AbstractPlayerActivity :
 				true
 			}
 			else -> false
-		}
-	}
-
-	override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-		return when (keyCode) {
-			KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD, KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD, KeyEvent.KEYCODE_MEDIA_REWIND -> {
-				player?.rewind()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_STEP_FORWARD, KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> {
-				player?.fastForward()
-				true
-			}
-			KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_MEDIA_TOP_MENU -> {
-				binding.video.toggleControls()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_PLAY -> {
-				resumeActivity()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-				pauseActivity()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_CLOSE -> {
-				finish()
-				true
-			}
-			else -> super.onKeyUp(keyCode, event)
 		}
 	}
 

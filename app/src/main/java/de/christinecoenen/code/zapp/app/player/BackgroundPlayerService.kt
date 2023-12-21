@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.player
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -14,10 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.ui.DefaultMediaDescriptionAdapter
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
-import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
+import androidx.media3.ui.DefaultMediaDescriptionAdapter
+import androidx.media3.ui.PlayerNotificationManager
+import androidx.media3.ui.PlayerNotificationManager.BitmapCallback
+import androidx.media3.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
@@ -87,7 +86,7 @@ class BackgroundPlayerService : LifecycleService(),
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		super.onStartCommand(intent, flags, startId)
 		handleIntent(intent)
-		return Service.START_STICKY
+		return START_STICKY
 	}
 
 	override fun onTaskRemoved(rootIntent: Intent) {
@@ -169,7 +168,7 @@ class BackgroundPlayerService : LifecycleService(),
 	private fun movePlaybackToForeground() {
 		isPlaybackInBackground = false
 
-		stopForeground(Service.STOP_FOREGROUND_REMOVE)
+		stopForeground(STOP_FOREGROUND_REMOVE)
 		stopSelf()
 
 		playerNotificationManager?.apply {
@@ -207,26 +206,26 @@ class BackgroundPlayerService : LifecycleService(),
 				it.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
 				it.setColorized(true)
 				it.setPlayer(player.exoPlayer)
-				it.setMediaSessionToken(player.mediaSession.sessionToken)
+				it.setMediaSessionToken(player.mediaSession.sessionCompatToken)
 			}
 	}
 
-	override fun getCurrentContentTitle(player: com.google.android.exoplayer2.Player): String {
+	override fun getCurrentContentTitle(player: androidx.media3.common.Player): String {
 		return this.player.currentVideoInfo!!.title
 	}
 
-	override fun createCurrentContentIntent(player: com.google.android.exoplayer2.Player): PendingIntent {
+	override fun createCurrentContentIntent(player: androidx.media3.common.Player): PendingIntent {
 		Timber.i("createCurrentContentIntent: %s", foregroundActivityIntent!!.component)
 
 		// a notification click will bring us back to the activity that launched it
 		return getNotificationCLickedPendingIntent()
 	}
 
-	override fun getCurrentContentText(player: com.google.android.exoplayer2.Player): String? =
+	override fun getCurrentContentText(player: androidx.media3.common.Player): String? =
 		this.player.currentVideoInfo!!.subtitle
 
 	override fun getCurrentLargeIcon(
-		player: com.google.android.exoplayer2.Player,
+		player: androidx.media3.common.Player,
 		callback: BitmapCallback
 	): Bitmap? = null
 
@@ -238,7 +237,7 @@ class BackgroundPlayerService : LifecycleService(),
 		if (ongoing) {
 			startForeground(notificationId, notification)
 		} else {
-			stopForeground(Service.STOP_FOREGROUND_REMOVE)
+			stopForeground(STOP_FOREGROUND_REMOVE)
 		}
 	}
 

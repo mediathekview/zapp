@@ -17,7 +17,7 @@ class CrashFragment : ErrorSupportFragment() {
 
 		val dialogConfiguration =
 			helper.config.getPluginConfiguration(DialogConfiguration::class.java)
-		val iconResId = dialogConfiguration.resIcon ?: R.drawable.ic_zapp_tv_small;
+		val iconResId = dialogConfiguration.resIcon ?: R.drawable.ic_zapp_tv_small
 
 		title = dialogConfiguration.title
 		message = dialogConfiguration.text

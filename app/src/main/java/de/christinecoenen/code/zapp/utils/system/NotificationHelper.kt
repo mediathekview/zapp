@@ -26,7 +26,7 @@ object NotificationHelper {
 		return ActivityCompat.checkSelfPermission(
 			context,
 			Manifest.permission.POST_NOTIFICATIONS
-		) == PackageManager.PERMISSION_GRANTED;
+		) == PackageManager.PERMISSION_GRANTED
 	}
 
 	@JvmStatic

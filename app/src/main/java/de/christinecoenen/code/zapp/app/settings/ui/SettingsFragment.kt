@@ -7,7 +7,6 @@ import androidx.core.os.LocaleListCompat
 import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.color.DynamicColors
 import com.jakewharton.processphoenix.ProcessPhoenix
