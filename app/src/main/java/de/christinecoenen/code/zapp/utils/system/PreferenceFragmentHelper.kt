@@ -88,8 +88,8 @@ class PreferenceFragmentHelper(
 		preferenceFragment.lifecycle.removeObserver(this)
 	}
 
-	override fun onResume(owner: LifecycleOwner) {
-		super.onResume(owner)
+	override fun onStart(owner: LifecycleOwner) {
+		super.onStart(owner)
 
 		shortcutPreference?.onPreferenceChangeListener = shortcutPreference
 		dynamicColorsPreference?.onPreferenceChangeListener = dynamicColorChangeListener
@@ -98,8 +98,8 @@ class PreferenceFragmentHelper(
 		channelSelectionPreference?.onPreferenceClickListener = channelSelectionClickListener
 	}
 
-	override fun onPause(owner: LifecycleOwner) {
-		super.onPause(owner)
+	override fun onDestroy(owner: LifecycleOwner) {
+		super.onDestroy(owner)
 
 		shortcutPreference?.onPreferenceChangeListener = null
 		dynamicColorsPreference?.onPreferenceChangeListener = null
