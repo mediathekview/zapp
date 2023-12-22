@@ -4,9 +4,11 @@
 	app:title="@string/activity_settings_title">
 
 	<ListPreference
-		android:defaultValue="de"
-		android:key="@string/pref_key_language"
-		android:title="@string/pref_language_title"
+		android:defaultValue="live"
+		android:entries="@array/available_tabs_names_tv"
+		android:key="@string/pref_key_start_tab"
+		android:title="@string/pref_start_tab_title"
+		app:entryValues="@array/available_tabs_values_tv"
 		app:useSimpleSummaryProvider="true" />
 
 </androidx.preference.PreferenceScreen>
