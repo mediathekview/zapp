@@ -1,0 +1,3 @@
+* Player UI hides correctly automatically when coming out of background playback
+* Fixed crashes on startup on older Android TV devices
+* Click on download finished notification works again on Android 12

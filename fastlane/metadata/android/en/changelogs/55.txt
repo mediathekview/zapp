@@ -1,0 +1,5 @@
+* Video player interface is hidden automatically faster
+* Fixed playback errors for some mediathek shows
+* Fixed deactivated download button for some mediathek shows
+* Fixed app crash in mediathek list
+* Fixed background playback not killed by the system after a few minutes

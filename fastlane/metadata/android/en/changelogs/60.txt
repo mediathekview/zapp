@@ -1,0 +1,2 @@
+* Standby mode on Android TV devices no longer activates during video playback
+* Standby mode is no longer activated when returning from background playback
