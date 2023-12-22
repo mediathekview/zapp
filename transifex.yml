@@ -1,0 +1,26 @@
+git:
+  filters:
+    # main strings.xml
+    - filter_type: file
+      file_format: ANDROID
+      source_file: app/src/main/res/values/strings.xml
+      source_language: de
+      translation_files_expression: "app/src/main/res/values-<lang>/strings.xml"
+    # FAQ & changelog
+    - filter_type: dir
+      file_format: GITHUBMARKDOWN
+      source_file_dir: app/src/main/res/raw
+      source_file_extension: md
+      source_language: de
+      translation_files_expression: "app/src/main/res/raw-<lang>"
+    # Fastlane metadata
+    - filter_type: dir
+      file_format: GITHUBMARKDOWN
+      source_file_dir: fastlane/metadata/android/de
+      source_file_extension: txt
+      source_language: de
+      translation_files_expression: "fastlane/metadata/android/<lang>"
+
+  settings:
+    language_mapping:
+      en_US: en-US
