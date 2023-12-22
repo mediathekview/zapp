@@ -3,7 +3,7 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 
 data class ChannelFilter(
-	private val channelMap: MutableMap<MediathekChannel, Boolean> = MediathekChannel.values()
+	private val channelMap: MutableMap<MediathekChannel, Boolean> = MediathekChannel.entries
 		.associateWith { false }
 		.toMutableMap()
 ) {

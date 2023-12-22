@@ -163,7 +163,7 @@
 	</style>
 
 	<style name="ThemeOverlay.App.BottomNavigationView" parent="">
-		<item name="colorSurface">?colorPrimaryContainer</item>
+		<item name="colorSurfaceContainer">?colorPrimaryContainer</item>
 		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
 		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
 		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>

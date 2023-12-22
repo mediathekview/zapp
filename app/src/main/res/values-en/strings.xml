@@ -5,8 +5,8 @@
 	<string name="activity_main_tab_live">Live</string>
 	<string name="activity_main_tab_mediathek">Media Center</string>
 	<string name="activity_main_tab_downloads">Downloads</string>
-	<string name="activity_main_tab_bookmarks">Bookmarks</string>
 	<string name="activity_main_tab_continue_watching">Continue Watching</string>
+	<string name="activity_main_tab_bookmarks">Bookmarks</string>
 	<string name="activity_main_tab_personal">My Shows</string>
 
 	<string name="about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
@@ -178,4 +178,5 @@
 	<string name="notification_download_downloading_size">%1$s / %2$s</string>
 	<string name="notification_download_complete">Download complete</string>
 	<string name="notification_download_failed">Download failed</string>
+
 </resources>

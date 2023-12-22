@@ -71,10 +71,10 @@ data class MediathekShow(
 		get() = !subtitleUrl.isNullOrEmpty()
 
 	val supportedDownloadQualities: List<Quality>
-		get() = Quality.values().filter(::hasDownloadQuality)
+		get() = Quality.entries.filter(::hasDownloadQuality)
 
 	val supportedStreamingQualities
-		get() = Quality.values().filter(::hasStreamingQuality)
+		get() = Quality.entries.filter(::hasStreamingQuality)
 
 	fun getVideoUrl(quality: Quality): String? {
 		return when (quality) {

@@ -1,0 +1,1 @@
+* Fixed crash caused by changed channel order

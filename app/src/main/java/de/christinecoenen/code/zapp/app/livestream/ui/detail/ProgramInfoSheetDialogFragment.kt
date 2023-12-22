@@ -13,8 +13,13 @@ import de.christinecoenen.code.zapp.databinding.ProgramInfoSheetDialogFragmentBi
 import kotlin.math.roundToInt
 
 class ProgramInfoSheetDialogFragment(
-	private val programInfoViewModel: ProgramInfoViewModel
+	private val programInfoViewModel: ProgramInfoViewModel,
+	private val size: Size,
 ) : BottomSheetDialogFragment() {
+
+	enum class Size {
+		Small, Large
+	}
 
 	private var _binding: ProgramInfoSheetDialogFragmentBinding? = null
 	private val binding: ProgramInfoSheetDialogFragmentBinding get() = _binding!!
@@ -32,7 +37,9 @@ class ProgramInfoSheetDialogFragment(
 		programInfoViewModel.time.observe(this, ::onTimeChanged)
 		programInfoViewModel.progressPercent.observe(this, ::onProgressPercentChanged)
 
-		binding.root.viewTreeObserver.addOnGlobalLayoutListener(::updatePeekHeight)
+		if (size == Size.Small) {
+			binding.root.viewTreeObserver.addOnGlobalLayoutListener(::setMinimalPeekHeight)
+		}
 
 		return binding.root
 	}
@@ -81,7 +88,7 @@ class ProgramInfoSheetDialogFragment(
 	/**
 	 * Sheet should reveal most important info only on initial show.
 	 */
-	private fun updatePeekHeight() {
+	private fun setMinimalPeekHeight() {
 		val behavior = (dialog as BottomSheetDialog).behavior
 		behavior.peekHeight = binding.showProgress.bottom + 20
 	}

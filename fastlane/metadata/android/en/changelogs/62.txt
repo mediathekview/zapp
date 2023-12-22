@@ -1,0 +1,13 @@
+* Support for Android 13 (monochrome icon, per-app language preference)
+* Language selection in app settings
+* Cancelled support for Android 7
+* Fixed null values in search result count
+* Android TV receives up to date stream addresses
+* Fixed jumping of the mediathek list during scrolling
+* Overhauled download functionality
+* Failed downloads will be resumed automatically
+* Searchable download list
+* Searchable "continue watching" list
+* Searchable bookmarks
+* Modern network stack for video playback
+* Better error messages during video playback

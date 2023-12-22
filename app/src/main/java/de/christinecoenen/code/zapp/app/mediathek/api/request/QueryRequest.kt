@@ -24,7 +24,7 @@ class QueryRequest : Serializable {
 	private val queries: MutableList<Query> = mutableListOf()
 
 	@Transient
-	private val channels = MediathekChannel.values().toMutableSet()
+	private val channels = MediathekChannel.entries.toMutableSet()
 
 	@Transient
 	private var queryString: String = ""
@@ -65,7 +65,7 @@ class QueryRequest : Serializable {
 		// Instead we filter for all available channels. This also excludes all channels
 		// not defined in MediathekChannel enum (like ARTE.FR).
 		if (channels.isEmpty()) {
-			channels.addAll(MediathekChannel.values().toMutableSet())
+			channels.addAll(MediathekChannel.entries.toTypedArray())
 		}
 
 		// set all currently allowed channels

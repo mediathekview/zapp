@@ -17,7 +17,7 @@ class DownloadStatusConverter {
 		@TypeConverter
 		@JvmStatic
 		fun toDownloadStatus(value: Int): DownloadStatus {
-			return DownloadStatus.values()[value]
+			return DownloadStatus.entries[value]
 		}
 
 	}

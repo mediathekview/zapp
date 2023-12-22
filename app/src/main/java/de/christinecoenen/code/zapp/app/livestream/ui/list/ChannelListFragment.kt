@@ -9,7 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
+import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoSheetDialogFragment
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
@@ -71,19 +73,39 @@ class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 		startActivity(intent)
 	}
 
-	override fun onItemLongClick(channel: ChannelModel, view: View) {
+	override fun onItemLongClick(
+		channel: ChannelModel,
+		programInfoViewModel: ProgramInfoViewModel,
+		view: View
+	) {
 		val menu = PopupMenu(context, view, Gravity.TOP or Gravity.END)
 		menu.inflate(R.menu.channel_list_fragment_context)
 		menu.show()
-		menu.setOnMenuItemClickListener { menuItem -> onContextMenuItemClicked(menuItem, channel) }
+		menu.setOnMenuItemClickListener { menuItem ->
+			onContextMenuItemClicked(menuItem, channel, programInfoViewModel)
+		}
 	}
 
-	private fun onContextMenuItemClicked(menuItem: MenuItem, channel: ChannelModel): Boolean {
+	private fun onContextMenuItemClicked(
+		menuItem: MenuItem,
+		channel: ChannelModel,
+		programInfoViewModel: ProgramInfoViewModel
+	): Boolean {
 		return when (menuItem.itemId) {
 			R.id.menu_share -> {
 				channel.playExternally(requireContext())
 				true
 			}
+
+			R.id.menu_program_info -> {
+				val modalBottomSheet = ProgramInfoSheetDialogFragment(
+					programInfoViewModel,
+					ProgramInfoSheetDialogFragment.Size.Large
+				)
+				modalBottomSheet.show(parentFragmentManager, ProgramInfoSheetDialogFragment.TAG)
+				true
+			}
+
 			else -> false
 		}
 	}

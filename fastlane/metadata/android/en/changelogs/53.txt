@@ -1,0 +1,5 @@
+* extended mediathek search: filtern by channel and show duration
+* removed search suggestions
+* display channel logo in playback notifications
+* use highest available quality when sharing mediathek shows
+* add faq entry regarding chromecast support
