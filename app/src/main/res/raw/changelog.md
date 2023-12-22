@@ -1,3 +1,33 @@
+# 8.4.0
+* Von Exoplayer auf neue Media-3-Bibliothek umgestiegen
+* Absturz beim Starten von Zapp behoben, wenn vorher eine SD-Karte mit Downloads entfernt wurde
+* Zapp auf Android 14 vorbereitet
+* FAQ und Changelog ins Englische übersetzt (danke an eUgEntOptIc)
+* Programm-Informationen sind per Kontext-Menüs der Sender-Liste aufrufbar
+* Sender-Logos aktualisiert
+* Sender Funk.net zur Mediathek hinzugefügt
+* Sender SR zur Mediathek hinzugefügt
+
+# 8.3.2
+* Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen
+* Behoben, dass nach einer Bildschirmdrehung der falsche Tab zu sehen ist
+
+# 8.3.1
+* Absturz bei geänderter Sender-Anordnung gefixt
+
+# 8.3.0
+* Einstellungen im Material-Design (danke an Bnyro)
+* Schlummerfunktion (danke an Bnyro)
+* Exo-Player-Update - sollte Playback-Probleme auf einigen Geräten beheben
+* Möglichkeit, Start-Tab in den Einstellungen zu setzen (danke an Bnyro)
+* Videos nutzen Untertitel-Stil aus den Android-Systemeinstellungen
+
+# 8.2.0
+* Unterstützung für dynamische Gerätefarben
+* Absturz in Mediathek-Liste behoben
+* Darstellungsfehler in der Mediathekliste auf Android TV behoben
+* Zappen zwischen Live-Streams ist wieder möglich!
+
 # 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet
 * Der Video-Fortschritt wird während der Wiedergabe regelmäßig gespeichert

@@ -18,6 +18,7 @@ import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.tv.player.PlayerActivity
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -106,13 +107,9 @@ class MediathekListFragment : Fragment(),
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
-		lifecycleScope.launchWhenResumed {
+		launchOnCreated {
 			saveAndOpenShow(show)
 		}
-	}
-
-	override fun onShowLongClicked(show: MediathekShow, view: View) {
-		// no action
 	}
 
 	private suspend fun saveAndOpenShow(show: MediathekShow) {

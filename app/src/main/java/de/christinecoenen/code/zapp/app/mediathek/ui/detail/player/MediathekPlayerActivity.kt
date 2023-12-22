@@ -17,6 +17,8 @@ class MediathekPlayerActivity : AbstractPlayerActivity() {
 
 	private var persistedShow: PersistedMediathekShow? = null
 
+	override val shouldShowOverlay = false
+
 
 	private fun onShowLoaded(persistedMediathekShow: PersistedMediathekShow) {
 		persistedShow = persistedMediathekShow
@@ -33,7 +35,7 @@ class MediathekPlayerActivity : AbstractPlayerActivity() {
 
 	override suspend fun getVideoInfoFromIntent(intent: Intent): VideoInfo {
 		val persistedShowId = intent.getIntExtra("persisted_show_id", 0)
-		
+
 		val persistedMediathekShow = mediathekRepository
 			.getPersistedShow(persistedShowId)
 			.first()

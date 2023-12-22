@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.color.DynamicColors
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
@@ -33,6 +34,7 @@ abstract class ZappApplicationBase : Application() {
 
 	private lateinit var koin: Koin
 
+	@Suppress("unused")
 	fun reportError(throwable: Throwable?) {
 		if (ACRA.isInitialised) {
 			ACRA.errorReporter.handleException(throwable)
@@ -55,6 +57,11 @@ abstract class ZappApplicationBase : Application() {
 
 		val settingsRepository = SettingsRepository(this)
 		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
+
+		// apply dynamic colors to all activities if enabled by user
+		if (settingsRepository.dynamicColors) {
+			DynamicColors.applyToActivitiesIfAvailable(this)
+		}
 	}
 
 	override fun attachBaseContext(base: Context?) {
@@ -75,7 +82,7 @@ abstract class ZappApplicationBase : Application() {
 		initAcra {
 			buildConfigClass = BuildConfig::class.java
 			reportFormat = StringFormat.KEY_VALUE_LIST
-			reportContent = arrayOf(
+			reportContent = listOf(
 				ReportField.REPORT_ID,
 				ReportField.USER_EMAIL,
 				ReportField.USER_COMMENT,
@@ -89,7 +96,7 @@ abstract class ZappApplicationBase : Application() {
 				ReportField.SHARED_PREFERENCES,
 				ReportField.STACK_TRACE
 			)
-			excludeMatchingSharedPreferencesKeys = arrayOf(
+			excludeMatchingSharedPreferencesKeys = listOf(
 				"default.acra.legacyAlreadyConvertedToJson",
 				"default.acra.lastVersionNr",
 				"default.acra.legacyAlreadyConvertedTo4.8.0"

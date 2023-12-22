@@ -8,6 +8,9 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
+import com.google.android.material.color.DynamicColors
+import com.jakewharton.processphoenix.ProcessPhoenix
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 
@@ -19,6 +22,7 @@ class PreferenceFragmentHelper(
 	companion object {
 
 		private const val PREF_SHORTCUTS = "pref_shortcuts"
+		private const val PREF_DYNAMIC_COLORS = "dynamic_colors"
 		private const val PREF_UI_MODE = "pref_ui_mode"
 		private const val PREF_LANGUAGE = "pref_key_language"
 		private const val PREF_CHANNEL_SELECTION = "pref_key_channel_selection"
@@ -26,11 +30,17 @@ class PreferenceFragmentHelper(
 	}
 
 	private var shortcutPreference: ShortcutPreference? = null
+	private var dynamicColorsPreference: SwitchPreferenceCompat? = null
 	private var uiModePreference: ListPreference? = null
 	private var languagePreference: ListPreference? = null
 	private var channelSelectionPreference: Preference? = null
 
 	private var channelSelectionClickListener: OnPreferenceClickListener? = null
+
+	private val dynamicColorChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+		ProcessPhoenix.triggerRebirth(preferenceFragment.requireContext())
+		true
+	}
 
 	private val uiModeChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
 		val uiMode = settingsRepository.prefValueToUiMode(newValue as String?)
@@ -53,6 +63,7 @@ class PreferenceFragmentHelper(
 		val preferenceScreen = preferenceFragment.preferenceScreen
 
 		shortcutPreference = preferenceScreen.findPreference(PREF_SHORTCUTS)
+		dynamicColorsPreference = preferenceScreen.findPreference(PREF_DYNAMIC_COLORS)
 		uiModePreference = preferenceScreen.findPreference(PREF_UI_MODE)
 		languagePreference = preferenceScreen.findPreference(PREF_LANGUAGE)
 		channelSelectionPreference = preferenceScreen.findPreference(PREF_CHANNEL_SELECTION)
@@ -63,6 +74,11 @@ class PreferenceFragmentHelper(
 			it.value = LanguageHelper.getCurrentLanguageTag()
 			it.entries = languages.values.toTypedArray()
 			it.entryValues = languages.keys.toTypedArray()
+		}
+
+		// only show the preference for dynamic colors when available (Android 12 and up)
+		dynamicColorsPreference?.let {
+			it.isVisible = DynamicColors.isDynamicColorAvailable()
 		}
 
 		this.channelSelectionClickListener = channelSelectionClickListener
@@ -76,6 +92,7 @@ class PreferenceFragmentHelper(
 		super.onResume(owner)
 
 		shortcutPreference?.onPreferenceChangeListener = shortcutPreference
+		dynamicColorsPreference?.onPreferenceChangeListener = dynamicColorChangeListener
 		uiModePreference?.onPreferenceChangeListener = uiModeChangeListener
 		languagePreference?.onPreferenceChangeListener = languageChangeListener
 		channelSelectionPreference?.onPreferenceClickListener = channelSelectionClickListener
@@ -85,6 +102,7 @@ class PreferenceFragmentHelper(
 		super.onPause(owner)
 
 		shortcutPreference?.onPreferenceChangeListener = null
+		dynamicColorsPreference?.onPreferenceChangeListener = null
 		uiModePreference?.onPreferenceChangeListener = null
 		languagePreference?.onPreferenceChangeListener = null
 		channelSelectionPreference?.onPreferenceClickListener = null

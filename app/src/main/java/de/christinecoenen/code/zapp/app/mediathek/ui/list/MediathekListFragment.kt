@@ -1,7 +1,12 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.list
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -19,23 +24,24 @@ import com.google.android.material.chip.Chip
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
-import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownServiceException
 import java.text.DateFormat
 import java.text.NumberFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import javax.net.ssl.SSLHandshakeException
 
 
@@ -120,13 +126,13 @@ class MediathekListFragment : Fragment(),
 
 		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		viewLifecycleOwner.launchOnCreated {
 			viewmodel.pageFlow.collectLatest { pagingData ->
 				adapter.submitData(pagingData)
 			}
 		}
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		viewLifecycleOwner.launchOnCreated {
 			viewmodel
 				.pageFlow
 				.drop(1)
@@ -138,7 +144,7 @@ class MediathekListFragment : Fragment(),
 				}
 		}
 
-		viewLifecycleOwner.lifecycleScope.launch {
+		viewLifecycleOwner.launchOnCreated {
 			adapter.loadStateFlow
 				.map { it.refresh }
 				.distinctUntilChanged()
@@ -302,7 +308,7 @@ class MediathekListFragment : Fragment(),
 	private fun createChannelFilterView(inflater: LayoutInflater) {
 		val chipMap = mutableMapOf<MediathekChannel, Chip>()
 
-		for (channel in MediathekChannel.values()) {
+		for (channel in MediathekChannel.entries) {
 			// create view
 			val chip = inflater.inflate(
 				R.layout.view_mediathek_filter_channel_chip,
@@ -345,7 +351,7 @@ class MediathekListFragment : Fragment(),
 	}
 
 	private fun onChannelFilterLongClick(clickedChannel: MediathekChannel) {
-		for (channel in MediathekChannel.values()) {
+		for (channel in MediathekChannel.entries) {
 			val isChecked = clickedChannel == channel
 			viewmodel.setChannelFilter(channel, isChecked)
 		}

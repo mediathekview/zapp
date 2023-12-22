@@ -33,10 +33,14 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	private val viewModel: ChannelPlayerActivityViewModel by viewModel()
 	private val programInfoViewModel: ProgramInfoViewModel by viewModel()
 
+	override val shouldShowOverlay = true
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		viewModel.channel.observe(this, ::onChannelLoaded)
+		viewModel.previousChannelLiveData.observe(this, ::onPrevChannelLoaded)
+		viewModel.nextChannelLiveData.observe(this, ::onNextChannelLoaded)
 		programInfoViewModel.title.observe(this, ::onShowTitleChanged)
 	}
 
@@ -49,7 +53,10 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_program_info -> {
-				val modalBottomSheet = ProgramInfoSheetDialogFragment(programInfoViewModel)
+				val modalBottomSheet = ProgramInfoSheetDialogFragment(
+					programInfoViewModel,
+					ProgramInfoSheetDialogFragment.Size.Small
+				)
 				modalBottomSheet.show(supportFragmentManager, ProgramInfoSheetDialogFragment.TAG)
 				return true
 			}
@@ -77,6 +84,30 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 
 	private fun onChannelLoaded(channel: ChannelModel) {
 		title = channel.name
+	}
+
+	private fun onPrevChannelLoaded(channel: ChannelModel?) {
+		binding.btnPrev.isEnabled = channel != null
+
+		if (channel == null) {
+			return
+		}
+
+		binding.btnPrev.setOnClickListener {
+			startActivity(getStartIntent(this, channel.id))
+		}
+	}
+
+	private fun onNextChannelLoaded(channel: ChannelModel?) {
+		binding.btnNext.isEnabled = channel != null
+
+		if (channel == null) {
+			return
+		}
+
+		binding.btnNext.setOnClickListener {
+			startActivity(getStartIntent(this, channel.id))
+		}
 	}
 
 	private fun onShowTitleChanged(sshowTitle: String) {

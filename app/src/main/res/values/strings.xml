@@ -73,7 +73,6 @@
 
 	<string name="error_prefixed_message">Fehler: %s</string>
 
-
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
 	<string name="action_share">Teilen</string>
@@ -109,6 +108,16 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>
 	<string name="player_zoom_state_boxed">Original</string>
+	<string name="sleep_timer">Schlummerfunktion</string>
+	<string name="sleep_timer_delay">Zeitspanne (in Minuten)</string>
+	<string name="sleep_timer_start">Schlummerfunktion starten</string>
+	<string name="sleep_timer_stop">Schlummerfunktion stoppen</string>
+	<string name="sleep_timer_add_5_minutes">+5 min.</string>
+	<string name="sleep_timer_add_10_minutes">+10 min.</string>
+	<string name="sleep_timer_add_20_minutes">+20 min.</string>
+	<string name="sleep_timer_set_15_minutes">15 min.</string>
+	<string name="sleep_timer_set_30_minutes">30 min.</string>
+	<string name="sleep_timer_set_60_minutes">60 min.</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Aussehen</string>
@@ -142,6 +151,8 @@
 	<string name="pref_ui_mode_light">Immer hell</string>
 	<string name="pref_ui_mode_dark">Immer dunkel</string>
 
+	<string name="pref_start_tab_title">Startseite</string>
+
 	<string name="stream_quality_cellular_disabled">Videos nicht abspielen</string>
 	<string name="stream_quality_cellular_lowest">Niedrigste Qualität</string>
 	<string name="stream_quality_cellular_medium">Mittlere Qualität</string>
@@ -149,6 +160,9 @@
 
 	<string name="pref_download_to_sd_card_title">Downloads auf SD-Karte</string>
 	<string name="pref_download_to_sd_card_summary">Wenn verfügbar, werden Video-Dateien auf die SD-Karte gespeichert.</string>
+
+	<string name="pref_dynamic_colors">Dynamische Farben</string>
+	<string name="pref_dynamic_colors_summary">Wähle Akzentfarben basierend auf dem Geräte-Hintergrund.</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>

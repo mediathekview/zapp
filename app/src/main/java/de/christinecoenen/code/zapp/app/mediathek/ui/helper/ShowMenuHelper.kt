@@ -5,14 +5,14 @@ import android.widget.PopupMenu
 import android.widget.PopupMenu.OnMenuItemClickListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.lifecycleScope
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -60,13 +60,13 @@ class ShowMenuHelper(
 				true
 			}
 			R.id.menu_add_bookmark -> {
-				fragment.lifecycleScope.launchWhenResumed {
+				fragment.launchOnResumed {
 					viewModel.bookmark(show)
 				}
 				return true
 			}
 			R.id.menu_remove_bookmark -> {
-				fragment.lifecycleScope.launchWhenResumed {
+				fragment.launchOnResumed {
 					viewModel.removeBookmark(show)
 				}
 				return true
@@ -80,13 +80,13 @@ class ShowMenuHelper(
 				return true
 			}
 			R.id.menu_cancel_download -> {
-				fragment.lifecycleScope.launchWhenResumed {
+				fragment.launchOnResumed {
 					viewModel.cancelDownload(show)
 				}
 				return true
 			}
 			R.id.menu_mark_unwatched -> {
-				fragment.lifecycleScope.launchWhenResumed {
+				fragment.launchOnResumed {
 					viewModel.markUnwatched(show)
 				}
 				return true
@@ -101,7 +101,7 @@ class ShowMenuHelper(
 	private fun startUpdateMenuJob(menu: Menu) {
 		updateMenuItemsJob?.cancel()
 
-		updateMenuItemsJob = fragment.lifecycleScope.launchWhenResumed {
+		updateMenuItemsJob = fragment.launchOnResumed {
 			viewModel
 				.getMenuItemsVisibility(show)
 				.collectLatest { applyVisibiltyToMenu(menu, it) }
@@ -118,7 +118,7 @@ class ShowMenuHelper(
 		val dialog = ConfirmDeleteDownloadDialog()
 
 		fragment.setFragmentResultListener(ConfirmDeleteDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
-			fragment.viewLifecycleOwner.lifecycleScope.launch {
+			fragment.launchOnCreated {
 				viewModel.deleteDownload(show)
 			}
 		}
@@ -131,7 +131,7 @@ class ShowMenuHelper(
 
 		fragment.setFragmentResultListener(SelectQualityDialog.REQUEST_KEY_SELECT_QUALITY) { _, bundle ->
 			val quality = SelectQualityDialog.getSelectedQuality(bundle)
-			fragment.viewLifecycleOwner.lifecycleScope.launch {
+			fragment.launchOnCreated {
 				viewModel.startDownload(show, quality)
 			}
 		}

@@ -16,6 +16,7 @@ import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.MediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonalFragment : Fragment(), MenuProvider {
@@ -91,7 +92,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 
 		binding.list.adapter = outerAdapter
 
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			viewModel.downloadsFlow.collect {
 				downloadsAdapter.setShows(it)
 				downloadsHeaderAdapter.setShowMoreButton(it.isNotEmpty())
@@ -99,7 +100,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 			}
 		}
 
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			viewModel.continueWatchingFlow.collect {
 				continueWatchingAdapter.setShows(it)
 				continueWatchingHeaderAdapter.setShowMoreButton(it.isNotEmpty())
@@ -107,7 +108,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 			}
 		}
 
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			viewModel.bookmarkFlow.collect {
 				bookmarkAdapter.setShows(it)
 				bookmarksHeaderAdapter.setShowMoreButton(it.isNotEmpty())

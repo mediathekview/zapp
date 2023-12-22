@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.core.view.isVisible
+import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
@@ -26,7 +28,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 abstract class AbstractPlayerActivity :
-	AppCompatActivity(), MenuProvider, StyledPlayerView.ControllerVisibilityListener {
+	AppCompatActivity(),
+	MenuProvider,
+	PlayerView.ControllerVisibilityListener,
+	SleepTimer.Listener {
 
 	private val viewModel: AbstractPlayerActivityViewModel by viewModel()
 	private val settingsRepository: SettingsRepository by inject()
@@ -43,16 +48,20 @@ abstract class AbstractPlayerActivity :
 	protected var player: Player? = null
 	protected var binder: BackgroundPlayerService.Binder? = null
 
+	abstract val shouldShowOverlay: Boolean
+
 	private val backgroundPlayerServiceConnection: ServiceConnection = object : ServiceConnection {
 
 		override fun onServiceConnected(componentName: ComponentName, service: IBinder) {
 			binder = service as BackgroundPlayerService.Binder
 			binder!!.setForegroundActivityIntent(intent)
 
-			player = binder!!.getPlayer()
-			player!!.setView(binding.video)
+			player = binder!!.getPlayer().apply {
+				setView(binding.video)
+				sleepTimer.addListener(this@AbstractPlayerActivity)
+			}
 
-			lifecycleScope.launchWhenResumed {
+			launchOnResumed {
 				player!!.errorResourceId.collect(::onVideoError)
 			}
 
@@ -60,7 +69,12 @@ abstract class AbstractPlayerActivity :
 		}
 
 		override fun onServiceDisconnected(componentName: ComponentName) {
+			binder?.getPlayer()?.sleepTimer?.apply {
+				removeListener(this@AbstractPlayerActivity)
+			}
+
 			player?.pause()
+			player = null
 		}
 	}
 
@@ -94,6 +108,8 @@ abstract class AbstractPlayerActivity :
 	override fun onNewIntent(intent: Intent) {
 		super.onNewIntent(intent)
 
+		setIntent(intent)
+
 		// called when coming back from picture in picture mode
 		parseIntent(intent)
 	}
@@ -101,7 +117,7 @@ abstract class AbstractPlayerActivity :
 	private fun onErrorViewClick() {
 		hideError()
 
-		lifecycleScope.launchWhenResumed {
+		launchOnResumed {
 			player?.recreate()
 		}
 	}
@@ -171,41 +187,15 @@ abstract class AbstractPlayerActivity :
 				MultiWindowHelper.enterPictureInPictureMode(this)
 				true
 			}
+			R.id.sleep_timer -> {
+				showSleepTimerBottomSheet()
+				true
+			}
 			android.R.id.home -> {
 				finish()
 				true
 			}
 			else -> false
-		}
-	}
-
-	override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-		return when (keyCode) {
-			KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD, KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD, KeyEvent.KEYCODE_MEDIA_REWIND -> {
-				player?.rewind()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_STEP_FORWARD, KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> {
-				player?.fastForward()
-				true
-			}
-			KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_MEDIA_TOP_MENU -> {
-				binding.video.toggleControls()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_PLAY -> {
-				resumeActivity()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-				pauseActivity()
-				true
-			}
-			KeyEvent.KEYCODE_MEDIA_CLOSE -> {
-				finish()
-				true
-			}
-			else -> super.onKeyUp(keyCode, event)
 		}
 	}
 
@@ -215,6 +205,14 @@ abstract class AbstractPlayerActivity :
 		} else {
 			hideSystemUi()
 		}
+	}
+
+	override fun onTimerAlmostEnded() {
+		showSleepTimerBottomSheet()
+	}
+
+	override fun onTimerEnded() {
+		showSleepTimerBottomSheet()
 	}
 
 	abstract fun onShareMenuItemClicked()
@@ -231,7 +229,7 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun loadVideoFromIntent(intent: Intent) {
-		lifecycleScope.launchWhenCreated {
+		launchOnCreated {
 			load(getVideoInfoFromIntent(intent))
 		}
 	}
@@ -309,9 +307,29 @@ abstract class AbstractPlayerActivity :
 
 	private fun showSystemUi() {
 		supportActionBar?.show()
+		binding.overlay.isVisible = shouldShowOverlay
 	}
 
 	private fun hideSystemUi() {
 		supportActionBar?.hide()
+		binding.overlay.isVisible = false
+	}
+
+	private fun showSleepTimerBottomSheet() {
+		if (supportFragmentManager.isDestroyed || isInPictureInPictureMode) {
+			return
+		}
+
+		val existingBottomSheet =
+			supportFragmentManager.findFragmentByTag(SleepTimerBottomSheet::class.java.name)
+
+		if (existingBottomSheet == null) {
+			SleepTimerBottomSheet().show(
+				supportFragmentManager,
+				SleepTimerBottomSheet::class.java.name
+			)
+		} else {
+			(existingBottomSheet as SleepTimerBottomSheet).expand()
+		}
 	}
 }

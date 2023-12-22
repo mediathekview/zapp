@@ -8,13 +8,8 @@ import java.io.Serializable
 @Keep
 class QueryRequest : Serializable {
 
-	@Suppress("unused")
 	private val sortBy: String = "timestamp"
-
-	@Suppress("unused")
 	private val sortOrder: String = "desc"
-
-	@Suppress("unused")
 	private val future: Boolean = true
 
 	var offset: Int = 0
@@ -29,7 +24,7 @@ class QueryRequest : Serializable {
 	private val queries: MutableList<Query> = mutableListOf()
 
 	@Transient
-	private val channels = MediathekChannel.values().toMutableSet()
+	private val channels = MediathekChannel.entries.toMutableSet()
 
 	@Transient
 	private var queryString: String = ""
@@ -70,7 +65,7 @@ class QueryRequest : Serializable {
 		// Instead we filter for all available channels. This also excludes all channels
 		// not defined in MediathekChannel enum (like ARTE.FR).
 		if (channels.isEmpty()) {
-			channels.addAll(MediathekChannel.values().toMutableSet())
+			channels.addAll(MediathekChannel.entries.toTypedArray())
 		}
 
 		// set all currently allowed channels

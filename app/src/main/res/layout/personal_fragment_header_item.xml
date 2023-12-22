@@ -40,6 +40,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
 		android:layout_marginEnd="4dp"
+		android:paddingVertical="0dp"
 		android:text="@string/action_view_all"
 		app:cornerRadius="0dp"
 		app:layout_constraintBottom_toBottomOf="parent"

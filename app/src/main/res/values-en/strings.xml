@@ -73,7 +73,6 @@
 
 	<string name="error_prefixed_message">Error: %s</string>
 
-
 	<!-- menus & buttons -->
 	<string name="action_play">Play</string>
 	<string name="action_share">Share</string>
@@ -109,6 +108,16 @@
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Zoomed</string>
 	<string name="player_zoom_state_boxed">Original</string>
+	<string name="sleep_timer">Sleep timer</string>
+	<string name="sleep_timer_delay">Time span (in minutes)</string>
+	<string name="sleep_timer_start">Start sleep timer</string>
+	<string name="sleep_timer_stop">Stop sleep timer</string>
+	<string name="sleep_timer_add_5_minutes">+5 min.</string>
+	<string name="sleep_timer_add_10_minutes">+10 min.</string>
+	<string name="sleep_timer_add_20_minutes">+20 min.</string>
+	<string name="sleep_timer_set_15_minutes">15 min.</string>
+	<string name="sleep_timer_set_30_minutes">30 min.</string>
+	<string name="sleep_timer_set_60_minutes">60 min.</string>
 
 	<!-- preferences -->
 	<string name="pref_header_appearance">Appearance</string>
@@ -142,6 +151,8 @@
 	<string name="pref_ui_mode_light">Always light</string>
 	<string name="pref_ui_mode_dark">Always dark</string>
 
+	<string name="pref_start_tab_title">Start page</string>
+
 	<string name="stream_quality_cellular_disabled">Don\'t play back</string>
 	<string name="stream_quality_cellular_lowest">Lowest quality</string>
 	<string name="stream_quality_cellular_medium">Medium quality</string>
@@ -149,6 +160,9 @@
 
 	<string name="pref_download_to_sd_card_title">Download to sd card</string>
 	<string name="pref_download_to_sd_card_summary">Video files will be saved to sd card if present.</string>
+
+	<string name="pref_dynamic_colors">Dynamic colors</string>
+	<string name="pref_dynamic_colors_summary">Choose accent colors based on the wallpaper.</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>

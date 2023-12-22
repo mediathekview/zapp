@@ -43,6 +43,10 @@ class MediathekItemAdapter(
 				}
 			}
 
+			holder.itemView.setOnFocusChangeListener { _, hasFocus ->
+				listener?.onShowFocusChanged(show, hasFocus)
+			}
+
 			holder.setShow(show)
 		}
 	}

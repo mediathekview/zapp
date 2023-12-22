@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
@@ -26,9 +25,14 @@ import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transform
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
@@ -55,7 +59,7 @@ class MediathekDetailFragment : Fragment() {
 		_binding = MediathekDetailFragmentBinding.inflate(inflater, container, false)
 		binding.root.isVisible = false
 
-		lifecycleScope.launchWhenCreated {
+		viewLifecycleOwner.launchOnCreated {
 			loadOrPersistShowFromArguments()
 		}
 
@@ -116,19 +120,19 @@ class MediathekDetailFragment : Fragment() {
 			Lifecycle.State.RESUMED
 		)
 
-		lifecycleScope.launchWhenCreated {
+		viewLifecycleOwner.launchOnCreated {
 			downloadController
 				.getDownloadStatus(persistedMediathekShow.id)
 				.collect(::onDownloadStatusChanged)
 		}
 
-		lifecycleScope.launchWhenCreated {
+		viewLifecycleOwner.launchOnCreated {
 			downloadController
 				.getDownloadProgress(persistedMediathekShow.id)
 				.collect(::onDownloadProgressChanged)
 		}
 
-		lifecycleScope.launchWhenCreated {
+		viewLifecycleOwner.launchOnCreated {
 			mediathekRepository
 				.getPlaybackPositionPercent(show.apiId)
 				.collect(::updatePlaybackPosition)
@@ -239,7 +243,7 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun updateVideoThumbnail() {
-		lifecycleScope.launchWhenCreated {
+		viewLifecycleOwner.launchOnCreated {
 
 			// reload show for up to date file path and then update thumbnail
 			mediathekRepository
@@ -264,7 +268,7 @@ class MediathekDetailFragment : Fragment() {
 	private fun download(downloadQuality: Quality) {
 		startDownloadJob?.cancel()
 
-		startDownloadJob = lifecycleScope.launchWhenCreated {
+		startDownloadJob = viewLifecycleOwner.launchOnCreated {
 
 			try {
 				downloadController.startDownload(persistedMediathekShow!!.id, downloadQuality)

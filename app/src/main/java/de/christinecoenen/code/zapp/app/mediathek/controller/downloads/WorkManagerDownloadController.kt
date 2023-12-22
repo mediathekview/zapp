@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -29,7 +30,7 @@ import kotlin.time.Duration.Companion.milliseconds
  */
 @OptIn(FlowPreview::class)
 class WorkManagerDownloadController(
-	val applicationContext: Context,
+	private val applicationContext: Context,
 	private val scope: CoroutineScope,
 	private val mediathekRepository: MediathekRepository,
 	private val settingsRepository: SettingsRepository,
@@ -84,10 +85,10 @@ class WorkManagerDownloadController(
 				throw WrongNetworkConditionException("Download over metered networks prohibited.")
 			}
 
-			val constraints = Constraints.Builder()
-				.setRequiresStorageNotLow(true)
-				.setRequiredNetworkType(networkType)
-				.build()
+			val constraints = Constraints(
+				requiredNetworkType = networkType,
+				requiresStorageNotLow = true
+			)
 
 			val workerInput = DownloadWorker.constructInputData(
 				persistedShowId,
@@ -103,7 +104,7 @@ class WorkManagerDownloadController(
 				.setInputData(workerInput)
 				.setBackoffCriteria(
 					BackoffPolicy.LINEAR,
-					OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+					WorkRequest.MIN_BACKOFF_MILLIS,
 					TimeUnit.MILLISECONDS
 				)
 				.addTag(show.id.toString())
@@ -224,11 +225,14 @@ class WorkManagerDownloadController(
 			}
 		}
 
+	@SuppressLint("MissingPermission")
 	private fun showStatusChangeNotificationIfNeeded(
 		workInfo: WorkInfo,
 		show: PersistedMediathekShow
 	) {
-		if (!notificationManager.areNotificationsEnabled()) {
+		if (!notificationManager.areNotificationsEnabled() ||
+			!NotificationHelper.hasNotificationPermissionGranted(applicationContext)
+		) {
 			return
 		}
 

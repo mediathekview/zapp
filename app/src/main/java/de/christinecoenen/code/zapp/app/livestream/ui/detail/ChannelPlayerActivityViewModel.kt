@@ -18,6 +18,20 @@ class ChannelPlayerActivityViewModel(channelRepository: ChannelRepository) : Vie
 	private val channelFlow = channelId
 		.map { channelId -> channelList[channelId]!! }
 
+	val previousChannelLiveData = channelFlow
+		.map { channel ->
+			val index = channelList.indexOf(channel.id)
+			if (index <= 0) null else channelList[index - 1]
+		}
+		.asLiveData(viewModelScope.coroutineContext)
+
+	val nextChannelLiveData = channelFlow
+		.map { channel ->
+			val index = channelList.indexOf(channel.id)
+			if (index >= channelList.size() - 1) null else channelList[index + 1]
+		}
+		.asLiveData(viewModelScope.coroutineContext)
+
 	val channel = channelFlow.asLiveData(viewModelScope.coroutineContext)
 
 	suspend fun setChannelId(channelId: String): ChannelModel {

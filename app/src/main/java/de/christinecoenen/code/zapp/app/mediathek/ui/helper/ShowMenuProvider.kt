@@ -5,12 +5,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class ShowMenuProvider(
 	private val fragment: Fragment,
@@ -20,11 +17,9 @@ class ShowMenuProvider(
 	private val showMenuHelper = ShowMenuHelper(fragment, show)
 
 	init {
-		fragment.lifecycleScope.launch {
-			fragment.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-				showMenuHelper.invalidateOptionsMenuFlow.collectLatest {
-					fragment.requireActivity().invalidateOptionsMenu()
-				}
+		fragment.launchOnResumed {
+			showMenuHelper.invalidateOptionsMenuFlow.collectLatest {
+				fragment.requireActivity().invalidateOptionsMenu()
 			}
 		}
 	}

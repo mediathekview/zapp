@@ -1,8 +1,12 @@
 package de.christinecoenen.code.zapp.utils.system
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
 import de.christinecoenen.code.zapp.R
 import timber.log.Timber
 
@@ -13,6 +17,17 @@ object NotificationHelper {
 	const val CHANNEL_ID_BACKGROUND_PLAYBACK = "background_playback"
 	const val CHANNEL_ID_DOWNLOAD_PROGRESS = "download_progress"
 	const val CHANNEL_ID_DOWNLOAD_EVENT = "download_event"
+
+	fun hasNotificationPermissionGranted(context: Context): Boolean {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+			return true
+		}
+
+		return ActivityCompat.checkSelfPermission(
+			context,
+			Manifest.permission.POST_NOTIFICATIONS
+		) == PackageManager.PERMISSION_GRANTED
+	}
 
 	@JvmStatic
 	fun createBackgroundPlaybackChannel(context: Context) {

@@ -10,6 +10,7 @@ enum class MediathekChannel(val apiId: String) {
 	Arte("ARTE.DE"),
 	Dw("DW"),
 	DreiSat("3Sat"),
+	Sr("SR"),
 	Srf("SRF"),
 	Mdr("MDR"),
 	KiKa("KiKA"),
@@ -17,8 +18,9 @@ enum class MediathekChannel(val apiId: String) {
 	Rbb("RBB"),
 	Orf("ORF"),
 	Wdr("WDR"),
-	RbTv("rbtv"),
 	Phoenix("PHOENIX"),
+	Funk("Funk.net"),
+	RbTv("rbtv"),
 	ZdfTivi("ZDF-tivi"),
 
 }

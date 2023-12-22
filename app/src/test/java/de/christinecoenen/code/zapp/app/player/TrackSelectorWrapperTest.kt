@@ -1,8 +1,8 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.content.Context
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.test.core.app.ApplicationProvider
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import de.christinecoenen.code.zapp.AutoCloseKoinTest
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import org.junit.Before

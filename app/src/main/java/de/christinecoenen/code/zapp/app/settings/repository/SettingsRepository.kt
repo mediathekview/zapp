@@ -2,16 +2,20 @@ package de.christinecoenen.code.zapp.app.settings.repository
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 import java.util.*
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
 
 class SettingsRepository(context: Context) {
 
 	private val context = context.applicationContext
-	private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+	val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
 	val lockVideosInLandcapeFormat: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_detail_landscape), true)
@@ -40,13 +44,46 @@ class SettingsRepository(context: Context) {
 				.apply()
 		}
 
+	var sleepTimerDelay: Duration
+		get() = preferences.getLong(
+			context.getString(R.string.pref_key_sleep_timer_delay),
+			30.minutes.inWholeMilliseconds
+		).milliseconds
+		set(delay) {
+			preferences.edit()
+				.putLong(
+					context.getString(R.string.pref_key_sleep_timer_delay),
+					delay.inWholeMilliseconds
+				)
+				.apply()
+		}
+
 	val downloadToSdCard: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_download_to_sd_card), true)
+
+	var dynamicColors: Boolean
+		get() = preferences.getBoolean(context.getString(R.string.pref_key_dynamic_colors), false)
+		@SuppressLint("ApplySharedPref")
+		set(enabled) {
+			// "commit" instead of "apply" is fine here, because we need to restart the app
+			// after setting this preference. Doing it synchroniously is the only way to save
+			// the setting across the app restart.
+			preferences.edit()
+				.putBoolean(context.getString(R.string.pref_key_dynamic_colors), enabled)
+				.commit()
+		}
 
 	val uiMode: Int
 		get() {
 			val uiMode = preferences.getString(context.getString(R.string.pref_key_ui_mode), null)
 			return prefValueToUiMode(uiMode)
+		}
+
+	val startFragment: Int
+		get() = when (preferences.getString(context.getString(R.string.pref_key_start_tab), "live")) {
+			"mediathek" -> R.id.mediathekListFragment
+			"personal" -> R.id.personalFragment
+			else -> R.id.channelListFragment
 		}
 
 	fun prefValueToUiMode(prefSetting: String?): Int {

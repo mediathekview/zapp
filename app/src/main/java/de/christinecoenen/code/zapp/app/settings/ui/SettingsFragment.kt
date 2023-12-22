@@ -9,7 +9,7 @@ import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.utils.system.PreferenceFragmentHelper
 import org.koin.android.ext.android.inject
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : BaseSettingsFragment() {
 
 	private val settingsRepository: SettingsRepository by inject()
 	private val preferenceFragmentHelper = PreferenceFragmentHelper(this, settingsRepository)

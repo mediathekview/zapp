@@ -14,6 +14,20 @@
 			android:title="@string/pref_ui_mode_title"
 			app:useSimpleSummaryProvider="true" />
 
+		<SwitchPreferenceCompat
+			android:defaultValue="false"
+			android:key="@string/pref_key_dynamic_colors"
+			android:summary="@string/pref_dynamic_colors_summary"
+			android:title="@string/pref_dynamic_colors" />
+
+		<ListPreference
+			android:defaultValue="live"
+			android:entries="@array/available_tabs_names"
+			android:key="@string/pref_key_start_tab"
+			android:title="@string/pref_start_tab_title"
+			app:entryValues="@array/available_tabs_values"
+			app:useSimpleSummaryProvider="true" />
+
 		<ListPreference
 			android:defaultValue="de"
 			android:key="@string/pref_key_language"
@@ -26,13 +40,13 @@
 		android:icon="@drawable/ic_outline_video_settings_24"
 		android:title="@string/pref_header_video_player">
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_detail_landscape"
 			android:summary="@string/pref_detail_landscape_summary"
 			android:title="@string/pref_detail_landscape_title" />
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="false"
 			android:key="@string/pref_key_pip_on_back"
 			android:summary="@string/pref_key_pip_on_back_summary"
@@ -52,7 +66,7 @@
 			android:title="@string/pref_stream_quality_cellular_title"
 			app:useSimpleSummaryProvider="true" />
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_download_over_unmetered_network_only"
 			android:summary="@string/pref_download_over_unmetered_network_only_summary"
@@ -82,7 +96,7 @@
 		android:icon="@drawable/ic_outline_save_24"
 		android:title="@string/pref_header_data">
 
-		<SwitchPreference
+		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_download_to_sd_card"
 			android:summary="@string/pref_download_to_sd_card_summary"

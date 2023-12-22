@@ -1,0 +1,2 @@
+* Fixed download notifications not opening the show
+* Fixed wrong tab displayed after device rotation
