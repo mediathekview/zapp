@@ -7,14 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.search.suggestions.ChipsAdapter
-import de.christinecoenen.code.zapp.app.search.suggestions.LocalSearchSuggestionsAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipContent
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
+import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextListener
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
+class SearchFragment : Fragment(), SuggestionTextListener {
 
 	private var _binding: SearchFragmentBinding? = null
 	private val binding: SearchFragmentBinding get() = _binding!!
@@ -35,16 +39,16 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 
 		// chips
 		val selectedChannelsChipsAdapter = ChipsAdapter(
-			ChipsAdapter.Type.Filter,
-			object : ChipsAdapter.Listener<ChipsAdapter.ChannelChipContent> {
-				override fun onChipClick(content: ChipsAdapter.ChannelChipContent) {
+			ChipType.Filter,
+			object : SuggestionChipListener<ChannelChipContent> {
+				override fun onChipClick(content: ChannelChipContent) {
 					viewModel.removeChannel(content.channel)
 				}
 			})
 		val suggestedChannelsChipsAdapter = ChipsAdapter(
-			ChipsAdapter.Type.Suggestion,
-			object : ChipsAdapter.Listener<ChipsAdapter.ChannelChipContent> {
-				override fun onChipClick(content: ChipsAdapter.ChannelChipContent) {
+			ChipType.Suggestion,
+			object : SuggestionChipListener<ChannelChipContent> {
+				override fun onChipClick(content: ChannelChipContent) {
 					viewModel.addChannel(content.channel)
 				}
 			})
@@ -56,18 +60,14 @@ class SearchFragment : Fragment(), LocalSearchSuggestionsAdapter.Listener {
 		viewLifecycleOwner.launchOnCreated {
 			viewModel.channels.collectLatest { channels ->
 				selectedChannelsChipsAdapter.submitList(channels.map {
-					ChipsAdapter.ChannelChipContent(
-						it
-					)
+					ChannelChipContent(it)
 				})
 			}
 		}
 		viewLifecycleOwner.launchOnCreated {
 			viewModel.channelSuggestions.collectLatest { channelSuggestions ->
 				suggestedChannelsChipsAdapter.submitList(channelSuggestions.map {
-					ChipsAdapter.ChannelChipContent(
-						it
-					)
+					ChannelChipContent(it)
 				})
 			}
 		}

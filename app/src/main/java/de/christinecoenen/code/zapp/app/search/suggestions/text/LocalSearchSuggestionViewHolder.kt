@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.search.suggestions
+package de.christinecoenen.code.zapp.app.search.suggestions.text
 
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView

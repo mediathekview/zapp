@@ -1,4 +1,4 @@
-package de.christinecoenen.code.zapp.app.search.suggestions
+package de.christinecoenen.code.zapp.app.search.suggestions.text
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import de.christinecoenen.code.zapp.app.search.StringComparator
 import de.christinecoenen.code.zapp.databinding.SearchSuggestionItemLocalBinding
 
 class LocalSearchSuggestionsAdapter(
-	private val listener: Listener,
+	private val listener: SuggestionTextListener,
 	@DrawableRes
 	private val typeIcon: Int,
 ) :
@@ -35,8 +35,4 @@ class LocalSearchSuggestionsAdapter(
 		return holder
 	}
 
-	interface Listener {
-		fun onSuggestionSelected(suggestion: String)
-		fun onSuggestionInserted(suggestion: String)
-	}
 }

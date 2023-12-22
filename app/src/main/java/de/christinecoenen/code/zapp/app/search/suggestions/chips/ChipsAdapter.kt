@@ -1,15 +1,14 @@
-package de.christinecoenen.code.zapp.app.search.suggestions
+package de.christinecoenen.code.zapp.app.search.suggestions.chips
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.databinding.SearchChipBinding
 
-class ChipsAdapter<T : ChipsAdapter.ChipContent>(
-	private val type: Type,
-	private val listener: Listener<T>
+class ChipsAdapter<T : ChipContent>(
+	private val type: ChipType,
+	private val listener: SuggestionChipListener<T>
 ) :
 	ListAdapter<T, ChipViewHolder>(getDiffer()) {
 
@@ -41,24 +40,4 @@ class ChipsAdapter<T : ChipsAdapter.ChipContent>(
 		holder.setContent(getItem(position))
 	}
 
-	interface ChipContent {
-		val content: Any
-		val label: String
-	}
-
-	data class ChannelChipContent(
-		val channel: MediathekChannel,
-	) : ChipContent {
-		override val content = channel
-		override val label = channel.apiId
-	}
-
-	interface Listener<T : ChipContent> {
-		fun onChipClick(content: T)
-	}
-
-	enum class Type {
-		Filter,
-		Suggestion
-	}
 }
