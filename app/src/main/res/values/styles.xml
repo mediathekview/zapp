@@ -36,6 +36,7 @@
 		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+		<item name="materialSearchBarStyle">@style/Widget.App.SearchBar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
@@ -109,6 +110,10 @@
 		<item name="android:textStyle">normal</item>
 		<item name="android:textColor">?colorOnPrimaryContainer</item>
 		<item name="android:textColorHint">@color/color_on_secondary_container_60_alpha</item>
+	</style>
+
+	<style name="Widget.App.SearchBar" parent="Widget.Material3.SearchBar">
+		<item name="android:backgroundTint">?colorPrimaryContainer</item>
 	</style>
 
 	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
