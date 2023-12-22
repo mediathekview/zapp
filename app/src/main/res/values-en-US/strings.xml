@@ -1,0 +1,180 @@
+<resources>
+	<string name="app_name">Zapp</string>
+	<string name="app_website_url">https://github.com/mediathekview/zapp</string>
+
+	<string name="activity_main_tab_live">Live</string>
+	<string name="activity_main_tab_mediathek">Media Center</string>
+	<string name="activity_main_tab_downloads">Downloads</string>
+	<string name="activity_main_tab_continue_watching">Continue Watching</string>
+	<string name="activity_main_tab_bookmarks">Bookmarks</string>
+	<string name="activity_main_tab_personal">My Shows</string>
+
+	<string name="about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
+	<string name="about_feedback_mail_subject">Zapp Feedback</string>
+
+	<string name="changelog_title">Changelog</string>
+
+	<string name="faq_title">FAQ</string>
+
+	<string name="activity_channel_detail_info_error">No program information</string>
+
+	<string name="activity_settings_title">Settings</string>
+	<string name="activity_channel_selection_title">Change channel list</string>
+	<string name="activity_channel_selection_help_text">Drag the gray bars to sort the channel list.\n\nClicking toggles a channel on or off.</string>
+
+	<string name="view_program_info_show_time">%1$s–%2$s</string>
+
+	<!-- mediathek -->
+	<string name="fragment_mediathek_no_results">no shows found</string>
+	<string name="fragment_mediathek_time">Online since</string>
+	<string name="fragment_mediathek_channel">Channel</string>
+	<string name="fragment_mediathek_duration">Duration</string>
+	<string name="fragment_mediathek_website">Website</string>
+	<string name="fragment_mediathek_batch_subtitle">ST</string>
+	<string name="fragment_mediathek_qualities_title">Choose quality</string>
+	<string name="fragment_mediathek_qualities_low">Low</string>
+	<string name="fragment_mediathek_qualities_medium">Medium</string>
+	<string name="fragment_mediathek_qualities_high">High</string>
+	<string name="fragment_mediathek_download">Download</string>
+	<string name="fragment_mediathek_download_retry">Retry download</string>
+	<string name="fragment_mediathek_download_queued">Waiting for download…</string>
+	<string name="fragment_mediathek_download_running">Downloading…</string>
+	<string name="fragment_mediathek_download_delete">Delete download</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Delete file?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">The video file will be deleted and can be downloaded again.</string>
+	<string name="fragment_mediathek_query_info">%1$s search results from %2$s</string>
+
+	<!-- personal -->
+	<string name="fragment_personal_no_results_downloads">no downloads found</string>
+	<string name="fragment_personal_no_results_continue_watching">no started shows found</string>
+	<string name="fragment_personal_no_results_bookmarks">no bookmarks found</string>
+	<string name="fragment_personal_today">Today</string>
+
+	<!-- error messages -->
+	<string name="error_informal">Oops!</string>
+	<string name="error_report">Report error</string>
+	<string name="error_app_crash">We are very sorry, but an error occurred.\nWould you like to send an error report to the developer to help fix this problem?</string>
+	<string name="error_app_crash_tv">We are very sorry, but Zapp just crashed.</string>
+	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
+	<string name="error_app_crash_mail_body">Thank you very much for this report!\n\nFollowing information will help fix this error:\n</string>
+
+	<string name="error_stream_unknown">The video could not be played because of an unknown error.</string>
+	<string name="error_stream_no_file_access">Zapp cannot access this video file.</string>
+	<string name="error_stream_no_bad_http_status">This video does no longer exist or is not available in your country.</string>
+	<string name="error_stream_io">The video could not be loaded. Maybe you have no internet connection or this video is not available in your country.</string>
+	<string name="error_stream_unsupported">The video is broken or the format is not supported.</string>
+	<string name="error_stream_not_in_unmetered_network">Playback over metered connections has been disabled in the settings.</string>
+
+	<string name="error_mediathek_info_not_available">An error occurred while loading the media center. Please check your internet connection.</string>
+	<string name="error_mediathek_ssl_error">Your device cannot establish a secure connection to the server. Most likely an Android update would help to fix this error.</string>
+	<string name="error_mediathek_generic_start_download_error">The download could not be started.</string>
+	<string name="error_mediathek_download_over_unmetered_network_only">Download allowed over unmetered networks only</string>
+	<string name="error_mediathek_download_no_network">No internet connection available.</string>
+
+	<string name="error_prefixed_message">Error: %s</string>
+
+	<!-- menus & buttons -->
+	<string name="action_play">Play</string>
+	<string name="action_share">Share</string>
+	<string name="action_bookmark">Bookmark</string>
+	<string name="action_remove_bookmark">Remove bookmark</string>
+	<string name="action_continue">Continue</string>
+	<string name="action_open">Open</string>
+	<string name="action_cancel">Cancel</string>
+	<string name="action_send_mail">Send e-mail</string>
+	<string name="action_play_in_background">Play in background</string>
+	<string name="action_start_picture_in_picture">Picture in picture</string>
+	<string name="action_start_download">Download</string>
+	<string name="action_delete_download">Delete download</string>
+	<string name="action_cancel_download">Cancel download</string>
+	<string name="action_mark_unwatched">Mark as unwatched</string>
+	<string name="action_view_all">View all</string>
+
+	<string name="search_query_hint_mediathek">Search media center…</string>
+	<string name="search_query_hint_downloads">Search downloads…</string>
+	<string name="search_query_hint_continue_watching">Search started shows…</string>
+	<string name="search_query_hint_bookmarks">Search bookmarks…</string>
+	<string name="delete_search_query_content_description">Delete query</string>
+
+	<string name="menu_refresh">Refresh</string>
+	<string name="menu_retry">Retry</string>
+	<string name="menu_about">About Zapp</string>
+	<string name="menu_about_short">About</string>
+	<string name="menu_settings">Settings</string>
+	<string name="menu_feedback">Feedback</string>
+	<string name="menu_filter">Filter</string>
+	<string name="menu_program_info">Program Info</string>
+
+	<!-- player -->
+	<string name="player_zoom_state_cropped">Zoomed</string>
+	<string name="player_zoom_state_boxed">Original</string>
+	<string name="sleep_timer">Sleep timer</string>
+	<string name="sleep_timer_delay">Time span (in minutes)</string>
+	<string name="sleep_timer_start">Start sleep timer</string>
+	<string name="sleep_timer_stop">Stop sleep timer</string>
+	<string name="sleep_timer_add_5_minutes">+5 min.</string>
+	<string name="sleep_timer_add_10_minutes">+10 min.</string>
+	<string name="sleep_timer_add_20_minutes">+20 min.</string>
+	<string name="sleep_timer_set_15_minutes">15 min.</string>
+	<string name="sleep_timer_set_30_minutes">30 min.</string>
+	<string name="sleep_timer_set_60_minutes">60 min.</string>
+
+	<!-- preferences -->
+	<string name="pref_header_appearance">Appearance</string>
+	<string name="pref_header_video_player">Player</string>
+	<string name="pref_header_network">Network</string>
+	<string name="pref_header_channels">Channels</string>
+	<string name="pref_header_data">Data</string>
+
+	<string name="pref_ui_mode_title">Theme</string>
+	<string name="pref_language_title">Language</string>
+
+	<string name="pref_detail_landscape_title">Videos always in landscape mode</string>
+	<string name="pref_detail_landscape_summary">Locks the app in landscape mode as long as a video is playing</string>
+
+	<string name="pref_key_pip_on_back_title">Automatic picture in picture mode</string>
+	<string name="pref_key_pip_on_back_summary">Resumes playback in picture in picture mode when leaving the video player</string>
+
+	<string name="pref_stream_quality_cellular_title">Video quality over metered networks</string>
+
+	<string name="pref_download_over_unmetered_network_only_title">Download over unmetered networks only</string>
+	<string name="pref_download_over_unmetered_network_only_summary">Videos won\'t download when your device uses for example a mobile connection</string>
+
+	<string name="pref_channel_selection_title">Channel order</string>
+
+	<string name="pref_shortcuts_title">Channel shortcuts</string>
+	<string name="pref_shortcuts_summary_not_supported">Supported for Android 7.1 and up</string>
+	<string name="pref_shortcuts_summary_limit">Maximum 4 shortcuts can be saved</string>
+	<string name="pref_shortcuts_too_many">Maximum 4 shortcuts can be saved.</string>
+
+	<string name="pref_ui_mode_default">System default</string>
+	<string name="pref_ui_mode_light">Always light</string>
+	<string name="pref_ui_mode_dark">Always dark</string>
+
+	<string name="pref_start_tab_title">Start page</string>
+
+	<string name="stream_quality_cellular_disabled">Don\'t play back</string>
+	<string name="stream_quality_cellular_lowest">Lowest quality</string>
+	<string name="stream_quality_cellular_medium">Medium quality</string>
+	<string name="stream_quality_cellular_highest">Highest quality</string>
+
+	<string name="pref_download_to_sd_card_title">Download to sd card</string>
+	<string name="pref_download_to_sd_card_summary">Video files will be saved to sd card if present.</string>
+
+	<string name="pref_dynamic_colors">Dynamic colors</string>
+	<string name="pref_dynamic_colors_summary">Choose accent colors based on the wallpaper.</string>
+
+	<!-- notifications -->
+	<string name="notification_channel_name_background_playback">Background player</string>
+	<string name="notification_channel_name_download_progress">Download progress</string>
+	<string name="notification_channel_name_download_event">Download event</string>
+
+	<!-- download notifications -->
+	<string name="notification_download_queued">The download starts as soon as all prerequisites are met.</string>
+	<string name="notification_download_queued_for_retry">Download interrupted – waiting for attempt no. %1$d.</string>
+	<string name="notification_download_downloading">Downloading</string>
+	<string name="notification_download_downloading_size">%1$s / %2$s</string>
+	<string name="notification_download_complete">Download complete</string>
+	<string name="notification_download_failed">Download failed</string>
+
+</resources>
