@@ -1,0 +1,2 @@
+* Fix activating standby mode during video playback on Android TV devices
+* Fix activating standby mode when returning from background playback

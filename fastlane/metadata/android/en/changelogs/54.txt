@@ -1,0 +1,3 @@
+* Fixed crash after editing channel list
+* Fixed crash when starting Tagessschau24 on Android 6
+* Fixed jumping progress bar in channel list on Android 6
