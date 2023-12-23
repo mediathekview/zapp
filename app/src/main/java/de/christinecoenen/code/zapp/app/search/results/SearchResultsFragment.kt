@@ -125,7 +125,7 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 		return when (menuItem.itemId) {
 			R.id.menu_search -> {
-				viewModel.enterQueryMode()
+				viewModel.enterLastSearch()
 				true
 			}
 
@@ -134,7 +134,7 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 	}
 
 	override fun onToolbarClicked() {
-		viewModel.enterQueryMode()
+		viewModel.enterLastSearch()
 	}
 
 	override fun onShowClicked(show: MediathekShow) {

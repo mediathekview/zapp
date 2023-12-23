@@ -23,7 +23,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
@@ -140,8 +144,11 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				}
 			}
 			it.editText.setOnFocusChangeListener { _, hasFocus ->
-				if (hasFocus) {
-					searchViewModel.enterQueryMode()
+				if (hasFocus &&
+					it.currentTransitionState != SearchView.TransitionState.SHOWN &&
+					navController.currentDestination?.id != R.id.searchResultsFragment
+				) {
+					searchViewModel.enterNewSearch()
 				}
 			}
 			it.editText.setOnEditorActionListener { _, _, _ ->
