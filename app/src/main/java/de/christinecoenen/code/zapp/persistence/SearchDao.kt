@@ -12,9 +12,13 @@ interface SearchDao {
 	@Query("SELECT topic FROM PersistedMediathekShow WHERE topic LIKE :searchQuery UNION SELECT title FROM PersistedMediathekShow WHERE title LIKE :searchQuery")
 	fun getLocalSearchSuggestions(searchQuery: String): PagingSource<Int, String>
 
-	@Query("SELECT query FROM SearchQuery WHERE query LIKE :searchQuery ORDER BY date DESC LIMIT :limit")
+	@Query("SELECT `query` FROM SearchQuery WHERE `query` LIKE :searchQuery ORDER BY date DESC LIMIT :limit")
 	fun getQueries(searchQuery: String, limit: Int): PagingSource<Int, String>
+
+	@Query("DELETE FROM SearchQuery WHERE `query` = :query")
+	suspend fun deleteQuery(query: String)
 
 	@Upsert
 	suspend fun saveQuery(vararg query: SearchQuery)
+	
 }

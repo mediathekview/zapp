@@ -106,6 +106,7 @@
 	<string name="menu_filter">Filter</string>
 	<string name="menu_program_info">Programm-Informationen</string>
 	<string name="menu_voice_search">Sprachsuche</string>
+	<string name="menu_delete_search_query_from_history">Aus Suchverlauf löschen</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>

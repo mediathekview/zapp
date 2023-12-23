@@ -1,18 +1,22 @@
 package de.christinecoenen.code.zapp.app.search
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
+import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextListener
+import de.christinecoenen.code.zapp.app.search.suggestions.text.TextSuggestionType
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.flow.collectLatest
@@ -74,9 +78,9 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 
 		// suggestions
 		val lastQueriesAdapter =
-			LocalSearchSuggestionsAdapter(this, R.drawable.ic_history_24)
+			LocalSearchSuggestionsAdapter(this, TextSuggestionType.RecentQuery)
 		val localSuggestionsAdapter =
-			LocalSearchSuggestionsAdapter(this, R.drawable.ic_baseline_search_24)
+			LocalSearchSuggestionsAdapter(this, TextSuggestionType.Visited)
 		binding.suggestions.adapter = ConcatAdapter(lastQueriesAdapter, localSuggestionsAdapter)
 
 		viewLifecycleOwner.launchOnCreated {
@@ -104,5 +108,35 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 
 	override fun onSuggestionInserted(suggestion: String) {
 		viewModel.setSearchQuery(suggestion)
+	}
+
+	override fun onSuggestionLongPress(
+		suggestion: String,
+		type: TextSuggestionType,
+		view: View
+	): Boolean {
+		if (type != TextSuggestionType.RecentQuery) {
+			return false
+		}
+
+		val menu = PopupMenu(context, view, Gravity.TOP or Gravity.END)
+		menu.inflate(R.menu.search_recent_query_context)
+		menu.show()
+		menu.setOnMenuItemClickListener { menuItem ->
+			onSuggesionContextMenuClicked(menuItem, suggestion)
+		}
+
+		return true
+	}
+
+	private fun onSuggesionContextMenuClicked(menuItem: MenuItem, suggestion: String): Boolean {
+		return when (menuItem.itemId) {
+			R.id.menu_delete -> {
+				viewModel.deleteSavedSearchQuery(suggestion)
+				true
+			}
+
+			else -> false
+		}
 	}
 }

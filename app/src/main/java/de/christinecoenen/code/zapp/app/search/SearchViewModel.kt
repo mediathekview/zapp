@@ -162,6 +162,12 @@ class SearchViewModel(
 		}
 	}
 
+	fun deleteSavedSearchQuery(searchQuery: String) {
+		viewModelScope.launch {
+			searchRepository.deleteQuery(searchQuery)
+		}
+	}
+
 	fun enterQueryMode() {
 		_searchState.tryEmit(SeachState.Query)
 	}
