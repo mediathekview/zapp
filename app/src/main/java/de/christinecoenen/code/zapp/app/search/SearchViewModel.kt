@@ -72,7 +72,7 @@ class SearchViewModel(
 			return@combine emptySet<MediathekChannel>()
 		}
 
-		val remainingChannels = MediathekChannel.values().toSet().minus(channels)
+		val remainingChannels = MediathekChannel.entries.toSet().minus(channels)
 		remainingChannels.filter { channel ->
 			channel.apiId.contains(lastWord, true)
 		}
@@ -94,12 +94,14 @@ class SearchViewModel(
 		}
 		.cachedIn(viewModelScope)
 
-	val localShowsResult = _submittedSearchQuery
+	val localShowsResult = combine(_submittedSearchQuery, _channels) { query, _ -> query }
 		.flatMapLatest { query ->
 			if (query.isEmpty()) {
 				flowOf(PagingData.empty())
 			} else {
-				Pager(pagingConfig) { mediathekRepository.getPersonalShows(query) }.flow
+				Pager(pagingConfig) {
+					mediathekRepository.getPersonalShows(query, _channels.value)
+				}.flow
 			}
 		}
 		.map<PagingData<SortableMediathekShow>, PagingData<UiModel>> { pagingData ->
@@ -112,13 +114,16 @@ class SearchViewModel(
 	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
 	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
 
-	val mediathekResult = _submittedSearchQuery
-		.map { query ->
-			QueryRequest().apply {
-				size = ITEM_COUNT_PER_PAGE
-				setQueryString(query)
-			}
+	val mediathekResult = combine(
+		_submittedSearchQuery,
+		_channels
+	) { query: String, channels: Set<MediathekChannel> ->
+		QueryRequest().apply {
+			size = ITEM_COUNT_PER_PAGE
+			setQueryString(query)
+			setChannels(channels.toList())
 		}
+	}
 		.flatMapLatest { queryRequest ->
 			Pager(pagingConfig) {
 				MediathekPagingSource(mediathekApi, queryRequest, _mediathekResultInfo)

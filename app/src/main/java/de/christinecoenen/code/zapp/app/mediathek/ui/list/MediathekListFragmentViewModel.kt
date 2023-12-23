@@ -4,7 +4,11 @@ import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
@@ -15,7 +19,12 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.models.LengthFi
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import org.joda.time.DateTime
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -73,7 +82,7 @@ class MediathekListFragmentViewModel(
 			maxDurationSeconds = lengthFilter.maxDurationSeconds
 			setQueryString(searchQuery)
 			for (filterItem in channelFilter) {
-				setChannel(filterItem.key, filterItem.value)
+				//addChannel(filterItem.key, filterItem.value)
 			}
 		}
 	}

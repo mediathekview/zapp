@@ -1,7 +1,13 @@
 package de.christinecoenen.code.zapp.persistence
 
 import androidx.paging.PagingSource
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
+import androidx.room.Transaction
+import androidx.room.Update
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -19,10 +25,10 @@ interface MediathekShowDao {
 			"SELECT *, lastPlayedBackAt as sortDate FROM PersistedMediathekShow WHERE playbackPosition UNION " +
 			"SELECT *, bookmarkedAt as sortDate FROM PersistedMediathekShow WHERE bookmarked" +
 			") " +
-			"WHERE topic LIKE :searchQuery OR title LIKE :searchQuery " +
+			"WHERE topic LIKE :searchQuery OR title LIKE :searchQuery AND channel IN(:channels)" +
 			"ORDER BY sortDate DESC"
 	)
-	fun getPersonalShows(searchQuery: String): PagingSource<Int, SortableMediathekShow>
+	fun getPersonalShows(searchQuery: String, channels: List<String>): PagingSource<Int, SortableMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>

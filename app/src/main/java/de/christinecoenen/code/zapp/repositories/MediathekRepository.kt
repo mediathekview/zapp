@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.repositories
 
 import androidx.paging.PagingSource
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -18,10 +19,17 @@ import org.joda.time.DateTime
 
 class MediathekRepository(private val database: Database) {
 
-	fun getPersonalShows(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getPersonalShows(
+		searchQuery: String,
+		channels: Set<MediathekChannel>
+	): PagingSource<Int, SortableMediathekShow> {
+		val channelIds = channels
+			.ifEmpty { MediathekChannel.entries }
+			.map { it.apiId }
+
 		return database
 			.mediathekShowDao()
-			.getPersonalShows("%$searchQuery%")
+			.getPersonalShows("%$searchQuery%", channelIds)
 	}
 
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
