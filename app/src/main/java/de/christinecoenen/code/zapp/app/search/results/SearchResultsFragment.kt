@@ -22,6 +22,9 @@ import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathek
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
 import de.christinecoenen.code.zapp.app.personal.adapter.LoadStatusAdapter
 import de.christinecoenen.code.zapp.app.search.SearchViewModel
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipContent
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
 import de.christinecoenen.code.zapp.databinding.SearchResultsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
@@ -75,15 +78,25 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 			this
 		)
 
-		val adapter = ConcatAdapter(
+		val chipsAdapater = ChipsAdapter<ChannelChipContent>(ChipType.NonInteractableFilter)
+		binding.chips.adapter = chipsAdapater
+
+		viewLifecycleOwner.launchOnResumed {
+			viewModel.channels.collectLatest { channels ->
+				chipsAdapater.submitList(channels.map {
+					ChannelChipContent(it)
+				})
+			}
+		}
+
+		val showsAdapter = ConcatAdapter(
 			localShowsResultHeaderAdapater,
 			localShowsResultAdapter,
 			mediathekResultHeaderAdapter,
 			mediathekResultAdapter.withLoadStateFooter(FooterLoadStateAdapter(mediathekResultAdapter::retry)),
 			mediathekResultLoadStatusAdapter
 		)
-
-		binding.results.adapter = adapter
+		binding.results.adapter = showsAdapter
 
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.localShowsResult.collectLatest { localShows ->

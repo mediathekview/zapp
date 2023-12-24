@@ -43,7 +43,7 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 
 		// chips
 		val selectedChannelsChipsAdapter = ChipsAdapter(
-			ChipType.Filter,
+			ChipType.InteractableFilter,
 			object : SuggestionChipListener<ChannelChipContent> {
 				override fun onChipClick(content: ChannelChipContent) {
 					viewModel.removeChannel(content.channel)

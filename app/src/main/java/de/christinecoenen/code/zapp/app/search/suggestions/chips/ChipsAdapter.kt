@@ -8,7 +8,7 @@ import de.christinecoenen.code.zapp.databinding.SearchChipBinding
 
 class ChipsAdapter<T : ChipContent>(
 	private val type: ChipType,
-	private val listener: SuggestionChipListener<T>
+	private val listener: SuggestionChipListener<T>? = null
 ) :
 	ListAdapter<T, ChipViewHolder>(getDiffer()) {
 
@@ -30,7 +30,7 @@ class ChipsAdapter<T : ChipContent>(
 		val holder = ChipViewHolder(binding, type)
 
 		binding.root.setOnClickListener {
-			listener.onChipClick(getItem(holder.bindingAdapterPosition))
+			listener?.onChipClick(getItem(holder.bindingAdapterPosition))
 		}
 
 		return holder
