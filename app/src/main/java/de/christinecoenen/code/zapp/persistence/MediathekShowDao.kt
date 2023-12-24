@@ -26,6 +26,7 @@ interface MediathekShowDao {
 			"SELECT *, bookmarkedAt as sortDate FROM PersistedMediathekShow WHERE bookmarked" +
 			") " +
 			"WHERE topic LIKE :searchQuery OR title LIKE :searchQuery AND channel IN(:channels)" +
+			"GROUP BY id " +
 			"ORDER BY sortDate DESC"
 	)
 	fun getPersonalShows(searchQuery: String, channels: List<String>): PagingSource<Int, SortableMediathekShow>
