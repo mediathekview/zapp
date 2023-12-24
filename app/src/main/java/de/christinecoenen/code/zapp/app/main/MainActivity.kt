@@ -9,6 +9,7 @@ import android.speech.RecognizerIntent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -165,7 +166,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		launchOnCreated {
 			searchViewModel.searchQuery.collectLatest {
 				if (binding.searchView.text.toString() != it) {
-					binding.searchView.setText(it)
+					setSearchViewQueryAndFocus(it)
 				}
 			}
 		}
@@ -181,8 +182,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 					SearchViewModel.SeachState.Query -> {
 						binding.searchView.show()
-						binding.searchView.setText(query)
-						binding.searchView.editText.setSelection(query.length)
+						setSearchViewQueryAndFocus(query)
 					}
 
 					SearchViewModel.SeachState.Results -> {
@@ -212,6 +212,19 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		if (!settingsRepository.dynamicColors) {
 			// original zapp colors always require light status bar text (independent from theme)
 			SystemUiHelper.useLightStatusBar(window, false)
+		}
+	}
+
+	private fun setSearchViewQueryAndFocus(query: String) {
+		binding.searchView.setText(query)
+
+		binding.searchView.editText.let {
+			it.requestFocus()
+			it.setSelection(query.length)
+
+			// re-show onscreen keyboard
+			val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+			inputMethodManager.showSoftInput(it, InputMethodManager.SHOW_IMPLICIT)
 		}
 	}
 
