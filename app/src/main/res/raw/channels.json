@@ -70,22 +70,6 @@
 		"color": "#D1195C"
 	},
 	{
-		"id": "deutsche_welle",
-		"name": "Deutsche Welle",
-		"stream_url": "https://dwamdstream106.akamaized.net/hls/live/2017965/dwstream106/index.m3u8",
-		"logo_name": "channel_logo_deutsche_welle",
-		"subtitle": "Deutsch",
-		"color": "#012D5B"
-	},
-	{
-		"id": "deutsche_welle_plus",
-		"name": "Deutsche Welle+",
-		"stream_url": "https://dwamdstream105.akamaized.net/hls/live/2015531/dwstream105/index.m3u8",
-		"logo_name": "channel_logo_deutsche_welle",
-		"subtitle": "Deutsch+",
-		"color": "#012D5B"
-	},
-	{
 		"id": "one",
 		"name": "ONE",
 		"stream_url": "https://mcdn.one.ard.de/ardone/hls/master.m3u8",
