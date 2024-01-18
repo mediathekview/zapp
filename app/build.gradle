@@ -118,7 +118,7 @@ dependencies {
 	implementation 'androidx.preference:preference-ktx:1.2.1'
 	implementation "androidx.paging:paging-runtime-ktx:3.2.1"
 
-	def lifecycle_version = "2.6.2"
+	def lifecycle_version = "2.7.0"
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
@@ -146,7 +146,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.2.0"
+	def media3_version = "1.2.1"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"
