@@ -14,6 +14,22 @@ import de.christinecoenen.code.zapp.models.channels.ChannelModel
 object ShortcutHelper {
 
 	/**
+	 * Deletes shortcuts to channels that are not present in the given channel list.
+	 */
+	fun deleteShortcutsNotInChannelList(context: Context, channels: List<ChannelModel>) {
+		val existingChannelIds = getChannelIdsOfShortcuts(context)
+		val givenChannelIds = channels.map { it.id }
+
+		// remove deleted channels
+		for (existingChannelId in existingChannelIds) {
+			// delete if not longer inside givenChannelIds
+			if (!givenChannelIds.contains(existingChannelId)) {
+				removeShortcutForChannel(context, existingChannelId)
+			}
+		}
+	}
+
+	/**
 	 * Updates shorcuts to the given list of channel.
 	 *
 	 * @param context  to access system services
