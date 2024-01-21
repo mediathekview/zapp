@@ -50,6 +50,11 @@ android {
 		}
 	}
 
+	lintOptions {
+		// disabled for PR workflow with 3rd party translation tools
+		disable('MissingTranslation')
+	}
+
 	testOptions {
 		unitTests {
 			includeAndroidResources = true
