@@ -41,6 +41,16 @@
 		<item>personal</item>
 	</string-array>
 
+	<string-array name="available_tabs_names_tv">
+		<item>@string/activity_main_tab_live</item>
+		<item>@string/activity_main_tab_mediathek</item>
+	</string-array>
+
+	<string-array name="available_tabs_values_tv">
+		<item>live</item>
+		<item>mediathek</item>
+	</string-array>
+
 	<array name="mediathek_filter_show_length_slider_initial_values">
 		<item>@fraction/mediathek_filter_min_duration</item>
 		<item>@fraction/mediathek_filter_max_duration</item>

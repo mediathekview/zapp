@@ -65,6 +65,11 @@
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
+			android:name=".tv.settings.SettingsActivity"
+			android:screenOrientation="landscape"
+			android:theme="@style/LeanbackAppTheme.Transparent" />
+
+		<activity
 			android:name=".tv.faq.FaqActivity"
 			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
