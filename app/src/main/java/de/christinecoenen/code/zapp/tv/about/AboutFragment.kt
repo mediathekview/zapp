@@ -19,7 +19,7 @@ class AboutFragment : Fragment(), AboutItemListener {
 		val binding = TvFragmentAboutBinding.inflate(inflater, container, false)
 
 		binding.grid.adapter = AboutListAdapter(this)
-		binding.grid.layoutManager = GridLayoutManager(requireContext(), 2)
+		binding.grid.layoutManager = GridLayoutManager(requireContext(), 3)
 
 		return binding.root
 	}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	app:title="@string/activity_settings_title">
+
+	<ListPreference
+		android:defaultValue="live"
+		android:entries="@array/available_tabs_names_tv"
+		android:key="@string/pref_key_start_tab"
+		android:title="@string/pref_start_tab_title"
+		app:entryValues="@array/available_tabs_values_tv"
+		app:useSimpleSummaryProvider="true" />
+
+</androidx.preference.PreferenceScreen>

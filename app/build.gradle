@@ -13,8 +13,8 @@ android {
 		compileSdk 34
 		minSdkVersion 26
 		targetSdkVersion 34
-		versionCode 69
-		versionName "8.4.0"
+		versionCode 70
+		versionName "8.5.0"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 		resourceConfigurations += ['de', 'en']
 	}
@@ -48,6 +48,11 @@ android {
 				'proguard-android-optimize.txt'),
 				'proguard-rules.pro'
 		}
+	}
+
+	lintOptions {
+		// disabled for PR workflow with 3rd party translation tools
+		disable('MissingTranslation')
 	}
 
 	testOptions {
@@ -118,7 +123,7 @@ dependencies {
 	implementation 'androidx.preference:preference-ktx:1.2.1'
 	implementation "androidx.paging:paging-runtime-ktx:3.2.1"
 
-	def lifecycle_version = "2.6.2"
+	def lifecycle_version = "2.7.0"
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
@@ -146,7 +151,7 @@ dependencies {
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.2.0"
+	def media3_version = "1.2.1"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"
@@ -184,4 +189,5 @@ dependencies {
 	// android tv
 	implementation 'androidx.leanback:leanback:1.1.0-rc02'
 	implementation "androidx.leanback:leanback-tab:1.1.0-beta01"
+	implementation "androidx.leanback:leanback-preference:1.2.0-alpha04"
 }

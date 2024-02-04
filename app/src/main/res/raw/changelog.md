@@ -1,3 +1,8 @@
+# 8.5.0
+* Einstellungen zu Android-TV-version hinzugefügt
+* Angeschnittener Text im Vorspulen-Button gefixt
+* Sender "Deutsche Welle" und "Deutsche Welle +" entfernt, weil sie ihren deutschen Sendebetrieb eingestellt haben
+
 # 8.4.0
 * Von Exoplayer auf neue Media-3-Bibliothek umgestiegen
 * Absturz beim Starten von Zapp behoben, wenn vorher eine SD-Karte mit Downloads entfernt wurde

@@ -8,7 +8,6 @@
 1. [Über](#über)
 2. [FAQ](app/src/main/res/raw/faq.md)
 3. [Changelog](app/src/main/res/raw/changelog.md)
-4. [Bibliotheken](#bibliotheken)
 
 ---------------------
 
@@ -40,14 +39,3 @@ Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen de
 ## Übersetzungen
 
 Zapp wird in Deutsch entwickelt, kann aber über [Transifex](https://www.transifex.com/none-581/zapp-android-app/) in andere Sprachen übersetzt werden. Vorschläge für weitere Sprachen und Helfer beim Übersetzen sind herzlich willkommen!
-
-## Bibliotheken
-
-Zapp uses a lot of awesome open source libraries:
-- [JUnit](http://junit.org/junit4/) to test things out
-- [Gson](https://github.com/google/gson) to parse the list of channels
-- [Commons IO](https://commons.apache.org/proper/commons-io/) for a sane way to handle files on Android
-- [DragListView](https://github.com/woxblom/DragListView) to let you reorder the channel list intuitively
-- [exo player](https://google.github.io/ExoPlayer/) the better video player
-- [Retrofit](https://square.github.io/retrofit/) for easy server api communication
-- [Joda time](http://www.joda.org/joda-time/) for sane date and time handling in Java

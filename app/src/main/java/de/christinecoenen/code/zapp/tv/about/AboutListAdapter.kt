@@ -7,12 +7,18 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.TvAboutItemBinding
 import de.christinecoenen.code.zapp.tv.changelog.ChangelogActivity
 import de.christinecoenen.code.zapp.tv.faq.FaqActivity
+import de.christinecoenen.code.zapp.tv.settings.SettingsActivity
 
 class AboutListAdapter(
 	private val listener: AboutItemListener
 ) : RecyclerView.Adapter<AboutViewViewHolder>() {
 
 	private val aboutItems = listOf(
+		AboutItem(
+			R.string.activity_settings_title,
+			R.drawable.ic_outline_settings_24,
+			SettingsActivity
+		),
 		AboutItem(
 			R.string.changelog_title,
 			R.drawable.ic_sharp_format_list_bulleted_24,

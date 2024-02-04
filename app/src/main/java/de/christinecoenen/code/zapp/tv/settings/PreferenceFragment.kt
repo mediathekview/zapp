@@ -1,30 +1,21 @@
-package de.christinecoenen.code.zapp.app.settings.ui
+package de.christinecoenen.code.zapp.tv.settings
 
 import android.os.Bundle
-import androidx.navigation.fragment.findNavController
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.leanback.preference.LeanbackPreferenceFragmentCompat
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.utils.system.PreferenceFragmentHelper
 import org.koin.android.ext.android.inject
 
-class SettingsFragment : BaseSettingsFragment() {
+class PreferenceFragment : LeanbackPreferenceFragmentCompat() {
 
 	private val settingsRepository: SettingsRepository by inject()
 	private val preferenceFragmentHelper = PreferenceFragmentHelper(this, settingsRepository)
 
-	private val channelSelectionClickListener = Preference.OnPreferenceClickListener {
-		val direction =
-			SettingsFragmentDirections.toChannelSelectionFragment()
-		findNavController().navigate(direction)
-		true
-	}
-
 	override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-		addPreferencesFromResource(R.xml.preferences)
+		setPreferencesFromResource(R.xml.tv_preferences, rootKey)
 
-		preferenceFragmentHelper.initPreferences(channelSelectionClickListener)
+		preferenceFragmentHelper.initPreferences()
 	}
 
 	override fun onDestroy() {

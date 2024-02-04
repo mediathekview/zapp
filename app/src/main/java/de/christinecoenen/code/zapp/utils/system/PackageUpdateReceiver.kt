@@ -11,6 +11,11 @@ class PackageUpdateReceiver : BroadcastReceiver() {
 		if (Intent.ACTION_MY_PACKAGE_REPLACED == intent.action) {
 			val app = context.applicationContext as ZappApplication
 			app.channelRepository.deleteCachedChannelInfos()
+
+			ShortcutHelper.deleteShortcutsNotInChannelList(
+				context,
+				app.channelRepository.getChannelList().list
+			)
 		}
 	}
 
