@@ -1,4 +1,4 @@
-# v-next
+# 8.5.0
 * Einstellungen zu Android-TV-version hinzugefügt
 * Angeschnittener Text im Vorspulen-Button gefixt
 * Sender "Deutsche Welle" und "Deutsche Welle +" entfernt, weil sie ihren deutschen Sendebetrieb eingestellt haben
