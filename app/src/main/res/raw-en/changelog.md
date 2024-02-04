@@ -1,3 +1,8 @@
+# 8.5.0
+* Added settings to Android TV version
+* Fixed cut off text in skip forward button
+* Removed channels "Deutsche Welle" and "Deutsche Welle +", because their German version went off air
+
 # 8.4.0
 * Switched from exoplayer to new media 3 library
 * Fixed crash on app start if an sd card with downloaded shows had been removed
