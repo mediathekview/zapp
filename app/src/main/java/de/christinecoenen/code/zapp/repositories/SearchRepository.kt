@@ -22,6 +22,10 @@ class SearchRepository(private val database: Database) {
 	}
 
 	suspend fun saveQuery(query: String) = withContext(Dispatchers.IO) {
+		if (query.trim() == "") {
+			return@withContext
+		}
+
 		database
 			.searchDao()
 			.saveQuery(SearchQuery(query, DateTime.now()))
