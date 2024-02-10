@@ -40,7 +40,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloads(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getDownloads(searchQuery: String = ""): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllDownloads("%$searchQuery%")
@@ -54,7 +54,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getStarted(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getStarted(searchQuery: String = ""): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllStarted("%$searchQuery%")
@@ -68,7 +68,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getBookmarked(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getBookmarked(searchQuery: String = ""): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllBookarked("%$searchQuery%")
