@@ -32,5 +32,5 @@ class LoadStatusAdapter(
 		holder.bind(labelResId)
 	}
 
-	override fun getItemCount() = if (isVisible) 1 else 0
+	override fun getItemCount() = if (isVisible && !isLoading) 1 else 0
 }
