@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
@@ -89,11 +89,13 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 			}
 		}
 
+		val mediathekResultLoadStateHeader = MediathekLoadStateAdapter(showErrors = false)
 		val showsAdapter = ConcatAdapter(
 			localShowsResultHeaderAdapater,
 			localShowsResultAdapter,
 			mediathekResultHeaderAdapter,
-			mediathekResultAdapter.withLoadStateFooter(FooterLoadStateAdapter(mediathekResultAdapter::retry)),
+			mediathekResultLoadStateHeader,
+			mediathekResultAdapter.withLoadStateFooter(MediathekLoadStateAdapter(retry = mediathekResultAdapter::retry)),
 			mediathekResultLoadStatusAdapter
 		)
 		binding.results.adapter = showsAdapter
@@ -111,6 +113,10 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 			viewModel.mediathekResult.collectLatest { apiShows ->
 				mediathekResultAdapter.submitData(apiShows)
 			}
+		}
+		mediathekResultAdapter.addLoadStateListener { loadStates ->
+			// show initial load, too
+			mediathekResultLoadStateHeader.loadState = loadStates.refresh
 		}
 		mediathekResultAdapter.addOnPagesUpdatedListener {
 			mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)

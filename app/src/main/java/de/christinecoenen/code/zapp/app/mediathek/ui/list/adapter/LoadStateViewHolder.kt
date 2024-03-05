@@ -10,16 +10,17 @@ import javax.net.ssl.SSLHandshakeException
 
 class LoadStateViewHolder(
 	private val binding: MediathekListFragmentItemFooterBinding,
-	retry: () -> Unit
+	private val showErrors: Boolean,
+	private val retry: (() -> Unit)?
 ) : RecyclerView.ViewHolder(binding.root) {
 
 	init {
-		binding.retryButton.setOnClickListener { retry() }
+		binding.retryButton.setOnClickListener { retry?.invoke() }
 	}
 
 	fun bind(loadState: LoadState) {
-		binding.errorMessage.isVisible = loadState is LoadState.Error
-		binding.retryButton.isVisible = loadState is LoadState.Error
+		binding.errorMessage.isVisible = loadState is LoadState.Error && showErrors
+		binding.retryButton.isVisible = loadState is LoadState.Error && showErrors && retry != null
 		binding.progress.isVisible = loadState is LoadState.Loading
 
 		if (loadState is LoadState.Error) {

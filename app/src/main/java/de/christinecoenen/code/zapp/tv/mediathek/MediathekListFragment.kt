@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekLoadStateAdapter
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -77,7 +77,7 @@ class MediathekListFragment : Fragment(),
 		}
 
 		adapter = MediathekItemAdapter(lifecycleScope, this)
-		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
+		binding.list.adapter = adapter.withLoadStateFooter(MediathekLoadStateAdapter(retry = adapter::retry))
 
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewmodel.pageFlow.collectLatest { pagingData ->

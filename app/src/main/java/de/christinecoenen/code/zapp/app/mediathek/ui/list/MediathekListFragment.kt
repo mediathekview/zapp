@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.FooterLoadStateAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
@@ -90,7 +90,7 @@ class MediathekListFragment : Fragment(),
 			this@MediathekListFragment
 		)
 
-		binding.list.adapter = adapter.withLoadStateFooter(FooterLoadStateAdapter(adapter::retry))
+		binding.list.adapter = adapter.withLoadStateFooter(MediathekLoadStateAdapter(retry = adapter::retry))
 
 		viewLifecycleOwner.launchOnCreated {
 			viewmodel.pageFlow.collectLatest { pagingData ->
