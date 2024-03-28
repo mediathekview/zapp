@@ -53,7 +53,7 @@
 		app:selectionRequired="true">
 
 		<include
-			layout="@layout/view_mediathek_filter_channel_chip"
+			layout="@layout/view_mediathek_filter_chip"
 			android:visibility="gone"
 			tools:visibility="visible" />
 

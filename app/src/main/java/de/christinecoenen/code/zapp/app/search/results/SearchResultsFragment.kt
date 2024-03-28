@@ -25,6 +25,7 @@ import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipContent
 import de.christinecoenen.code.zapp.databinding.SearchResultsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
@@ -78,13 +79,24 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 			this
 		)
 
-		val chipsAdapater = ChipsAdapter<ChannelChipContent>(ChipType.NonInteractableFilter)
-		binding.chips.adapter = chipsAdapater
+		val channelChipsAdapter = ChipsAdapter<ChannelChipContent>(ChipType.NonInteractableFilter)
+		binding.channelChips.adapter = channelChipsAdapter
 
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.channels.collectLatest { channels ->
-				chipsAdapater.submitList(channels.map {
+				channelChipsAdapter.submitList(channels.map {
 					ChannelChipContent(it)
+				})
+			}
+		}
+
+		val durationChipsAdapter = ChipsAdapter<DurationChipContent>(ChipType.NonInteractableFilter)
+		binding.durationChips.adapter = durationChipsAdapter
+
+		viewLifecycleOwner.launchOnResumed {
+			viewModel.durationQuerySet.collectLatest { durationQuerySet ->
+				durationChipsAdapter.submitList(durationQuerySet.map {
+					DurationChipContent(it)
 				})
 			}
 		}

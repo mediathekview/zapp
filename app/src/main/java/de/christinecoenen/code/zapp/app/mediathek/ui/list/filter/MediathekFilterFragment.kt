@@ -104,7 +104,7 @@ class MediathekFilterFragment : Fragment() {
 		for (channel in MediathekChannel.values()) {
 			// create view
 			val chip = inflater.inflate(
-				R.layout.view_mediathek_filter_channel_chip,
+				R.layout.view_mediathek_filter_chip,
 				binding.channels,
 				false
 			) as Chip

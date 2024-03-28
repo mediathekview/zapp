@@ -15,6 +15,9 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
+import de.christinecoenen.code.zapp.models.search.Comparison
+import de.christinecoenen.code.zapp.models.search.DurationQuery
+import de.christinecoenen.code.zapp.models.search.DurationQuerySet
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
@@ -61,6 +64,9 @@ class SearchViewModel(
 	private val _channels = MutableStateFlow(emptySet<MediathekChannel>())
 	val channels = _channels.asStateFlow()
 
+	private val _durationQueries = MutableStateFlow(DurationQuerySet())
+	val durationQuerySet = _durationQueries.asStateFlow()
+
 	private val _submittedSearchQuery = MutableStateFlow("")
 	val submittedSearchQuery = _submittedSearchQuery.asStateFlow()
 
@@ -78,6 +84,18 @@ class SearchViewModel(
 		}
 	}
 
+	val durationSuggestionSet = lastWord
+		.map {
+			val numeric = it.toIntOrNull()
+			if (numeric == null || numeric <= 0 || it.startsWith("0"))
+				DurationQuerySet()
+			else
+				DurationQuerySet(
+					DurationQuery(Comparison.GreaterThan, numeric),
+					DurationQuery(Comparison.LesserThan, numeric)
+				)
+		}
+
 	val localSearchSuggestions = _searchQuery
 		.flatMapLatest { query ->
 			if (query.isEmpty()) {
@@ -94,22 +112,28 @@ class SearchViewModel(
 		}
 		.cachedIn(viewModelScope)
 
-	val localShowsResult = combine(_submittedSearchQuery, _channels) { query, _ -> query }
-		.flatMapLatest { query ->
-			if (query.isEmpty()) {
-				flowOf(PagingData.empty())
-			} else {
-				Pager(pagingConfig) {
-					mediathekRepository.getPersonalShows(query, _channels.value)
-				}.flow
+	val localShowsResult =
+		combine(_submittedSearchQuery, _channels, _durationQueries) { query, _, _ -> query }
+			.flatMapLatest { query ->
+				if (query.isEmpty()) {
+					flowOf(PagingData.empty())
+				} else {
+					Pager(pagingConfig) {
+						mediathekRepository.getPersonalShows(
+							query,
+							_channels.value,
+							_durationQueries.value.minDurationSeconds,
+							_durationQueries.value.maxDurationSeconds
+						)
+					}.flow
+				}
 			}
-		}
-		.map<PagingData<SortableMediathekShow>, PagingData<UiModel>> { pagingData ->
-			pagingData.map { show ->
-				UiModel.MediathekShowModel(show.mediathekShow, show.sortDate)
+			.map<PagingData<SortableMediathekShow>, PagingData<UiModel>> { pagingData ->
+				pagingData.map { show ->
+					UiModel.MediathekShowModel(show.mediathekShow, show.sortDate)
+				}
 			}
-		}
-		.cachedIn(viewModelScope)
+			.cachedIn(viewModelScope)
 
 	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
 	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
@@ -148,6 +172,17 @@ class SearchViewModel(
 
 	fun removeChannel(channel: MediathekChannel) {
 		_channels.tryEmit(_channels.value.minus(channel))
+	}
+
+	fun addOrReplaceDurationQuery(durationQuery: DurationQuery) {
+		_durationQueries.tryEmit(_durationQueries.value.addOrReplace(durationQuery))
+
+		// remove duration query (part) from end of query
+		_searchQuery.tryEmit(_searchQuery.value.replace("\\d+$".toRegex(), ""))
+	}
+
+	fun removeDurationQuery(durationQuery: DurationQuery) {
+		_durationQueries.tryEmit(_durationQueries.value.remove(durationQuery))
 	}
 
 	fun setSearchQuery(query: String?) {

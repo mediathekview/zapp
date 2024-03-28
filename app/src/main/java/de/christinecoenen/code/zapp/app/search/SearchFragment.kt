@@ -13,6 +13,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
 import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextListener
@@ -56,9 +57,27 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 					viewModel.addChannel(content.channel)
 				}
 			})
-		binding.chips.adapter = ConcatAdapter(
+		val selectedDurationQueriesChipsAdapter = ChipsAdapter(
+			ChipType.InteractableFilter,
+			object : SuggestionChipListener<DurationChipContent> {
+				override fun onChipClick(content: DurationChipContent) {
+					viewModel.removeDurationQuery(content.durationQuery)
+				}
+			})
+		val suggestedDurationChipsAdapter = ChipsAdapter(
+			ChipType.Suggestion,
+			object : SuggestionChipListener<DurationChipContent> {
+				override fun onChipClick(content: DurationChipContent) {
+					viewModel.addOrReplaceDurationQuery(content.durationQuery)
+				}
+			})
+		binding.channelChips.adapter = ConcatAdapter(
 			selectedChannelsChipsAdapter,
-			suggestedChannelsChipsAdapter
+			suggestedChannelsChipsAdapter,
+		)
+		binding.durationChips.adapter = ConcatAdapter(
+			selectedDurationQueriesChipsAdapter,
+			suggestedDurationChipsAdapter,
 		)
 
 		viewLifecycleOwner.launchOnCreated {
@@ -72,6 +91,20 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 			viewModel.channelSuggestions.collectLatest { channelSuggestions ->
 				suggestedChannelsChipsAdapter.submitList(channelSuggestions.map {
 					ChannelChipContent(it)
+				})
+			}
+		}
+		viewLifecycleOwner.launchOnCreated {
+			viewModel.durationQuerySet.collectLatest { durationQuerySet ->
+				selectedDurationQueriesChipsAdapter.submitList(durationQuerySet.map {
+					DurationChipContent(it)
+				})
+			}
+		}
+		viewLifecycleOwner.launchOnCreated {
+			viewModel.durationSuggestionSet.collectLatest { durationSuggestionSet ->
+				suggestedDurationChipsAdapter.submitList(durationSuggestionSet.map {
+					DurationChipContent(it)
 				})
 			}
 		}

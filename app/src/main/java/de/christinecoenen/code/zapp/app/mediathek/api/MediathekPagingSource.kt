@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
 import timber.log.Timber
@@ -46,6 +47,7 @@ class MediathekPagingSource(
 			val nextKey = if (showList.isEmpty()) null else nextPageNumber.plus(1)
 
 			queryInfoResultPublisher.emit(response.result.queryInfo)
+			delay(1000)
 
 			LoadResult.Page(
 				data = showList,

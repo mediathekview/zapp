@@ -7,15 +7,26 @@
 	tools:context=".app.search.SearchFragment">
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/chips"
+		android:id="@+id/channel_chips"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingHorizontal="12dp"
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+		app:layout_constraintBottom_toTopOf="@id/duration_chips"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:listitem="@layout/view_mediathek_filter_chip" />
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/duration_chips"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:paddingHorizontal="12dp"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 		app:layout_constraintBottom_toTopOf="@id/results"
-		app:layout_constraintTop_toTopOf="parent"
-		tools:listitem="@layout/view_mediathek_filter_channel_chip" />
+		app:layout_constraintTop_toBottomOf="@id/channel_chips"
+		tools:listitem="@layout/view_mediathek_filter_chip" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/results"
@@ -26,7 +37,7 @@
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/chips"
+		app:layout_constraintTop_toBottomOf="@id/duration_chips"
 		tools:listitem="@layout/mediathek_list_fragment_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,11 +25,19 @@ interface MediathekShowDao {
 			"SELECT *, lastPlayedBackAt as sortDate FROM PersistedMediathekShow WHERE playbackPosition UNION " +
 			"SELECT *, bookmarkedAt as sortDate FROM PersistedMediathekShow WHERE bookmarked" +
 			") " +
-			"WHERE topic LIKE :searchQuery OR title LIKE :searchQuery AND channel IN(:channels)" +
+			"WHERE (topic LIKE :searchQuery OR title LIKE :searchQuery) " +
+			"AND channel IN(:channels) " +
+			"AND ((:minDurationSeconds IS NULL) OR duration > :minDurationSeconds) " +
+			"AND ((:maxDurationSeconds IS NULL) OR duration < :maxDurationSeconds) " +
 			"GROUP BY id " +
 			"ORDER BY sortDate DESC"
 	)
-	fun getPersonalShows(searchQuery: String, channels: List<String>): PagingSource<Int, SortableMediathekShow>
+	fun getPersonalShows(
+		searchQuery: String,
+		channels: List<String>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null
+	): PagingSource<Int, SortableMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>

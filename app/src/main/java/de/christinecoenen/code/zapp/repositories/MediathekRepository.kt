@@ -21,7 +21,9 @@ class MediathekRepository(private val database: Database) {
 
 	fun getPersonalShows(
 		searchQuery: String,
-		channels: Set<MediathekChannel>
+		channels: Set<MediathekChannel>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null
 	): PagingSource<Int, SortableMediathekShow> {
 		val channelIds = channels
 			.ifEmpty { MediathekChannel.entries }
@@ -29,7 +31,7 @@ class MediathekRepository(private val database: Database) {
 
 		return database
 			.mediathekShowDao()
-			.getPersonalShows("%$searchQuery%", channelIds)
+			.getPersonalShows("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds)
 	}
 
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
