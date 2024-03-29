@@ -1,3 +1,6 @@
+# v-next
+* Dynamische Farben wurden auf manchen Geräten nicht übernommen
+
 # 8.5.0
 * Einstellungen zu Android-TV-version hinzugefügt
 * Angeschnittener Text im Vorspulen-Button gefixt
