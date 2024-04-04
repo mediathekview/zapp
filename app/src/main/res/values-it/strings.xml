@@ -1,0 +1,127 @@
+<resources>
+	<string name="app_name">Zapp</string>
+	<string name="app_website_url">https://github.com/mediathekview/zapp</string>
+
+	<string name="activity_main_tab_live">In diretta</string>
+	<string name="activity_main_tab_mediathek">Mediathek</string>
+	<string name="activity_main_tab_downloads">Scaricamento</string>
+	<string name="about_summary">Zapp è parte di MediathekView e offre un accesso rapido a numerose emittenti televisive tedesche. Ascolta ARD, ZDF e altri emittenti in diretta o tramite Mediathek.</string>
+	<string name="about_feedback_mail_subject">Feedback di Zapp</string>
+
+	<string name="changelog_title">Registro delle modifiche</string>
+
+	<string name="faq_title">FAQ</string>
+
+	<string name="activity_channel_detail_info_error">Nessuna informazione sul programma</string>
+
+	<string name="activity_settings_title">Installazioni</string>
+	<string name="activity_channel_selection_title">Modifica l\'elenco dei canali</string>
+	<string name="activity_channel_selection_help_text">Trascina la barra grigia per ordinare i canali.
+\n
+\nUn clic mostra o nasconde una stazione.</string>
+
+	<string name="view_program_info_show_time">dalle %1$s alle %2$s</string>
+
+	<!-- mediathek -->
+	<string name="fragment_mediathek_no_results">nessun programma TV trovato</string>
+	<string name="fragment_mediathek_time">Salvato</string>
+	<string name="fragment_mediathek_channel">Canale tv</string>
+	<string name="fragment_mediathek_duration">Durata</string>
+	<string name="fragment_mediathek_website">Sito web</string>
+	<string name="fragment_mediathek_batch_subtitle">ST</string>
+	<string name="fragment_mediathek_qualities_title">Seleziona la qualità</string>
+	<string name="fragment_mediathek_qualities_low">Basso</string>
+	<string name="fragment_mediathek_qualities_medium">Mezzo</string>
+	<string name="fragment_mediathek_qualities_high">Alto</string>
+	<string name="fragment_mediathek_download">Scarica</string>
+	<string name="fragment_mediathek_download_retry">Ripetere il download</string>
+	<string name="fragment_mediathek_download_running">Attualmente in fase di download…</string>
+	<string name="fragment_mediathek_download_delete">Elimina Scarica</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">Eliminare davvero il file\?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">Il file video viene eliminato e può essere scaricato di nuovo in seguito.</string>
+	<string name="fragment_mediathek_query_info">%1$s risultati di ricerca del %2$s</string>
+
+	<string name="error_report">Segnala un errore</string>
+	<string name="error_app_crash">Spiacente, c\'è stato un errore.
+\nVorresti inviare una segnalazione di bug agli sviluppatori via email per correggere questo bug in futuro\?
+\nPer favore scrivi il tuo messaggio in inglese in modo che gli sviluppatori possano capire tutto</string>
+	<string name="error_app_crash_tv">Scusa Zapp si è bloccato.</string>
+	<string name="error_app_crash_mail_subject">Rapporto sugli arresti anomali di Zapp</string>
+	<string name="error_app_crash_mail_body">Grazie per il feedback!
+\n
+\nLe seguenti informazioni aiuteranno gli sviluppatori Zapp a correggere l\'errore:
+\n</string>
+
+	<string name="error_stream_unknown">Impossibile riprodurre il video a causa di un errore sconosciuto.</string>
+	<string name="error_stream_io">Impossibile caricare il video. Forse non c\'è connessione a Internet o il video non è disponibile nel tuo paese.</string>
+	<string name="error_stream_unsupported">Il video è danneggiato o il formato non è supportato.</string>
+	<string name="error_stream_not_in_unmetered_network">La riproduzione tramite reti a pagamento è stata disabilitata nelle impostazioni.</string>
+
+	<string name="error_mediathek_info_not_available">Si è verificato un errore durante il caricamento del catalogo multimediale. Per favore controlla la tua connessione Internet.</string>
+	<string name="error_mediathek_ssl_error">Il tuo dispositivo non può stabilire una connessione crittografata al server. L\'aggiornamento della versione di Android probabilmente aiuterà.</string>
+	<string name="error_mediathek_generic_start_download_error">Impossibile avviare il download.</string>
+	<string name="error_mediathek_download_over_unmetered_network_only">Download consentito solo tramite reti gratuite.</string>
+	<string name="error_mediathek_download_no_network">Nessuna connessione Internet disponibile.</string>
+
+	<string name="error_prefixed_message">Errore: %s</string>
+
+	<string name="action_share">Condividere</string>
+	<string name="action_continue">Continua</string>
+	<string name="action_open">Aprire</string>
+	<string name="action_send_mail">E-Mail senden</string>
+	<string name="action_play_in_background">Gioca in sottofondo</string>
+	<string name="action_start_picture_in_picture">foto nella foto</string>
+	<string name="action_start_download">Scarica</string>
+	<string name="action_delete_download">Elimina Scarica</string>
+	<string name="search_query_hint_mediathek">Cerca nella libreria multimediale…</string>
+	<string name="delete_search_query_content_description">termina la ricerca</string>
+
+	<string name="menu_refresh">Aggiornare</string>
+	<string name="menu_retry">Ripetere</string>
+	<string name="menu_about">A proposito di Zapp</string>
+	<string name="menu_about_short">A proposito</string>
+	<string name="menu_settings">impostazioni</string>
+	<string name="menu_feedback">Feedback</string>
+	<string name="menu_filter">Filtro</string>
+	<string name="menu_program_info">informazioni sul programma</string>
+
+	<!-- player -->
+	<string name="player_zoom_state_cropped">Allargato</string>
+	<string name="player_zoom_state_boxed">Originale</string>
+	<string name="pref_header_network">Rete</string>
+	<string name="pref_header_channels">Canale</string>
+	<string name="pref_header_data">Dati</string>
+
+	<string name="pref_detail_landscape_title">Video sempre in formato orizzontale</string>
+	<string name="pref_detail_landscape_summary">Blocca l\'app in modalità orizzontale durante la riproduzione di un video</string>
+
+	<string name="pref_stream_quality_cellular_title">Qualità video su reti a pagamento</string>
+
+	<string name="pref_download_over_unmetered_network_only_title">Scarica solo su reti gratuite</string>
+	<string name="pref_download_over_unmetered_network_only_summary">I video non vengono scaricati se il dispositivo è ad esempio nella rete mobile</string>
+
+	<string name="pref_channel_selection_title">Disporre i canali</string>
+
+	<string name="pref_shortcuts_title">Mittente-scorciatoie</string>
+	<string name="pref_shortcuts_summary_not_supported">Supportato da Android 7.1</string>
+	<string name="pref_shortcuts_summary_limit">È possibile salvare un massimo di 4 collegamenti</string>
+	<string name="pref_shortcuts_too_many">È possibile salvare un massimo di 4 collegamenti.</string>
+
+	<string name="pref_ui_mode_default">Standard di sistema</string>
+	<string name="pref_ui_mode_light">Sempre luminoso</string>
+	<string name="pref_ui_mode_dark">Sempre buio</string>
+
+	<string name="stream_quality_cellular_disabled">Non riprodurre video</string>
+	<string name="stream_quality_cellular_lowest">qualità più bassa</string>
+	<string name="stream_quality_cellular_medium">Qualità media</string>
+	<string name="stream_quality_cellular_highest">La migliore qualità</string>
+
+	<string name="pref_download_to_sd_card_title">Download su scheda SD</string>
+	<string name="pref_download_to_sd_card_summary">Se disponibili, i file video vengono salvati sulla scheda SD.</string>
+
+	<!-- notifications -->
+	<string name="notification_channel_name_background_playback">lettore video in background</string>
+	<string name="notification_channel_name_download_progress">Scarica lo stato di avanzamento</string>
+	<string name="notification_channel_name_download_event">Scarica Evento</string>
+
+	</resources>
