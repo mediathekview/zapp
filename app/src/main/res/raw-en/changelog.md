@@ -1,3 +1,6 @@
+# 8.5.1
+* Dynamic colors were not applied on some devices
+
 # 8.5.0
 * Added settings to Android TV version
 * Fixed cut off text in skip forward button
