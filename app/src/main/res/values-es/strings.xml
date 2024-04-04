@@ -1,0 +1,94 @@
+<resources>
+	<string name="app_name">Zapp</string>
+	<string name="app_website_url">https://github.com/mediathekview/zapp</string>
+
+	<string name="activity_main_tab_live">En vivo</string>
+	<string name="about_feedback_mail_subject">Comentarios de Zapp</string>
+
+	<string name="changelog_title">Registro de cambios</string>
+
+	<string name="faq_title">Preguntas más frecuentes</string>
+
+	<string name="activity_channel_detail_info_error">No hay información del programa</string>
+
+	<string name="activity_settings_title">Ajustes</string>
+	<string name="activity_channel_selection_title">Cambiar lista de canales</string>
+	<string name="activity_channel_selection_help_text">Arrastre la barra gris para ordenar los canales.
+\n
+\nUn clic muestra u oculta una estación.</string>
+
+	<string name="view_program_info_show_time">de %1$s a %2$s pm</string>
+
+	<!-- mediathek -->
+	<string name="fragment_mediathek_no_results">no se han realizado envíos</string>
+	<string name="fragment_mediathek_time">Salvado</string>
+	<string name="fragment_mediathek_channel">Remitente</string>
+	<string name="fragment_mediathek_duration">Duración</string>
+	<string name="fragment_mediathek_website">Página web</string>
+	<string name="fragment_mediathek_batch_subtitle">ST</string>
+	<string name="fragment_mediathek_qualities_title">Seleccionar calidad</string>
+	<string name="fragment_mediathek_qualities_low">Bajo</string>
+	<string name="fragment_mediathek_qualities_medium">Medio</string>
+	<string name="fragment_mediathek_qualities_high">Alto</string>
+	<string name="fragment_mediathek_download">Descargar</string>
+	<string name="fragment_mediathek_download_retry">Repetir descarga</string>
+	<string name="fragment_mediathek_download_running">Descargando actualmente…</string>
+	<string name="fragment_mediathek_download_delete">Eliminar Descargar</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_title">¿Realmente eliminar el archivo\?</string>
+	<string name="fragment_mediathek_confirm_delete_dialog_text">El archivo de video se elimina y se puede volver a descargar más tarde.</string>
+	<string name="fragment_mediathek_query_info">%1$s resultados de búsqueda el %2$s</string>
+
+	<string name="error_report">Reportar un error</string>
+	<string name="error_app_crash">Lo sentimos, ha habido un error.
+\n¿Le gustaría enviar por correo electrónico un informe de error al desarrollador para corregir este error en el futuro\? Escriba su informe de error en inglés para que el desarrollador pueda entenderlo</string>
+	<string name="error_app_crash_tv">Lo siento, la aplicación se bloqueó.</string>
+	<string name="error_app_crash_mail_subject">Zapp Crash Report</string>
+	<string name="error_app_crash_mail_body">¡Gracias por los comentarios!
+\n
+\nLa siguiente información ayudará a los desarrolladores de Zapp a corregir el error:
+\n</string>
+
+	<string name="error_stream_unknown">El video no se puede reproducir debido a un error desconocido.</string>
+	<string name="error_stream_io">No se pudo cargar el video. Tal vez no haya conexión a Internet o el video no esté disponible en su país.</string>
+	<string name="error_stream_unsupported">El video está dañado o el formato no es compatible.</string>
+	<string name="error_stream_not_in_unmetered_network">La reproducción a través de redes pagas se ha deshabilitado en la configuración.</string>
+
+	<string name="error_mediathek_info_not_available">Hubo un error al cargar la biblioteca de medios. Por favor revise su conexion a internet.</string>
+	<string name="error_mediathek_ssl_error">Su dispositivo no puede establecer una conexión cifrada con el servidor. Actualizar su versión de Android probablemente ayudará.</string>
+	<string name="error_mediathek_generic_start_download_error">No se pudo iniciar la descarga.</string>
+	<string name="error_mediathek_download_over_unmetered_network_only">Descarga permitida solo a través de redes gratuitas.</string>
+	<string name="error_mediathek_download_no_network">No hay Internet disponible.</string>
+
+	<string name="error_prefixed_message">Error: %s</string>
+
+	<!-- menus & buttons -->
+	<string name="action_play">Tocar</string>
+	<string name="action_share">Distribuir</string>
+	<string name="action_continue">Continuar</string>
+	<string name="action_open">Abrir</string>
+	<string name="action_send_mail">Enviar correo electrónico</string>
+	<string name="action_play_in_background">reproducir en segundo plano</string>
+	<string name="action_start_picture_in_picture">imagen en imagen</string>
+	<string name="action_start_download">Descargar</string>
+	<string name="action_delete_download">Eliminar Descargar</string>
+	<string name="search_query_hint_mediathek">Buscar biblioteca de medios…</string>
+	<string name="delete_search_query_content_description">Eliminar la búsqueda</string>
+
+	<string name="menu_refresh">Actualizar</string>
+	<string name="menu_retry">Repetir</string>
+	<string name="menu_about">Acerca de Zapp</string>
+	<string name="menu_about_short">Acerca</string>
+	<string name="menu_settings">Ajustes</string>
+	<string name="menu_feedback">Retroalimentación</string>
+	<string name="menu_filter">Filtrar</string>
+	<string name="menu_program_info">Información del programa</string>
+
+	<!-- player -->
+	<string name="player_zoom_state_cropped">Engrandecido</string>
+	<string name="player_zoom_state_boxed">Original</string>
+	<string name="pref_header_network">Retículo</string>
+	<string name="pref_header_channels">Emisora</string>
+	<string name="pref_header_data">Datos</string>
+
+	<string name="pref_detail_landscape_title">Siempre reproduce videos en formato horizontal</string>
+	</resources>
