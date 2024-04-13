@@ -166,7 +166,7 @@ class Player(
 		exoPlayer.playWhenReady = true
 	}
 
-	suspend fun destroy() = withContext(Dispatchers.Main) {
+	fun destroy() {
 		networkConnectionHelper.endListenForNetworkChanges()
 		playerPositionWatcher.dispose()
 		exoPlayer.removeAnalyticsListener(playerEventHandler)

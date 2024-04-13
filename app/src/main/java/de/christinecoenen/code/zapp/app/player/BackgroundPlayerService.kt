@@ -96,13 +96,11 @@ class BackgroundPlayerService : LifecycleService(),
 
 	override fun onDestroy() {
 		movePlaybackToForeground()
+		player.destroy()
 
-		lifecycleScope.launch {
-			player.destroy()
-			playerNotificationManager?.setPlayer(null)
+		playerNotificationManager?.setPlayer(null)
 
-			super.onDestroy()
-		}
+		super.onDestroy()
 	}
 
 	private fun onPlayerError(messageResourceId: Int?) {
