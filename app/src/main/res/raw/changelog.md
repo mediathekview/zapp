@@ -1,3 +1,6 @@
+# v-next
+* Duplikate beim Scrollen in der Mediathek-Liste entfernt
+
 # 8.5.1
 * Dynamische Farben wurden auf manchen Geräten nicht übernommen
 
