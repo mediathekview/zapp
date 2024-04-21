@@ -1,3 +1,6 @@
+# 8.5.2
+* Removed duplicate entries when scrolling the mediathek list
+
 # 8.5.1
 * Dynamic colors were not applied on some devices
 

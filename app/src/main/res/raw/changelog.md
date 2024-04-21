@@ -1,4 +1,4 @@
-# v-next
+# 8.5.2
 * Duplikate beim Scrollen in der Mediathek-Liste entfernt
 
 # 8.5.1
