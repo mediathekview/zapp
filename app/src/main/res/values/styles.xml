@@ -40,6 +40,7 @@
 		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 		<item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
+		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
 
 		<item name="actionBarSize">48dp</item>
 		<item name="android:textAllCaps">false</item>
@@ -132,10 +133,16 @@
 	<style name="Widget.App.CircularProgressIndicator.Small.OnSurface" parent="Widget.Material3.CircularProgressIndicator.Small">
 		<item name="indicatorColor">?colorSecondary</item>
 		<item name="trackColor">@color/color_on_surface_20_alpha</item>
+		<item name="indicatorTrackGapSize">0dp</item>
 	</style>
 
 	<style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.OutlinedButton</item>
+	</style>
+
+	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
+		<item name="trackColor">?colorSurfaceContainerHighest</item>
+		<item name="trackStopIndicatorSize">0dp</item>
 	</style>
 
 	<style name="ThemeOverlay.App.OutlinedButton" parent="ThemeOverlay.Material3.Button.TextButton">
