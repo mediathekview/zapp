@@ -50,12 +50,15 @@ class ProgramInfoSheetDialogFragment(
 	}
 
 	private fun onTitleChanged(title: String) {
-		binding.title.text = title
+		binding.title.text = HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
 	}
 
 	private fun onSubtitleChanged(subtitle: String?) {
 		binding.subtitle.isVisible = !subtitle.isNullOrEmpty()
-		binding.subtitle.text = subtitle
+
+		if (!subtitle.isNullOrEmpty()) {
+			binding.subtitle.text = HtmlCompat.fromHtml(subtitle, HtmlCompat.FROM_HTML_MODE_LEGACY)
+		}
 	}
 
 	private fun onDescriptionChanged(description: String?) {

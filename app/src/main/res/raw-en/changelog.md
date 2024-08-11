@@ -1,3 +1,6 @@
+# v-next
+* Fixed html entities visible in program information titles
+
 # 8.5.2
 * Removed duplicate entries when scrolling the mediathek list
 
