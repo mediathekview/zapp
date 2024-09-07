@@ -7,16 +7,25 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.google.android.material.appbar.AppBarLayout
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
@@ -37,6 +46,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		enableEdgeToEdge()
+
 		super.onCreate(savedInstanceState)
 
 		_binding = ActivityMainBinding.inflate(layoutInflater)
@@ -80,6 +91,14 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		if (!settingsRepository.dynamicColors) {
 			// original zapp colors always require light status bar text (independent from theme)
 			SystemUiHelper.useLightStatusBar(window, false)
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { v, insets ->
+			val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+			v.updateLayoutParams<AppBarLayout.LayoutParams> {
+				topMargin = systemBars.top
+			}
+			insets
 		}
 	}
 

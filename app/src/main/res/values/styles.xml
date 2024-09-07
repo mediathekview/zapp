@@ -36,6 +36,7 @@
 		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+		<item name="appBarLayoutStyle">@style/Widget.App.AppBar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
@@ -98,6 +99,11 @@
 		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
 		<item name="titleCentered">true</item>
 		<item name="subtitleCentered">true</item>
+	</style>
+
+	<style name="Widget.App.AppBar" parent="Widget.Material3.AppBarLayout">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+		<item name="liftOnScrollColor">?colorPrimaryContainer</item>
 	</style>
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
