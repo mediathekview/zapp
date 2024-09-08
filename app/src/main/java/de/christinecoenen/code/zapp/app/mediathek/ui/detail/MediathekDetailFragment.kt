@@ -26,6 +26,7 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -62,6 +63,8 @@ class MediathekDetailFragment : Fragment() {
 		viewLifecycleOwner.launchOnCreated {
 			loadOrPersistShowFromArguments()
 		}
+
+		binding.root.applyBottomInsetAsPadding()
 
 		return binding.root
 	}

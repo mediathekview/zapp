@@ -18,6 +18,7 @@ import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 
 abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 
@@ -79,6 +80,8 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 				showAdapter.submitData(it)
 			}
 		}
+
+		binding.root.applyBottomInsetAsPadding()
 
 		return binding.root
 	}
