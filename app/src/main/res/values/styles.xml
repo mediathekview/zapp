@@ -53,6 +53,8 @@
 		<item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
 
 		<item name="switchPreferenceCompatStyle">@style/MaterialPreferenceSwitch</item>
+
+		<item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
 	</style>
 
 	<!-- may be overwritten with resource selectors -->
@@ -179,6 +181,9 @@
 		<item name="colorPrimaryContainer">?android:colorBackground</item>
 	</style>
 
+	<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+		<item name="android:navigationBarColor">@android:color/transparent</item>
+	</style>
 
 	<!-- text styles -->
 
