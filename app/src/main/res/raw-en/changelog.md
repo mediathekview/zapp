@@ -1,5 +1,6 @@
 # v-next
 * Fixed html entities visible in program information titles
+* Fixed removing a bookmark is sometimes not possible
 
 # 8.5.2
 * Removed duplicate entries when scrolling the mediathek list
