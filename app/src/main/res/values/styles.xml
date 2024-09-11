@@ -42,6 +42,7 @@
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 		<item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
 		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
+		<item name="sliderStyle">@style/Widget.App.Slider</item>
 
 		<item name="actionBarSize">48dp</item>
 		<item name="android:textAllCaps">false</item>
@@ -151,6 +152,11 @@
 	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
 		<item name="trackColor">?colorSurfaceContainerHighest</item>
 		<item name="trackStopIndicatorSize">0dp</item>
+	</style>
+
+	<style name="Widget.App.Slider" parent="Widget.Material3.Slider">
+		<item name="trackColorInactive">?colorSurfaceContainerHighest</item>
+		<item name="tickColorActive">?colorSurfaceContainerHighest</item>
 	</style>
 
 	<style name="ThemeOverlay.App.OutlinedButton" parent="ThemeOverlay.Material3.Button.TextButton">

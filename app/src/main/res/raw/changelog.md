@@ -1,5 +1,6 @@
-# v-next
+# 8.5.3
 * Sichtbare HTML-Entities in Programm-Information repariert
+* Repariert, dass Lesezeichen manchmal nicht entfernt werden können
 
 # 8.5.2
 * Duplikate beim Scrollen in der Mediathek-Liste entfernt
