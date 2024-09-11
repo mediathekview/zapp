@@ -1,0 +1,2 @@
+* Sichtbare HTML-Entities in Programm-Information repariert
+* Repariert, dass Lesezeichen manchmal nicht entfernt werden können
