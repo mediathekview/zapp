@@ -230,5 +230,6 @@ class SearchViewModel(
 	private fun clearTempData() {
 		_searchQuery.tryEmit("")
 		_channels.tryEmit(emptySet())
+		_durationQueries.tryEmit(DurationQuerySet())
 	}
 }
