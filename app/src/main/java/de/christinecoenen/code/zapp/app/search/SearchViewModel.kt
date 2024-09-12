@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
@@ -138,26 +139,23 @@ class SearchViewModel(
 	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
 	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
 
-	val mediathekResult = combine(
-		_submittedSearchQuery,
-		_channels,
-		_durationQueries,
-	) { query: String, channels: Set<MediathekChannel>, durations: DurationQuerySet ->
-		QueryRequest().apply {
-			// TODO: do only submit when _submittedSearchQuery changed
-			size = ITEM_COUNT_PER_PAGE
-			minDurationSeconds = durations.minDurationSeconds ?: 0
-			maxDurationSeconds = durations.maxDurationSeconds
-			setQueryString(query)
-			setChannels(channels.toList())
-		}
-	}
-		.flatMapLatest { queryRequest ->
+	val mediathekResult = _submittedSearchQuery
+		.flatMapLatest { query ->
+			val channels = _channels.value
+			val durations = _durationQueries.value
+			val queryRequest = QueryRequest().apply {
+				size = ITEM_COUNT_PER_PAGE
+				minDurationSeconds = durations.minDurationSeconds ?: 0
+				maxDurationSeconds = durations.maxDurationSeconds
+				setQueryString(query)
+				setChannels(channels.toList())
+			}
+
 			Pager(pagingConfig) {
 				MediathekPagingSource(mediathekApi, queryRequest, _mediathekResultInfo)
 			}.flow
 		}
-		.map<PagingData<MediathekShow>, PagingData<UiModel>> { pagingData ->
+		.mapLatest<PagingData<MediathekShow>, PagingData<UiModel>> { pagingData ->
 			pagingData.map { show ->
 				UiModel.MediathekShowModel(
 					show,
