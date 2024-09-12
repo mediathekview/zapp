@@ -45,6 +45,9 @@
 		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
 		<item name="sliderStyle">@style/Widget.App.Slider</item>
 
+		<item name="recyclerViewStyle">@style/Widget.App.RecyclerView</item>
+		<item name="android:scrollViewStyle">@style/Widget.App.ScrollView</item>
+
 		<item name="android:textAllCaps">false</item>
 		<item name="android:statusBarColor">?colorPrimaryContainer</item>
 		<item name="android:windowLightStatusBar">true</item>
@@ -150,6 +153,14 @@
 	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
 		<item name="trackColor">?colorSurfaceContainerHighest</item>
 		<item name="trackStopIndicatorSize">0dp</item>
+	</style>
+
+	<style name="Widget.App.RecyclerView" parent="">
+		<item name="android:scrollbars">none</item>
+	</style>
+
+	<style name="Widget.App.ScrollView" parent="">
+		<item name="android:scrollbars">none</item>
 	</style>
 
 	<style name="Widget.App.Slider" parent="Widget.Material3.Slider">

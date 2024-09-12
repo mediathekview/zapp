@@ -46,7 +46,6 @@ class ChannelSelectionFragment : Fragment(), MenuProvider {
 
 			setLayoutManager(layoutManager)
 			setAdapter(listAdapter, true)
-			recyclerView.isVerticalScrollBarEnabled = true
 
 			setDragListListener(object : SimpleDragListListener() {
 				override fun onItemDragEnded(fromPosition: Int, toPosition: Int) {
