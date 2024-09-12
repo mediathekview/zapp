@@ -34,9 +34,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
-import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.search.SearchView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.search.SearchViewModel
@@ -254,14 +251,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		// show search for non destinations
 		binding.searchbar.isVisible = isMainDestination
-
-		binding.toolbar.updateLayoutParams<AppBarLayout.LayoutParams> {
-			scrollFlags = if (isMainDestination) {
-				SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS
-			} else {
-				SCROLL_FLAG_NO_SCROLL
-			}
-		}
 	}
 
 	override fun onDestroy() {
