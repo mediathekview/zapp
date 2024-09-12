@@ -73,10 +73,7 @@ class PlayerFragment : VideoSupportFragment() {
 	}
 
 	override fun onDestroy() {
-		MainScope().launch {
-			player.destroy()
-		}
-
+		player.destroy()
 		super.onDestroy()
 	}
 

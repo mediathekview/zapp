@@ -1,0 +1,1 @@
+* Dynamische Farben wurden auf manchen Geräten nicht übernommen

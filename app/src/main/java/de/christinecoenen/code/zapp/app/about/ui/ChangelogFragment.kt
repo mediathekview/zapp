@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ChangelogFragmentBinding
 import de.christinecoenen.code.zapp.utils.io.IoUtils.readAllText
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import io.noties.markwon.Markwon
 import org.koin.android.ext.android.inject
 
@@ -28,6 +29,8 @@ class ChangelogFragment : Fragment() {
 
 		val markdown = resources.readAllText(R.raw.changelog)
 		markwon.setMarkdown(binding.txtChangelog, markdown)
+
+		binding.txtChangelog.applyBottomInsetAsPadding()
 
 		return binding.root
 	}

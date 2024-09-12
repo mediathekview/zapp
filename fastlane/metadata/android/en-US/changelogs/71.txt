@@ -1,0 +1,1 @@
+* Dynamic colors were not applied on some devices

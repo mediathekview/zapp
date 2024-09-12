@@ -11,12 +11,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
@@ -103,6 +106,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		enableEdgeToEdge()
+
 		super.onCreate(savedInstanceState)
 
 		_binding = ActivityMainBinding.inflate(layoutInflater)
@@ -212,6 +217,14 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		if (!settingsRepository.dynamicColors) {
 			// original zapp colors always require light status bar text (independent from theme)
 			SystemUiHelper.useLightStatusBar(window, false)
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { v, insets ->
+			val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+			v.updateLayoutParams<AppBarLayout.LayoutParams> {
+				topMargin = systemBars.top
+			}
+			insets
 		}
 	}
 

@@ -1,18 +1,23 @@
 package de.christinecoenen.code.zapp.app.mediathek.ui.helper
 
-import android.view.*
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.PopupMenu
 import android.widget.PopupMenu.OnMenuItemClickListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.coroutineScope
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
-import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -59,38 +64,45 @@ class ShowMenuHelper(
 				show.shareExternally(fragment.requireContext())
 				true
 			}
+
 			R.id.menu_add_bookmark -> {
-				fragment.launchOnResumed {
+				fragment.lifecycle.coroutineScope.launch {
 					viewModel.bookmark(show)
 				}
 				return true
 			}
+
 			R.id.menu_remove_bookmark -> {
-				fragment.launchOnResumed {
+				fragment.lifecycle.coroutineScope.launch {
 					viewModel.removeBookmark(show)
 				}
 				return true
 			}
+
 			R.id.menu_start_download -> {
 				showSelectQualityDialog()
 				return true
 			}
+
 			R.id.menu_remove_download -> {
 				showConfirmDeleteDownloadDialog()
 				return true
 			}
+
 			R.id.menu_cancel_download -> {
-				fragment.launchOnResumed {
+				fragment.lifecycle.coroutineScope.launch {
 					viewModel.cancelDownload(show)
 				}
 				return true
 			}
+
 			R.id.menu_mark_unwatched -> {
-				fragment.launchOnResumed {
+				fragment.lifecycle.coroutineScope.launch {
 					viewModel.markUnwatched(show)
 				}
 				return true
 			}
+
 			else -> false
 		}
 	}
@@ -101,7 +113,7 @@ class ShowMenuHelper(
 	private fun startUpdateMenuJob(menu: Menu) {
 		updateMenuItemsJob?.cancel()
 
-		updateMenuItemsJob = fragment.launchOnResumed {
+		updateMenuItemsJob = fragment.lifecycle.coroutineScope.launch {
 			viewModel
 				.getMenuItemsVisibility(show)
 				.collectLatest { applyVisibiltyToMenu(menu, it) }

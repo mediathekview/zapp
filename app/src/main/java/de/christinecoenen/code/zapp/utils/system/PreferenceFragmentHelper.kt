@@ -13,6 +13,8 @@ import com.google.android.material.color.DynamicColors
 import com.jakewharton.processphoenix.ProcessPhoenix
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 class PreferenceFragmentHelper(
 	private val preferenceFragment: PreferenceFragmentCompat,
@@ -38,7 +40,11 @@ class PreferenceFragmentHelper(
 	private var channelSelectionClickListener: OnPreferenceClickListener? = null
 
 	private val dynamicColorChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-		ProcessPhoenix.triggerRebirth(preferenceFragment.requireContext())
+		// Delay to wait for pereferences to be persisted (on very fast devices)
+		// before killing the app - there is no listener that fires *after* persisting.
+		Timer().schedule(200) {
+			ProcessPhoenix.triggerRebirth(preferenceFragment.requireContext())
+		}
 		true
 	}
 

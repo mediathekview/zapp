@@ -6,6 +6,5 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:clipToPadding="false"
-	android:scrollbars="vertical"
 	tools:context=".app.livestream.ui.list.ChannelListFragment"
 	tools:showIn="@layout/activity_main" />

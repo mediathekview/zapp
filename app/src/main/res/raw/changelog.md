@@ -1,3 +1,13 @@
+# 8.5.3
+* Sichtbare HTML-Entities in Programm-Information repariert
+* Repariert, dass Lesezeichen manchmal nicht entfernt werden können
+
+# 8.5.2
+* Duplikate beim Scrollen in der Mediathek-Liste entfernt
+
+# 8.5.1
+* Dynamische Farben wurden auf manchen Geräten nicht übernommen
+
 # 8.5.0
 * Einstellungen zu Android-TV-version hinzugefügt
 * Angeschnittener Text im Vorspulen-Button gefixt

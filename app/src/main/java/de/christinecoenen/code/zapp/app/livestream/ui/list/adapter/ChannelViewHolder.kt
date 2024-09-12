@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.app.livestream.ui.list.adapter
 
 import android.view.View
 import android.view.View.OnLongClickListener
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -60,12 +61,16 @@ class ChannelViewHolder(
 	}
 
 	private fun onShowTitleChanged(title: String) {
-		bindingAdapter.showTitle.text = title
+		bindingAdapter.showTitle.text = HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
 	}
 
 	private fun onShowSubtitleChanged(subtitle: String?) {
 		bindingAdapter.showSubtitle.isVisible = !subtitle.isNullOrEmpty()
-		bindingAdapter.showSubtitle.text = subtitle
+
+		if (!subtitle.isNullOrEmpty()) {
+			bindingAdapter.showSubtitle.text =
+				HtmlCompat.fromHtml(subtitle, HtmlCompat.FROM_HTML_MODE_LEGACY)
+		}
 	}
 
 	private fun onShowTimeChanged(time: String?) {

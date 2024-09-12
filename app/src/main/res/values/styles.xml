@@ -36,11 +36,15 @@
 		<item name="alertDialogTheme">@style/AlertDialogStyle</item>
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+
 		<item name="materialSearchBarStyle">@style/Widget.App.SearchBar</item>
+		<item name="appBarLayoutStyle">@style/Widget.App.AppBar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 		<item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 		<item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
+		<item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
+		<item name="sliderStyle">@style/Widget.App.Slider</item>
 
 		<item name="actionBarSize">72dp</item>
 		<item name="android:textAllCaps">false</item>
@@ -52,6 +56,8 @@
 		<item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
 
 		<item name="switchPreferenceCompatStyle">@style/MaterialPreferenceSwitch</item>
+
+		<item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
 	</style>
 
 	<!-- may be overwritten with resource selectors -->
@@ -96,6 +102,11 @@
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
 		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
 		<item name="titleTextAppearance">@style/TextAppearance.Material3.Title.Toolbar</item>
+	</style>
+
+	<style name="Widget.App.AppBar" parent="Widget.Material3.AppBarLayout">
+		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+		<item name="liftOnScrollColor">?colorPrimaryContainer</item>
 	</style>
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
@@ -144,10 +155,21 @@
 	<style name="Widget.App.CircularProgressIndicator.Small.OnSurface" parent="Widget.Material3.CircularProgressIndicator.Small">
 		<item name="indicatorColor">?colorSecondary</item>
 		<item name="trackColor">@color/color_on_surface_20_alpha</item>
+		<item name="indicatorTrackGapSize">0dp</item>
 	</style>
 
 	<style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.OutlinedButton</item>
+	</style>
+
+	<style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
+		<item name="trackColor">?colorSurfaceContainerHighest</item>
+		<item name="trackStopIndicatorSize">0dp</item>
+	</style>
+
+	<style name="Widget.App.Slider" parent="Widget.Material3.Slider">
+		<item name="trackColorInactive">?colorSurfaceContainerHighest</item>
+		<item name="tickColorActive">?colorSurfaceContainerHighest</item>
 	</style>
 
 	<style name="ThemeOverlay.App.OutlinedButton" parent="ThemeOverlay.Material3.Button.TextButton">
@@ -176,6 +198,10 @@
 
 	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
 		<item name="colorPrimaryContainer">?android:colorBackground</item>
+	</style>
+
+	<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+		<item name="android:navigationBarColor">@android:color/transparent</item>
 	</style>
 
 	<!-- text styles -->

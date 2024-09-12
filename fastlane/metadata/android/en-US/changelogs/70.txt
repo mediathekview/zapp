@@ -1,0 +1,3 @@
+* Added settings to Android TV version
+* Fixed cut off text in skip forward button
+* Removed channels "Deutsche Welle" and "Deutsche Welle +", because their German version went off air
