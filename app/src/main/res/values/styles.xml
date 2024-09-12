@@ -37,7 +37,6 @@
 
 		<item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 
-		<item name="materialSearchBarStyle">@style/Widget.App.SearchBar</item>
 		<item name="appBarLayoutStyle">@style/Widget.App.AppBar</item>
 		<item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 		<item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
@@ -97,15 +96,13 @@
 		<item name="android:text">|</item>
 	</style>
 
-	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+	<style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
-		<item name="popupTheme">@style/ThemeOverlay.App.Toolbar.Popup</item>
-		<item name="titleTextAppearance">@style/TextAppearance.Material3.Title.Toolbar</item>
 	</style>
 
 	<style name="Widget.App.AppBar" parent="Widget.Material3.AppBarLayout">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
-		<item name="liftOnScrollColor">?colorPrimaryContainer</item>
+		<item name="liftOnScroll">false</item>
 	</style>
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
@@ -113,17 +110,6 @@
 		<item name="android:background">@null</item>
 		<item name="titleCentered">true</item>
 		<item name="subtitleCentered">true</item>
-	</style>
-
-	<style name="TextAppearance.Material3.Title.Toolbar" parent="TextAppearance.Material3.TitleMedium">
-		<item name="android:textSize">18sp</item>
-		<item name="android:textStyle">normal</item>
-		<item name="android:textColor">?colorOnPrimaryContainer</item>
-		<item name="android:textColorHint">@color/color_on_secondary_container_60_alpha</item>
-	</style>
-
-	<style name="Widget.App.SearchBar" parent="Widget.Material3.SearchBar">
-		<item name="android:backgroundTint">?colorPrimaryContainer</item>
 	</style>
 
 	<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
@@ -176,10 +162,7 @@
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar" parent="">
-		<item name="colorSurface">?colorPrimaryContainer</item>
-		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
-		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
-		<item name="colorControlNormal">?colorOnPrimaryContainer</item>
+		<item name="colorSurface">?android:colorBackground</item>
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar.Transparent" parent="">
@@ -193,10 +176,6 @@
 		<item name="colorOnSurface">?colorOnPrimaryContainer</item>
 		<item name="colorOnSurfaceVariant">?colorOnPrimaryContainer</item>
 		<item name="colorSecondaryContainer">@color/color_on_surface_20_alpha</item>
-	</style>
-
-	<style name="ThemeOverlay.App.Toolbar.Popup" parent="">
-		<item name="colorPrimaryContainer">?android:colorBackground</item>
 	</style>
 
 	<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
