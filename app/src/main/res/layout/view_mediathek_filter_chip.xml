@@ -8,5 +8,5 @@
 	android:layout_height="wrap_content"
 	android:checked="true"
 	app:checkedIconVisible="false"
-	tools:showIn="@layout/mediathek_filter_content"
+	tools:showIn="@layout/search_results_fragment"
 	tools:text="ARD" />
