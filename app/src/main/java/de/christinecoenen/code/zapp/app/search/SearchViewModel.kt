@@ -140,10 +140,14 @@ class SearchViewModel(
 
 	val mediathekResult = combine(
 		_submittedSearchQuery,
-		_channels
-	) { query: String, channels: Set<MediathekChannel> ->
+		_channels,
+		_durationQueries,
+	) { query: String, channels: Set<MediathekChannel>, durations: DurationQuerySet ->
 		QueryRequest().apply {
+			// TODO: do only submit when _submittedSearchQuery changed
 			size = ITEM_COUNT_PER_PAGE
+			minDurationSeconds = durations.minDurationSeconds ?: 0
+			maxDurationSeconds = durations.maxDurationSeconds
 			setQueryString(query)
 			setChannels(channels.toList())
 		}
