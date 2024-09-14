@@ -2,9 +2,11 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemBinding
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentItemDateSeparatorBinding
 
@@ -62,6 +64,14 @@ class PagedMediathekShowListAdapter(
 
 	private fun bindHeaderViewHolder(holder: DateSeparatorViewHolder, position: Int) {
 		val dateSeparator = getDateSeparatorItem(position)
+
+		holder.itemView.apply {
+			val marginTop = resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
+			updateLayoutParams<RecyclerView.LayoutParams> {
+				topMargin = if (position == 0) 0 else marginTop
+			}
+		}
+
 		holder.bind(dateSeparator.date)
 	}
 

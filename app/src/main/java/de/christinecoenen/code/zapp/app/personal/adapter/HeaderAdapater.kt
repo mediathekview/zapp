@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
+import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentHeaderItemBinding
 
 class HeaderAdapater(
@@ -56,6 +58,14 @@ class HeaderAdapater(
 	}
 
 	override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
+
+		holder.itemView.apply {
+			val marginTop = resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
+			updateLayoutParams<RecyclerView.LayoutParams> {
+				topMargin = if (position == 0) 0 else marginTop
+			}
+		}
+
 		holder.bind(labelResId, iconResId, showMoreButton)
 	}
 
