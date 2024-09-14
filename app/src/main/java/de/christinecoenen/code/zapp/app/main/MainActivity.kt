@@ -238,13 +238,12 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		destination: NavDestination,
 		arguments: Bundle?
 	) {
-		val isMainDestination = arguments?.getBoolean("is_main_destination", false) == true
-
 		// show bottom navigation for main destinations
 		updateBottomNavigationVisibility()
 
 		// show search for non destinations
-		binding.searchbar.isVisible = isMainDestination
+		val showSearchBar = arguments?.getBoolean("show_search_bar", false) == true
+		binding.searchbar.isVisible = showSearchBar
 	}
 
 	override fun onDestroy() {
@@ -306,7 +305,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private fun updateBottomNavigationVisibility() {
 		val arguments = navController.currentDestination?.arguments
-		val isMainDestination = arguments?.get("is_main_destination")?.defaultValue == true
+		val isMainDestination = arguments?.get("show_bottom_navigation")?.defaultValue == true
 
 		val isSearchOverlayVisible =
 			binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWN ||
