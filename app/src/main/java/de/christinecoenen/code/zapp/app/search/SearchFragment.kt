@@ -15,6 +15,7 @@ import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
+import de.christinecoenen.code.zapp.app.search.suggestions.text.ClearHistoryButtonAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsHeaderAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextListener
@@ -25,7 +26,7 @@ import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInset
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchFragment : Fragment(), SuggestionTextListener {
+class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAdapter.Listener {
 
 	private var _binding: SearchFragmentBinding? = null
 	private val binding: SearchFragmentBinding get() = _binding!!
@@ -118,6 +119,7 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 			LocalSearchSuggestionsHeaderAdapter(R.string.search_suggestion_header_last_searches)
 		val lastQueriesAdapter =
 			LocalSearchSuggestionsAdapter(this, TextSuggestionType.RecentQuery)
+		val clearHistoryButtonAdapter = ClearHistoryButtonAdapter(this)
 		val localSuggestionsHeaderAdapter =
 			LocalSearchSuggestionsHeaderAdapter(R.string.search_suggestion_header_local_suggestions)
 		val localSuggestionsAdapter =
@@ -125,8 +127,9 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 		binding.suggestions.adapter = ConcatAdapter(
 			lastQueriesHeaderAdapter,
 			lastQueriesAdapter,
+			clearHistoryButtonAdapter,
 			localSuggestionsHeaderAdapter,
-			localSuggestionsAdapter
+			localSuggestionsAdapter,
 		)
 
 		viewLifecycleOwner.launchOnCreated {
@@ -136,6 +139,9 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 		}
 		lastQueriesAdapter.addOnPagesUpdatedListener {
 			lastQueriesHeaderAdapter.setIsVisible(lastQueriesAdapter.itemCount > 0)
+			clearHistoryButtonAdapter.setIsVisible(
+				viewModel.searchQuery.value.isEmpty() && lastQueriesAdapter.itemCount > 0
+			)
 		}
 
 		viewLifecycleOwner.launchOnCreated {
@@ -190,5 +196,9 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 
 			else -> false
 		}
+	}
+
+	override fun onClearAllHistoryClicked() {
+		viewModel.deleteAllSavedSearchQueries()
 	}
 }

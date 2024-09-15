@@ -36,4 +36,10 @@ class SearchRepository(private val database: Database) {
 			.searchDao()
 			.deleteQuery(query)
 	}
+
+	suspend fun deleteAllQueries() = withContext(Dispatchers.IO) {
+		database
+			.searchDao()
+			.deleteAllQueries()
+	}
 }

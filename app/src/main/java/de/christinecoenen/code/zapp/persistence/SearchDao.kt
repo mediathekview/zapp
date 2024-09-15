@@ -18,7 +18,10 @@ interface SearchDao {
 	@Query("DELETE FROM SearchQuery WHERE `query` = :query")
 	suspend fun deleteQuery(query: String)
 
+	@Query("DELETE FROM SearchQuery")
+	suspend fun deleteAllQueries()
+
 	@Upsert
 	suspend fun saveQuery(vararg query: SearchQuery)
-	
+
 }

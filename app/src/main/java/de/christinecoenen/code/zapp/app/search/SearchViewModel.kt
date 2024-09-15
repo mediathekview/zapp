@@ -210,6 +210,12 @@ class SearchViewModel(
 		}
 	}
 
+	fun deleteAllSavedSearchQueries() {
+		viewModelScope.launch {
+			searchRepository.deleteAllQueries()
+		}
+	}
+
 	fun enterNewSearch() {
 		_searchState.tryEmit(SeachState.Query)
 		clearTempData()
