@@ -76,13 +76,13 @@ class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAda
 					viewModel.addOrReplaceDurationQuery(content.durationQuery)
 				}
 			})
-		binding.channelChips.adapter = ConcatAdapter(
-			selectedChannelsChipsAdapter,
-			suggestedChannelsChipsAdapter,
-		)
-		binding.durationChips.adapter = ConcatAdapter(
+		binding.selectedChips.adapter = ConcatAdapter(
 			selectedDurationQueriesChipsAdapter,
+			selectedChannelsChipsAdapter,
+		)
+		binding.suggestedChips.adapter = ConcatAdapter(
 			suggestedDurationChipsAdapter,
+			suggestedChannelsChipsAdapter,
 		)
 
 		viewLifecycleOwner.launchOnCreated {

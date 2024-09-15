@@ -83,8 +83,6 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		)
 
 		val channelChipsAdapter = ChipsAdapter<ChannelChipContent>(ChipType.NonInteractableFilter)
-		binding.channelChips.adapter = channelChipsAdapter
-
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.channels.collectLatest { channels ->
 				channelChipsAdapter.submitList(channels.map {
@@ -94,8 +92,6 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		}
 
 		val durationChipsAdapter = ChipsAdapter<DurationChipContent>(ChipType.NonInteractableFilter)
-		binding.durationChips.adapter = durationChipsAdapter
-
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.durationQuerySet.collectLatest { durationQuerySet ->
 				durationChipsAdapter.submitList(durationQuerySet.map {
@@ -103,6 +99,8 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 				})
 			}
 		}
+
+		binding.chips.adapter = ConcatAdapter(durationChipsAdapter, channelChipsAdapter)
 
 		val mediathekResultLoadStateHeader = MediathekLoadStateAdapter(showErrors = false)
 		val showsAdapter = ConcatAdapter(
