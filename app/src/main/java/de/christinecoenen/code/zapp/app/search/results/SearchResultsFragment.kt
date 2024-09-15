@@ -102,13 +102,15 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 
 		binding.chips.adapter = ConcatAdapter(durationChipsAdapter, channelChipsAdapter)
 
-		val mediathekResultLoadStateHeader = MediathekLoadStateAdapter(showErrors = false)
+		val mediathekResultLoadStateHeader =
+			MediathekLoadStateAdapter(retry = mediathekResultAdapter::retry)
 		val showsAdapter = ConcatAdapter(
 			localShowsResultHeaderAdapater,
 			localShowsResultAdapter,
 			mediathekResultHeaderAdapter,
 			mediathekResultLoadStateHeader,
-			mediathekResultAdapter.withLoadStateFooter(MediathekLoadStateAdapter(retry = mediathekResultAdapter::retry)),
+			mediathekResultAdapter
+				.withLoadStateFooter(MediathekLoadStateAdapter(retry = mediathekResultAdapter::retry)),
 			mediathekResultLoadStatusAdapter
 		)
 		binding.results.adapter = showsAdapter
