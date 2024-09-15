@@ -16,6 +16,7 @@ import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
 import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsHeaderAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextListener
 import de.christinecoenen.code.zapp.app.search.suggestions.text.TextSuggestionType
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
@@ -110,22 +111,37 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 		}
 
 		// suggestions
+		val lastQueriesHeaderAdapter =
+			LocalSearchSuggestionsHeaderAdapter(R.string.search_suggestion_header_last_searches)
 		val lastQueriesAdapter =
 			LocalSearchSuggestionsAdapter(this, TextSuggestionType.RecentQuery)
+		val localSuggestionsHeaderAdapter =
+			LocalSearchSuggestionsHeaderAdapter(R.string.search_suggestion_header_local_suggestions)
 		val localSuggestionsAdapter =
 			LocalSearchSuggestionsAdapter(this, TextSuggestionType.Visited)
-		binding.suggestions.adapter = ConcatAdapter(lastQueriesAdapter, localSuggestionsAdapter)
+		binding.suggestions.adapter = ConcatAdapter(
+			lastQueriesHeaderAdapter,
+			lastQueriesAdapter,
+			localSuggestionsHeaderAdapter,
+			localSuggestionsAdapter
+		)
 
 		viewLifecycleOwner.launchOnCreated {
 			viewModel.lastQueries.collectLatest { pagingData ->
 				lastQueriesAdapter.submitData(pagingData)
 			}
 		}
+		lastQueriesAdapter.addOnPagesUpdatedListener {
+			lastQueriesHeaderAdapter.setIsVisible(lastQueriesAdapter.itemCount > 0)
+		}
 
 		viewLifecycleOwner.launchOnCreated {
 			viewModel.localSearchSuggestions.collectLatest { pagingData ->
 				localSuggestionsAdapter.submitData(pagingData)
 			}
+		}
+		localSuggestionsAdapter.addOnPagesUpdatedListener {
+			localSuggestionsHeaderAdapter.setIsVisible(localSuggestionsAdapter.itemCount > 0)
 		}
 	}
 
