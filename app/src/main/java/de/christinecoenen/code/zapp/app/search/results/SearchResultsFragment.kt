@@ -29,6 +29,7 @@ import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipCon
 import de.christinecoenen.code.zapp.databinding.SearchResultsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -61,6 +62,8 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		_binding = SearchResultsFragmentBinding.inflate(inflater, container, false)
 
 		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+		binding.results.applyBottomInsetAsPadding()
 
 		return binding.root
 	}

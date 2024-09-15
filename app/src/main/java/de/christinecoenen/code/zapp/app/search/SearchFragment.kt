@@ -21,6 +21,7 @@ import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextLi
 import de.christinecoenen.code.zapp.app.search.suggestions.text.TextSuggestionType
 import de.christinecoenen.code.zapp.databinding.SearchFragmentBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -36,6 +37,8 @@ class SearchFragment : Fragment(), SuggestionTextListener {
 		savedInstanceState: Bundle?
 	): View {
 		_binding = SearchFragmentBinding.inflate(inflater, container, false)
+
+		binding.suggestions.applyBottomInsetAsPadding()
 
 		return binding.root
 	}
