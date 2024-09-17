@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="support_mail" translatable="false">code.coenen@gmail.com</string>
+	<string name="support_mail" translatable="false">zapp@mediathekview.de</string>
 	<string name="zapp_backend_url" translatable="false">https://api.zapp.mediathekview.de/v1/</string>
 	<string name="mediathek_backend_url" translatable="false">https://mediathekviewweb.de/api/</string>
 
