@@ -70,17 +70,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			::onVoiceInputReceived
 		)
 
-	private val onSearchViewPressedCallback = object : OnBackPressedCallback(true) {
-		override fun handleOnBackPressed() {
-			searchViewModel.exitToNone()
-		}
-	}
-
 	private val searchViewTransistionListener = SearchView.TransitionListener { _, _, newState ->
-		val isShown = newState == SearchView.TransitionState.SHOWN
 		val isHidden = newState == SearchView.TransitionState.HIDDEN
-
-		onSearchViewPressedCallback.isEnabled = isShown
 
 		updateBottomNavigationVisibility()
 
@@ -134,9 +125,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		navController.addOnDestinationChangedListener(::onDestinationChanged)
 
 		binding.bottomNavigation.setupWithNavController(navController)
-
-		onSearchViewPressedCallback.isEnabled = false
-		onBackPressedDispatcher.addCallback(this, onSearchViewPressedCallback)
 
 		binding.searchView.let {
 			it.addTransitionListener(searchViewTransistionListener)
