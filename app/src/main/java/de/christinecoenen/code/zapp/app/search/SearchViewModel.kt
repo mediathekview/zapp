@@ -23,9 +23,11 @@ import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.repositories.SearchRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -34,7 +36,7 @@ import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import timber.log.Timber
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class SearchViewModel(
 	private val searchRepository: SearchRepository,
 	private val mediathekRepository: MediathekRepository,
@@ -100,6 +102,7 @@ class SearchViewModel(
 		}
 
 	val localSearchSuggestions = _searchQuery
+		.debounce(100)
 		.flatMapLatest { query ->
 			if (query.isEmpty()) {
 				flowOf(PagingData.empty())
@@ -110,6 +113,7 @@ class SearchViewModel(
 		.cachedIn(viewModelScope)
 
 	val lastQueries = _searchQuery
+		.debounce(100)
 		.flatMapLatest { query ->
 			Pager(pagingConfig) { searchRepository.getLastQueries(query, LAST_QUERIES_COUNT) }.flow
 		}
@@ -200,7 +204,7 @@ class SearchViewModel(
 			Timber.w("setting search query is only allowed in query mode")
 			return
 		}
-		
+
 		_searchQuery.tryEmit(query ?: "")
 	}
 
