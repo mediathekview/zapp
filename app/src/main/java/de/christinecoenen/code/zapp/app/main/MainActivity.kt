@@ -27,10 +27,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUiSaveStateControl
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.search.SearchView
@@ -89,6 +90,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		}
 	}
 
+	@OptIn(NavigationUiSaveStateControl::class)
 	override fun onCreate(savedInstanceState: Bundle?) {
 		enableEdgeToEdge()
 
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		navController.addOnDestinationChangedListener(::onDestinationChanged)
 
-		binding.bottomNavigation.setupWithNavController(navController)
+		NavigationUI.setupWithNavController(binding.bottomNavigation, navController, false)
 
 		binding.searchView.let {
 			it.addTransitionListener(searchViewTransistionListener)
