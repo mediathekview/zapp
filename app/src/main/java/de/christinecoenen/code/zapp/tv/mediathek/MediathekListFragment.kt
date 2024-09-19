@@ -11,16 +11,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekLoadStateAdapter
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentMediathekListBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.tv.player.PlayerActivity
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,11 +40,7 @@ class MediathekListFragment : Fragment(),
 
 	private val filterViewModel: MediathekFilterViewModel by viewModel()
 	private val viewmodel: MediathekListFragmentViewModel by viewModel {
-		parametersOf(
-			filterViewModel.searchQuery,
-			filterViewModel.lengthFilter,
-			filterViewModel.channelFilter
-		)
+		parametersOf(filterViewModel.searchQuery)
 	}
 	private lateinit var adapter: MediathekItemAdapter
 
@@ -77,7 +77,8 @@ class MediathekListFragment : Fragment(),
 		}
 
 		adapter = MediathekItemAdapter(lifecycleScope, this)
-		binding.list.adapter = adapter.withLoadStateFooter(MediathekLoadStateAdapter(retry = adapter::retry))
+		binding.list.adapter =
+			adapter.withLoadStateFooter(MediathekLoadStateAdapter(retry = adapter::retry))
 
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewmodel.pageFlow.collectLatest { pagingData ->

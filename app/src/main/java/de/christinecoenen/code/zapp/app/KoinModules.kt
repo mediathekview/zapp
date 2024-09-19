@@ -87,7 +87,7 @@ class KoinModules {
 			viewModel { ContinueWatchingViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
-			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get(), parameters.get(), parameters.get()) }
+			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get()) }
 			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
 			viewModel { SearchViewModel(get(), get(), get()) }

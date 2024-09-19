@@ -92,9 +92,6 @@
 
 	<string name="search_query_hint_zapp">Zapp durchsuchen…</string>
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
-	<string name="search_query_hint_downloads">Downloads durchsuchen…</string>
-	<string name="search_query_hint_continue_watching">Begonnene Sendungen durchsuchen…</string>
-	<string name="search_query_hint_bookmarks">Lesezeichen durchsuchen…</string>
 	<string name="delete_search_query_content_description">Suche löschen</string>
 
 	<string name="search_suggestion_header_last_searches">Letzte Suchanfragen</string>

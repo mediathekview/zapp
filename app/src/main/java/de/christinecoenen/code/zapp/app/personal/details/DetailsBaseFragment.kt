@@ -29,7 +29,6 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	protected abstract val viewModel: DetailsBaseViewModel
 	protected abstract val noShowsStringResId: Int
 	protected abstract val noShowsIconResId: Int
-	protected abstract val searchQueryHintResId: Int
 
 	private lateinit var showAdapter: PagedMediathekShowListAdapter
 

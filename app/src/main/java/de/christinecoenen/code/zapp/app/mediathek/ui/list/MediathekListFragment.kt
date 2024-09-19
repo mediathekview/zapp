@@ -27,6 +27,7 @@ import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -49,14 +50,10 @@ class MediathekListFragment : Fragment(),
 	private var _noShowsBinding: ViewNoShowsBinding? = null
 	private val noShowsBinding: ViewNoShowsBinding get() = _noShowsBinding!!
 
-	private val filterViewModel: MediathekFilterViewModel by activityViewModel()
 	private val viewmodel: MediathekListFragmentViewModel by viewModel {
-		parametersOf(
-			filterViewModel.searchQuery,
-			filterViewModel.lengthFilter,
-			filterViewModel.channelFilter
-		)
+		parametersOf(MutableStateFlow(""))
 	}
+
 	private lateinit var adapter: PagedMediathekShowListAdapter
 
 	override fun onCreateView(
@@ -80,9 +77,6 @@ class MediathekListFragment : Fragment(),
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-
-		filterViewModel.isFilterApplied.observe(viewLifecycleOwner) { onIsFilterAppliedChanged() }
-		viewmodel.queryInfoResult.observe(viewLifecycleOwner, ::onQueryInfoResultChanged)
 
 		adapter = PagedMediathekShowListAdapter(
 			lifecycleScope,
@@ -163,14 +157,6 @@ class MediathekListFragment : Fragment(),
 
 	override fun onRefresh() {
 		adapter.refresh()
-	}
-
-	private fun onQueryInfoResultChanged(queryInfoResult: QueryInfoResult?) {
-		filterViewModel.setQueryInfoResult(queryInfoResult)
-	}
-
-	private fun onIsFilterAppliedChanged() {
-		requireActivity().invalidateOptionsMenu()
 	}
 
 	private fun onMediathekLoadErrorChanged(e: Throwable) {

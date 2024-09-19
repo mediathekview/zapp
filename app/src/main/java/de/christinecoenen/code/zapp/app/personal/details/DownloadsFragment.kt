@@ -9,6 +9,5 @@ class DownloadsFragment : DetailsBaseFragment() {
 
 	override val noShowsStringResId = R.string.fragment_personal_no_results_downloads
 	override val noShowsIconResId = R.drawable.ic_baseline_save_alt_24
-	override val searchQueryHintResId = R.string.search_query_hint_downloads
 
 }

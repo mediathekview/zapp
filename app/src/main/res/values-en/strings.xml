@@ -92,9 +92,6 @@
 
 	<string name="search_query_hint_zapp">Search in Zapp…</string>
 	<string name="search_query_hint_mediathek">Search media center…</string>
-	<string name="search_query_hint_downloads">Search downloads…</string>
-	<string name="search_query_hint_continue_watching">Search started shows…</string>
-	<string name="search_query_hint_bookmarks">Search bookmarks…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
 
 	<string name="search_suggestion_header_last_searches">Recent searches</string>
