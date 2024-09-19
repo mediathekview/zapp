@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModel(
@@ -196,8 +197,10 @@ class SearchViewModel(
 
 	fun setSearchQuery(query: String?) {
 		if (_searchState.value != SeachState.Query) {
-			throw IllegalStateException("setting search query is only allowed in query mode")
+			Timber.w("setting search query is only allowed in query mode")
+			return
 		}
+		
 		_searchQuery.tryEmit(query ?: "")
 	}
 
