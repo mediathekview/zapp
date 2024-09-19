@@ -10,6 +10,8 @@ class ChipViewHolder(
 	RecyclerView.ViewHolder(binding.root) {
 
 	fun setContent(content: ChipContent) {
+		binding.root.setChipIconResource(content.icon)
+
 		binding.root.isCheckable = type !== ChipType.Suggestion
 		binding.root.isChecked = type !== ChipType.Suggestion
 		binding.root.isCloseIconVisible = type === ChipType.InteractableFilter
