@@ -69,7 +69,8 @@ class SearchViewModel(
 	val durationQuerySet = _durationQueries.asStateFlow()
 
 	private val _submittedSearchQuery = MutableStateFlow("")
-	val submittedSearchQuery = _submittedSearchQuery.asStateFlow()
+	private val _submittedChannels = MutableStateFlow(emptySet<MediathekChannel>())
+	private val _submittedDurationQueries = MutableStateFlow(DurationQuerySet())
 
 	private val _searchState = MutableStateFlow(SeachState.None)
 	val searchState = _searchState.asStateFlow()
@@ -114,7 +115,11 @@ class SearchViewModel(
 		.cachedIn(viewModelScope)
 
 	val localShowsResult =
-		combine(_submittedSearchQuery, _channels, _durationQueries) { query, _, _ -> query }
+		combine(
+			_submittedSearchQuery,
+			_submittedChannels,
+			_submittedDurationQueries
+		) { query, _, _ -> query }
 			.flatMapLatest { query ->
 				if (query.isEmpty()) {
 					flowOf(PagingData.empty())
@@ -139,22 +144,24 @@ class SearchViewModel(
 	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
 	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
 
-	val mediathekResult = _submittedSearchQuery
-		.flatMapLatest { query ->
-			val channels = _channels.value
-			val durations = _durationQueries.value
-			val queryRequest = QueryRequest().apply {
-				size = ITEM_COUNT_PER_PAGE
-				minDurationSeconds = durations.minDurationSeconds ?: 0
-				maxDurationSeconds = durations.maxDurationSeconds
-				setQueryString(query)
-				setChannels(channels.toList())
-			}
-
-			Pager(pagingConfig) {
-				MediathekPagingSource(mediathekApi, queryRequest, _mediathekResultInfo)
-			}.flow
+	val mediathekResult = combine(
+		_submittedSearchQuery,
+		_submittedChannels,
+		_submittedDurationQueries
+	) { query, channels, durations ->
+		val queryRequest = QueryRequest().apply {
+			size = ITEM_COUNT_PER_PAGE
+			minDurationSeconds = durations.minDurationSeconds ?: 0
+			maxDurationSeconds = durations.maxDurationSeconds
+			setQueryString(query)
+			setChannels(channels.toList())
 		}
+
+		Pager(pagingConfig) {
+			MediathekPagingSource(mediathekApi, queryRequest, _mediathekResultInfo)
+		}
+	}
+		.flatMapLatest { it.flow }
 		.mapLatest<PagingData<MediathekShow>, PagingData<UiModel>> { pagingData ->
 			pagingData.map { show ->
 				UiModel.MediathekShowModel(
@@ -198,6 +205,8 @@ class SearchViewModel(
 		exitToResults()
 
 		_submittedSearchQuery.tryEmit(_searchQuery.value)
+		_submittedChannels.tryEmit(_channels.value)
+		_submittedDurationQueries.tryEmit(_durationQueries.value)
 
 		viewModelScope.launch {
 			searchRepository.saveQuery(_searchQuery.value)
