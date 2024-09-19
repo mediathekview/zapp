@@ -2,19 +2,13 @@ package de.christinecoenen.code.zapp.app.search.results
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
@@ -33,8 +27,7 @@ import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInset
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemListener,
-	MainActivity.ToolbarClickListener {
+class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 
 	private var _binding: SearchResultsFragmentBinding? = null
 	private val binding: SearchResultsFragmentBinding get() = _binding!!
@@ -60,8 +53,6 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		savedInstanceState: Bundle?
 	): View {
 		_binding = SearchResultsFragmentBinding.inflate(inflater, container, false)
-
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
 		binding.results.applyBottomInsetAsPadding()
 
@@ -136,39 +127,11 @@ class SearchResultsFragment : Fragment(), MenuProvider, MediathekShowListItemLis
 		mediathekResultAdapter.addOnPagesUpdatedListener {
 			mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
 		}
-
-		(requireActivity() as MainActivity).addToolbarClickedListener(this)
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
-
-		(requireActivity() as MainActivity).removeToolbarClickedListener(this)
 		_binding = null
-	}
-
-	override fun onDestroy() {
-		super.onDestroy()
-		viewModel.exitToNone()
-	}
-
-	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-		menuInflater.inflate(R.menu.search_results_fragment, menu)
-	}
-
-	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-		return when (menuItem.itemId) {
-			R.id.menu_search -> {
-				viewModel.enterLastSearch()
-				true
-			}
-
-			else -> false
-		}
-	}
-
-	override fun onToolbarClicked() {
-		viewModel.enterLastSearch()
 	}
 
 	override fun onShowClicked(show: MediathekShow) {

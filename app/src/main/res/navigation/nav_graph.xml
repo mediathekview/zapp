@@ -8,11 +8,11 @@
 	<fragment
 		android:id="@+id/searchResultsFragment"
 		android:name="de.christinecoenen.code.zapp.app.search.results.SearchResultsFragment"
-		android:label="{title}"
 		tools:layout="@layout/search_results_fragment">
 		<argument
-			android:name="title"
-			app:argType="string" />
+			android:name="show_search_bar"
+			android:defaultValue="true"
+			app:argType="boolean" />
 		<action
 			android:id="@+id/to_mediathekDetailFragment"
 			app:destination="@id/mediathekDetailFragment" />

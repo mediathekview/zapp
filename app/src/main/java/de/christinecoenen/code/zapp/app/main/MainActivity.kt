@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,7 +43,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.WeakHashMap
 
 
 class MainActivity : AppCompatActivity(), MenuProvider {
@@ -55,8 +53,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	private val settingsRepository: SettingsRepository by inject()
 
 	private val searchViewModel: SearchViewModel by viewModel()
-
-	private val toolbarClickListeners = WeakHashMap<ToolbarClickListener, Void>()
 
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
@@ -72,24 +68,25 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private val searchViewTransistionListener = SearchView.TransitionListener { _, _, newState ->
 		val isHidden = newState == SearchView.TransitionState.HIDDEN
+		val isShown = newState == SearchView.TransitionState.SHOWN
 
 		updateBottomNavigationVisibility()
+
+		// set correct state when user shows the search view by clicking the search bar
+		if (isShown) {
+			when (navController.currentDestination?.id) {
+				R.id.searchResultsFragment -> searchViewModel.enterLastSearch()
+				else -> searchViewModel.enterNewSearch()
+			}
+		}
 
 		// set correct state when user pressed back button on searchView
 		if (isHidden) {
 			when (navController.currentDestination?.id) {
-				R.id.searchResultsFragment -> searchViewModel.exitToResults()
+				R.id.searchResultsFragment -> {}
 				else -> searchViewModel.exitToNone()
 			}
 		}
-	}
-
-	fun addToolbarClickedListener(listener: ToolbarClickListener) {
-		toolbarClickListeners[listener] = null
-	}
-
-	fun removeToolbarClickedListener(listener: ToolbarClickListener) {
-		toolbarClickListeners.remove(listener)
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,10 +114,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		setSupportActionBar(binding.toolbar)
 		setupActionBarWithNavController(navController, appBarConfiguration)
-
-		binding.toolbar.setOnClickListener {
-			toolbarClickListeners.forEach { it.key.onToolbarClicked() }
-		}
 
 		navController.addOnDestinationChangedListener(::onDestinationChanged)
 
@@ -167,6 +160,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				when (searchState) {
 					SearchViewModel.SeachState.None -> {
 						binding.searchView.hide()
+						binding.searchbar.setText("")
 					}
 
 					SearchViewModel.SeachState.Query -> {
@@ -176,6 +170,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 					SearchViewModel.SeachState.Results -> {
 						binding.searchView.hide()
+						binding.searchbar.setText(query)
+
 						navController.navigate(R.id.searchResultsFragment,
 							bundleOf("title" to query),
 							navOptions { launchSingleTop = true }
@@ -228,6 +224,13 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	) {
 		// show bottom navigation for main destinations
 		updateBottomNavigationVisibility()
+
+		// exit search when navigating away
+		try {
+			controller.getBackStackEntry(R.id.searchResultsFragment)
+		} catch (e: IllegalArgumentException) {
+			searchViewModel.exitToNone()
+		}
 
 		// show search for non destinations
 		val showSearchBar = arguments?.getBoolean("show_search_bar", false) == true
@@ -300,9 +303,5 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWING
 
 		binding.bottomNavigation.isVisible = isMainDestination && !isSearchOverlayVisible
-	}
-
-	interface ToolbarClickListener {
-		fun onToolbarClicked()
 	}
 }

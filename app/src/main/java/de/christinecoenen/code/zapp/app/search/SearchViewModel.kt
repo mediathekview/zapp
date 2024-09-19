@@ -229,7 +229,7 @@ class SearchViewModel(
 		_searchState.tryEmit(SeachState.None)
 	}
 
-	fun exitToResults() {
+	private fun exitToResults() {
 		_searchState.tryEmit(SeachState.Results)
 	}
 
