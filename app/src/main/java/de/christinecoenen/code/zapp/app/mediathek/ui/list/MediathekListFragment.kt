@@ -17,12 +17,11 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
+import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekLoadStateAdapter
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -32,7 +31,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.net.UnknownServiceException
@@ -70,7 +68,11 @@ class MediathekListFragment : Fragment(),
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+			this,
+			viewLifecycleOwner,
+			Lifecycle.State.RESUMED
+		)
 
 		return binding.root
 	}

@@ -22,6 +22,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -184,6 +186,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		}
 
 		addMenuProvider(this)
+		binding.searchbar.addMenuProvider(this)
 
 		PreferenceManager.setDefaultValues(application, R.xml.preferences, false)
 
@@ -244,6 +247,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		navController.removeOnDestinationChangedListener(::onDestinationChanged)
 		_binding?.searchView?.removeTransitionListener(searchViewTransistionListener)
 		_binding = null
+	}
+
+	fun addMenuProviderToSearchBar(provider: MenuProvider, owner: LifecycleOwner, state: Lifecycle.State) {
+		binding.searchbar.addMenuProvider(provider, owner, state)
 	}
 
 	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
