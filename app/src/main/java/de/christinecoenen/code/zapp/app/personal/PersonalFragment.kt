@@ -121,7 +121,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 				bookmarkLoadStatusAdapter.onShowsLoaded(it.size)
 			}
 		}
-		
+
 		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
 			this,
 			viewLifecycleOwner,

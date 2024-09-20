@@ -42,6 +42,7 @@ import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyHorizontalInsetsAsPadding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import org.koin.android.ext.android.inject
@@ -199,6 +200,9 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		requestPermissions()
 
+		binding.appBar.applyHorizontalInsetsAsPadding()
+		binding.navHostFragment.applyHorizontalInsetsAsPadding()
+
 		ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { v, insets ->
 			val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 			v.updateLayoutParams<AppBarLayout.LayoutParams> {
@@ -249,7 +253,11 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		_binding = null
 	}
 
-	fun addMenuProviderToSearchBar(provider: MenuProvider, owner: LifecycleOwner, state: Lifecycle.State) {
+	fun addMenuProviderToSearchBar(
+		provider: MenuProvider,
+		owner: LifecycleOwner,
+		state: Lifecycle.State
+	) {
 		binding.searchbar.addMenuProvider(provider, owner, state)
 	}
 

@@ -16,9 +16,26 @@ object SystemUiHelper {
 		ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
 			val systemBars = insets.getInsets(
 				WindowInsetsCompat.Type.systemBars() or
-					WindowInsetsCompat.Type.ime()
+					WindowInsetsCompat.Type.ime() or
+					WindowInsetsCompat.Type.displayCutout()
 			)
 			v.updatePadding(bottom = systemBars.bottom)
+			insets
+		}
+	}
+
+	/**
+	 * Sets the horizontal padding of this view to the devices cutouts to avoid overlapping
+	 * with them.
+	 */
+	fun View.applyHorizontalInsetsAsPadding() {
+		ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+			val systemBars = insets.getInsets(
+				WindowInsetsCompat.Type.systemBars() or
+					WindowInsetsCompat.Type.ime() or
+					WindowInsetsCompat.Type.displayCutout()
+			)
+			v.updatePadding(left = systemBars.left, right = systemBars.right)
 			insets
 		}
 	}
