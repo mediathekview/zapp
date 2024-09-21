@@ -232,17 +232,13 @@ class SearchViewModel(
 		}
 	}
 
-	fun enterNewSearch() {
-		_searchState.tryEmit(SeachState.Query)
-		clearTempData()
-	}
-
 	fun enterLastSearch() {
 		_searchState.tryEmit(SeachState.Query)
 	}
 
 	fun exitToNone() {
 		_searchState.tryEmit(SeachState.None)
+		clearTempData()
 	}
 
 	private fun exitToResults() {

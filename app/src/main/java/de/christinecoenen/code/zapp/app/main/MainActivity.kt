@@ -78,10 +78,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		// set correct state when user shows the search view by clicking the search bar
 		if (isShown) {
-			when (navController.currentDestination?.id) {
-				R.id.searchResultsFragment -> searchViewModel.enterLastSearch()
-				else -> searchViewModel.enterNewSearch()
-			}
+			searchViewModel.enterLastSearch()
 		}
 
 		// set correct state when user pressed back button on searchView
@@ -129,14 +126,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 			it.editText.addTextChangedListener { editable ->
 				if (searchViewModel.searchState.value == SearchViewModel.SeachState.Query) {
 					searchViewModel.setSearchQuery(editable.toString())
-				}
-			}
-			it.editText.setOnFocusChangeListener { _, hasFocus ->
-				if (hasFocus &&
-					it.currentTransitionState != SearchView.TransitionState.SHOWN &&
-					navController.currentDestination?.id != R.id.searchResultsFragment
-				) {
-					searchViewModel.enterNewSearch()
 				}
 			}
 			it.editText.setOnEditorActionListener { _, _, _ ->
@@ -233,13 +222,6 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	) {
 		// show bottom navigation for main destinations
 		updateBottomNavigationVisibility()
-
-		// exit search when navigating away
-		try {
-			controller.getBackStackEntry(R.id.searchResultsFragment)
-		} catch (e: IllegalArgumentException) {
-			searchViewModel.exitToNone()
-		}
 
 		// show search for non destinations
 		val showSearchBar = arguments?.getBoolean("show_search_bar", false) == true

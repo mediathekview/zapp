@@ -134,6 +134,14 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 		_binding = null
 	}
 
+	override fun onDestroy() {
+		super.onDestroy()
+
+		if (isRemoving) {
+			this.viewModel.exitToNone()
+		}
+	}
+
 	override fun onShowClicked(show: MediathekShow) {
 		val directions = SearchResultsFragmentDirections.toMediathekDetailFragment(show)
 		findNavController().navigate(directions)
