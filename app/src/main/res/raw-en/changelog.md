@@ -1,3 +1,6 @@
+# 8.5.4
+* Updated support and crash report email address
+
 # 8.5.3
 * Fixed html entities visible in program information titles
 * Fixed removing a bookmark is sometimes not possible

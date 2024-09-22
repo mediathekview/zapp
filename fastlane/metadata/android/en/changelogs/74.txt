@@ -1,0 +1,1 @@
+* Updated support and crash report email address

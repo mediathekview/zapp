@@ -64,18 +64,18 @@ abstract class ZappApplicationBase : Application() {
 		}
 	}
 
-	override fun attachBaseContext(base: Context?) {
+	override fun attachBaseContext(base: Context) {
 		super.attachBaseContext(base)
 
 		if (Thread.getDefaultUncaughtExceptionHandler() != null) {
 			// exclude test environments
-			setUpCrashReporting()
+			setUpCrashReporting(base)
 		}
 	}
 
 	protected abstract fun setUpLogging()
 
-	private fun setUpCrashReporting() {
+	private fun setUpCrashReporting(context: Context) {
 		val useLeanbackDialog = resources.getBoolean(R.bool.is_leanback_ui)
 		val useAppDialog = !useLeanbackDialog
 
@@ -125,7 +125,7 @@ abstract class ZappApplicationBase : Application() {
 			}
 
 			mailSender {
-				mailTo = "Zapp Entwicklung <code.coenen@gmail.com>"
+				mailTo = "Zapp Entwicklung <${context.getString(R.string.support_mail)}>"
 				subject = getString(R.string.error_app_crash_mail_subject)
 				body = getString(R.string.error_app_crash_mail_body)
 				reportAsFile = false

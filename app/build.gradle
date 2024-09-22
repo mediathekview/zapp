@@ -13,8 +13,8 @@ android {
 		compileSdk 35
 		minSdkVersion 26
 		targetSdkVersion 35
-		versionCode 73
-		versionName "8.5.3"
+		versionCode 74
+		versionName "8.5.4"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 		resourceConfigurations += ['de', 'en']
 	}
