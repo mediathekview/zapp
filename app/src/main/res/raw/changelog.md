@@ -1,3 +1,7 @@
+# v-next
+* Zapp für Android 15 vorbereitet
+* Neue Suchfunktion
+
 # 8.5.4
 * Mail-Adresse für Support-Anfragen und Crash-Reports aktualisiert
 
