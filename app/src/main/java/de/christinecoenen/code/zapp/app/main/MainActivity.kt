@@ -165,11 +165,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 					SearchViewModel.SeachState.Results -> {
 						binding.searchView.hide()
 						binding.searchbar.setText(query)
-
-						navController.navigate(R.id.searchResultsFragment,
-							bundleOf("title" to query),
-							navOptions { launchSingleTop = true }
-						)
+						navigateToSearchResults()
 					}
 				}
 			}
@@ -302,5 +298,23 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWING
 
 		binding.bottomNavigation.isVisible = isMainDestination && !isSearchOverlayVisible
+	}
+
+	private fun navigateToSearchResults() {
+		if (navController.currentDestination?.id == R.id.searchResultsFragment) {
+			// already there
+			return
+		}
+
+		if (navController.popBackStack(R.id.searchResultsFragment, false)) {
+			// popped there
+			return
+		}
+
+		// navigate explicitly
+		navController.navigate(R.id.searchResultsFragment,
+			bundleOf(),
+			navOptions { launchSingleTop = true }
+		)
 	}
 }
