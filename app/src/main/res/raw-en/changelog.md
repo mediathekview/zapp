@@ -1,3 +1,6 @@
+# v-next
+* Fixed bug where download buttons were shows when no download available
+
 # 8.5.4
 * Updated support and crash report email address
 

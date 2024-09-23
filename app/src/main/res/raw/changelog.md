@@ -1,3 +1,6 @@
+# v-next
+* Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden
+
 # 8.5.4
 * Mail-Adresse für Support-Anfragen und Crash-Reports aktualisiert
 
