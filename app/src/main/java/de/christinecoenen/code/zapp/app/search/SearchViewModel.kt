@@ -72,8 +72,11 @@ class SearchViewModel(
 	val durationQuerySet = _durationQueries.asStateFlow()
 
 	private val _submittedSearchQuery = MutableStateFlow("")
+
 	private val _submittedChannels = MutableStateFlow(emptySet<MediathekChannel>())
+	val submittedChannels = _submittedChannels.asStateFlow()
 	private val _submittedDurationQueries = MutableStateFlow(DurationQuerySet())
+	val submittedDurationQuerySet = _submittedDurationQueries.asStateFlow()
 
 	private val _searchState = MutableStateFlow(SeachState.None)
 	val searchState = _searchState.asStateFlow()
@@ -234,20 +237,26 @@ class SearchViewModel(
 
 	fun enterLastSearch() {
 		_searchState.tryEmit(SeachState.Query)
+		_searchQuery.tryEmit(_submittedSearchQuery.value)
+		_channels.tryEmit(_submittedChannels.value)
+		_durationQueries.tryEmit(_durationQueries.value)
 	}
 
 	fun exitToNone() {
 		_searchState.tryEmit(SeachState.None)
-		clearTempData()
+		resetData()
 	}
 
 	private fun exitToResults() {
 		_searchState.tryEmit(SeachState.Results)
 	}
 
-	private fun clearTempData() {
+	private fun resetData() {
 		_searchQuery.tryEmit("")
 		_channels.tryEmit(emptySet())
 		_durationQueries.tryEmit(DurationQuerySet())
+		_submittedSearchQuery.tryEmit("")
+		_submittedChannels.tryEmit(emptySet())
+		_submittedDurationQueries.tryEmit(DurationQuerySet())
 	}
 }

@@ -75,7 +75,7 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 
 		val channelChipsAdapter = ChipsAdapter<ChannelChipContent>(ChipType.NonInteractableFilter)
 		viewLifecycleOwner.launchOnResumed {
-			viewModel.channels.collectLatest { channels ->
+			viewModel.submittedChannels.collectLatest { channels ->
 				channelChipsAdapter.submitList(channels.map {
 					ChannelChipContent(it)
 				})
@@ -84,7 +84,7 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 
 		val durationChipsAdapter = ChipsAdapter<DurationChipContent>(ChipType.NonInteractableFilter)
 		viewLifecycleOwner.launchOnResumed {
-			viewModel.durationQuerySet.collectLatest { durationQuerySet ->
+			viewModel.submittedDurationQuerySet.collectLatest { durationQuerySet ->
 				durationChipsAdapter.submitList(durationQuerySet.map {
 					DurationChipContent(it)
 				})

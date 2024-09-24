@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		binding.searchView.let {
 			it.addTransitionListener(searchViewTransistionListener)
 			it.editText.addTextChangedListener { editable ->
-				if (searchViewModel.searchState.value == SearchViewModel.SeachState.Query) {
+				if (searchViewModel.searchState.value == SeachState.Query) {
 					searchViewModel.setSearchQuery(editable.toString())
 				}
 			}
@@ -153,17 +153,17 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				val query = binding.searchView.text.toString()
 
 				when (searchState) {
-					SearchViewModel.SeachState.None -> {
+					SeachState.None -> {
 						binding.searchView.hide()
 						binding.searchbar.setText("")
 					}
 
-					SearchViewModel.SeachState.Query -> {
+					SeachState.Query -> {
 						binding.searchView.show()
 						setSearchViewQueryAndFocus(query)
 					}
 
-					SearchViewModel.SeachState.Results -> {
+					SeachState.Results -> {
 						binding.searchView.hide()
 						binding.searchbar.setText(query)
 						navigateToSearchResults()
