@@ -117,7 +117,7 @@ interface MediathekShowDao {
 			insert(newPersistedShow)
 		} else {
 			// update existing show
-			existingPersistedShow.mediathekShow = show
+			existingPersistedShow.updateMediathekShow(show)
 			update(existingPersistedShow)
 		}
 	}

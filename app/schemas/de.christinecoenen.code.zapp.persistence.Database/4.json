@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "07d5df2f38d5d5ade239dcdc1b701ef6",
+    "identityHash": "9f967b99223f6bb66f121297a52a5209",
     "entities": [
       {
         "tableName": "PersistedMediathekShow",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER NOT NULL, `downloadId` INTEGER NOT NULL, `downloadedAt` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `bookmarked` INTEGER NOT NULL, `bookmarkedAt` INTEGER, `lastPlayedBackAt` INTEGER, `playbackPosition` INTEGER NOT NULL, `videoDuration` INTEGER NOT NULL, `apiId` TEXT NOT NULL, `topic` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `channel` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT NOT NULL, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER NOT NULL, `showUpdatedAt` INTEGER, `downloadId` INTEGER NOT NULL, `downloadedAt` INTEGER, `downloadedVideoPath` TEXT, `downloadStatus` INTEGER NOT NULL, `downloadProgress` INTEGER NOT NULL, `bookmarked` INTEGER NOT NULL, `bookmarkedAt` INTEGER, `lastPlayedBackAt` INTEGER, `playbackPosition` INTEGER NOT NULL, `videoDuration` INTEGER NOT NULL, `apiId` TEXT NOT NULL, `topic` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `channel` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `size` INTEGER NOT NULL, `duration` TEXT, `filmlisteTimestamp` INTEGER NOT NULL, `websiteUrl` TEXT, `subtitleUrl` TEXT, `videoUrl` TEXT NOT NULL, `videoUrlLow` TEXT, `videoUrlHd` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -19,6 +19,12 @@
             "columnName": "createdAt",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "showUpdatedAt",
+            "columnName": "showUpdatedAt",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "downloadId",
@@ -214,7 +220,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '07d5df2f38d5d5ade239dcdc1b701ef6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9f967b99223f6bb66f121297a52a5209')"
     ]
   }
 }
