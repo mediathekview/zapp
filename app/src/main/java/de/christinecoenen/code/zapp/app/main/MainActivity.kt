@@ -39,6 +39,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.search.SearchView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.search.SearchViewModel
+import de.christinecoenen.code.zapp.app.search.SearchViewModel.SeachState
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
@@ -199,6 +200,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 	private fun setSearchViewQueryAndFocus(query: String) {
 		binding.searchView.setText(query)
+
+		if (searchViewModel.searchState.value !== SeachState.Query) {
+			return
+		}
 
 		binding.searchView.editText.let {
 			it.requestFocus()
