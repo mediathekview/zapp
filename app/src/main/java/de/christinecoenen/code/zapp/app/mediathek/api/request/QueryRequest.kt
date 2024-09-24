@@ -10,8 +10,8 @@ class QueryRequest : Serializable {
 
 	private val sortBy: String = "timestamp"
 	private val sortOrder: String = "desc"
-	private val future: Boolean = true
 
+	var future: Boolean = true
 	var offset: Int = 0
 	var size: Int = 30
 

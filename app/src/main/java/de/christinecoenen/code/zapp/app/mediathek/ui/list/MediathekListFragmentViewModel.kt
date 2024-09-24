@@ -65,6 +65,7 @@ class MediathekListFragmentViewModel(
 	private fun createQueryRequest(searchQuery: String): QueryRequest {
 		return QueryRequest().apply {
 			size = ITEM_COUNT_PER_PAGE
+			future = false
 			setQueryString(searchQuery)
 		}
 	}
