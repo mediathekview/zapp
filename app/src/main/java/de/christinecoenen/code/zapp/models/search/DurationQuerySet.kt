@@ -22,8 +22,8 @@ class DurationQuerySet(
 		val queries = _queries
 			.filterNot {
 				it.comparison == durationQuery.comparison ||
-					it.comparison == Comparison.LesserThan && it.minutes < durationQuery.minutes ||
-					it.comparison == Comparison.GreaterThan && it.minutes > durationQuery.minutes
+					it.comparison == Comparison.LesserThan && it.minutes <= durationQuery.minutes ||
+					it.comparison == Comparison.GreaterThan && it.minutes >= durationQuery.minutes
 			}
 			.plus(durationQuery)
 			.sortedBy { it.comparison }
