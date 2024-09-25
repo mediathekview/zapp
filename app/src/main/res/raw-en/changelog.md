@@ -1,4 +1,4 @@
-# v-next
+# 9.0.0-beta1
 * Fixed bug where download buttons were shows when no download available
 * Prepared Zapp for Android 15
 * New seach functionality
