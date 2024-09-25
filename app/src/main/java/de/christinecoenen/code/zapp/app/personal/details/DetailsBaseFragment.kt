@@ -49,7 +49,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		showAdapter = PagedMediathekShowListAdapter(lifecycleScope, true, this)
+		showAdapter = PagedMediathekShowListAdapter(lifecycleScope, false, this)
 	}
 
 	override fun onCreateView(

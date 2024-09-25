@@ -65,7 +65,7 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 
 		val localShowsResultAdapter = PagedMediathekShowListAdapter(
 			lifecycleScope,
-			true,
+			false,
 			this
 		)
 		val mediathekResultAdapter = PagedMediathekShowListAdapter(
