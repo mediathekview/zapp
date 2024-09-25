@@ -6,6 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:paddingHorizontal="@dimen/activity_horizontal_margin"
-	android:paddingVertical="8dp"
+	android:paddingTop="16dp"
+	android:paddingBottom="8dp"
 	android:textAppearance="?textAppearanceTitleMedium"
 	tools:text="@string/fragment_personal_today" />
