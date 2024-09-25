@@ -125,9 +125,13 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 		mediathekResultAdapter.addLoadStateListener { loadStates ->
 			// show initial load, too
 			mediathekResultLoadStateHeader.loadState = loadStates.refresh
-		}
-		mediathekResultAdapter.addOnPagesUpdatedListener {
-			mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
+
+			// update no shows found message
+			if (loadStates.isIdle) {
+				mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
+			} else {
+				mediathekResultLoadStatusAdapter.setIsLoading()
+			}
 		}
 	}
 
