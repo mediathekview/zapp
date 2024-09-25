@@ -1,4 +1,5 @@
 # v-next
+* Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden
 * Zapp für Android 15 vorbereitet
 * Neue Suchfunktion
 

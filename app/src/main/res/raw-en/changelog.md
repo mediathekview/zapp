@@ -1,4 +1,5 @@
 # v-next
+* Fixed bug where download buttons were shows when no download available
 * Prepared Zapp for Android 15
 * New seach functionality
 
