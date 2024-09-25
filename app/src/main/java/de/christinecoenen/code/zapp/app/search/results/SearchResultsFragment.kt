@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
@@ -117,6 +118,7 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.mediathekResult.collectLatest { apiShows ->
+				mediathekResultAdapter.submitData(PagingData.empty())
 				mediathekResultAdapter.submitData(apiShows)
 			}
 		}
