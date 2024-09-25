@@ -41,6 +41,14 @@ android {
 			shrinkResources false
 			applicationIdSuffix '.debug'
 		}
+		beta {
+			shrinkResources true
+			minifyEnabled true
+			proguardFiles getDefaultProguardFile(
+				'proguard-android-optimize.txt'),
+				'proguard-rules.pro'
+			applicationIdSuffix '.beta'
+		}
 		release {
 			shrinkResources true
 			minifyEnabled true
