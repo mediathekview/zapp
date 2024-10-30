@@ -25,7 +25,10 @@ class SettingsRepository(context: Context) {
 
 	val meteredNetworkStreamQuality: StreamQualityBucket
 		@SuppressLint("DefaultLocale")
-		get() = preferences.getString(context.getString(R.string.pref_key_stream_quality_over_metered_network), null).let { quality ->
+		get() = preferences.getString(
+			context.getString(R.string.pref_key_stream_quality_over_metered_network),
+			null
+		).let { quality ->
 			if (quality == null) {
 				StreamQualityBucket.DISABLED
 			} else {
@@ -34,7 +37,10 @@ class SettingsRepository(context: Context) {
 		}
 
 	val downloadOverUnmeteredNetworkOnly: Boolean
-		get() = preferences.getBoolean(context.getString(R.string.pref_key_download_over_unmetered_network_only), true)
+		get() = preferences.getBoolean(
+			context.getString(R.string.pref_key_download_over_unmetered_network_only),
+			true
+		)
 
 	var isPlayerZoomed: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_player_zoomed), false)
@@ -59,7 +65,10 @@ class SettingsRepository(context: Context) {
 		}
 
 	val downloadToSdCard: Boolean
-		get() = preferences.getBoolean(context.getString(R.string.pref_key_download_to_sd_card), true)
+		get() = preferences.getBoolean(
+			context.getString(R.string.pref_key_download_to_sd_card),
+			true
+		)
 
 	val dynamicColors: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_dynamic_colors), false)
@@ -71,11 +80,20 @@ class SettingsRepository(context: Context) {
 		}
 
 	val startFragment: Int
-		get() = when (preferences.getString(context.getString(R.string.pref_key_start_tab), "live")) {
+		get() = when (preferences.getString(
+			context.getString(R.string.pref_key_start_tab),
+			"live"
+		)) {
 			"mediathek" -> R.id.mediathekListFragment
 			"personal" -> R.id.personalFragment
 			else -> R.id.channelListFragment
 		}
+
+	val searchHistory: Boolean
+		get() = preferences.getBoolean(
+			context.getString(R.string.pref_key_search_history),
+			true
+		)
 
 	fun prefValueToUiMode(prefSetting: String?): Int {
 		val defaultMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
@@ -84,8 +102,10 @@ class SettingsRepository(context: Context) {
 		return when (prefSetting) {
 			"light" ->
 				AppCompatDelegate.MODE_NIGHT_NO
+
 			"dark" ->
 				AppCompatDelegate.MODE_NIGHT_YES
+
 			else ->
 				defaultMode
 		}

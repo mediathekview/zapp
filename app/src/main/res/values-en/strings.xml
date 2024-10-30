@@ -167,6 +167,9 @@
 	<string name="pref_dynamic_colors">Dynamic colors</string>
 	<string name="pref_dynamic_colors_summary">Choose accent colors based on the wallpaper.</string>
 
+	<string name="pref_detail_search_history_title">Search history</string>
+	<string name="pref_detail_search_history_summary">Remember the most recent search queries.</string>
+
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>
 	<string name="notification_channel_name_download_progress">Download progress</string>
