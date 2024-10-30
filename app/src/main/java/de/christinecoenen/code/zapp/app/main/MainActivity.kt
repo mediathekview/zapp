@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		appBarConfiguration = AppBarConfiguration(
 			setOf(
 				R.id.channelListFragment,
-				R.id.mediathekListFragment,
+				R.id.mediathekListBaseFragment,
 				R.id.personalFragment,
 			),
 			fallbackOnNavigateUpListener = ::onSupportNavigateUp

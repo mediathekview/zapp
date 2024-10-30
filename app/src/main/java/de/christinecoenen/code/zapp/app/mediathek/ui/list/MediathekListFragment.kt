@@ -26,11 +26,13 @@ import de.christinecoenen.code.zapp.databinding.MediathekListFragmentBinding
 import de.christinecoenen.code.zapp.databinding.ViewNoShowsBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.net.UnknownServiceException
@@ -73,6 +75,12 @@ class MediathekListFragment : Fragment(),
 			viewLifecycleOwner,
 			Lifecycle.State.RESUMED
 		)
+
+		if (requireArguments().getBoolean(EXTRA_SUBSCRIPTIONS_ONLY)) {
+			lifecycleScope.launch(Dispatchers.IO) {
+				viewmodel.subscriptionsOnly.emit(true)
+			}
+		}
 
 		return binding.root
 	}
@@ -147,7 +155,7 @@ class MediathekListFragment : Fragment(),
 	}
 
 	override fun onShowClicked(show: MediathekShow) {
-		val directions = MediathekListFragmentDirections.toMediathekDetailFragment(show)
+		val directions = MediathekListBaseFragmentDirections.toMediathekDetailFragment(show)
 		findNavController().navigate(directions)
 	}
 
@@ -177,5 +185,9 @@ class MediathekListFragment : Fragment(),
 	private fun updateNoShowsMessage(loadState: LoadState) {
 		val isAdapterEmpty = adapter.itemCount == 0 && loadState is LoadState.NotLoading
 		noShowsBinding.group.isVisible = isAdapterEmpty
+	}
+
+	companion object {
+		const val EXTRA_SUBSCRIPTIONS_ONLY = "extra_subscriptions_only"
 	}
 }

@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentDirections
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListBaseFragmentDirections
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.PagedMediathekShowListAdapter
 import de.christinecoenen.code.zapp.databinding.PersonalDetailsFragmentBinding
@@ -85,7 +85,7 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 
 	override fun onShowClicked(show: MediathekShow) {
 		val directions =
-			MediathekListFragmentDirections.toMediathekDetailFragment(show)
+			MediathekListBaseFragmentDirections.toMediathekDetailFragment(show)
 		findNavController().navigate(directions)
 	}
 

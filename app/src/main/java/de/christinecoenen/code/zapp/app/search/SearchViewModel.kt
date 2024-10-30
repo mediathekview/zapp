@@ -21,6 +21,7 @@ import de.christinecoenen.code.zapp.models.search.DurationQuerySet
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.QuerySubscriptionRepository
 import de.christinecoenen.code.zapp.repositories.SearchRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -40,6 +41,7 @@ import timber.log.Timber
 class SearchViewModel(
 	private val searchRepository: SearchRepository,
 	private val mediathekRepository: MediathekRepository,
+	private val subscriptionRepository: QuerySubscriptionRepository,
 	private val mediathekApi: IMediathekApiService
 ) : ViewModel() {
 
@@ -180,6 +182,15 @@ class SearchViewModel(
 		}
 		.cachedIn(viewModelScope)
 
+	val isSubscribed = MutableStateFlow(false)
+
+	init {
+		searchQuery
+			.mapLatest { searchQuery ->
+				isSubscribed.emit(subscriptionRepository.isSubscribed(searchQuery))
+			}
+	}
+
 	fun addChannel(channel: MediathekChannel) {
 		_channels.tryEmit(_channels.value.plus(channel))
 
@@ -249,6 +260,20 @@ class SearchViewModel(
 
 	private fun exitToResults() {
 		_searchState.tryEmit(SeachState.Results)
+	}
+
+	fun toggleSubscription() {
+		viewModelScope.launch {
+			val wasSubscribed = isSubscribed.value
+
+			if (wasSubscribed) {
+				subscriptionRepository.deleteSubscription(searchQuery.value)
+			} else {
+				subscriptionRepository.saveSubscription(searchQuery.value)
+			}
+
+			isSubscribed.emit(!wasSubscribed)
+		}
 	}
 
 	private fun resetData() {

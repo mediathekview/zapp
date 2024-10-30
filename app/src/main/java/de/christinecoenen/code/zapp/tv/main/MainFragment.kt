@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
 		binding.tabs.setupWithViewPager(binding.viewpager)
 
 		val selectedTabIndex = when (settingsRepository.startFragment) {
-			R.id.mediathekListFragment -> 1
+			R.id.mediathekListBaseFragment -> 1
 			else -> 0
 		}
 		val selectedTab = binding.tabs.getTabAt(selectedTabIndex)

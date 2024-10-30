@@ -14,7 +14,8 @@ import java.io.IOException
 class MediathekPagingSource(
 	private val mediathekApi: IMediathekApiService,
 	private val query: QueryRequest,
-	private val queryInfoResultPublisher: MutableStateFlow<QueryInfoResult?>
+	private val queryInfoResultPublisher: MutableStateFlow<QueryInfoResult?>,
+	private val emptyIfNoQueries: Boolean = false
 ) : PagingSource<Int, MediathekShow>() {
 
 	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
@@ -23,6 +24,9 @@ class MediathekPagingSource(
 	}
 
 	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediathekShow> {
+		if (query.isEmpty() && emptyIfNoQueries) {
+			return LoadResult.Page(emptyList(), null, null)
+		}
 
 		queryInfoResultPublisher.emit(null)
 

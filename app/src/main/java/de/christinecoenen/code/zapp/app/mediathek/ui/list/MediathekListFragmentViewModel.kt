@@ -13,11 +13,12 @@ import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
+import de.christinecoenen.code.zapp.models.search.QuerySubscription
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import de.christinecoenen.code.zapp.repositories.QuerySubscriptionRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -27,8 +28,9 @@ import org.joda.time.DateTime
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class MediathekListFragmentViewModel(
 	private val mediathekApi: IMediathekApiService,
-	searchQuery: StateFlow<String>,
+	private val subscriptionRepository: QuerySubscriptionRepository
 ) : ViewModel() {
+	val subscriptionsOnly: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
@@ -42,14 +44,14 @@ class MediathekListFragmentViewModel(
 
 	private val _queryInfoResult = MutableStateFlow<QueryInfoResult?>(null)
 
-	val pageFlow = searchQuery
-		.mapLatest { searchQuery ->
-			createQueryRequest(searchQuery)
+	val pageFlow = subscriptionsOnly
+		.mapLatest { subscriptionsOnly ->
+			createQueryRequest(subscriptionsOnly)
 		}
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
 			Pager(pagingConfig) {
-				MediathekPagingSource(mediathekApi, queryRequest, _queryInfoResult)
+				MediathekPagingSource(mediathekApi, queryRequest, _queryInfoResult, subscriptionsOnly.value)
 			}.flow
 		}
 		.map<PagingData<MediathekShow>, PagingData<UiModel>> { pagingData ->
@@ -62,11 +64,17 @@ class MediathekListFragmentViewModel(
 		}
 		.cachedIn(viewModelScope)
 
-	private fun createQueryRequest(searchQuery: String): QueryRequest {
+	private suspend fun createQueryRequest(subscriptionsOnly: Boolean): QueryRequest {
 		return QueryRequest().apply {
 			size = ITEM_COUNT_PER_PAGE
 			future = false
-			setQueryString(searchQuery)
+
+			if (subscriptionsOnly) {
+				val subscriptions = subscriptionRepository
+					.listSubscriptions()
+					.map(QuerySubscription::query)
+				setQueryStrings(subscriptions)
+			}
 		}
 	}
 }

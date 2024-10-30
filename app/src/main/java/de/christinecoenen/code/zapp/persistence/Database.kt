@@ -8,14 +8,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import de.christinecoenen.code.zapp.models.search.QuerySubscription
 import de.christinecoenen.code.zapp.models.search.SearchQuery
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 
 @Database(
-	entities = [PersistedMediathekShow::class, SearchQuery::class],
-	version = 4,
+	entities = [PersistedMediathekShow::class, SearchQuery::class, QuerySubscription::class],
+	version = 5,
 	autoMigrations = [
 		AutoMigration(from = 3, to = 4),
+		AutoMigration(from = 4, to = 5)
 	],
 	exportSchema = true
 )
@@ -81,4 +83,5 @@ abstract class Database : RoomDatabase() {
 
 	abstract fun searchDao(): SearchDao
 
+	abstract fun subscriptionDao(): QuerySubscriptionDao
 }

@@ -72,7 +72,7 @@ class SettingsRepository(context: Context) {
 
 	val startFragment: Int
 		get() = when (preferences.getString(context.getString(R.string.pref_key_start_tab), "live")) {
-			"mediathek" -> R.id.mediathekListFragment
+			"mediathek" -> R.id.mediathekListBaseFragment
 			"personal" -> R.id.personalFragment
 			else -> R.id.channelListFragment
 		}
