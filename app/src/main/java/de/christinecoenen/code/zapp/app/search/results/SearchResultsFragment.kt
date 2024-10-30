@@ -133,6 +133,19 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 				mediathekResultLoadStatusAdapter.setIsLoading()
 			}
 		}
+
+		binding.subscribeQueryButton.setOnClickListener {
+			viewModel.toggleSubscription()
+		}
+
+		viewLifecycleOwner.launchOnResumed {
+			viewModel.isSubscribed.collectLatest { isSubscribed ->
+				binding.subscribeQueryButton.setText(
+					if (isSubscribed) R.string.fragment_mediathek_unsubscribe
+					else R.string.fragment_mediathek_subscribe
+				)
+			}
+		}
 	}
 
 	override fun onDestroyView() {

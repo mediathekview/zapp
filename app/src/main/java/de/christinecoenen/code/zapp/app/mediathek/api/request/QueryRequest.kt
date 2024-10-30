@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request
 
-import android.text.TextUtils
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -27,36 +26,40 @@ class QueryRequest : Serializable {
 	private val channels: MutableSet<MediathekChannel> = mutableSetOf()
 
 	@Transient
-	private var queryString: String = ""
+	private var queryStrings: MutableSet<String> = mutableSetOf()
 
 	init {
 		resetQueries()
 	}
 
-	fun setChannels(channels: List<MediathekChannel>): QueryRequest {
+	fun setChannels(channels: List<MediathekChannel>): QueryRequest = apply {
 		this.channels.clear()
 		this.channels.addAll(channels)
 
 		resetQueries()
-
-		return this
 	}
 
-	fun setQueryString(queryString: String): QueryRequest {
-		this.queryString = queryString
+	fun setQueryString(queryString: String): QueryRequest = apply {
+		this.queryStrings.clear()
+		this.queryStrings.add(queryString)
 
 		resetQueries()
+	}
 
-		return this
+	fun setQueryStrings(queryStrings: List<String>): QueryRequest = apply {
+		this.queryStrings.clear()
+		this.queryStrings.addAll(queryStrings)
+
+		resetQueries()
 	}
 
 	private fun resetQueries() {
 		queries.clear()
 
 		// set search query
-		if (!TextUtils.isEmpty(this.queryString)) {
-			queries.add(Query(this.queryString, "title", "topic"))
-		}
+		queries.addAll(queryStrings.filter { it.isNotEmpty() }.map { queryString ->
+			Query(queryString, "title", "topic")
+		})
 
 		// We do not allow an empty channel Filter as the result would always be empty.
 		// Instead we filter for all available channels. This also excludes all channels
@@ -71,6 +74,8 @@ class QueryRequest : Serializable {
 			queries.add(Query(allowedChannel.apiId, "channel"))
 		}
 	}
+
+	fun isEmpty() = queries.isEmpty()
 
 	override fun toString(): String {
 		return "QueryRequest(sortBy='$sortBy', sortOrder='$sortOrder', future=$future, offset=$offset, size=$size, queries=$queries)"

@@ -7,7 +7,7 @@
 		android:title="@string/activity_main_tab_live" />
 
 	<item
-		android:id="@+id/mediathekListFragment"
+		android:id="@+id/mediathekListBaseFragment"
 		android:icon="@drawable/ic_outline_video_library_24"
 		android:title="@string/activity_main_tab_mediathek" />
 

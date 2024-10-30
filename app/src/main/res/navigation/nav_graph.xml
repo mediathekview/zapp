@@ -33,10 +33,10 @@
 			app:argType="boolean" />
 	</fragment>
 	<fragment
-		android:id="@+id/mediathekListFragment"
-		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragment"
+		android:id="@+id/mediathekListBaseFragment"
+		android:name="de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListBaseFragment"
 		android:label="@string/app_name"
-		tools:layout="@layout/mediathek_list_fragment">
+		tools:layout="@layout/mediathek_list_base_fragment">
 		<argument
 			android:name="show_bottom_navigation"
 			android:defaultValue="true"
