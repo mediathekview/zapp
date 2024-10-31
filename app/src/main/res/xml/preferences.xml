@@ -98,6 +98,12 @@
 
 		<SwitchPreferenceCompat
 			android:defaultValue="true"
+			android:key="@string/pref_key_search_history"
+			android:title="@string/pref_detail_search_history_title"
+			android:summary="@string/pref_detail_search_history_summary" />
+
+		<SwitchPreferenceCompat
+			android:defaultValue="true"
 			android:key="@string/pref_key_download_to_sd_card"
 			android:summary="@string/pref_download_to_sd_card_summary"
 			android:title="@string/pref_download_to_sd_card_title" />

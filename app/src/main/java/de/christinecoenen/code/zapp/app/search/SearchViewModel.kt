@@ -15,6 +15,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
+import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.search.Comparison
 import de.christinecoenen.code.zapp.models.search.DurationQuery
 import de.christinecoenen.code.zapp.models.search.DurationQuerySet
@@ -40,6 +41,7 @@ import timber.log.Timber
 class SearchViewModel(
 	private val searchRepository: SearchRepository,
 	private val mediathekRepository: MediathekRepository,
+	private val settingsRepository: SettingsRepository,
 	private val mediathekApi: IMediathekApiService
 ) : ViewModel() {
 
@@ -218,8 +220,10 @@ class SearchViewModel(
 		_submittedChannels.tryEmit(_channels.value)
 		_submittedDurationQueries.tryEmit(_durationQueries.value)
 
-		viewModelScope.launch {
-			searchRepository.saveQuery(_searchQuery.value)
+		if (settingsRepository.searchHistory) {
+			viewModelScope.launch {
+				searchRepository.saveQuery(_searchQuery.value)
+			}
 		}
 	}
 

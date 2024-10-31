@@ -1,3 +1,6 @@
+# v-next
+* Add option to disable search history (thanks to Bnyro)
+
 # 9.0.0-beta1
 * Fixed bug where download buttons were shows when no download available
 * Prepared Zapp for Android 15

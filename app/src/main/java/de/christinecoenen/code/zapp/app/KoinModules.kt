@@ -90,7 +90,7 @@ class KoinModules {
 			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get()) }
 			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
-			viewModel { SearchViewModel(get(), get(), get()) }
+			viewModel { SearchViewModel(get(), get(), get(), get()) }
 		}
 
 	}
