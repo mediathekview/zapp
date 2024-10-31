@@ -1,3 +1,6 @@
+# v-next
+* Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)
+
 # 9.0.0-beta1
 * Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden
 * Zapp für Android 15 vorbereitet
