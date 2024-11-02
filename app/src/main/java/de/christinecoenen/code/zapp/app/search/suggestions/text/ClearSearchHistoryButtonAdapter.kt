@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.databinding.SearchSuggestionClearHistoryButtonBinding
 
-class ClearHistoryButtonAdapter(
+class ClearSearchHistoryButtonAdapter(
 	private val listener: Listener
-) : RecyclerView.Adapter<ClearHistoryButtonAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ClearSearchHistoryButtonAdapter.ViewHolder>() {
 
 	private var isVisible = false
 
@@ -34,7 +34,7 @@ class ClearHistoryButtonAdapter(
 			SearchSuggestionClearHistoryButtonBinding.inflate(layoutInflater, parent, false)
 
 		binding.clearAllButton.setOnClickListener {
-			listener.onClearAllHistoryClicked()
+			listener.onClearSearchHistoryClicked()
 		}
 
 		return ViewHolder(binding)
@@ -53,6 +53,6 @@ class ClearHistoryButtonAdapter(
 	) : RecyclerView.ViewHolder(binding.root)
 
 	interface Listener {
-		fun onClearAllHistoryClicked()
+		fun onClearSearchHistoryClicked()
 	}
 }

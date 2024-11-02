@@ -8,14 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.search.dialogs.ConfirmDeleteSearchHistoryDialog
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipContent
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
-import de.christinecoenen.code.zapp.app.search.suggestions.text.ClearHistoryButtonAdapter
+import de.christinecoenen.code.zapp.app.search.suggestions.text.ClearSearchHistoryButtonAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.LocalSearchSuggestionsHeaderAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.text.SuggestionTextListener
@@ -27,7 +29,8 @@ import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyHorizontalI
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAdapter.Listener {
+class SearchFragment : Fragment(), SuggestionTextListener,
+	ClearSearchHistoryButtonAdapter.Listener {
 
 	private var _binding: SearchFragmentBinding? = null
 	private val binding: SearchFragmentBinding get() = _binding!!
@@ -121,7 +124,7 @@ class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAda
 			LocalSearchSuggestionsHeaderAdapter(R.string.search_suggestion_header_last_searches)
 		val lastQueriesAdapter =
 			LocalSearchSuggestionsAdapter(this, TextSuggestionType.RecentQuery)
-		val clearHistoryButtonAdapter = ClearHistoryButtonAdapter(this)
+		val clearSearchHistoryButtonAdapter = ClearSearchHistoryButtonAdapter(this)
 		val localSuggestionsHeaderAdapter =
 			LocalSearchSuggestionsHeaderAdapter(R.string.search_suggestion_header_local_suggestions)
 		val localSuggestionsAdapter =
@@ -129,7 +132,7 @@ class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAda
 		binding.suggestions.adapter = ConcatAdapter(
 			lastQueriesHeaderAdapter,
 			lastQueriesAdapter,
-			clearHistoryButtonAdapter,
+			clearSearchHistoryButtonAdapter,
 			localSuggestionsHeaderAdapter,
 			localSuggestionsAdapter,
 		)
@@ -141,7 +144,7 @@ class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAda
 		}
 		lastQueriesAdapter.addOnPagesUpdatedListener {
 			lastQueriesHeaderAdapter.setIsVisible(lastQueriesAdapter.itemCount > 0)
-			clearHistoryButtonAdapter.setIsVisible(
+			clearSearchHistoryButtonAdapter.setIsVisible(
 				viewModel.searchQuery.value.isEmpty() && lastQueriesAdapter.itemCount > 0
 			)
 		}
@@ -200,7 +203,17 @@ class SearchFragment : Fragment(), SuggestionTextListener, ClearHistoryButtonAda
 		}
 	}
 
-	override fun onClearAllHistoryClicked() {
-		viewModel.deleteAllSavedSearchQueries()
+	override fun onClearSearchHistoryClicked() {
+		showConfirmDeleteAllHistoryDialog()
+	}
+
+	private fun showConfirmDeleteAllHistoryDialog() {
+		val dialog = ConfirmDeleteSearchHistoryDialog()
+
+		setFragmentResultListener(ConfirmDeleteSearchHistoryDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
+			viewModel.deleteAllSavedSearchQueries()
+		}
+
+		dialog.show(parentFragmentManager, null)
 	}
 }

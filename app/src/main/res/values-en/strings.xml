@@ -98,6 +98,9 @@
 	<string name="search_suggestion_header_local_suggestions">Suggestions</string>
 	<string name="search_suggestion_clear_all_queries">Clear all</string>
 
+	<string name="search_dialog_confirm_delete_search_history_title">Clear search history</string>
+	<string name="search_dialog_confirm_delete_search_history_text">Deletes all recent search queries.</string>
+
 	<string name="menu_refresh">Refresh</string>
 	<string name="menu_retry">Retry</string>
 	<string name="menu_about">About Zapp</string>
@@ -107,6 +110,7 @@
 	<string name="menu_filter">Filter</string>
 	<string name="menu_program_info">Program Info</string>
 	<string name="menu_voice_search">Voice Search</string>
+	<string name="menu_delete_search_query_from_history">Remove from search history</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Zoomed</string>
