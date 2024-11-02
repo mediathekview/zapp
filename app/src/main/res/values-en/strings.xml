@@ -90,13 +90,8 @@
 	<string name="action_mark_unwatched">Mark as unwatched</string>
 	<string name="action_view_all">View all</string>
 
-	<string name="search_query_hint_zapp">Search in Zapp…</string>
 	<string name="search_query_hint_mediathek">Search media center…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
-
-	<string name="search_suggestion_header_last_searches">Recent searches</string>
-	<string name="search_suggestion_header_local_suggestions">Suggestions</string>
-	<string name="search_suggestion_clear_all_queries">Clear all</string>
 
 	<string name="menu_refresh">Refresh</string>
 	<string name="menu_retry">Retry</string>
@@ -106,8 +101,6 @@
 	<string name="menu_feedback">Feedback</string>
 	<string name="menu_filter">Filter</string>
 	<string name="menu_program_info">Program Info</string>
-	<string name="menu_voice_search">Voice Search</string>
-
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Zoomed</string>
 	<string name="player_zoom_state_boxed">Original</string>
