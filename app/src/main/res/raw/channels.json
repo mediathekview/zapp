@@ -204,7 +204,7 @@
 	{
 		"id": "wdr",
 		"name": "WDR",
-		"stream_url": "https://mcdn.wdr.de/wdr/wdrfs/de/master.m3u8",
+		"stream_url": "https://wdr-live.ard-mcdn.de/wdr/live/hls/de/master.m3u8",
 		"logo_name": "channel_logo_wdr",
 		"color": "#00375A"
 	},
