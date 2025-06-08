@@ -74,6 +74,7 @@ class SearchViewModel(
 	val durationQuerySet = _durationQueries.asStateFlow()
 
 	private val _submittedSearchQuery = MutableStateFlow("")
+	val submittedSearchQuery = _submittedSearchQuery.asStateFlow()
 
 	private val _submittedChannels = MutableStateFlow(emptySet<MediathekChannel>())
 	val submittedChannels = _submittedChannels.asStateFlow()
@@ -251,7 +252,10 @@ class SearchViewModel(
 		resetData()
 	}
 
-	private fun exitToResults() {
+	/**
+	 * Show last results screen without updating search values.
+	 */
+	fun exitToResults() {
 		_searchState.tryEmit(SeachState.Results)
 	}
 

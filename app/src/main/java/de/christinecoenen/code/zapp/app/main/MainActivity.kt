@@ -84,8 +84,10 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 
 		// set correct state when user pressed back button on searchView
 		if (isHidden) {
+			binding.searchView.setText(searchViewModel.submittedSearchQuery.value)
+
 			when (navController.currentDestination?.id) {
-				R.id.searchResultsFragment -> {}
+				R.id.searchResultsFragment -> searchViewModel.exitToResults()
 				else -> searchViewModel.exitToNone()
 			}
 		}
