@@ -101,7 +101,7 @@ class MediathekListFragment : Fragment(),
 				.collectLatest {
 					// When new paging data was created we need to scroll up, because most
 					// likely the filter parameters changed.
-					// We skip the first item here, to not jump upong view recreation.
+					// We skip the first item here, to not jump upon view recreation.
 					binding.list.scrollToPosition(0)
 				}
 		}
