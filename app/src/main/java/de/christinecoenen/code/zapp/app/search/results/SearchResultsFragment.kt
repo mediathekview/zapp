@@ -21,6 +21,7 @@ import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChannelChipCont
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipType
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.ChipsAdapter
 import de.christinecoenen.code.zapp.app.search.suggestions.chips.DurationChipContent
+import de.christinecoenen.code.zapp.app.search.suggestions.chips.SuggestionChipListener
 import de.christinecoenen.code.zapp.databinding.SearchResultsFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
@@ -45,6 +46,17 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 		R.drawable.ic_outline_video_library_24,
 		null
 	)
+
+	private val channelChipListener = object: SuggestionChipListener<ChannelChipContent> {
+		override fun onChipClick(content: ChannelChipContent) {
+			viewModel.enterLastSearch()
+		}
+	}
+	private val durationChipListener = object: SuggestionChipListener<DurationChipContent> {
+		override fun onChipClick(content: DurationChipContent) {
+			viewModel.enterLastSearch()
+		}
+	}
 
 	private val mediathekResultLoadStatusAdapter =
 		LoadStatusAdapter(R.string.fragment_mediathek_no_results)
@@ -74,7 +86,7 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 			this
 		)
 
-		val channelChipsAdapter = ChipsAdapter<ChannelChipContent>(ChipType.NonInteractableFilter)
+		val channelChipsAdapter = ChipsAdapter(ChipType.NonInteractableFilter, channelChipListener)
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.submittedChannels.collectLatest { channels ->
 				channelChipsAdapter.submitList(channels.map {
@@ -83,7 +95,7 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 			}
 		}
 
-		val durationChipsAdapter = ChipsAdapter<DurationChipContent>(ChipType.NonInteractableFilter)
+		val durationChipsAdapter = ChipsAdapter(ChipType.NonInteractableFilter, durationChipListener)
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.submittedDurationQuerySet.collectLatest { durationQuerySet ->
 				durationChipsAdapter.submitList(durationQuerySet.map {
