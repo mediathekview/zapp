@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.ConcatAdapter
@@ -27,6 +28,7 @@ import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCr
 import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyHorizontalInsetsAsPadding
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class SearchFragment : Fragment(), SuggestionTextListener,
@@ -117,6 +119,17 @@ class SearchFragment : Fragment(), SuggestionTextListener,
 					DurationChipContent(it)
 				})
 			}
+		}
+
+		// filter help text
+		viewLifecycleOwner.launchOnCreated {
+			combine(
+				viewModel.filterCount,
+				viewModel.suggestionCount
+			) { count1, count2 -> count1 + count2 }
+				.collectLatest { chipCount ->
+					binding.filterHelpText.isVisible = chipCount == 0
+				}
 		}
 
 		// suggestions

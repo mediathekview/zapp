@@ -107,6 +107,16 @@ class SearchViewModel(
 				)
 		}
 
+	val filterCount = combine(
+		_channels,
+		_durationQueries,
+	) { channels, durationSet -> channels.size + durationSet.size }
+
+	val suggestionCount = combine(
+		channelSuggestions,
+		durationSuggestionSet
+	) { channels, durationSet -> channels.size + durationSet.size }
+
 	val localSearchSuggestions = _searchQuery
 		.debounce(100)
 		.flatMapLatest { query ->

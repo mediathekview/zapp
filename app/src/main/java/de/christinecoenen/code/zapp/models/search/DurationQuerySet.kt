@@ -12,6 +12,9 @@ class DurationQuerySet(
 	val maxDurationSeconds
 		get() = _queries.find { it.comparison == Comparison.LesserThan }?.let { it.minutes * 60 }
 
+	val size
+		get() = _queries.size
+
 	init {
 		this._queries.addAll(queries)
 	}

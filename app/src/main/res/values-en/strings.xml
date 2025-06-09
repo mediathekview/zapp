@@ -93,6 +93,7 @@
 	<string name="search_query_hint_zapp">Search in Zapp…</string>
 	<string name="search_query_hint_mediathek">Search media center…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
+	<string name="search_filter_help_text">Type numbers or channel names to select filters!</string>
 
 	<string name="search_suggestion_header_last_searches">Recent searches</string>
 	<string name="search_suggestion_header_local_suggestions">Suggestions</string>

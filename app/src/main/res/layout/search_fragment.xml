@@ -6,6 +6,19 @@
 	android:layout_height="match_parent"
 	tools:context=".app.search.SearchFragment">
 
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/filter_help_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingTop="20dp"
+		android:paddingBottom="8dp"
+		android:text="@string/search_filter_help_text"
+		android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+		android:textColor="?attr/colorPrimary"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/selected_chips"
 		android:layout_width="match_parent"
@@ -14,7 +27,7 @@
 		android:paddingHorizontal="12dp"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 		app:layout_constraintBottom_toTopOf="@id/suggested_chips"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/filter_help_text"
 		tools:listitem="@layout/view_mediathek_filter_chip" />
 
 	<androidx.recyclerview.widget.RecyclerView
