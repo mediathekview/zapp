@@ -82,7 +82,7 @@ interface MediathekShowDao {
 	fun getDownloadStatus(id: Int): Flow<DownloadStatus>
 
 	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getDownloadStatus(apiId: String): Flow<DownloadStatus>
+	fun getDownloadStatus(apiId: String): Flow<DownloadStatus?>
 
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE id=:id")
 	fun getDownloadProgress(id: Int): Flow<Int>
