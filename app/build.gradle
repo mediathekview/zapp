@@ -146,7 +146,7 @@ dependencies {
 	implementation "androidx.room:room-ktx:$room_version"
 
 	// helper
-	implementation 'com.google.code.gson:gson:2.11.0'
+	implementation 'com.google.code.gson:gson:2.13.1'
 
 	// sortable list
 	implementation 'com.github.woxthebox:draglistview:1.7.3'
@@ -168,11 +168,12 @@ dependencies {
 	implementation "androidx.media3:media3-datasource-okhttp:$media3_version"
 
 	// retrofit rest client
-	implementation 'com.squareup.retrofit2:retrofit:2.11.0'
-	implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+	def retrofit_version = '3.0.0'
+	implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+	implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
 	// ACRA crash reporting
-	def acra_version = '5.11.4'
+	def acra_version = '5.12.0'
 	implementation "ch.acra:acra-mail:$acra_version"
 	implementation "ch.acra:acra-dialog:$acra_version"
 
@@ -183,13 +184,13 @@ dependencies {
 	implementation 'com.jakewharton:process-phoenix:3.0.0'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.13.0'
+	implementation 'joda-time:joda-time:2.14.0'
 
 	// about libraries view
 	implementation "com.mikepenz:aboutlibraries:$about_libraries_version"
 
 	// koin dependency injection
-	def koin_version = '4.0.0'
+	def koin_version = '4.1.0'
 	implementation "io.insert-koin:koin-android:$koin_version"
 	androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 	testImplementation "io.insert-koin:koin-test:$koin_version"
