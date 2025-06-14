@@ -204,7 +204,7 @@ class BackgroundPlayerService : LifecycleService(),
 				it.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
 				it.setColorized(true)
 				it.setPlayer(player.exoPlayer)
-				it.setMediaSessionToken(player.mediaSession.sessionCompatToken)
+				it.setMediaSessionToken(player.mediaSession.platformToken)
 			}
 	}
 
