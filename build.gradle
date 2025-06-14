@@ -2,7 +2,7 @@
 
 buildscript {
 	ext.about_libraries_version = '11.2.3'
-	ext.nav_version = '2.8.3'
+	ext.nav_version = '2.9.0'
 
 	repositories {
 		google()
