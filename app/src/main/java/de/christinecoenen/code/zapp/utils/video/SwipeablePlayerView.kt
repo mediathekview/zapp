@@ -184,8 +184,6 @@ class SwipeablePlayerView @JvmOverloads constructor(
 			return super.onDown(e)
 		}
 
-		// removing this leads to a compilation error with sdk 33
-		@Suppress("NOTHING_TO_OVERRIDE")
 		override fun onScroll(
 			e1: MotionEvent?,
 			e2: MotionEvent,
