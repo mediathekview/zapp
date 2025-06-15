@@ -1,6 +1,7 @@
 # v-next
 * Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)
 * Neue Mediathek-Sender hinzugefügt: ARD-alpha, One und tagesschau24
+* Zapp für Android 16 vorbereitet
 
 # 9.0.0-beta1
 * Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden

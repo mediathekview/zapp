@@ -1,6 +1,7 @@
 # v-next
 * Add option to disable search history (thanks to Bnyro)
 * Add new mediathek channels ARD-alpha, One and tagesschau24
+* Prepared Zapp for Android 16
 
 # 9.0.0-beta1
 * Fixed bug where download buttons were shows when no download available

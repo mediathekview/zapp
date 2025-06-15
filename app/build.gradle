@@ -10,9 +10,9 @@ android {
 
 	defaultConfig {
 		applicationId "de.christinecoenen.code.zapp"
-		compileSdk 35
+		compileSdk 36
 		minSdkVersion 26
-		targetSdkVersion 35
+		targetSdkVersion 36
 		versionCode 75
 		versionName "9.0.0-beta1"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
