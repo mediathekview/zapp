@@ -1,7 +1,7 @@
 package de.christinecoenen.code.zapp.models.channels.json
 
 import android.content.Context
-import android.graphics.Color
+import androidx.core.graphics.toColorInt
 import com.google.gson.Gson
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import java.util.*
@@ -42,7 +42,7 @@ internal class JsonChannelsParser(private val context: Context) {
 			subtitle = jsonModel.subtitle,
 			streamUrl = jsonModel.streamUrl,
 			drawableId = logoResourceId,
-			color = Color.parseColor(jsonModel.color),
+			color = jsonModel.color.toColorInt(),
 			isEnabled = true
 		)
 	}

@@ -3,7 +3,7 @@ package de.christinecoenen.code.zapp.utils.system
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import de.christinecoenen.code.zapp.R
 
 object IntentHelper {
@@ -16,8 +16,8 @@ object IntentHelper {
 	 * @param url
 	 */
 	@JvmStatic
-	fun openUrl(context: Context, url: String?) {
-		val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+	fun openUrl(context: Context, url: String) {
+		val browserIntent = Intent(Intent.ACTION_VIEW, url.toUri())
 
 		try {
 			context.startActivity(browserIntent)
@@ -35,7 +35,7 @@ object IntentHelper {
 	 * @param subject mail subject line
 	 */
 	fun sendMail(context: Context, mail: String, subject: String?) {
-		val feedbackIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$mail"))
+		val feedbackIntent = Intent(Intent.ACTION_SENDTO, "mailto:$mail".toUri())
 		feedbackIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
 
 		try {
@@ -66,7 +66,7 @@ object IntentHelper {
 	 */
 	fun playVideo(context: Context, url: String, title: String) {
 		val playVideoIntent = Intent(Intent.ACTION_VIEW).apply {
-			setDataAndType(Uri.parse(url), "video/*")
+			setDataAndType(url.toUri(), "video/*")
 			putExtra(Intent.EXTRA_TITLE, title)
 		}
 

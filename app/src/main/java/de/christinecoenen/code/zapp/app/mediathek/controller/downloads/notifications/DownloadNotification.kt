@@ -17,7 +17,7 @@ abstract class DownloadNotification(
 	title: String,
 	persistedShowId: Int
 ) {
-	protected val notificationBuilder = NotificationCompat.Builder(
+	protected val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(
 		appContext,
 		NotificationHelper.CHANNEL_ID_DOWNLOAD_EVENT
 	)
@@ -41,6 +41,6 @@ abstract class DownloadNotification(
 				.createPendingIntent()
 		)
 
-	fun build() = notificationBuilder
+	fun build(): Notification = notificationBuilder
 		.build()
 }

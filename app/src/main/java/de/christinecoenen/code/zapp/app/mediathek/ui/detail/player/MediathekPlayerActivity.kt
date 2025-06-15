@@ -30,7 +30,7 @@ class MediathekPlayerActivity : AbstractPlayerActivity() {
 	}
 
 	override fun onShareMenuItemClicked() {
-		openUrl(this, persistedShow!!.mediathekShow.getVideoUrl(Quality.Medium))
+		openUrl(this, persistedShow!!.mediathekShow.videoUrl)
 	}
 
 	override suspend fun getVideoInfoFromIntent(intent: Intent): VideoInfo {

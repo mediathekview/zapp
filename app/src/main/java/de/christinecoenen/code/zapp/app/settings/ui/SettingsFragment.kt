@@ -3,7 +3,6 @@ package de.christinecoenen.code.zapp.app.settings.ui
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.utils.system.PreferenceFragmentHelper

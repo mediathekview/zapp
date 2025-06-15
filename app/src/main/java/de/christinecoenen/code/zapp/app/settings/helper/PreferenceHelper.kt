@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
+import androidx.core.content.edit
 
 internal class PreferenceHelper(context: Context) {
 
@@ -19,9 +20,9 @@ internal class PreferenceHelper(context: Context) {
 	fun saveList(key: String, list: List<String>) {
 		val jsonList = gson.toJson(list)
 
-		preferences.edit()
-			.putString(key, jsonList)
-			.apply()
+		preferences.edit {
+			putString(key, jsonList)
+		}
 	}
 
 	fun loadList(key: String): List<String>? {

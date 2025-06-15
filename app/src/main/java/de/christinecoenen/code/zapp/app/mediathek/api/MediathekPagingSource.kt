@@ -17,7 +17,7 @@ class MediathekPagingSource(
 	private val queryInfoResultPublisher: MutableStateFlow<QueryInfoResult?>
 ) : PagingSource<Int, MediathekShow>() {
 
-	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
+	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int {
 		return ((state.anchorPosition ?: 0) - state.config.initialLoadSize / 2)
 			.coerceAtLeast(0)
 	}

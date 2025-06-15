@@ -11,6 +11,7 @@ import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
+import androidx.core.content.edit
 
 class SettingsRepository(context: Context) {
 
@@ -56,12 +57,12 @@ class SettingsRepository(context: Context) {
 			30.minutes.inWholeMilliseconds
 		).milliseconds
 		set(delay) {
-			preferences.edit()
-				.putLong(
+			preferences.edit {
+				putLong(
 					context.getString(R.string.pref_key_sleep_timer_delay),
 					delay.inWholeMilliseconds
 				)
-				.apply()
+			}
 		}
 
 	val downloadToSdCard: Boolean

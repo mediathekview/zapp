@@ -3,10 +3,10 @@ package de.christinecoenen.code.zapp.utils.system
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
+import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -32,7 +32,7 @@ object ImageHelper {
 
 			try {
 				// with api level this high we can use content resolver to generate thumbnails
-				contentResolver.loadThumbnail(Uri.parse(filePath), THUMBNAIL_SIZE, null)
+				contentResolver.loadThumbnail(filePath.toUri(), THUMBNAIL_SIZE, null)
 
 			} catch (e: IOException) {
 				try {

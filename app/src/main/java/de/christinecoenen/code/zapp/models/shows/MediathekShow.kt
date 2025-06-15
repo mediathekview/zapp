@@ -70,6 +70,9 @@ data class MediathekShow(
 	val hasSubtitle
 		get() = !subtitleUrl.isNullOrEmpty()
 
+	val hasWebsite
+		get() = !websiteUrl.isNullOrEmpty()
+
 	val supportedDownloadQualities: List<Quality>
 		get() = Quality.entries.filter(::hasDownloadQuality)
 
