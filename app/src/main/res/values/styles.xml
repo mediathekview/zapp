@@ -106,6 +106,7 @@
 	<style name="Widget.App.AppBar" parent="Widget.Material3.AppBarLayout">
 		<item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
 		<item name="liftOnScroll">false</item>
+		<item name="elevation">0dp</item>
 	</style>
 
 	<style name="Widget.App.Toolbar.Transparent" parent="Widget.App.Toolbar">
