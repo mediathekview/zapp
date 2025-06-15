@@ -177,6 +177,8 @@
 	</style>
 
 	<style name="ThemeOverlay.App.Toolbar.Transparent" parent="">
+		<item name="titleTextColor">@android:color/white</item>
+		<item name="subtitleTextColor">@android:color/white</item>
 		<item name="colorOnSurface">@android:color/white</item>
 		<item name="colorOnSurfaceVariant">@android:color/white</item>
 		<item name="colorControlNormal">@android:color/white</item>
