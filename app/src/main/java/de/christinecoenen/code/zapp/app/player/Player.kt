@@ -93,7 +93,7 @@ class Player(
 				it
 					.buildUponParameters()
 					.setPreferredAudioLanguage(LANGUAGE_GERMAN)
-					.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings(context)
+					.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings()
 					.setSelectUndeterminedTextLanguage(true)
 					.setIgnoredTextSelectionFlags(C.SELECTION_FLAG_DEFAULT)
 			)
