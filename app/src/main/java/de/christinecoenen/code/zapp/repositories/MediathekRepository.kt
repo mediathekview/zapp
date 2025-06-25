@@ -86,6 +86,7 @@ class MediathekRepository(private val database: Database) {
 				.mediathekShowDao()
 				.getFromApiId(show.apiId)
 				.distinctUntilChanged()
+				.filterNotNull()
 				.flowOn(Dispatchers.IO)
 		}
 
@@ -139,6 +140,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getFromDownloadId(downloadId)
 			.distinctUntilChanged()
+			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
@@ -147,6 +149,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getDownloadStatus(id)
 			.distinctUntilChanged()
+			.filterNotNull()
 			.onStart { emit(DownloadStatus.NONE) }
 			.flowOn(Dispatchers.IO)
 	}
@@ -166,6 +169,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getDownloadProgress(id)
 			.distinctUntilChanged()
+			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
