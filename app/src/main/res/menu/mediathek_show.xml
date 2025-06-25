@@ -17,7 +17,7 @@
 
 	<item
 		android:id="@+id/menu_remove_bookmark"
-		android:icon="@drawable/ic_outline_bookmark_remove_24"
+		android:icon="@drawable/ic_baseline_bookmark_24"
 		android:title="@string/action_remove_bookmark"
 		android:visible="false"
 		app:showAsAction="ifRoom" />
