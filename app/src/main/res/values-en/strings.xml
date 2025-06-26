@@ -92,7 +92,6 @@
 
 	<string name="search_query_hint_mediathek">Search media center…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
-
 	<string name="menu_refresh">Refresh</string>
 	<string name="menu_retry">Retry</string>
 	<string name="menu_about">About Zapp</string>
