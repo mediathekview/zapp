@@ -23,7 +23,7 @@ jobs:
         cache: 'gradle'
 
     - name: Build and test with Gradle
-      run: ./gradlew build test -Pci
+      run: ./gradlew buildRelease testRelease -Pci
 
     - name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
