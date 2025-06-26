@@ -1,3 +1,6 @@
+# v-next
+* System-Bar bleibt im Player nicht mehr sichtbar, nachdem man Programm-Informationen aufgerufen hat [#313](https://github.com/mediathekview/zapp/issues/313)
+
 # 9.0.0
 * Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)
 * Neue Mediathek-Sender hinzugefügt: ARD-alpha, One und tagesschau24

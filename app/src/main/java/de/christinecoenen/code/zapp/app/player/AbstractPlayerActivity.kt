@@ -1,12 +1,18 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.annotation.SuppressLint
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
 import android.os.PowerManager
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -178,23 +184,28 @@ abstract class AbstractPlayerActivity :
 				onShareMenuItemClicked()
 				true
 			}
+
 			R.id.menu_play_in_background -> {
 				binder!!.movePlaybackToBackground()
 				finish()
 				true
 			}
+
 			R.id.menu_pip -> {
 				MultiWindowHelper.enterPictureInPictureMode(this)
 				true
 			}
+
 			R.id.sleep_timer -> {
 				showSleepTimerBottomSheet()
 				true
 			}
+
 			android.R.id.home -> {
 				finish()
 				true
 			}
+
 			else -> false
 		}
 	}
@@ -282,12 +293,6 @@ abstract class AbstractPlayerActivity :
 		} else {
 			hideSystemUi()
 		}
-
-		// We have to call this here indead of in resumeActivity.
-		// Otherwise status bar will get stuck on some devices (see issue #313)
-		// when pulled down manually.
-		windowInsetsControllerCompat.systemBarsBehavior =
-			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 	}
 
 	private fun showError(messageResId: Int) {
@@ -313,6 +318,14 @@ abstract class AbstractPlayerActivity :
 	private fun hideSystemUi() {
 		supportActionBar?.hide()
 		binding.overlay.isVisible = false
+
+		windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars())
+
+		// We have to call this here instead of in resumeActivity.
+		// Otherwise status bar will get stuck on some devices (see issue #313)
+		// when pulled down manually.
+		windowInsetsControllerCompat.systemBarsBehavior =
+			WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 	}
 
 	private fun showSleepTimerBottomSheet() {
