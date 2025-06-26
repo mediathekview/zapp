@@ -139,7 +139,7 @@ dependencies {
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 	// room database
-	def room_version = "2.7.1"
+	def room_version = "2.7.2"
 	implementation "androidx.room:room-runtime:$room_version"
 	implementation "androidx.room:room-paging:$room_version"
 	ksp "androidx.room:room-compiler:$room_version"
@@ -155,7 +155,7 @@ dependencies {
 	implementation 'io.noties.markwon:core:4.6.2'
 
 	// work manager
-	def work_version = "2.10.1"
+	def work_version = "2.10.2"
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
