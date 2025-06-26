@@ -15,6 +15,7 @@ import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoSheetDia
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ChannelListAdapter
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
+import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.databinding.ChannelListFragmentBinding
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
@@ -46,7 +47,11 @@ class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 		channelGridView.layoutManager = GridAutofitLayoutManager(requireContext(), 400)
 		channelGridView.adapter = gridAdapter
 
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+			this,
+			viewLifecycleOwner,
+			Lifecycle.State.RESUMED
+		)
 
 		return binding.root
 	}

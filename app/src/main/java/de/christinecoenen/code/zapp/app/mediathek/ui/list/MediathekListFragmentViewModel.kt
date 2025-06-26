@@ -2,27 +2,32 @@ package de.christinecoenen.code.zapp.app.mediathek.ui.list
 
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import de.christinecoenen.code.zapp.app.mediathek.api.IMediathekApiService
 import de.christinecoenen.code.zapp.app.mediathek.api.MediathekPagingSource
-import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.ChannelFilter
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.models.LengthFilter
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import org.joda.time.DateTime
-import kotlin.math.roundToInt
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class MediathekListFragmentViewModel(
-	private val mediathekApi: IMediathekApiService
+	private val mediathekApi: IMediathekApiService,
+	searchQuery: StateFlow<String>,
 ) : ViewModel() {
 
 	companion object {
@@ -35,29 +40,12 @@ class MediathekListFragmentViewModel(
 		enablePlaceholders = false
 	)
 
-	private val _searchQuery = MutableStateFlow("")
-
-	private val _lengthFilter = MutableStateFlow(LengthFilter())
-	val lengthFilter = _lengthFilter.asLiveData()
-
-	private val _channelFilter = MutableStateFlow(ChannelFilter())
-	val channelFilter = _channelFilter.asLiveData()
-
-	val isFilterApplied = combine(_lengthFilter, _channelFilter) { lengthFilter, channelFilter ->
-		channelFilter.isApplied || lengthFilter.isApplied
-	}
-		.asLiveData()
-
 	private val _queryInfoResult = MutableStateFlow<QueryInfoResult?>(null)
-	val queryInfoResult = _queryInfoResult.asLiveData()
 
-	val pageFlow = combine(
-		_searchQuery,
-		_lengthFilter,
-		_channelFilter
-	) { searchQuery, lengthFilter, channelFilter ->
-		createQueryRequest(searchQuery, lengthFilter, channelFilter)
-	}
+	val pageFlow = searchQuery
+		.mapLatest { searchQuery ->
+			createQueryRequest(searchQuery)
+		}
 		.debounce(DEBOUNCE_TIME_MILLIS)
 		.flatMapLatest { queryRequest ->
 			Pager(pagingConfig) {
@@ -74,43 +62,11 @@ class MediathekListFragmentViewModel(
 		}
 		.cachedIn(viewModelScope)
 
-
-	fun clearFilter() {
-		_channelFilter.tryEmit(ChannelFilter())
-		_lengthFilter.tryEmit(LengthFilter())
-	}
-
-	fun setLengthFilter(minLengthSeconds: Float?, maxLengthSeconds: Float?) {
-		val min = minLengthSeconds?.roundToInt() ?: 0
-		val max = maxLengthSeconds?.roundToInt()
-		_lengthFilter.tryEmit(LengthFilter(min, max))
-	}
-
-	fun setChannelFilter(channel: MediathekChannel, isEnabled: Boolean) {
-		val filter = _channelFilter.value.copy()
-		val hasChanged = filter.setEnabled(channel, isEnabled)
-		if (hasChanged) {
-			_channelFilter.tryEmit(filter)
-		}
-	}
-
-	fun setSearchQueryFilter(query: String?) {
-		_searchQuery.tryEmit(query ?: "")
-	}
-
-	private fun createQueryRequest(
-		searchQuery: String,
-		lengthFilter: LengthFilter,
-		channelFilter: ChannelFilter
-	): QueryRequest {
+	private fun createQueryRequest(searchQuery: String): QueryRequest {
 		return QueryRequest().apply {
 			size = ITEM_COUNT_PER_PAGE
-			minDurationSeconds = lengthFilter.minDurationSeconds
-			maxDurationSeconds = lengthFilter.maxDurationSeconds
+			future = false
 			setQueryString(searchQuery)
-			for (filterItem in channelFilter) {
-				setChannel(filterItem.key, filterItem.value)
-			}
 		}
 	}
 }

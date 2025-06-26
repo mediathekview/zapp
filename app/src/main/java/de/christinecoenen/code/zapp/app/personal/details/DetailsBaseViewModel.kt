@@ -3,16 +3,16 @@ package de.christinecoenen.code.zapp.app.personal.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
+import androidx.paging.cachedIn
+import androidx.paging.insertSeparators
+import androidx.paging.map
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
 import de.christinecoenen.code.zapp.models.shows.SortableMediathekShow
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-
-@OptIn(ExperimentalCoroutinesApi::class)
 abstract class DetailsBaseViewModel : ViewModel() {
 
 	companion object {
@@ -24,12 +24,7 @@ abstract class DetailsBaseViewModel : ViewModel() {
 		enablePlaceholders = false
 	)
 
-	private val _searchQuery = MutableStateFlow("")
-
-	val showList = _searchQuery
-		.flatMapLatest { searchQuery ->
-			Pager(pagingConfig) { getPagingSource(searchQuery) }.flow
-		}
+	val showList = Pager(pagingConfig) { getPagingSource() }.flow
 		.map { pagingData ->
 
 			pagingData
@@ -53,9 +48,5 @@ abstract class DetailsBaseViewModel : ViewModel() {
 		.asLiveData()
 		.cachedIn(viewModelScope)
 
-	fun setSearchQueryFilter(query: String?) {
-		_searchQuery.tryEmit(query ?: "")
-	}
-
-	protected abstract fun getPagingSource(searchQuery: String): PagingSource<Int, SortableMediathekShow>
+	protected abstract fun getPagingSource(): PagingSource<Int, SortableMediathekShow>
 }

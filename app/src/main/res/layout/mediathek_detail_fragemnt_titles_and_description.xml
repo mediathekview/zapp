@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -25,13 +26,16 @@
 		android:textAppearance="?textAppearanceHeadlineSmall"
 		tools:text="Some show title" />
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<com.google.android.material.imageview.ShapeableImageView
 		android:id="@+id/thumbnail"
-		android:layout_width="400dp"
-		android:layout_height="150dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_marginBottom="@dimen/activity_vertical_margin"
+		android:adjustViewBounds="true"
+		android:maxHeight="250dp"
 		android:scaleType="centerCrop"
 		android:visibility="gone"
+		app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
 		tools:src="@color/colorAccent"
 		tools:visibility="visible" />
 

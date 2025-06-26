@@ -27,6 +27,7 @@ import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.ImageHelper.loadThumbnailAsync
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -64,6 +65,8 @@ class MediathekDetailFragment : Fragment() {
 		viewLifecycleOwner.launchOnCreated {
 			loadOrPersistShowFromArguments()
 		}
+
+		binding.root.applyBottomInsetAsPadding()
 
 		return binding.root
 	}
@@ -113,6 +116,7 @@ class MediathekDetailFragment : Fragment() {
 		binding.duration.text = show.formattedDuration
 		binding.subtitle.isVisible = show.hasSubtitle
 		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
+		binding.buttons.website.isEnabled = show.hasWebsite
 
 		binding.root.isVisible = true
 
@@ -171,10 +175,12 @@ class MediathekDetailFragment : Fragment() {
 			DownloadStatus.REMOVED,
 			DownloadStatus.FAILED ->
 				showSelectQualityDialog(SelectQualityDialog.Mode.DOWNLOAD)
+
 			DownloadStatus.ADDED,
 			DownloadStatus.QUEUED,
 			DownloadStatus.DOWNLOADING ->
 				downloadController.stopDownload(persistedMediathekShow!!.id)
+
 			DownloadStatus.COMPLETED ->
 				showConfirmDeleteDialog()
 		}
@@ -185,7 +191,11 @@ class MediathekDetailFragment : Fragment() {
 	}
 
 	private fun onWebsiteClick() {
-		openUrl(requireContext(), persistedMediathekShow!!.mediathekShow.websiteUrl)
+		if (persistedMediathekShow?.mediathekShow?.hasWebsite != true) {
+			return
+		}
+
+		openUrl(requireContext(), persistedMediathekShow!!.mediathekShow.websiteUrl!!)
 	}
 
 	private fun showConfirmDeleteDialog() {
@@ -219,23 +229,27 @@ class MediathekDetailFragment : Fragment() {
 				binding.buttons.download.setText(R.string.fragment_mediathek_download)
 				binding.buttons.download.setIconResource(R.drawable.ic_baseline_save_alt_24)
 			}
+
 			DownloadStatus.ADDED, DownloadStatus.QUEUED -> {
 				binding.buttons.downloadProgress.visibility = View.VISIBLE
 				binding.buttons.downloadProgress.isIndeterminate = true
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_queued)
 				binding.buttons.download.setIconResource(R.drawable.ic_outline_stop_24)
 			}
+
 			DownloadStatus.DOWNLOADING -> {
 				binding.buttons.downloadProgress.visibility = View.VISIBLE
 				binding.buttons.downloadProgress.isIndeterminate = false
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_running)
 				binding.buttons.download.setIconResource(R.drawable.ic_outline_stop_24)
 			}
+
 			DownloadStatus.COMPLETED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_delete)
 				binding.buttons.download.setIconResource(R.drawable.ic_baseline_delete_outline_24)
 			}
+
 			DownloadStatus.FAILED -> {
 				binding.buttons.downloadProgress.visibility = View.GONE
 				binding.buttons.download.setText(R.string.fragment_mediathek_download_retry)
@@ -295,6 +309,7 @@ class MediathekDetailFragment : Fragment() {
 					}
 					.show()
 			}
+
 			is NoNetworkException -> {
 				Snackbar
 					.make(
@@ -304,6 +319,7 @@ class MediathekDetailFragment : Fragment() {
 					)
 					.show()
 			}
+
 			else -> {
 				Snackbar
 					.make(

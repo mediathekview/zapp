@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
 import timber.log.Timber
@@ -16,7 +17,7 @@ class MediathekPagingSource(
 	private val queryInfoResultPublisher: MutableStateFlow<QueryInfoResult?>
 ) : PagingSource<Int, MediathekShow>() {
 
-	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int? {
+	override fun getRefreshKey(state: PagingState<Int, MediathekShow>): Int {
 		return ((state.anchorPosition ?: 0) - state.config.initialLoadSize / 2)
 			.coerceAtLeast(0)
 	}
@@ -35,6 +36,7 @@ class MediathekPagingSource(
 			val nextOffset = if (showList.size < query.size) null else query.offset + query.size
 
 			queryInfoResultPublisher.emit(response.result.queryInfo)
+			delay(1000)
 
 			LoadResult.Page(
 				data = showList,

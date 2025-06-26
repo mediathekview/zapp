@@ -10,8 +10,8 @@ class QueryRequest : Serializable {
 
 	private val sortBy: String = "timestamp"
 	private val sortOrder: String = "desc"
-	private val future: Boolean = true
 
+	var future: Boolean = true
 	var offset: Int = 0
 	var size: Int = 30
 
@@ -24,7 +24,7 @@ class QueryRequest : Serializable {
 	private val queries: MutableList<Query> = mutableListOf()
 
 	@Transient
-	private val channels = MediathekChannel.entries.toMutableSet()
+	private val channels: MutableSet<MediathekChannel> = mutableSetOf()
 
 	@Transient
 	private var queryString: String = ""
@@ -33,12 +33,9 @@ class QueryRequest : Serializable {
 		resetQueries()
 	}
 
-	fun setChannel(channel: MediathekChannel, enabled: Boolean): QueryRequest {
-		if (enabled) {
-			channels.add(channel)
-		} else {
-			channels.remove(channel)
-		}
+	fun setChannels(channels: List<MediathekChannel>): QueryRequest {
+		this.channels.clear()
+		this.channels.addAll(channels)
 
 		resetQueries()
 
@@ -64,6 +61,7 @@ class QueryRequest : Serializable {
 		// We do not allow an empty channel Filter as the result would always be empty.
 		// Instead we filter for all available channels. This also excludes all channels
 		// not defined in MediathekChannel enum (like ARTE.FR).
+		//Timber.d(channels.size.toString())
 		if (channels.isEmpty()) {
 			channels.addAll(MediathekChannel.entries.toTypedArray())
 		}

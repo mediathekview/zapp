@@ -7,7 +7,6 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Handler
 import android.os.Looper
-import androidx.core.net.ConnectivityManagerCompat
 
 /**
  * Detects changes in network status (metered or unmetered).
@@ -63,8 +62,7 @@ class NetworkConnectionHelper(context: Context) {
 	}
 
 	private fun onNetworkChanged() {
-		this.isConnectedToUnmeteredNetwork =
-			!ConnectivityManagerCompat.isActiveNetworkMetered(connectivityManager)
+		this.isConnectedToUnmeteredNetwork = !connectivityManager.isActiveNetworkMetered
 
 		if (isConnectedToUnmeteredNetwork != wasConnectedToUnmeteredNetwork) {
 			wasConnectedToUnmeteredNetwork = this.isConnectedToUnmeteredNetwork

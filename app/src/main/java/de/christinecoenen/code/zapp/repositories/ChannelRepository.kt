@@ -30,7 +30,7 @@ class ChannelRepository(
 	}
 
 	private val gson = Gson()
-	private val channelList: ISortableChannelList
+	private val channelList: ISortableChannelList = SortableVisibleJsonChannelList(context)
 	private var channelInfoList: Map<String, ChannelInfo> = emptyMap()
 
 	fun getChannelList(): ISortableChannelList {
@@ -93,7 +93,6 @@ class ChannelRepository(
 	}
 
 	init {
-		channelList = SortableVisibleJsonChannelList(context)
 
 		scope.launch(Dispatchers.IO) {
 

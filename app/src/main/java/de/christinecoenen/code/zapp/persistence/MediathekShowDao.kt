@@ -1,7 +1,13 @@
 package de.christinecoenen.code.zapp.persistence
 
 import androidx.paging.PagingSource
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
+import androidx.room.Transaction
+import androidx.room.Update
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -11,6 +17,27 @@ import org.joda.time.DateTime
 
 @Dao
 interface MediathekShowDao {
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query(
+		"SELECT * FROM (" +
+			"SELECT *, downloadedAt as sortDate FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) UNION " +
+			"SELECT *, lastPlayedBackAt as sortDate FROM PersistedMediathekShow WHERE playbackPosition UNION " +
+			"SELECT *, bookmarkedAt as sortDate FROM PersistedMediathekShow WHERE bookmarked" +
+			") " +
+			"WHERE (topic LIKE :searchQuery OR title LIKE :searchQuery) " +
+			"AND channel IN(:channels) " +
+			"AND ((:minDurationSeconds IS NULL) OR duration > :minDurationSeconds) " +
+			"AND ((:maxDurationSeconds IS NULL) OR duration < :maxDurationSeconds) " +
+			"GROUP BY id " +
+			"ORDER BY sortDate DESC"
+	)
+	fun getPersonalShows(
+		searchQuery: String,
+		channels: List<String>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null
+	): PagingSource<Int, SortableMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
@@ -43,28 +70,28 @@ interface MediathekShowDao {
 	fun getFromId(id: Int): Flow<PersistedMediathekShow>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getFromApiId(apiId: String): Flow<PersistedMediathekShow>
+	fun getFromApiId(apiId: String): Flow<PersistedMediathekShow?>
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getFromApiIdSync(apiId: String): PersistedMediathekShow?
 
 	@Query("SELECT * FROM PersistedMediathekShow WHERE downloadId=:downloadId")
-	fun getFromDownloadId(downloadId: Int): Flow<PersistedMediathekShow>
+	fun getFromDownloadId(downloadId: Int): Flow<PersistedMediathekShow?>
 
 	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE id=:id")
-	fun getDownloadStatus(id: Int): Flow<DownloadStatus>
+	fun getDownloadStatus(id: Int): Flow<DownloadStatus?>
 
 	@Query("SELECT downloadStatus FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getDownloadStatus(apiId: String): Flow<DownloadStatus>
+	fun getDownloadStatus(apiId: String): Flow<DownloadStatus?>
 
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE id=:id")
-	fun getDownloadProgress(id: Int): Flow<Int>
+	fun getDownloadProgress(id: Int): Flow<Int?>
 
 	@Query("SELECT downloadProgress FROM PersistedMediathekShow WHERE apiId=:apiId")
 	fun getDownloadProgress(apiId: String): Flow<Int?>
 
 	@Query("SELECT bookmarked FROM PersistedMediathekShow WHERE apiId=:apiId")
-	fun getIsBookmarked(apiId: String): Flow<Boolean>
+	fun getIsBookmarked(apiId: String): Flow<Boolean?>
 
 	@Query("SELECT 1 FROM PersistedMediathekShow WHERE apiId=:apiId AND (bookmarked == 1 OR playbackPosition > 0 OR downloadStatus IN (1,2,3,4,6,9))")
 	fun getIsRelevantForUser(apiId: String): Flow<Boolean?>
@@ -90,7 +117,7 @@ interface MediathekShowDao {
 			insert(newPersistedShow)
 		} else {
 			// update existing show
-			existingPersistedShow.mediathekShow = show
+			existingPersistedShow.updateMediathekShow(show)
 			update(existingPersistedShow)
 		}
 	}

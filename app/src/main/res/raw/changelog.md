@@ -1,3 +1,17 @@
+# 9.0.0
+* Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)
+* Neue Mediathek-Sender hinzugefügt: ARD-alpha, One und tagesschau24
+* Zapp für Android 16 vorbereitet
+* Untertitel im Parlamentsfernsehen können wieder ausgeschaltet werden ([#467](https://github.com/mediathekview/zapp/issues/467))
+* Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden
+* Zapp für Android 15 vorbereitet
+* Neue Suchfunktion
+
+# 9.0.0-beta1
+* Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden
+* Zapp für Android 15 vorbereitet
+* Neue Suchfunktion
+
 # 8.5.4
 * Mail-Adresse für Support-Anfragen und Crash-Reports aktualisiert
 

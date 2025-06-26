@@ -90,11 +90,17 @@
 	<string name="action_mark_unwatched">Mark as unwatched</string>
 	<string name="action_view_all">View all</string>
 
+	<string name="search_query_hint_zapp">Search in Zapp…</string>
 	<string name="search_query_hint_mediathek">Search media center…</string>
-	<string name="search_query_hint_downloads">Search downloads…</string>
-	<string name="search_query_hint_continue_watching">Search started shows…</string>
-	<string name="search_query_hint_bookmarks">Search bookmarks…</string>
 	<string name="delete_search_query_content_description">Delete query</string>
+	<string name="search_filter_help_text">Type numbers or channel names to select filters!</string>
+
+	<string name="search_suggestion_header_last_searches">Recent searches</string>
+	<string name="search_suggestion_header_local_suggestions">Suggestions</string>
+	<string name="search_suggestion_clear_all_queries">Clear all</string>
+
+	<string name="search_dialog_confirm_delete_search_history_title">Clear search history</string>
+	<string name="search_dialog_confirm_delete_search_history_text">Deletes all recent search queries.</string>
 
 	<string name="menu_refresh">Refresh</string>
 	<string name="menu_retry">Retry</string>
@@ -104,6 +110,8 @@
 	<string name="menu_feedback">Feedback</string>
 	<string name="menu_filter">Filter</string>
 	<string name="menu_program_info">Program Info</string>
+	<string name="menu_voice_search">Voice Search</string>
+	<string name="menu_delete_search_query_from_history">Remove from search history</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Zoomed</string>
@@ -163,6 +171,9 @@
 
 	<string name="pref_dynamic_colors">Dynamic colors</string>
 	<string name="pref_dynamic_colors_summary">Choose accent colors based on the wallpaper.</string>
+
+	<string name="pref_detail_search_history_title">Search history</string>
+	<string name="pref_detail_search_history_summary">Remember the most recent search queries.</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>

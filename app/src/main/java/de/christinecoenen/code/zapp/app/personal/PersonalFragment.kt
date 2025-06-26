@@ -1,7 +1,12 @@
 package de.christinecoenen.code.zapp.app.personal
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -9,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.main.MainActivity
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelper
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.MediathekShowListItemListener
 import de.christinecoenen.code.zapp.app.personal.adapter.HeaderAdapater
@@ -116,7 +122,11 @@ class PersonalFragment : Fragment(), MenuProvider {
 			}
 		}
 
-		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+			this,
+			viewLifecycleOwner,
+			Lifecycle.State.RESUMED
+		)
 
 		return binding.root
 	}

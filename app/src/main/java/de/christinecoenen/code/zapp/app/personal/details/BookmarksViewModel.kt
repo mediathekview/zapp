@@ -6,6 +6,5 @@ class BookmarksViewModel(
 	private val mediathekRepository: MediathekRepository
 ) : DetailsBaseViewModel() {
 
-	override fun getPagingSource(searchQuery: String) =
-		mediathekRepository.getBookmarked(searchQuery)
+	override fun getPagingSource() = mediathekRepository.getBookmarked()
 }

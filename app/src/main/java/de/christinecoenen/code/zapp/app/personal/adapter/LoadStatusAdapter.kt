@@ -15,6 +15,16 @@ class LoadStatusAdapter(
 	private var isLoading = true
 
 	@SuppressLint("NotifyDataSetChanged")
+	fun setIsLoading() {
+		if (isLoading) {
+			return
+		}
+
+		isLoading = true
+		notifyDataSetChanged()
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
 	fun onShowsLoaded(showCount: Int) {
 		isLoading = false
 		isVisible = showCount == 0
@@ -32,5 +42,5 @@ class LoadStatusAdapter(
 		holder.bind(labelResId)
 	}
 
-	override fun getItemCount() = if (isVisible) 1 else 0
+	override fun getItemCount() = if (isVisible && !isLoading) 1 else 0
 }

@@ -5,30 +5,54 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:fitsSystemWindows="true"
 	tools:context="de.christinecoenen.code.zapp.app.main.MainActivity">
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:id="@+id/layout_drawer"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_above="@+id/bottom_navigation"
-		android:fitsSystemWindows="true">
+		android:layout_above="@+id/bottom_navigation">
 
 		<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/app_bar"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fitsSystemWindows="true"
-			app:layout_constraintTop_toTopOf="parent">
+			android:layout_height="wrap_content">
 
 			<com.google.android.material.appbar.MaterialToolbar
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="?actionBarSize"
-				app:logo="@drawable/ic_zapp_tv_small" />
+				app:layout_scrollFlags="noScroll">
+
+				<com.google.android.material.search.SearchBar
+					android:id="@+id/searchbar"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginVertical="8dp"
+					android:layout_marginEnd="8dp"
+					app:elevation="0dp"
+					android:hint="@string/search_query_hint_zapp"
+					app:defaultMarginsEnabled="false" />
+
+			</com.google.android.material.appbar.MaterialToolbar>
 
 		</com.google.android.material.appbar.AppBarLayout>
+
+		<com.google.android.material.search.SearchView
+			android:id="@+id/search_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:hint="@string/search_query_hint_zapp"
+			app:animateMenuItems="false"
+			app:layout_anchor="@id/searchbar">
+
+			<androidx.fragment.app.FragmentContainerView
+				android:id="@+id/fragment_search"
+				android:name="de.christinecoenen.code.zapp.app.search.SearchFragment"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+
+		</com.google.android.material.search.SearchView>
 
 		<androidx.fragment.app.FragmentContainerView
 			android:id="@+id/nav_host_fragment"

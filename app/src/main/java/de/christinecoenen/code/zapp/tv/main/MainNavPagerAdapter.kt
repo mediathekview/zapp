@@ -36,7 +36,7 @@ class MainNavPagerAdapter(
 		@StringRes val titleResId: Int,
 		val fragmentClass: KClass<T>
 	) {
-		fun createFragment(): T = fragmentClass.java.newInstance()
+		fun createFragment(): T = fragmentClass.java.getDeclaredConstructor().newInstance()
 		fun getTitle(context: Context) = context.getString(titleResId)
 	}
 }

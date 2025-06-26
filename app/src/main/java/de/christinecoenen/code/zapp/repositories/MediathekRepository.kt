@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.repositories
 
 import androidx.paging.PagingSource
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -18,6 +19,21 @@ import org.joda.time.DateTime
 
 class MediathekRepository(private val database: Database) {
 
+	fun getPersonalShows(
+		searchQuery: String,
+		channels: Set<MediathekChannel>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null
+	): PagingSource<Int, SortableMediathekShow> {
+		val channelIds = channels
+			.ifEmpty { MediathekChannel.entries }
+			.map { it.apiId }
+
+		return database
+			.mediathekShowDao()
+			.getPersonalShows("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds)
+	}
+
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
 		return database
 			.mediathekShowDao()
@@ -26,7 +42,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getDownloads(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getDownloads(searchQuery: String = ""): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllDownloads("%$searchQuery%")
@@ -40,7 +56,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getStarted(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getStarted(searchQuery: String = ""): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllStarted("%$searchQuery%")
@@ -54,7 +70,7 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getBookmarked(searchQuery: String): PagingSource<Int, SortableMediathekShow> {
+	fun getBookmarked(searchQuery: String = ""): PagingSource<Int, SortableMediathekShow> {
 		return database
 			.mediathekShowDao()
 			.getAllBookarked("%$searchQuery%")
@@ -70,6 +86,7 @@ class MediathekRepository(private val database: Database) {
 				.mediathekShowDao()
 				.getFromApiId(show.apiId)
 				.distinctUntilChanged()
+				.filterNotNull()
 				.flowOn(Dispatchers.IO)
 		}
 
@@ -123,6 +140,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getFromDownloadId(downloadId)
 			.distinctUntilChanged()
+			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
@@ -131,6 +149,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getDownloadStatus(id)
 			.distinctUntilChanged()
+			.filterNotNull()
 			.onStart { emit(DownloadStatus.NONE) }
 			.flowOn(Dispatchers.IO)
 	}
@@ -150,6 +169,7 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getDownloadProgress(id)
 			.distinctUntilChanged()
+			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 

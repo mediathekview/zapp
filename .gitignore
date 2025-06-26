@@ -66,6 +66,7 @@ gradle-app.setting
 !/.idea/codeStyles
 !/.idea/inspectionProfiles
 
+/app/beta
 /app/release
 /app/releases
 /prototype.txt

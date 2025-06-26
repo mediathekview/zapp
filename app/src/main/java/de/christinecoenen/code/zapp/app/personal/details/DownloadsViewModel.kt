@@ -6,6 +6,5 @@ class DownloadsViewModel(
 	private val mediathekRepository: MediathekRepository
 ) : DetailsBaseViewModel() {
 
-	override fun getPagingSource(searchQuery: String) =
-		mediathekRepository.getDownloads(searchQuery)
+	override fun getPagingSource() = mediathekRepository.getDownloads()
 }

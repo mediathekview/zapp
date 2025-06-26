@@ -3,10 +3,18 @@ package de.christinecoenen.code.zapp.app.mediathek.controller.downloads
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Uri
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.asFlow
-import androidx.work.*
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.DownloadException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
@@ -18,10 +26,17 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
-import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -202,11 +217,8 @@ class WorkManagerDownloadController(
 	}
 
 	private fun updateMediaCollectionOnStatusChangeIfNeeded(show: PersistedMediathekShow) {
-		if (show.downloadedVideoPath == null) {
-			return
-		}
-
-		val fileUri = Uri.parse(show.downloadedVideoPath)
+		val filePath = show.downloadedVideoPath ?: return
+		val fileUri = filePath.toUri()
 
 		downloadFileInfoManager.updateDownloadFileInMediaCollection(
 			fileUri,
@@ -221,6 +233,7 @@ class WorkManagerDownloadController(
 				DownloadStatus.CANCELLED -> {
 					deleteFile(show)
 				}
+
 				else -> {}
 			}
 		}
@@ -258,15 +271,18 @@ class WorkManagerDownloadController(
 					)
 				}
 			}
+
 			DownloadStatus.CANCELLED -> {
 				notificationManager.cancel(show.downloadId)
 				null
 			}
+
 			DownloadStatus.FAILED,
 			DownloadStatus.COMPLETED -> {
 				// will be handled in worker
 				null
 			}
+
 			else -> {
 				// no notification needed
 				null

@@ -8,7 +8,12 @@ import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onStart
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ShowMenuHelperViewModel(
@@ -45,7 +50,7 @@ class ShowMenuHelperViewModel(
 							DownloadStatus.DELETED,
 							DownloadStatus.CANCELLED,
 							DownloadStatus.REMOVED,
-						)),
+						) && show.hasAnyDownloadQuality()),
 					R.id.menu_remove_download to
 						(it.downloadStatus in listOf(
 							DownloadStatus.FAILED,
@@ -65,7 +70,9 @@ class ShowMenuHelperViewModel(
 			}
 			.onStart {
 				// for when the show has not yet been persisted
-				emit(defaultMapping)
+				emit(defaultMapping.toMutableMap().apply {
+					this[R.id.menu_start_download] = show.hasAnyDownloadQuality()
+				})
 			}
 			.distinctUntilChanged()
 	}

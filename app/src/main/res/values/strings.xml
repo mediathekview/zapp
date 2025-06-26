@@ -90,11 +90,17 @@
 	<string name="action_mark_unwatched">Als ungesehen markieren</string>
 	<string name="action_view_all">Alle ansehen</string>
 
+	<string name="search_query_hint_zapp">Zapp durchsuchen…</string>
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
-	<string name="search_query_hint_downloads">Downloads durchsuchen…</string>
-	<string name="search_query_hint_continue_watching">Begonnene Sendungen durchsuchen…</string>
-	<string name="search_query_hint_bookmarks">Lesezeichen durchsuchen…</string>
 	<string name="delete_search_query_content_description">Suche löschen</string>
+	<string name="search_filter_help_text">Gib Zahlen oder Sendernamen ein, um Filter auszuwählen!</string>
+
+	<string name="search_suggestion_header_last_searches">Letzte Suchanfragen</string>
+	<string name="search_suggestion_header_local_suggestions">Vorschläge</string>
+	<string name="search_suggestion_clear_all_queries">Alle löschen</string>
+
+	<string name="search_dialog_confirm_delete_search_history_title">Suchverlauf löschen</string>
+	<string name="search_dialog_confirm_delete_search_history_text">Löscht alle vergangenen Suchanfragen.</string>
 
 	<string name="menu_refresh">Aktualisieren</string>
 	<string name="menu_retry">Wiederholen</string>
@@ -104,6 +110,8 @@
 	<string name="menu_feedback">Feedback</string>
 	<string name="menu_filter">Filter</string>
 	<string name="menu_program_info">Programm-Informationen</string>
+	<string name="menu_voice_search">Sprachsuche</string>
+	<string name="menu_delete_search_query_from_history">Aus Suchverlauf löschen</string>
 
 	<!-- player -->
 	<string name="player_zoom_state_cropped">Gezoomt</string>
@@ -163,6 +171,9 @@
 
 	<string name="pref_dynamic_colors">Dynamische Farben</string>
 	<string name="pref_dynamic_colors_summary">Wähle Akzentfarben basierend auf dem Geräte-Hintergrund.</string>
+
+	<string name="pref_detail_search_history_title">Suchverlauf</string>
+	<string name="pref_detail_search_history_summary">Speichere die letzten Suchanfragen.</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>

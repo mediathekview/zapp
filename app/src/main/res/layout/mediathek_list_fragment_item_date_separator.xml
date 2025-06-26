@@ -5,10 +5,8 @@
 	android:id="@+id/text"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_marginTop="@dimen/activity_vertical_margin"
-	android:background="?colorSurfaceVariant"
 	android:paddingHorizontal="@dimen/activity_horizontal_margin"
-	android:paddingVertical="8dp"
+	android:paddingTop="16dp"
+	android:paddingBottom="8dp"
 	android:textAppearance="?textAppearanceTitleMedium"
-	android:textColor="?colorOnSurfaceVariant"
 	tools:text="@string/fragment_personal_today" />

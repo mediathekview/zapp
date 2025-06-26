@@ -1,11 +1,25 @@
 package de.christinecoenen.code.zapp.app.settings.ui
 
-import androidx.preference.*
+import android.os.Bundle
+import android.view.View
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.DialogEditTextPreferenceBinding
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 
 abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		listView.applyBottomInsetAsPadding()
+	}
+
 	/**
 	 * Show [ListPreference] and [EditTextPreference] dialog by [MaterialAlertDialogBuilder]
 	 */

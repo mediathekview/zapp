@@ -2,9 +2,13 @@ package de.christinecoenen.code.zapp.app.player
 
 
 import android.content.Context
-import android.net.Uri
 import android.view.View
-import androidx.media3.common.*
+import androidx.core.net.toUri
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.MimeTypes
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -89,8 +93,7 @@ class Player(
 				it
 					.buildUponParameters()
 					.setPreferredAudioLanguage(LANGUAGE_GERMAN)
-					.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings(context)
-					.setSelectUndeterminedTextLanguage(true)
+					.setPreferredTextLanguageAndRoleFlagsToCaptioningManagerSettings()
 					.setIgnoredTextSelectionFlags(C.SELECTION_FLAG_DEFAULT)
 			)
 		}
@@ -211,7 +214,7 @@ class Player(
 		// add subtitles if present
 		if (videoInfo.hasSubtitles) {
 			val subtitle = MediaItem.SubtitleConfiguration
-				.Builder(Uri.parse(videoInfo.subtitleUrl))
+				.Builder(videoInfo.subtitleUrl!!.toUri())
 				.setMimeType(videoInfo.subtitleUrl!!.toSubtitleMimeType())
 				.setLanguage(LANGUAGE_GERMAN)
 				.setSelectionFlags(C.SELECTION_FLAG_AUTOSELECT)

@@ -10,8 +10,9 @@ import de.christinecoenen.code.zapp.app.mediathek.api.MediathekApiServiceFactory
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.DownloadFileInfoManager
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.WorkManagerDownloadController
-import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuHelperViewModel
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.MediathekListFragmentViewModel
+import de.christinecoenen.code.zapp.app.mediathek.ui.list.filter.MediathekFilterViewModel
 import de.christinecoenen.code.zapp.app.personal.PersonalViewModel
 import de.christinecoenen.code.zapp.app.personal.details.BookmarksViewModel
 import de.christinecoenen.code.zapp.app.personal.details.ContinueWatchingViewModel
@@ -20,18 +21,20 @@ import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.Player
+import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
 import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.repositories.SearchRepository
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -53,6 +56,7 @@ class KoinModules {
 			single { ChannelRepository(androidContext(), get(), get()) }
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
+			single { SearchRepository(get()) }
 			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
 			single {
 				WorkManagerDownloadController(
@@ -83,8 +87,10 @@ class KoinModules {
 			viewModel { ContinueWatchingViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
 			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
-			viewModel { MediathekListFragmentViewModel(get()) }
+			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get()) }
+			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
+			viewModel { SearchViewModel(get(), get(), get(), get()) }
 		}
 
 	}

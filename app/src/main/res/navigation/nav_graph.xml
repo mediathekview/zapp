@@ -6,12 +6,29 @@
 	app:startDestination="@id/channelListFragment">
 
 	<fragment
+		android:id="@+id/searchResultsFragment"
+		android:name="de.christinecoenen.code.zapp.app.search.results.SearchResultsFragment"
+		tools:layout="@layout/search_results_fragment">
+		<argument
+			android:name="show_search_bar"
+			android:defaultValue="true"
+			app:argType="boolean" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
+	</fragment>
+
+	<fragment
 		android:id="@+id/channelListFragment"
 		android:name="de.christinecoenen.code.zapp.app.livestream.ui.list.ChannelListFragment"
 		android:label="@string/app_name"
 		tools:layout="@layout/channel_list_fragment">
 		<argument
-			android:name="is_main_destination"
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
+			app:argType="boolean" />
+		<argument
+			android:name="show_search_bar"
 			android:defaultValue="true"
 			app:argType="boolean" />
 	</fragment>
@@ -21,7 +38,11 @@
 		android:label="@string/app_name"
 		tools:layout="@layout/mediathek_list_fragment">
 		<argument
-			android:name="is_main_destination"
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
+			app:argType="boolean" />
+		<argument
+			android:name="show_search_bar"
 			android:defaultValue="true"
 			app:argType="boolean" />
 		<action
@@ -34,7 +55,11 @@
 		android:label="@string/app_name"
 		tools:layout="@layout/personal_fragment">
 		<argument
-			android:name="is_main_destination"
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
+			app:argType="boolean" />
+		<argument
+			android:name="show_search_bar"
 			android:defaultValue="true"
 			app:argType="boolean" />
 		<action
@@ -56,8 +81,8 @@
 		android:label="@string/activity_main_tab_downloads"
 		tools:layout="@layout/personal_details_fragment">
 		<argument
-			android:name="is_main_destination"
-			android:defaultValue="false"
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
 			app:argType="boolean" />
 		<action
 			android:id="@+id/to_mediathekDetailFragment"
@@ -69,8 +94,8 @@
 		android:label="@string/activity_main_tab_continue_watching"
 		tools:layout="@layout/personal_details_fragment">
 		<argument
-			android:name="is_main_destination"
-			android:defaultValue="false"
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
 			app:argType="boolean" />
 		<action
 			android:id="@+id/to_mediathekDetailFragment"
@@ -82,8 +107,8 @@
 		android:label="@string/activity_main_tab_bookmarks"
 		tools:layout="@layout/personal_details_fragment">
 		<argument
-			android:name="is_main_destination"
-			android:defaultValue="false"
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
 			app:argType="boolean" />
 		<action
 			android:id="@+id/to_mediathekDetailFragment"

@@ -45,7 +45,6 @@
 		<activity
 			android:name=".tv.main.MainActivity"
 			android:exported="true"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -56,27 +55,22 @@
 
 		<activity
 			android:name=".tv.player.PlayerActivity"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
 			android:name=".tv.error.ErrorActivity"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
 			android:name=".tv.settings.SettingsActivity"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme.Transparent" />
 
 		<activity
 			android:name=".tv.faq.FaqActivity"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
 			android:name=".tv.changelog.ChangelogActivity"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
@@ -85,14 +79,14 @@
 			android:finishOnTaskLaunch="true"
 			android:launchMode="singleInstance"
 			android:process=":acra"
-			android:screenOrientation="landscape"
 			android:theme="@style/LeanbackAppTheme" />
 
 		<activity
 			android:name=".app.main.MainActivity"
 			android:exported="true"
 			android:launchMode="singleTop"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme.NoActionBar"
+			android:windowSoftInputMode="adjustNothing">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 

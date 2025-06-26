@@ -12,33 +12,10 @@
 		android:id="@+id/list"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		android:scrollbars="vertical"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-		app:layout_constraintBottom_toTopOf="@id/searchField"
+		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		tools:listitem="@layout/mediathek_list_fragment_item"
 		tools:visibility="visible" />
-
-	<com.google.android.material.textfield.TextInputLayout
-		android:id="@+id/searchField"
-		style="?textInputFilledStyle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		app:endIconMode="clear_text"
-		app:hintEnabled="false"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:startIconDrawable="@drawable/ic_baseline_search_24">
-
-		<com.google.android.material.textfield.TextInputEditText
-			android:id="@+id/search"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:imeOptions="actionSearch"
-			android:inputType="textFilter"
-			android:maxLines="1"
-			android:paddingVertical="0dp"
-			tools:hint="@string/search_query_hint_downloads" />
-
-	</com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

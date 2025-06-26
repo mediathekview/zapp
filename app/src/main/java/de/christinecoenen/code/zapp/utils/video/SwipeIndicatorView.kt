@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ViewSwipeIndicatorBinding
+import java.util.Locale
 
 class SwipeIndicatorView @JvmOverloads constructor(
 	context: Context,
@@ -27,7 +28,7 @@ class SwipeIndicatorView @JvmOverloads constructor(
 	fun setValue(value: Float) {
 		binding.indicator.layoutParams.height = (value * height).toInt()
 		binding.indicator.requestLayout()
-		binding.text.text = String.format("%.0f%%", value * 100)
+		binding.text.text = String.format(Locale.getDefault(), "%.0f%%", value * 100)
 
 		visibility = VISIBLE
 	}

@@ -217,7 +217,7 @@
 		app:layout_constraintStart_toEndOf="@id/subtitle_divider"
 		app:layout_constraintTop_toTopOf="@id/duration" />
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<com.google.android.material.imageview.ShapeableImageView
 		android:id="@+id/thumbnail"
 		android:layout_width="80dp"
 		android:layout_height="0dp"
@@ -232,6 +232,7 @@
 		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintStart_toEndOf="@id/title"
 		app:layout_constraintTop_toTopOf="parent"
+		app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
 		tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

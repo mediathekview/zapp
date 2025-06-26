@@ -19,6 +19,7 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.UUID
+import androidx.core.net.toUri
 
 class DownloadFileInfoManager(
 	private val applicationContext: Context,
@@ -35,7 +36,7 @@ class DownloadFileInfoManager(
 		}
 
 		updateDownloadFileInMediaCollection(
-			Uri.parse(filePath),
+			filePath.toUri(),
 			DownloadStatus.DELETED
 		)
 	}
@@ -104,7 +105,7 @@ class DownloadFileInfoManager(
 	fun getFileSize(filePathUri: String): Long {
 		return try {
 			if (isMediaStoreFile(filePathUri)) {
-				val uri = Uri.parse(filePathUri)
+				val uri = filePathUri.toUri()
 				val pfd = applicationContext.contentResolver.openFileDescriptor(uri, "r")
 				val fileLength = pfd?.statSize ?: 0
 				pfd?.close()
@@ -120,7 +121,7 @@ class DownloadFileInfoManager(
 	fun openOutputStream(filePathUri: String, append: Boolean = false): OutputStream? {
 
 		return if (isMediaStoreFile(filePathUri)) {
-			val uri = Uri.parse(filePathUri)
+			val uri = filePathUri.toUri()
 			val mode = if (append) "wa" else "w"
 			applicationContext.contentResolver.openOutputStream(uri, mode)
 		} else {
@@ -225,7 +226,7 @@ class DownloadFileInfoManager(
 	}
 
 	private fun isDeletedMediaStoreFile(path: String): Boolean {
-		val uri = Uri.parse(path)
+		val uri = path.toUri()
 		val projection = arrayOf(MediaStore.Video.Media._ID)
 
 		try {

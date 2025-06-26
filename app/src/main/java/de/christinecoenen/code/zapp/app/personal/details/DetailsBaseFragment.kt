@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,7 +29,6 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 	protected abstract val viewModel: DetailsBaseViewModel
 	protected abstract val noShowsStringResId: Int
 	protected abstract val noShowsIconResId: Int
-	protected abstract val searchQueryHintResId: Int
 
 	private lateinit var showAdapter: PagedMediathekShowListAdapter
 
@@ -64,15 +62,10 @@ abstract class DetailsBaseFragment : Fragment(), MediathekShowListItemListener {
 
 		noShowsBinding.text.setText(noShowsStringResId)
 		noShowsBinding.icon.setImageResource(noShowsIconResId)
-		binding.search.setHint(searchQueryHintResId)
 
 		binding.list.adapter = showAdapter
 
 		showAdapter.registerAdapterDataObserver(adapterDataObserver)
-
-		binding.search.addTextChangedListener { editable ->
-			viewModel.setSearchQueryFilter(editable.toString())
-		}
 
 		viewModel.showList.observe(viewLifecycleOwner) {
 			launchOnCreated {
