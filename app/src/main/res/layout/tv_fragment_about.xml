@@ -39,7 +39,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginHorizontal="8dp"
 		android:layout_marginTop="32dp"
-		android:text="@string/aboutLibraries_description_text"
+		android:text="@string/about_summary"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="@id/grid"
 		app:layout_constraintStart_toStartOf="@id/grid"
