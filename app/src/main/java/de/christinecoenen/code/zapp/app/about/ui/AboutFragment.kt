@@ -46,6 +46,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.theme.AppTheme
 import de.christinecoenen.code.zapp.theme.ThemePreviews
 import de.christinecoenen.code.zapp.utils.system.IntentHelper
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 
 class AboutFragment : Fragment() {
 
@@ -58,6 +59,7 @@ class AboutFragment : Fragment() {
 			.apply {
 				setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 				setContent { MainScreen() }
+				applyBottomInsetAsPadding()
 			}
 	}
 
