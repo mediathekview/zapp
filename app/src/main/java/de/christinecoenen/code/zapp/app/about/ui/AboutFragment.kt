@@ -69,21 +69,19 @@ class AboutFragment : Fragment() {
 	@Composable
 	fun MainScreen() {
 		AppTheme {
-			val windowSizeClass: WindowSizeClass =
-				currentWindowAdaptiveInfo().windowSizeClass
-			val stacked =
-				windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.COMPACT
+			val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+			val sideBySide = windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
 
-			if (stacked) {
+			if (sideBySide) {
+				Row(verticalAlignment = Alignment.CenterVertically) {
+					Header()
+					LibrariesList()
+				}
+			} else {
 				Column(horizontalAlignment = Alignment.CenterHorizontally) {
 					Header()
 					Spacer(Modifier.height(16.dp))
 					HorizontalDivider()
-					LibrariesList()
-				}
-			} else {
-				Row(verticalAlignment = Alignment.CenterVertically) {
-					Header()
 					LibrariesList()
 				}
 			}
