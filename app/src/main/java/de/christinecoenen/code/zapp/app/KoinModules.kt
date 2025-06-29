@@ -28,6 +28,7 @@ import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.repositories.SearchRepository
+import de.christinecoenen.code.zapp.tv2.main.TopNavigationViewModel
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
@@ -91,6 +92,8 @@ class KoinModules {
 			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
 			viewModel { SearchViewModel(get(), get(), get(), get()) }
+
+			viewModel { TopNavigationViewModel() }
 		}
 
 	}
