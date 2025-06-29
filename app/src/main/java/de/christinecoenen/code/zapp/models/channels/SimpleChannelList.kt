@@ -3,7 +3,7 @@ package de.christinecoenen.code.zapp.models.channels
 /**
  * Simple IChannelList wrapper around a List of ChannelModels.
  */
-class SimpleChannelList(private val channels: List<ChannelModel>) : IChannelList {
+class SimpleChannelList(private var channels: List<ChannelModel>) : IChannelList {
 
 	override val list
 		get() = channels
@@ -13,6 +13,10 @@ class SimpleChannelList(private val channels: List<ChannelModel>) : IChannelList
 	override fun get(id: String): ChannelModel? {
 		val index = indexOf(id)
 		return if (index == -1) null else get(index)
+	}
+
+	override fun replaceAllChannels(channels: List<ChannelModel>) {
+		this.channels = channels
 	}
 
 	override fun size() = channels.size

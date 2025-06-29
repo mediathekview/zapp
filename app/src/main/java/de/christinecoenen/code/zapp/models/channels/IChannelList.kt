@@ -6,6 +6,8 @@ interface IChannelList : Iterable<ChannelModel> {
 
 	operator fun get(id: String): ChannelModel?
 
+	fun replaceAllChannels(channels: List<ChannelModel>)
+
 	fun size(): Int
 
 	val list: List<ChannelModel>

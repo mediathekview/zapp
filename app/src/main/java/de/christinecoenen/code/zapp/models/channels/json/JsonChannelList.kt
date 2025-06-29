@@ -15,7 +15,7 @@ import java.io.IOException
  */
 class JsonChannelList(private val context: Context) : IChannelList {
 
-	override val list: List<ChannelModel>
+	override var list: List<ChannelModel>
 
 	init {
 		val parser = JsonChannelsParser(context)
@@ -27,6 +27,10 @@ class JsonChannelList(private val context: Context) : IChannelList {
 	override fun get(id: String): ChannelModel? {
 		val index = indexOf(id)
 		return if (index == -1) null else get(index)
+	}
+
+	override fun replaceAllChannels(channels: List<ChannelModel>) {
+		list = channels
 	}
 
 	override fun size() = list.size

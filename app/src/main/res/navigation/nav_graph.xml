@@ -125,8 +125,7 @@
 	<fragment
 		android:id="@+id/channelSelectionFragment"
 		android:name="de.christinecoenen.code.zapp.app.settings.ui.ChannelSelectionFragment"
-		android:label="@string/activity_channel_selection_title"
-		tools:layout="@layout/channel_selection_fragment">
+		android:label="@string/activity_channel_selection_title">
 		<action
 			android:id="@+id/to_channelSelectionHelpDialog"
 			app:destination="@id/channelSelectionHelpDialog" />

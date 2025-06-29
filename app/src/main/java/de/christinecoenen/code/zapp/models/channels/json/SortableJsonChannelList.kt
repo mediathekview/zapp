@@ -20,6 +20,10 @@ open class SortableJsonChannelList(val context: Context) : ISortableChannelList 
 
 	override fun get(id: String) = channelList[id]
 
+	override fun replaceAllChannels(channels: List<ChannelModel>) {
+		channelList.replaceAllChannels(channels)
+	}
+
 	override fun size() = channelList.size()
 
 	override val list = channelList.list

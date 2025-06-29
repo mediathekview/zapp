@@ -151,7 +151,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.13.1'
 
 	// sortable list
-	implementation 'com.github.woxthebox:draglistview:1.7.3'
+	implementation 'sh.calvin.reorderable:reorderable:2.5.1'
 
 	// markdown
 	implementation 'io.noties.markwon:core:4.6.2'
