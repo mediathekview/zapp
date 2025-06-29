@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.tv.material3.MaterialTheme
-import androidx.tv.material3.Text
+import de.christinecoenen.code.zapp.tv2.about.AboutScreen
+import de.christinecoenen.code.zapp.tv2.about.LiveScreen
+import de.christinecoenen.code.zapp.tv2.about.MediaCenterScreen
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -39,11 +40,11 @@ class MainActivity : ComponentActivity() {
 					Box(
 						modifier = Modifier.fillMaxSize()
 					) {
-						Text(
-							text = "Hello World $selectedTabIndex!",
-							color = MaterialTheme.colorScheme.onSurface,
-							modifier = Modifier.fillMaxSize()
-						)
+						when (selectedTabIndex) {
+							0 -> LiveScreen()
+							1 -> MediaCenterScreen()
+							2 -> AboutScreen()
+						}
 					}
 				}
 			}
