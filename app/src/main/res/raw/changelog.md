@@ -1,6 +1,7 @@
 # v-next
 * System-Bar bleibt im Player nicht mehr sichtbar, nachdem man Programm-Informationen aufgerufen hat [#313](https://github.com/mediathekview/zapp/issues/313)
 * "Über Zapp" an verschiedenen Gerätegrößen angepasst
+* Kleine Fehler in "Sender anordnen" behoben
 
 # 9.0.0
 * Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)
