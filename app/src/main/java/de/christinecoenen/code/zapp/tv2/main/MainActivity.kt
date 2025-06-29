@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
 				) {
 
 					TopNavigation(
-						viewModel = topNavigationViewModel,
 						modifier = Modifier.align(Alignment.CenterHorizontally)
 					)
 

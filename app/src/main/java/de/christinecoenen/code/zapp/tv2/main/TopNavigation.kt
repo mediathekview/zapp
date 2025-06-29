@@ -10,13 +10,12 @@ import androidx.tv.material3.Tab
 import androidx.tv.material3.TabRow
 import androidx.tv.material3.Text
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
-import de.christinecoenen.code.zapp.tv2.theme.TvPreview
+import org.koin.compose.viewmodel.koinViewModel
 
-@TvPreview
 @Composable
 fun TopNavigation(
 	modifier: Modifier = Modifier,
-	viewModel: TopNavigationViewModel = TopNavigationViewModel(),
+	viewModel: TopNavigationViewModel = koinViewModel(),
 ) {
 	AppTheme {
 		val selectedTab by viewModel.selectedTab
