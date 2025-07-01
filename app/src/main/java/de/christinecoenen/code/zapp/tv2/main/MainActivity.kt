@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import de.christinecoenen.code.zapp.tv2.about.AboutScreen
-import de.christinecoenen.code.zapp.tv2.about.LiveScreen
+import de.christinecoenen.code.zapp.tv2.live.LiveScreen
 import de.christinecoenen.code.zapp.tv2.about.MediaCenterScreen
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
