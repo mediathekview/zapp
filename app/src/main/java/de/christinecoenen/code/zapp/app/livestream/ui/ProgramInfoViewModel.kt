@@ -9,7 +9,13 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoRepository
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import org.joda.time.DateTime
 
 class ProgramInfoViewModel(
@@ -34,24 +40,26 @@ class ProgramInfoViewModel(
 	}
 
 	private val liveShow = updateLiveShowTicker
-		.combine(channelId) { _, channelId -> programInfoRepository.getShow(channelId) }
-		.catch { emit(LiveShow(application.getString(R.string.activity_channel_detail_info_error))) }
+		.combine(channelId) { _, channelId ->
+			try {
+				programInfoRepository.getShow(channelId)
+			} catch (e: Exception) {
+				LiveShow(application.getString(R.string.activity_channel_detail_info_error))
+			}
+		}
 		.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 		.distinctUntilChanged()
 
-	val title = liveShow
-		.map { liveShow -> liveShow.title }
-		.asLiveData(viewModelScope.coroutineContext)
+	val titleFlow = liveShow.map { it.title }
+	val title = titleFlow.asLiveData(viewModelScope.coroutineContext)
 
-	val subtitle = liveShow
-		.map { liveShow -> liveShow.subtitle }
-		.asLiveData(viewModelScope.coroutineContext)
+	val subtitleFlow = liveShow.map { it.subtitle }
+	val subtitle = subtitleFlow.asLiveData(viewModelScope.coroutineContext)
 
-	val description = liveShow
-		.map { liveShow -> liveShow.description }
-		.asLiveData(viewModelScope.coroutineContext)
+	val descriptionFlow = liveShow.map { it.description }
+	val description = descriptionFlow.asLiveData(viewModelScope.coroutineContext)
 
-	val time = liveShow
+	val timeFlow = liveShow
 		.map { liveShow ->
 			if (liveShow.hasDuration()) {
 				val startTime = getTimeString(liveShow.startTime!!)
@@ -61,9 +69,10 @@ class ProgramInfoViewModel(
 				null
 			}
 		}
-		.asLiveData(viewModelScope.coroutineContext)
 
-	val progressPercent = updateShowProgressTicker
+	val time = timeFlow.asLiveData(viewModelScope.coroutineContext)
+
+	val progressPercentFlow = updateShowProgressTicker
 		.combine(liveShow) { _, liveShow ->
 			if (liveShow.hasDuration()) {
 				liveShow.progressPercent
@@ -71,7 +80,8 @@ class ProgramInfoViewModel(
 				null
 			}
 		}
-		.asLiveData(viewModelScope.coroutineContext)
+
+	val progressPercent = progressPercentFlow.asLiveData(viewModelScope.coroutineContext)
 
 	suspend fun setChannelId(channelId: String) {
 		this.channelId.emit(channelId)
