@@ -1,17 +1,16 @@
 package de.christinecoenen.code.zapp.app.settings.repository
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.christinecoenen.code.zapp.R
 import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
-import androidx.core.content.edit
 
 class SettingsRepository(context: Context) {
 
@@ -24,8 +23,19 @@ class SettingsRepository(context: Context) {
 	val pictureInPictureOnBack: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_pip_on_back), false)
 
+	val unmeteredNetworkStreamQuality: StreamQualityBucket
+		get() = preferences.getString(
+			context.getString(R.string.pref_key_stream_quality_over_unmetered_network),
+			null
+		).let { quality ->
+			if (quality == null) {
+				StreamQualityBucket.HIGHEST
+			} else {
+				StreamQualityBucket.valueOf(quality.uppercase(Locale.ENGLISH))
+			}
+		}
+
 	val meteredNetworkStreamQuality: StreamQualityBucket
-		@SuppressLint("DefaultLocale")
 		get() = preferences.getString(
 			context.getString(R.string.pref_key_stream_quality_over_metered_network),
 			null
@@ -46,9 +56,9 @@ class SettingsRepository(context: Context) {
 	var isPlayerZoomed: Boolean
 		get() = preferences.getBoolean(context.getString(R.string.pref_key_player_zoomed), false)
 		set(enabled) {
-			preferences.edit()
-				.putBoolean(context.getString(R.string.pref_key_player_zoomed), enabled)
-				.apply()
+			preferences.edit {
+				putBoolean(context.getString(R.string.pref_key_player_zoomed), enabled)
+			}
 		}
 
 	var sleepTimerDelay: Duration

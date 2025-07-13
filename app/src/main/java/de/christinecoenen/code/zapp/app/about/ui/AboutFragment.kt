@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.mikepenz.aboutlibraries.ui.compose.android.rememberLibraries
@@ -63,14 +63,16 @@ class AboutFragment : Fragment() {
 			}
 	}
 
-	@Preview(widthDp = 400, heightDp = 800, showBackground = true)
-	@Preview(widthDp = 800, heightDp = 400, showBackground = true)
+	@Preview(widthDp = 500, heightDp = 900, showBackground = true)
+	@Preview(widthDp = 900, heightDp = 500, showBackground = true)
 	@ThemePreviews
 	@Composable
 	fun MainScreen() {
 		AppTheme {
 			val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-			val sideBySide = windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
+			val sideBySide =
+				windowSizeClass.windowHeightSizeClass == WindowHeightSizeClass.COMPACT ||
+					windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
 
 			if (sideBySide) {
 				Row(verticalAlignment = Alignment.CenterVertically) {
@@ -88,7 +90,6 @@ class AboutFragment : Fragment() {
 		}
 	}
 
-	@OptIn(ExperimentalLayoutApi::class)
 	@ThemePreviews
 	@Composable
 	fun LibrariesList() {
@@ -123,9 +124,8 @@ class AboutFragment : Fragment() {
 					Surface(
 						color = MaterialTheme.colorScheme.tertiaryContainer,
 						shape = CircleShape,
-						shadowElevation = 4.dp,
 						modifier = Modifier
-                            .width(74.dp)
+							.width(74.dp)
                             .aspectRatio(1f)
 					) {
 						// icon image
@@ -133,7 +133,7 @@ class AboutFragment : Fragment() {
 							painter = painterResource(R.drawable.ic_zapp_tv),
 							contentDescription = null,
 							tint = MaterialTheme.colorScheme.onTertiaryContainer,
-							modifier = Modifier.padding(4.dp)
+							modifier = Modifier.padding(start = 4.dp)
 						)
 					}
 					Spacer(Modifier.width(16.dp))

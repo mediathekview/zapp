@@ -144,6 +144,7 @@
 	<string name="pref_key_pip_on_back_summary">Setzt die Wiedergabe im Bild-in-Bild-Modus fort, wenn du den Video-Player verlässt</string>
 
 	<string name="pref_stream_quality_cellular_title">Videoqualität in kostenpflichtigen Netzwerken</string>
+	<string name="pref_stream_quality_wifi_title">Sonstige Videoqualität</string>
 
 	<string name="pref_download_over_unmetered_network_only_title">Nur in kostenlosen Netzwerken herunter laden</string>
 	<string name="pref_download_over_unmetered_network_only_summary">Videos werden nicht herunter geladen, wenn sich das Gerät z.B. im Mobilfunknetz befindet</string>

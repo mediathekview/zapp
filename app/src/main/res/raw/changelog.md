@@ -1,6 +1,8 @@
-# v-next
+# 9.1.0
 * System-Bar bleibt im Player nicht mehr sichtbar, nachdem man Programm-Informationen aufgerufen hat [#313](https://github.com/mediathekview/zapp/issues/313)
-* "Über Zapp" an verschiedenen Gerätegrößen angepasst
+* "Über Zapp" an verschiedenen Gerätegrößen angepasst ([#483](https://github.com/mediathekview/zapp/issues/483))
+* Absturz auf Geräten behoben, die über keine App für Sprachsuche verfügen
+* Videoqualität in kostenlosen Netzwerken einstellbar gemacht ([#459](https://github.com/mediathekview/zapp/issues/459))
 
 # 9.0.0
 * Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)

@@ -73,8 +73,10 @@ class Player(
 
 
 	private val requiredStreamQualityBucket: StreamQualityBucket
-		get() = if (networkConnectionHelper.isConnectedToUnmeteredNetwork || currentVideoInfo?.isOfflineVideo == true) {
+		get() = if (currentVideoInfo?.isOfflineVideo == true) {
 			StreamQualityBucket.HIGHEST
+		} else if (networkConnectionHelper.isConnectedToUnmeteredNetwork) {
+			settings.unmeteredNetworkStreamQuality
 		} else {
 			settings.meteredNetworkStreamQuality
 		}

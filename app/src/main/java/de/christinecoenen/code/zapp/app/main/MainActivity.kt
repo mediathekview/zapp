@@ -1,7 +1,6 @@
 package de.christinecoenen.code.zapp.app.main
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -42,6 +41,7 @@ import de.christinecoenen.code.zapp.app.search.SearchViewModel
 import de.christinecoenen.code.zapp.app.search.SearchViewModel.SeachState
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.ActivityMainBinding
+import de.christinecoenen.code.zapp.utils.system.IntentHelper
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyHorizontalInsetsAsPadding
 import kotlinx.coroutines.flow.collectLatest
@@ -93,6 +93,30 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		}
 	}
 
+	/**
+	 * Menu provider for the toolbar inside the search view.
+	 */
+	private val searchViewMenuProvider = object : MenuProvider {
+		override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+			menuInflater.inflate(R.menu.search, menu)
+
+			if (!IntentHelper.supportsRecognizeSpeechIntent(packageManager)) {
+				menu.removeItem(R.id.menu_language_search)
+			}
+		}
+
+		override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+			return when (menuItem.itemId) {
+				R.id.menu_language_search -> {
+					startVoiceSearch()
+					true
+				}
+
+				else -> false
+			}
+		}
+	}
+
 	@OptIn(NavigationUiSaveStateControl::class)
 	override fun onCreate(savedInstanceState: Bundle?) {
 		enableEdgeToEdge()
@@ -135,11 +159,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				onSubmitSearch()
 				return@setOnEditorActionListener false
 			}
-			it.setOnMenuItemClickListener {
-				startVoiceSearch()
-				true
-			}
-			it.inflateMenu(R.menu.search)
+			it.toolbar.addMenuProvider(searchViewMenuProvider)
 		}
 
 		launchOnCreated {
@@ -264,12 +284,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 	}
 
 	private fun startVoiceSearch() {
-		val voiceInputIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-			putExtra(
-				RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-			)
-		}
+		val voiceInputIntent = IntentHelper.getRecognizeSpeechIntent()
 		voiceInputLauncher.launch(voiceInputIntent)
 	}
 
@@ -319,7 +334,8 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 		}
 
 		// navigate explicitly
-		navController.navigate(R.id.searchResultsFragment,
+		navController.navigate(
+			R.id.searchResultsFragment,
 			bundleOf(),
 			navOptions { launchSingleTop = true }
 		)

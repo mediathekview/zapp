@@ -3,6 +3,8 @@ package de.christinecoenen.code.zapp.utils.system
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.speech.RecognizerIntent
 import androidx.core.net.toUri
 import de.christinecoenen.code.zapp.R
 
@@ -22,7 +24,12 @@ object IntentHelper {
 		try {
 			context.startActivity(browserIntent)
 		} catch (e: ActivityNotFoundException) {
-			context.startActivity(Intent.createChooser(browserIntent, context.getString(R.string.action_open)))
+			context.startActivity(
+				Intent.createChooser(
+					browserIntent,
+					context.getString(R.string.action_open)
+				)
+			)
 		}
 	}
 
@@ -41,7 +48,12 @@ object IntentHelper {
 		try {
 			context.startActivity(feedbackIntent)
 		} catch (e: ActivityNotFoundException) {
-			context.startActivity(Intent.createChooser(feedbackIntent, context.getString(R.string.action_send_mail)))
+			context.startActivity(
+				Intent.createChooser(
+					feedbackIntent,
+					context.getString(R.string.action_send_mail)
+				)
+			)
 		}
 	}
 
@@ -73,5 +85,20 @@ object IntentHelper {
 		context.startActivity(
 			Intent.createChooser(playVideoIntent, context.getString(R.string.action_open))
 		)
+	}
+
+	fun getRecognizeSpeechIntent(): Intent {
+		return Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+			.apply {
+				putExtra(
+					RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+					RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+				)
+			}
+	}
+
+	fun supportsRecognizeSpeechIntent(packageManager: PackageManager): Boolean {
+		val voiceInputIntent = getRecognizeSpeechIntent()
+		return voiceInputIntent.resolveActivity(packageManager) != null
 	}
 }
