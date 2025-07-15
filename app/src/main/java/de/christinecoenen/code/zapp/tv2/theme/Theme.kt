@@ -58,5 +58,18 @@ fun AppTheme(
 	)
 }
 
-@Preview(name = "TV Preview", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+	name = "TV Preview",
+	showBackground = true,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
 annotation class TvPreview
+
+@Preview(
+	name = "TV Preview",
+	showBackground = true,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+	widthDp = 960,
+	heightDp = 540
+)
+annotation class TvScreenPreview
