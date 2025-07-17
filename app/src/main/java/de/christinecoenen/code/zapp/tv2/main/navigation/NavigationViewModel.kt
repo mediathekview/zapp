@@ -2,7 +2,7 @@ package de.christinecoenen.code.zapp.tv2.main.navigation
 
 import androidx.lifecycle.ViewModel
 import de.christinecoenen.code.zapp.tv2.about.AboutScreenLocation
-import de.christinecoenen.code.zapp.tv2.about.MediaCenterScreenLocation
+import de.christinecoenen.code.zapp.tv2.mediathek.MediaCenterScreenLocation
 import de.christinecoenen.code.zapp.tv2.live.LiveScreenLocation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

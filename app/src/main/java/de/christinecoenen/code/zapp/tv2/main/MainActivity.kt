@@ -15,8 +15,8 @@ import androidx.tv.material3.MaterialTheme
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.tv2.about.AboutScreen
 import de.christinecoenen.code.zapp.tv2.about.AboutScreenLocation
-import de.christinecoenen.code.zapp.tv2.about.MediaCenterScreen
-import de.christinecoenen.code.zapp.tv2.about.MediaCenterScreenLocation
+import de.christinecoenen.code.zapp.tv2.mediathek.MediaCenterScreen
+import de.christinecoenen.code.zapp.tv2.mediathek.MediaCenterScreenLocation
 import de.christinecoenen.code.zapp.tv2.live.LiveScreen
 import de.christinecoenen.code.zapp.tv2.live.LiveScreenLocation
 import de.christinecoenen.code.zapp.tv2.main.navigation.Location

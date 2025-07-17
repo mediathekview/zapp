@@ -29,6 +29,7 @@ import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.repositories.SearchRepository
 import de.christinecoenen.code.zapp.tv2.main.navigation.NavigationViewModel
+import de.christinecoenen.code.zapp.tv2.mediathek.MediathekScreenViewModel
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
@@ -93,7 +94,9 @@ class KoinModules {
 			viewModel { ShowMenuHelperViewModel(get(), get()) }
 			viewModel { SearchViewModel(get(), get(), get(), get()) }
 
+			// TV 2
 			viewModel { NavigationViewModel() }
+			viewModel { MediathekScreenViewModel(get()) }
 		}
 
 	}
