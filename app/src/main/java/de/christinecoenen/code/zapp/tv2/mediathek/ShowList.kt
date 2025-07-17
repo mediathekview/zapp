@@ -1,7 +1,10 @@
 package de.christinecoenen.code.zapp.tv2.mediathek
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -9,9 +12,17 @@ import de.christinecoenen.code.zapp.tv2.common.CircularProgress
 
 @Composable
 fun ShowList(
-	showList: LazyPagingItems<MediathekShow>
+	modifier: Modifier = Modifier,
+	showList: LazyPagingItems<MediathekShow>,
+	selectedShowIndex: Int? = null,
+	onShowClick: (index: Int) -> Unit = {},
 ) {
-	LazyColumn {
+	val listState: LazyListState = rememberLazyListState()
+
+	LazyColumn(
+		state = listState,
+		modifier = modifier
+	) {
 		items(
 			showList.itemCount,
 			key = showList.itemKey { it.apiId }
@@ -21,6 +32,8 @@ fun ShowList(
 			ShowListItem(
 				title = show.title,
 				topic = show.topic,
+				selected = index == selectedShowIndex,
+				onClick = { onShowClick(index) }
 			)
 		}
 

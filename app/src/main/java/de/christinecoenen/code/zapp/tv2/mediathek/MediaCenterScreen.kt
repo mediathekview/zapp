@@ -1,17 +1,24 @@
 package de.christinecoenen.code.zapp.tv2.mediathek
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.tv.material3.MaterialTheme
+import androidx.tv.material3.Text
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.tv2.main.navigation.Location
 import de.christinecoenen.code.zapp.tv2.theme.TvScreenPreview
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 class MediaCenterScreenLocation : Location(
 	titleResId = R.string.activity_main_tab_mediathek,
@@ -21,17 +28,37 @@ class MediaCenterScreenLocation : Location(
 @TvScreenPreview
 @Composable
 fun MediaCenterScreen(
-	viewModel: MediathekScreenViewModel = koinViewModel {
-		parametersOf(MutableStateFlow(""))
-	}
+	viewModel: MediathekScreenViewModel = koinViewModel()
 ) {
-	val shows = viewModel.shows.collectAsLazyPagingItems()
+	val showFlow = remember { viewModel.shows }
+	val shows = showFlow.collectAsLazyPagingItems()
+	var selectedShowIndex by rememberSaveable { mutableStateOf<Int?>(null) }
+	val selectedShow by remember {
+		derivedStateOf { if (selectedShowIndex == null) null else shows[selectedShowIndex!!] }
+	}
 
 	Row(
 		modifier = Modifier
-			.padding(horizontal = 58.dp)
-			.padding(top = 104.dp)
+            .padding(horizontal = 58.dp)
+            .padding(top = 104.dp)
 	) {
-		ShowList(shows)
+		ShowList(
+			showList = shows,
+			selectedShowIndex = selectedShowIndex,
+			onShowClick = { selectedShowIndex = it },
+			modifier = Modifier.weight(0.5f)
+		)
+
+		// TODO: move to own composable
+		if (selectedShow != null) {
+			Box(
+				modifier = Modifier.weight(0.5f)
+			) {
+				Text(
+					selectedShow!!.title,
+					color = MaterialTheme.colorScheme.onSurface,
+				)
+			}
+		}
 	}
 }

@@ -11,10 +11,12 @@ import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 fun ShowListItem(
 	title: String = "My title",
 	topic: String = "My topic",
+	selected: Boolean = false,
+	onClick: () -> Unit = {},
 ) {
 	ListItem(
-		selected = false,
-		onClick = {},
+		selected = selected,
+		onClick = onClick,
 		headlineContent = {
 			Text(
 				text = title,
