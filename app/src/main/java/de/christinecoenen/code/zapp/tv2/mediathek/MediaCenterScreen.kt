@@ -1,8 +1,9 @@
 package de.christinecoenen.code.zapp.tv2.mediathek
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -13,8 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.tv.material3.MaterialTheme
-import androidx.tv.material3.Text
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.tv2.main.navigation.Location
 import de.christinecoenen.code.zapp.tv2.theme.TvScreenPreview
@@ -49,16 +48,14 @@ fun MediaCenterScreen(
 			modifier = Modifier.weight(0.5f)
 		)
 
-		// TODO: move to own composable
-		if (selectedShow != null) {
-			Box(
+		selectedShow?.let {
+			Spacer(Modifier.width(20.dp))
+
+			ShowDetails(
+				topic = it.topic,
+				title = it.title,
 				modifier = Modifier.weight(0.5f)
-			) {
-				Text(
-					selectedShow!!.title,
-					color = MaterialTheme.colorScheme.onSurface,
-				)
-			}
+			)
 		}
 	}
 }
