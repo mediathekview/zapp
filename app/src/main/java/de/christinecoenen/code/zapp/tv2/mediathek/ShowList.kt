@@ -14,7 +14,6 @@ import de.christinecoenen.code.zapp.tv2.common.CircularProgress
 fun ShowList(
 	modifier: Modifier = Modifier,
 	showList: LazyPagingItems<MediathekShow>,
-	selectedShowIndex: Int? = null,
 	onShowClick: (index: Int) -> Unit = {},
 ) {
 	val listState: LazyListState = rememberLazyListState()
@@ -32,7 +31,7 @@ fun ShowList(
 			ShowListItem(
 				title = show.title,
 				topic = show.topic,
-				selected = index == selectedShowIndex,
+				selected = false,
 				onClick = { onShowClick(index) }
 			)
 		}

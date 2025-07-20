@@ -62,7 +62,16 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
 
-                            is MediaCenterScreenLocation -> MediaCenterScreen()
+                            is MediaCenterScreenLocation -> MediaCenterScreen(
+                                onShowSelected = { show ->
+                                    navigationViewModel.showScreen(
+                                        PlayerLocation(videoInfo = VideoInfo(
+                                            title = show.title,
+                                            url = show.videoUrl,
+                                        ))
+                                    )
+                                }
+                            )
 
                             is AboutScreenLocation -> AboutScreen()
 
