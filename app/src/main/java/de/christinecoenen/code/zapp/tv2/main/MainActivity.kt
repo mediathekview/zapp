@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.MaterialTheme
 import de.christinecoenen.code.zapp.app.player.VideoInfo
@@ -21,6 +22,7 @@ import de.christinecoenen.code.zapp.tv2.live.LiveScreen
 import de.christinecoenen.code.zapp.tv2.live.LiveScreenLocation
 import de.christinecoenen.code.zapp.tv2.main.navigation.Location
 import de.christinecoenen.code.zapp.tv2.main.navigation.NavigationViewModel
+import de.christinecoenen.code.zapp.tv2.player.PlayerActivity
 import de.christinecoenen.code.zapp.tv2.player.PlayerLocation
 import de.christinecoenen.code.zapp.tv2.player.PlayerScreen
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
@@ -34,6 +36,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+			val context = LocalContext.current
+
             AppTheme {
                 Box(
                     modifier = Modifier
@@ -56,20 +60,31 @@ class MainActivity : ComponentActivity() {
                         when (val location = currentLocation) {
                             is LiveScreenLocation -> LiveScreen(
                                 onChannelClick = { channel ->
-                                    navigationViewModel.showScreen(
+									startActivity(PlayerActivity.getStartIntent(
+										context,
+										VideoInfo.fromChannel(channel)
+									))
+                                    /*navigationViewModel.showScreen(
                                         PlayerLocation(videoInfo = VideoInfo.fromChannel(channel))
-                                    )
+                                    )*/
                                 }
                             )
 
                             is MediaCenterScreenLocation -> MediaCenterScreen(
                                 onShowSelected = { show ->
-                                    navigationViewModel.showScreen(
+									startActivity(PlayerActivity.getStartIntent(
+										context,
+										VideoInfo(
+											title = show.title,
+											url = show.videoUrl,
+										)
+									))
+                                    /*navigationViewModel.showScreen(
                                         PlayerLocation(videoInfo = VideoInfo(
                                             title = show.title,
                                             url = show.videoUrl,
                                         ))
-                                    )
+                                    )*/
                                 }
                             )
 

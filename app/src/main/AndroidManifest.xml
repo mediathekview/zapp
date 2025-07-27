@@ -63,6 +63,8 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name=".tv2.player.PlayerActivity" />
+
 		<activity
 			android:name=".tv.player.PlayerActivity"
 			android:theme="@style/LeanbackAppTheme" />
