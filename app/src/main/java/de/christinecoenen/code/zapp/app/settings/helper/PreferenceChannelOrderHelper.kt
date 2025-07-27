@@ -2,7 +2,6 @@ package de.christinecoenen.code.zapp.app.settings.helper
 
 import android.content.Context
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import kotlin.math.max
 
 /**
  * Helps persisting and reloading the channel order.
@@ -31,26 +30,16 @@ class PreferenceChannelOrderHelper(context: Context) {
 		val sortedChannelIds = preferenceHelper.loadList(PREF_KEY_CHANNEL_ORDER)
 			?: return channels // have never been saved before
 
-		val size = max(sortedChannelIds.size, channels.size)
-		var unsavedIndex = sortedChannelIds.size
-		val sortedChannelArray = arrayOfNulls<ChannelModel>(size)
-
-		for (channel in channels) {
-			var index = sortedChannelIds.indexOf(channel.id)
-
-			if (index == -1) {
-				// order for this channel has never been saved - move to end
-				index = unsavedIndex++
-			}
-
-			sortedChannelArray[index] = channel
-		}
-
-		// return without null values in case channels have been deleted
-		return sortedChannelArray.filterNotNull()
+		return channels.sortedBy {
+			val sortIndex = sortedChannelIds.indexOf(it.id)
+			if (sortIndex == -1) Int.MAX_VALUE else sortIndex
+		}.toMutableList()
 	}
 
-	private fun loadVisibility(channels: List<ChannelModel>, removeDisabled: Boolean): List<ChannelModel> {
+	private fun loadVisibility(
+		channels: List<ChannelModel>,
+		removeDisabled: Boolean
+	): List<ChannelModel> {
 		val disabledChannelIds = preferenceHelper.loadList(PREF_KEY_CHANNELS_NOT_VISIBLE)
 			?: return channels // have never been saved before
 

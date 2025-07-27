@@ -1,12 +1,12 @@
 package de.christinecoenen.code.zapp.persistence
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
+import androidx.sqlite.SQLiteException
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.christinecoenen.code.zapp.models.search.SearchQuery
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
@@ -14,15 +14,25 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 @Database(
 	entities = [PersistedMediathekShow::class, SearchQuery::class],
 	version = 4,
-	autoMigrations = [
-		AutoMigration(from = 3, to = 4),
-	],
+	autoMigrations = [],
 	exportSchema = true
 )
 @TypeConverters(DownloadStatusConverter::class, DateTimeConverter::class)
 abstract class Database : RoomDatabase() {
 
 	companion object {
+
+		private val MIGRATION_3_4 = object : Migration(3, 4) {
+			override fun migrate(db: SupportSQLiteDatabase) {
+				try {
+					db.execSQL("ALTER TABLE `PersistedMediathekShow` ADD COLUMN `showUpdatedAt` INTEGER DEFAULT NULL")
+				} catch (_: SQLiteException) {
+					// this is okay - the column is already present when updating from 9.0.0-beta to newer versions
+				}
+
+				db.execSQL("CREATE TABLE IF NOT EXISTS `SearchQuery` (`query` TEXT NOT NULL, `date` INTEGER NOT NULL, PRIMARY KEY(`query`))")
+			}
+		}
 
 		/**
 		 * Add bookmark feature
@@ -71,7 +81,11 @@ abstract class Database : RoomDatabase() {
 					de.christinecoenen.code.zapp.persistence.Database::class.java,
 					"zapp.db"
 				)
-				.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+				.addMigrations(
+					MIGRATION_1_2,
+					MIGRATION_2_3,
+					MIGRATION_3_4
+				)
 				.build()
 		}
 

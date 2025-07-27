@@ -1,3 +1,7 @@
+# 9.1.1
+* Fixed a crash upon start when the channel order has been changed previously
+* Fixed a chash upon start when updating from version 9.0.0-beta1
+
 # 9.1.0
 * System bar does not get stuck after accessing program information inside the player [#313](https://github.com/mediathekview/zapp/issues/313)
 * Adjusted "About Zapp" to different device sizes ([#483](https://github.com/mediathekview/zapp/issues/483))
