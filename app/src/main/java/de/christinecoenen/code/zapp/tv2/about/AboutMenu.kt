@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.tv.changelog.ChangelogActivity
-import de.christinecoenen.code.zapp.tv.faq.FaqActivity
 import de.christinecoenen.code.zapp.tv.settings.SettingsActivity
+import de.christinecoenen.code.zapp.tv2.changelog.ChangelogActivity
+import de.christinecoenen.code.zapp.tv2.faq.FaqActivity
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
 import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 
@@ -41,7 +41,7 @@ fun AboutMenu() {
 				icon = Icons.AutoMirrored.Outlined.List,
 				selected = false,
 				onClick = {
-					context.startActivity(Intent(context, ChangelogActivity::class.java))
+					context.startActivity(ChangelogActivity.getStartIntent(context))
 				}
 			)
 			// TODO: where is our help icon?
@@ -50,7 +50,7 @@ fun AboutMenu() {
 				icon = Icons.Outlined.Info,
 				selected = false,
 				onClick = {
-					context.startActivity(Intent(context, FaqActivity::class.java))
+					context.startActivity(FaqActivity.getStartIntent(context))
 				}
 			)
 		}

@@ -160,6 +160,10 @@ dependencies {
 	// markdown
 	implementation 'io.noties.markwon:core:4.6.2'
 
+	def markdown_version = '0.35.0'
+	implementation "com.mikepenz:multiplatform-markdown-renderer:$markdown_version"
+	implementation "com.mikepenz:multiplatform-markdown-renderer-m3:$markdown_version"
+
 	// work manager
 	def work_version = "2.10.2"
 	implementation "androidx.work:work-runtime-ktx:$work_version"

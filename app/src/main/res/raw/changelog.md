@@ -1,14 +1,14 @@
-# 9.1.1
+## 9.1.1
 * Absturz beim Start behoben, wenn schon einmal die Sender-Reihenfolge angepasst wurde
 * Absturz beim Start behoben, wenn man von Version 9.0.0-beta1 aktualisiert
 
-# 9.1.0
+## 9.1.0
 * System-Bar bleibt im Player nicht mehr sichtbar, nachdem man Programm-Informationen aufgerufen hat [#313](https://github.com/mediathekview/zapp/issues/313)
 * "Über Zapp" an verschiedenen Gerätegrößen angepasst ([#483](https://github.com/mediathekview/zapp/issues/483))
 * Absturz auf Geräten behoben, die über keine App für Sprachsuche verfügen
 * Videoqualität in kostenlosen Netzwerken einstellbar gemacht ([#459](https://github.com/mediathekview/zapp/issues/459))
 
-# 9.0.0
+## 9.0.0
 * Möglichkeit hinzugefügt, den Suchverlauf auszuschalten (danke an Bnyro)
 * Neue Mediathek-Sender hinzugefügt: ARD-alpha, One und tagesschau24
 * Zapp für Android 16 vorbereitet
@@ -17,30 +17,30 @@
 * Zapp für Android 15 vorbereitet
 * Neue Suchfunktion
 
-# 9.0.0-beta1
+## 9.0.0-beta1
 * Fehler behoben, bei dem Download-Buttons bei Sendungen ohne Downloads angezeigt wurden
 * Zapp für Android 15 vorbereitet
 * Neue Suchfunktion
 
-# 8.5.4
+## 8.5.4
 * Mail-Adresse für Support-Anfragen und Crash-Reports aktualisiert
 
-# 8.5.3
+## 8.5.3
 * Sichtbare HTML-Entities in Programm-Information repariert
 * Repariert, dass Lesezeichen manchmal nicht entfernt werden können
 
-# 8.5.2
+## 8.5.2
 * Duplikate beim Scrollen in der Mediathek-Liste entfernt
 
-# 8.5.1
+## 8.5.1
 * Dynamische Farben wurden auf manchen Geräten nicht übernommen
 
-# 8.5.0
+## 8.5.0
 * Einstellungen zu Android-TV-version hinzugefügt
 * Angeschnittener Text im Vorspulen-Button gefixt
 * Sender "Deutsche Welle" und "Deutsche Welle +" entfernt, weil sie ihren deutschen Sendebetrieb eingestellt haben
 
-# 8.4.0
+## 8.4.0
 * Von Exoplayer auf neue Media-3-Bibliothek umgestiegen
 * Absturz beim Starten von Zapp behoben, wenn vorher eine SD-Karte mit Downloads entfernt wurde
 * Zapp auf Android 14 vorbereitet
@@ -50,33 +50,33 @@
 * Sender Funk.net zur Mediathek hinzugefügt
 * Sender SR zur Mediathek hinzugefügt
 
-# 8.3.2
+## 8.3.2
 * Behoben, dass Download-Benachrichtigungen nicht die Sendung öffnen
 * Behoben, dass nach einer Bildschirmdrehung der falsche Tab zu sehen ist
 
-# 8.3.1
+## 8.3.1
 * Absturz bei geänderter Sender-Anordnung gefixt
 
-# 8.3.0
+## 8.3.0
 * Einstellungen im Material-Design (danke an Bnyro)
 * Schlummerfunktion (danke an Bnyro)
 * Exo-Player-Update - sollte Playback-Probleme auf einigen Geräten beheben
 * Möglichkeit, Start-Tab in den Einstellungen zu setzen (danke an Bnyro)
 * Videos nutzen Untertitel-Stil aus den Android-Systemeinstellungen
 
-# 8.2.0
+## 8.2.0
 * Unterstützung für dynamische Gerätefarben
 * Absturz in Mediathek-Liste behoben
 * Darstellungsfehler in der Mediathekliste auf Android TV behoben
 * Zappen zwischen Live-Streams ist wieder möglich!
 
-# 8.1.0
+## 8.1.0
 * Behoben, dass Videos manchmal nicht laden, wenn man sie im Bild-in-Bild-Modus startet
 * Der Video-Fortschritt wird während der Wiedergabe regelmäßig gespeichert
 * Setze Wiedergabe im Hintergrund fort, wenn der Bildschirm ausgeschaltet wird
 * Einstellung, um automatisch in den Bild-in-Bild-Modus zu wechseln
 
-# 8.0.0
+## 8.0.0
 * Unterstützung für Android 13 (Monochromes Icon, Per-App Sprachauswahl)
 * Sprachauswahl in den Einstellungen
 * Keine Unterstützung mehr für Android 7
@@ -91,61 +91,61 @@
 * Moderner Netzwerk-Stack für die Video-Wiedergabe
 * Bessere Fehlermeldungen während der Videowiedergabe
 
-# 7.0.4
+## 7.0.4
 * Layout der Senderliste auf Tablets glatt gezogen
 * Hängende Status-Bar im Vollbild-Modus auf manchen Geräten behoben
 * Lautstärke- und Helligkeitsregler verbessert
 
-# 7.0.3
+## 7.0.3
 * Standby-Modus auf Android-TV-Geräten wird nicht mehr während der Videowiedergabe aktiviert
 * Standby-Modus wird nicht mehr aktiviert, wenn man aus der Hintergrund-Wiedergabe zurück kehrt
 
-# 7.0.2
+## 7.0.2
 * Zapp wieder für Nicht-Android-TV-Geräte sichtbar gemacht
 
-# 7.0.1
+## 7.0.1
 * Player-UI versteckt sich korrekt automatisch, wenn man aus dem Hintergrund-Playback kommt
 * Abstürze beim Start auf älteren Android TV Geräten behoben
 * Klick auf Download-Beendet-Benachrichtigung funktioniert wieder auf Android 12
 
-# 7.0.0 - Beta
+## 7.0.0 - Beta
 * Offizielle Unterstützung für Android TV!
 * Neues Material 3 Design
 * Android-Backup-Unterstützung für Einstellungen und Datenbankeinträge
 * Kategorie-Icons heben sich im hellen Design vom Hintergrund ab
 * Verbesserter Vollbild-Modus für Videos
 
-# 6.1.0
+## 6.1.0
 * Fehlgeschlagene Downloads können aus der Download-Liste entfernt werden
 * Auswahl der Videoqualität in kostenpflichtigen Netwerken repariert
 * Anzahl der Sucherergebnisse wird im Mediathekfilter angezeigt
 
-# 6.0.2
+## 6.0.2
 * Video-Player-Interface verschwindet schneller automatisch
 * Abspielfehler bei manchen Mediathek-Sendungen behoben
 * Deaktivierter Download-Button bei manchen Mediathek-Sendungen behoben
 * App-Absturz in der Mediathek-Liste behoben
 * Hintergrund-Wiedergabe wird nicht mehr nach kurzer Zeit vom System abgebrochen
 
-# 6.0.1
+## 6.0.1
 * Absturz nach dem Bearbeiten der Senderliste behoben
 * Absturz beim Starten von Tagesschau24 auf Android 6 behoben
 * Springender Fortschrittsbalken in der Senderliste auf Android 6 behoben
 
-# 6.0.0
+## 6.0.0
 * Mediathek-Suche erweitert: Filtern nach Sender und Sendungslänge
 * Suchvorschläge entfernt
 * Sender-Logo in Benachrichtigung angezeigt
 * Beim Teilen von Sendungen wird immer die höchste verfügbare Qualität verwendet
 * FAQ-Eintrag zu Chromecast hinzugefügt
 
-# 5.0.2
+## 5.0.2
 * Download-Abbrüche behoben
 
-# 5.0.1
+## 5.0.1
 * Download-Abbrüche behoben
 
-# 5.0.0
+## 5.0.0
 * Swipen zwischen den Sendern entfernt (zur besseren Warbarkeit und Fehlerreduktion)
 * Neues Layout beim Abspielen von Live-Streams
 * Sprachwechsel für wenige Live-Streams verfügbar
@@ -158,10 +158,10 @@
 * Fehlenden Ladeindikator bei Mediathekvideos wieder sichbar gemacht
 * Unterstützung für Android 12
 
-# 4.0.1
+## 4.0.1
 * Absturz beim Starten ohne Internetverbindung behoben
 
-# 4.0.0
+## 4.0.0
 * Downloads-Tab eingeführt
 * Hauptnavigation auf Tabs umgestellt
 * Absturz beim Entfernen der SD-Karte behoben
@@ -169,24 +169,24 @@
 * Mindestanforderung auf Android N angehoben
 * FAQ erweitert
 
-# 3.6.1
+## 3.6.1
 * Untertitel in Live-Streams abgeschaltet (können über die Android-Bedienungshilfe aktiviert werden)
 * Streams von MDR repariert
 * Abgeschnittene Texte in About-Screen behoben
 * Verbesserungen beim Erkennen von kostenpflichtigen vs. unbeschränkten Internet-Verbindungen
 * Metadaten in F-Droid repariert
 
-# 3.6.0
+## 3.6.0
 * Fehler beim Download behoben
 * Fehler beim laden der Untertitel behoben
 * Einstellbare Wiedergabe-Geschwindigkeit
 
-# 3.5.1
+## 3.5.1
 * Fehler beim Download auf SD-Karte behoben
 * Fehler-Melden-Button in Download-Benachrichtigung eingebaut
 * Downloads bei instabiler Internet-Verbindung verbessert
 
-# 3.5.0
+## 3.5.0
 * Text- und Übersetzungs-Fehler verbessert
 * Fehlertyp wird in Download-Fehler-Benachrichtigung angezeigt
 * Klick auf Download-Benachrichtigung führt nicht mehr zur falschen Sendung
@@ -195,7 +195,7 @@
 * Absturz behoben, wenn fehlerhafte Downloads nochmals aufgenommen werden
 * MediaStore-Handling auf Android 10 verbessert
 
-# 3.5.0 - Beta 1
+## 3.5.0 - Beta 1
 * Downloads auf SD-Karte möglich
 * Klick auf Download-Notificaton öffnet entsprechende Sendung
 * Download-Fortschritt wird innerhalb der App angezeigt
@@ -205,7 +205,7 @@
 * ARTE.FR aus Mediathek entfernt
 * Multiwindow-Unterstützung hinzugefügt
 
-# 3.4.0
+## 3.4.0
 * Stream von ARD repariert
 * Unbekannte Veröffentlichungsdaten markiert
 * Falscher Download-Dateiname auf Samsung-Geräten behoben
