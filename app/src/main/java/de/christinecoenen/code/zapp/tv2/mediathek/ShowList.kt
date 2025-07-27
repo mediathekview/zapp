@@ -1,10 +1,12 @@
 package de.christinecoenen.code.zapp.tv2.mediathek
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
@@ -20,6 +22,7 @@ fun ShowList(
 
 	LazyColumn(
 		state = listState,
+		verticalArrangement = Arrangement.spacedBy(8.dp),
 		modifier = modifier
 	) {
 		items(
@@ -31,6 +34,9 @@ fun ShowList(
 			ShowListItem(
 				title = show.title,
 				topic = show.topic,
+				chanel = show.channel,
+				duration = show.formattedDuration,
+				releasedAt = show.formattedTimestamp.toString(),
 				selected = false,
 				onClick = { onShowClick(index) }
 			)
