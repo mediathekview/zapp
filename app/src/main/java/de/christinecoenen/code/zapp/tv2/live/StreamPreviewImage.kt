@@ -10,16 +10,17 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -29,6 +30,9 @@ import androidx.media3.ui.compose.PlayerSurface
 import androidx.media3.ui.compose.SURFACE_TYPE_TEXTURE_VIEW
 import de.christinecoenen.code.zapp.R
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -59,6 +63,7 @@ fun StreamPreviewImage(
 	streamUrl: String
 ) {
 	val context = LocalContext.current
+	val coroutineScope = rememberCoroutineScope()
 
 	var isVisible by remember { mutableStateOf(false) }
 
@@ -80,20 +85,25 @@ fun StreamPreviewImage(
 		}
 	}
 
-	LaunchedEffect(streamUrl) {
-		while (true) {
-			isVisible = false
-			delay(fadeDuration)
+	LifecycleResumeEffect(streamUrl) {
+		val job = coroutineScope.launch {
+			while (isActive) {
+				isVisible = false
+				delay(fadeDuration)
 
-			player.apply {
-				stop()
-				removeMediaItem(0)
-				setMediaItem(MediaItem.fromUri(streamUrl))
-				prepare()
+				player.apply {
+					stop()
+					removeMediaItem(0)
+					setMediaItem(MediaItem.fromUri(streamUrl))
+					prepare()
+					Timber.d("reload video preview")
+				}
+
+				delay(changeDelay)
 			}
-
-			delay(changeDelay)
 		}
+
+		onPauseOrDispose { job.cancel() }
 	}
 
 	DisposableEffect(Unit) {
