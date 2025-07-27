@@ -25,7 +25,6 @@ fun AboutMenu() {
 			SettingsCard(
 				titleRes = R.string.activity_settings_title,
 				iconRes = R.drawable.ic_outline_settings_24,
-				selected = false,
 				onClick = {
 					context.startActivity(Intent(context, SettingsActivity::class.java))
 				}
@@ -33,7 +32,6 @@ fun AboutMenu() {
 			SettingsCard(
 				titleRes = R.string.changelog_title,
 				iconRes = R.drawable.ic_sharp_format_list_bulleted_24,
-				selected = false,
 				onClick = {
 					context.startActivity(ChangelogActivity.getStartIntent(context))
 				}
@@ -42,7 +40,6 @@ fun AboutMenu() {
 			SettingsCard(
 				titleRes = R.string.faq_title,
 				iconRes = R.drawable.ic_baseline_help_outline_24,
-				selected = false,
 				onClick = {
 					context.startActivity(FaqActivity.getStartIntent(context))
 				}

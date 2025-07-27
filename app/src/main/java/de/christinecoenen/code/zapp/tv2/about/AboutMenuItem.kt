@@ -20,12 +20,11 @@ import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 fun SettingsCard(
 	@StringRes titleRes: Int = R.string.menu_settings,
 	@DrawableRes iconRes: Int = R.drawable.ic_sharp_format_list_bulleted_24,
-	selected: Boolean = false,
 	onClick: () -> Unit = {},
 ) {
 	AppTheme {
 		ListItem(
-			selected = selected,
+			selected = false,
 			onClick = onClick,
 			headlineContent = {
 				Text(stringResource(titleRes))
