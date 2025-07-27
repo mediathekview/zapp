@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.tv2.common
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.tv.material3.MaterialTheme
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
 import de.christinecoenen.code.zapp.tv2.theme.TvPreview
@@ -18,14 +19,14 @@ fun CircularProgress(
 		if (indeterminate) {
 			CircularProgressIndicator(
 				color = MaterialTheme.colorScheme.primary,
-				trackColor = MaterialTheme.colorScheme.onSurface,
+				trackColor = Color.Transparent,
 				modifier = modifier,
 			)
 		} else {
 			CircularProgressIndicator(
 				progress = progress,
 				color = MaterialTheme.colorScheme.primary,
-				trackColor = MaterialTheme.colorScheme.onSurface,
+				trackColor = Color.Transparent,
 				modifier = modifier,
 			)
 		}
