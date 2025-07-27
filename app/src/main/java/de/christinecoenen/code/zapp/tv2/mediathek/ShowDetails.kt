@@ -4,10 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Button
@@ -54,7 +53,7 @@ fun ShowDetails(
 			contentPadding = ButtonDefaults.ButtonWithIconContentPadding
 		) {
 			Icon(
-				Icons.Filled.PlayArrow,
+				painterResource(R.drawable.ic_play_arrow_white_24dp),
 				contentDescription = null,
 				modifier = Modifier.size(ButtonDefaults.IconSize)
 			)
