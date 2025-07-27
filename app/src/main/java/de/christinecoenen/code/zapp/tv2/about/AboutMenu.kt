@@ -3,10 +3,6 @@ package de.christinecoenen.code.zapp.tv2.about
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
@@ -21,8 +17,6 @@ import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 @TvPreview
 @Composable
 fun AboutMenu() {
-	// TODO: handle clicks
-
 	AppTheme {
 		Column(
 			verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -30,7 +24,7 @@ fun AboutMenu() {
 			val context = LocalContext.current
 			SettingsCard(
 				titleRes = R.string.activity_settings_title,
-				icon = Icons.Outlined.Settings,
+				iconRes = R.drawable.ic_outline_settings_24,
 				selected = false,
 				onClick = {
 					context.startActivity(Intent(context, SettingsActivity::class.java))
@@ -38,16 +32,16 @@ fun AboutMenu() {
 			)
 			SettingsCard(
 				titleRes = R.string.changelog_title,
-				icon = Icons.AutoMirrored.Outlined.List,
+				iconRes = R.drawable.ic_sharp_format_list_bulleted_24,
 				selected = false,
 				onClick = {
 					context.startActivity(ChangelogActivity.getStartIntent(context))
 				}
 			)
-			// TODO: where is our help icon?
+
 			SettingsCard(
 				titleRes = R.string.faq_title,
-				icon = Icons.Outlined.Info,
+				iconRes = R.drawable.ic_baseline_help_outline_24,
 				selected = false,
 				onClick = {
 					context.startActivity(FaqActivity.getStartIntent(context))

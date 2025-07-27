@@ -1,12 +1,11 @@
 package de.christinecoenen.code.zapp.tv2.about
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.tv.material3.Icon
 import androidx.tv.material3.ListItem
@@ -20,7 +19,7 @@ import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 @Composable
 fun SettingsCard(
 	@StringRes titleRes: Int = R.string.menu_settings,
-	icon: ImageVector = Icons.Outlined.Settings,
+	@DrawableRes iconRes: Int = R.drawable.ic_sharp_format_list_bulleted_24,
 	selected: Boolean = false,
 	onClick: () -> Unit = {},
 ) {
@@ -33,7 +32,7 @@ fun SettingsCard(
 			},
 			leadingContent = {
 				Icon(
-					imageVector = icon,
+					painter = painterResource(iconRes),
 					contentDescription = null,
 					modifier = Modifier.size(ListItemDefaults.IconSize)
 				)
