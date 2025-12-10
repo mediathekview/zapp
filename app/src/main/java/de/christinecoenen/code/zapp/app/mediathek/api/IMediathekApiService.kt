@@ -8,7 +8,7 @@ import retrofit2.http.POST
 
 interface IMediathekApiService {
 
-	@Headers("Content-Type: text/plain")
+	@Headers("Content-Type: application/json")
 	@POST("query")
 	suspend fun listShows(@Body queryRequest: QueryRequest): MediathekAnswer
 
