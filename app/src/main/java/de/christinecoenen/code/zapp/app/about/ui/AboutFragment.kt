@@ -39,7 +39,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.mikepenz.aboutlibraries.ui.compose.android.rememberLibraries
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import de.christinecoenen.code.zapp.BuildConfig
 import de.christinecoenen.code.zapp.R
@@ -93,7 +93,7 @@ class AboutFragment : Fragment() {
 	@ThemePreviews
 	@Composable
 	fun LibrariesList() {
-		val libraries by rememberLibraries(R.raw.aboutlibraries)
+		val libraries by produceLibraries(R.raw.aboutlibraries)
 
 		LibrariesContainer(
 			libraries = libraries,
