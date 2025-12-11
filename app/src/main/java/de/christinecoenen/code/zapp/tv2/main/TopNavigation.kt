@@ -19,61 +19,67 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Tab
 import androidx.tv.material3.TabRow
 import androidx.tv.material3.Text
-import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.tv2.about.AboutScreenLocation
+import de.christinecoenen.code.zapp.tv2.live.LiveScreenLocation
+import de.christinecoenen.code.zapp.tv2.main.navigation.MainScreenLocation
+import de.christinecoenen.code.zapp.tv2.mediathek.MediaCenterLocation
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
 import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 
 @TvPreview
 @Composable
 fun TopNavigation(
-    modifier: Modifier = Modifier,
-    tabStringIds: List<Int> = listOf(
-        R.string.app_name,
-        R.string.activity_main_tab_live
-    ),
-    selectedTabIndex: Int = 0,
-    onTabSelected: (index: Int) -> Unit = {}
+	modifier: Modifier = Modifier,
+	locations: List<MainScreenLocation> = listOf(
+		LiveScreenLocation,
+		MediaCenterLocation,
+		AboutScreenLocation
+	),
+	selectedLocation: MainScreenLocation = locations.first(),
+	onLocationSelected: (location: MainScreenLocation) -> Unit = {}
 ) {
-    AppTheme {
-        val focusRequester = remember { FocusRequester() }
-        var hasFocus by remember { mutableStateOf(false) }
+	AppTheme {
+		val focusRequester = remember { FocusRequester() }
+		val selectedTabIndex = locations.indexOf(selectedLocation)
+		var hasFocus by remember { mutableStateOf(false) }
 
-        BackHandler(selectedTabIndex != 0 || !hasFocus) {
-            onTabSelected(0)
-            focusRequester.requestFocus()
-        }
+		BackHandler(selectedTabIndex != 0 || !hasFocus) {
+			onLocationSelected(locations.first())
+			focusRequester.requestFocus()
+		}
 
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-        }
+		// TODO: this seems to grap focus when navigating back from non main screen
+		LaunchedEffect(Unit) {
+			focusRequester.requestFocus()
+		}
 
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            modifier = modifier
-                .padding(top = 32.dp, bottom = 16.dp)
-                .focusGroup()
-                .focusRestorer()
-                .onFocusChanged { hasFocus = it.hasFocus }
-        ) {
-            tabStringIds.forEachIndexed { index, tabResId ->
-                val isSelected = index == selectedTabIndex
+		TabRow(
+			selectedTabIndex = selectedTabIndex,
+			modifier = modifier
+				.padding(top = 32.dp, bottom = 16.dp)
+				.focusGroup()
+				.focusRestorer()
+				.onFocusChanged { hasFocus = it.hasFocus }
+		) {
+			locations.forEach { location ->
+				val isSelected = location == selectedLocation
 
-                Tab(
-                    selected = isSelected,
-                    onFocus = { onTabSelected(index) },
-                    modifier = Modifier
-                        .then(if (isSelected) Modifier.focusRequester(focusRequester) else Modifier)
-                ) {
-                    Text(
-                        text = stringResource(tabResId),
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 16.dp,
-                                vertical = 10.dp
-                            )
-                    )
-                }
-            }
-        }
-    }
+				Tab(
+					selected = isSelected,
+					onFocus = { onLocationSelected(location) },
+					modifier = Modifier
+						.then(if (isSelected) Modifier.focusRequester(focusRequester) else Modifier)
+				) {
+					Text(
+						text = stringResource(location.titleResId),
+						modifier = Modifier
+							.padding(
+								horizontal = 16.dp,
+								vertical = 10.dp
+							)
+					)
+				}
+			}
+		}
+	}
 }

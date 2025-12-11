@@ -15,9 +15,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.media3.ui.compose.PlayerSurface
+import androidx.navigation3.runtime.NavKey
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
+import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
+
+@Serializable
+data class PlayerScreenLocation(val videoInfo: VideoInfo) : NavKey
 
 @Composable
 fun PlayerScreen(
