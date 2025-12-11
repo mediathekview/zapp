@@ -69,10 +69,7 @@ class MainActivity : ComponentActivity() {
 								MediaCenterScreen(
 									onShowSelected = { show ->
 										backStack.add(
-											PlayerScreenLocation(
-												// TODO: extend VideoInfo::fromShow
-												VideoInfo(title = show.title, url = show.videoUrl)
-											)
+											PlayerScreenLocation(VideoInfo.fromShow(show))
 										)
 									}
 								)

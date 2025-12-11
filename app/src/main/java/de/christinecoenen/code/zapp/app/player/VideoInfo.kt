@@ -4,6 +4,7 @@ import android.text.TextUtils
 import androidx.annotation.DrawableRes
 import de.christinecoenen.code.zapp.app.settings.repository.StreamQualityBucket
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
+import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import java.io.Serializable
@@ -26,16 +27,21 @@ data class VideoInfo(
 
 		@JvmStatic
 		fun fromShow(persistedShow: PersistedMediathekShow): VideoInfo {
-			val show = persistedShow.mediathekShow
+			return fromShow(persistedShow.mediathekShow)
+				.apply {
+					id = persistedShow.id
+					filePath = persistedShow.downloadedVideoPath
+				}
+		}
 
+		@JvmStatic
+		fun fromShow(show: MediathekShow): VideoInfo {
 			return VideoInfo(
 				title = show.title,
 				url = show.videoUrl
 			).apply {
-				id = persistedShow.id
 				urlHighestQuality = show.getVideoUrl(Quality.High)
 				urlLowestQuality = show.getVideoUrl(Quality.Low)
-				filePath = persistedShow.downloadedVideoPath
 				subtitle = show.topic
 				subtitleUrl = show.subtitleUrl
 				hasDuration = true
