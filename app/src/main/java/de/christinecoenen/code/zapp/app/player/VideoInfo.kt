@@ -8,6 +8,7 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 import de.christinecoenen.code.zapp.models.shows.Quality
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class VideoInfo(
 	var id: Int = 0,
 	var title: String,

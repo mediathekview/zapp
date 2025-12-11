@@ -7,7 +7,7 @@ plugins {
 	id 'com.mikepenz.aboutlibraries.plugin.android'
 	id 'androidx.navigation.safeargs.kotlin'
 	id 'org.jetbrains.kotlin.plugin.compose'
-	id 'org.jetbrains.kotlin.plugin.serialization' version '2.2.0'
+	id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -145,6 +145,13 @@ dependencies {
 	implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 	implementation "androidx.navigation:navigation-compose:$nav_version"
+
+	// navigation 3
+	def nav3_core = "1.0.0"
+	implementation "androidx.navigation3:navigation3-runtime:$nav3_core"
+	implementation "androidx.navigation3:navigation3-ui:$nav3_core"
+	implementation "androidx.lifecycle:lifecycle-viewmodel-navigation3:2.10.0"
+	implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinx_serialization_core"
 
 	// room database
 	def room_version = "2.8.4"

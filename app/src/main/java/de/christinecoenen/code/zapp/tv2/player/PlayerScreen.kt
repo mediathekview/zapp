@@ -17,58 +17,52 @@ import androidx.compose.ui.Modifier
 import androidx.media3.ui.compose.PlayerSurface
 import de.christinecoenen.code.zapp.app.player.Player
 import de.christinecoenen.code.zapp.app.player.VideoInfo
-import de.christinecoenen.code.zapp.tv2.common.CircularProgress
-import de.christinecoenen.code.zapp.tv2.main.navigation.Location
 import org.koin.compose.koinInject
-
-data class PlayerLocation(
-    val videoInfo: VideoInfo,
-) : Location()
 
 @Composable
 fun PlayerScreen(
-    videoInfo: VideoInfo,
-    player: Player = koinInject<Player>(),
+	videoInfo: VideoInfo,
+	player: Player = koinInject<Player>(),
 ) {
-    var controllerVisible by remember { mutableStateOf(false) }
-    val error by player.errorResourceId.collectAsState(null)
+	var controllerVisible by remember { mutableStateOf(false) }
+	val error by player.errorResourceId.collectAsState(null)
 
-    BackHandler(controllerVisible) {
-        controllerVisible = false
-    }
+	BackHandler(controllerVisible) {
+		controllerVisible = false
+	}
 
-    LaunchedEffect(Unit) {
-        player.load(videoInfo)
-        player.resume()
-    }
+	LaunchedEffect(Unit) {
+		player.load(videoInfo)
+		player.resume()
+	}
 
-    DisposableEffect(Unit) {
-        onDispose {
-            player.destroy()
-        }
-    }
+	DisposableEffect(Unit) {
+		onDispose {
+			player.destroy()
+		}
+	}
 
-    PlayerSurface(
-        player = player.exoPlayer,
-        modifier = Modifier.clickable {
-            controllerVisible = !controllerVisible
-        }
-    )
+	PlayerSurface(
+		player = player.exoPlayer,
+		modifier = Modifier.clickable {
+			controllerVisible = !controllerVisible
+		}
+	)
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // TODO: hide loading indicator when not buffering
-        // CircularProgress()
+	Box(
+		contentAlignment = Alignment.Center,
+		modifier = Modifier.fillMaxSize()
+	) {
+		// TODO: hide loading indicator when not buffering
+		// CircularProgress()
 
-        PlayerError(error)
-    }
+		PlayerError(error)
+	}
 
-    // TODO: hide with delay when video is playing
-    ControllerOverlay(
-        title = videoInfo.title,
-        subtitle = videoInfo.subtitle,
-        isVisible = controllerVisible,
-    )
+	// TODO: hide with delay when video is playing
+	ControllerOverlay(
+		title = videoInfo.title,
+		subtitle = videoInfo.subtitle,
+		isVisible = controllerVisible,
+	)
 }

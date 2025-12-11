@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
@@ -38,8 +38,8 @@ fun MarkdownScreen(
 	title: String = "Changelog",
 	markdownResId: Int = R.raw.changelog,
 ) {
-	val context = LocalContext.current
-	val markdown = remember { context.resources.readAllText(markdownResId) }
+	val resources = LocalResources.current
+	val markdown = remember { resources.readAllText(markdownResId) }
 	val markdownState = rememberMarkdownState(markdown)
 
 	val headlineUnderlineStyle = MaterialTheme.typography.headlineMedium
@@ -66,8 +66,8 @@ fun MarkdownScreen(
 		Column(
 			modifier = Modifier
 				.background(MaterialTheme.colorScheme.surface)
-                .fillMaxSize()
-                .padding(horizontal = 130.dp)
+				.fillMaxSize()
+				.padding(horizontal = 130.dp)
 		) {
 			Spacer(Modifier.height(32.dp))
 

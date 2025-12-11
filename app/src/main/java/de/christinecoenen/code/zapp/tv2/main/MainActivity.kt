@@ -2,109 +2,78 @@ package de.christinecoenen.code.zapp.tv2.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import androidx.tv.material3.MaterialTheme
 import de.christinecoenen.code.zapp.app.player.VideoInfo
-import de.christinecoenen.code.zapp.tv2.about.AboutScreen
-import de.christinecoenen.code.zapp.tv2.about.AboutScreenLocation
-import de.christinecoenen.code.zapp.tv2.mediathek.MediaCenterScreen
-import de.christinecoenen.code.zapp.tv2.mediathek.MediaCenterScreenLocation
 import de.christinecoenen.code.zapp.tv2.live.LiveScreen
-import de.christinecoenen.code.zapp.tv2.live.LiveScreenLocation
-import de.christinecoenen.code.zapp.tv2.main.navigation.Location
-import de.christinecoenen.code.zapp.tv2.main.navigation.NavigationViewModel
-import de.christinecoenen.code.zapp.tv2.player.PlayerActivity
-import de.christinecoenen.code.zapp.tv2.player.PlayerLocation
 import de.christinecoenen.code.zapp.tv2.player.PlayerScreen
 import de.christinecoenen.code.zapp.tv2.theme.AppTheme
-import org.koin.android.ext.android.inject
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
 
-    private val navigationViewModel: NavigationViewModel by inject()
+	// TODO: move to components and maybe rename those NavKeys
+	@Serializable
+	private data object LiveScreen : NavKey
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	@Serializable
+	private data class Player(val videoInfo: VideoInfo) : NavKey
 
-        setContent {
-			val context = LocalContext.current
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-            AppTheme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface)
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    {
-                        val currentLocation by navigationViewModel.currentLocation
-                            .collectAsStateWithLifecycle(Location())
-                        val currentSelectedTabIndex by navigationViewModel.currentSelectedTabIndex
-                            .collectAsStateWithLifecycle(-1)
+		setContent {
+			val backStack = rememberNavBackStack(LiveScreen)
 
-                        BackHandler(!currentLocation.isMainTab) {
-                            navigationViewModel.closeCurrentScreen()
-                        }
+			AppTheme {
+				Box(
+					modifier = Modifier
+						.fillMaxSize()
+						.background(MaterialTheme.colorScheme.surface)
+				) {
+					NavDisplay(
+						entryDecorators = listOf(
+							rememberSaveableStateHolderNavEntryDecorator(),
+							rememberViewModelStoreNavEntryDecorator()
+						),
+						backStack = backStack,
+						modifier = Modifier.fillMaxSize(),
+						entryProvider = entryProvider {
+							entry<LiveScreen> {
+								LiveScreen(
+									onChannelClick = { channel ->
+										backStack.add(Player(VideoInfo.fromChannel(channel)))
+									}
+								)
+							}
 
-                        when (val location = currentLocation) {
-                            is LiveScreenLocation -> LiveScreen(
-                                onChannelClick = { channel ->
-									startActivity(PlayerActivity.getStartIntent(
-										context,
-										VideoInfo.fromChannel(channel)
-									))
-                                    /*navigationViewModel.showScreen(
-                                        PlayerLocation(videoInfo = VideoInfo.fromChannel(channel))
-                                    )*/
-                                }
-                            )
+							entry<Player> { key ->
+								PlayerScreen(videoInfo = key.videoInfo)
+							}
 
-                            is MediaCenterScreenLocation -> MediaCenterScreen(
-                                onShowSelected = { show ->
-									startActivity(PlayerActivity.getStartIntent(
-										context,
-										VideoInfo(
-											title = show.title,
-											url = show.videoUrl,
-										)
-									))
-                                    /*navigationViewModel.showScreen(
-                                        PlayerLocation(videoInfo = VideoInfo(
-                                            title = show.title,
-                                            url = show.videoUrl,
-                                        ))
-                                    )*/
-                                }
-                            )
+							// TODO: add remaining screens
+						}
+					)
 
-                            is AboutScreenLocation -> AboutScreen()
-
-                            is PlayerLocation -> PlayerScreen(location.videoInfo)
-                        }
-
-                        if (currentLocation.isMainTab) {
-                            TopNavigation(
-                                selectedTabIndex = currentSelectedTabIndex,
-                                onTabSelected = { index -> navigationViewModel.selectMainTab(index) },
-                                tabStringIds = navigationViewModel.mainTabTitleResIds,
-                                modifier = Modifier.align(Alignment.TopCenter)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+					// TODO: add tab top navigation back in
+					/*TopNavigation(
+						selectedTabIndex = currentSelectedTabIndex,
+						onTabSelected = { index -> navigationViewModel.selectMainTab(index) },
+						tabStringIds = navigationViewModel.mainTabTitleResIds,
+						modifier = Modifier.align(Alignment.TopCenter)
+					)*/
+				}
+			}
+		}
+	}
 }

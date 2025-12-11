@@ -16,16 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
-import de.christinecoenen.code.zapp.tv2.main.navigation.Location
 import de.christinecoenen.code.zapp.tv2.theme.TvScreenPreview
 import org.koin.androidx.compose.koinViewModel
-
-class MediaCenterScreenLocation : Location(
-	titleResId = R.string.activity_main_tab_mediathek,
-	isMainTab = true,
-)
 
 @TvScreenPreview
 @Composable

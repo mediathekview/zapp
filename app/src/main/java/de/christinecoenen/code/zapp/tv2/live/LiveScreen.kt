@@ -9,40 +9,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import de.christinecoenen.code.zapp.models.channels.json.JsonChannelList
-import de.christinecoenen.code.zapp.tv2.main.navigation.Location
-import de.christinecoenen.code.zapp.tv2.theme.TvPreview
 import org.koin.androidx.compose.koinViewModel
 
-class LiveScreenLocation : Location(
-	titleResId = R.string.activity_main_tab_live,
-	isMainTab = true,
-)
-
-@TvPreview
 @Composable
 fun LiveScreen(
+	liveScreenViewModel: LiveScreenViewModel = koinViewModel(),
 	programInfoViewModel: ProgramInfoViewModel = koinViewModel(),
 	onChannelClick: (channel: ChannelModel) -> Unit = {},
 ) {
-
-	val context = LocalContext.current
-	val channels = rememberSaveable { JsonChannelList(context).list }
-	var selectedChannelIndex by remember { mutableIntStateOf(0) }
-	val selectedChannel = channels[selectedChannelIndex]
+	val selectedChannel by liveScreenViewModel.selectedChannel.collectAsState()
 
 	LaunchedEffect(selectedChannel.id) {
 		selectedChannel.let { programInfoViewModel.setChannelId(it.id) }
@@ -79,10 +62,10 @@ fun LiveScreen(
 		)
 
 		ChannelList(
-			channels = channels,
-			selectedChannelIndex = selectedChannelIndex,
-			onChannelClick = { index -> onChannelClick(channels[index]) },
-			onChannelSelected = { index -> selectedChannelIndex = index },
+			channels = liveScreenViewModel.channels,
+			selectedChannel = selectedChannel,
+			onChannelClick = { channel -> onChannelClick(channel) },
+			onChannelSelected = { channel -> liveScreenViewModel.setSelectedChannel(channel) },
 		)
 	}
 }

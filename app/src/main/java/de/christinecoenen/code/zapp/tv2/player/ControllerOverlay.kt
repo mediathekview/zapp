@@ -22,8 +22,8 @@ fun ControllerOverlay(
 
 	Column(
 		modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.scrim)
+			.fillMaxWidth()
+			.background(MaterialTheme.colorScheme.scrim)
 	) {
 		Text(
 			text = title,

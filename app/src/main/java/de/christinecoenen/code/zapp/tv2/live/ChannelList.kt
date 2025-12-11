@@ -4,7 +4,7 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,9 +17,9 @@ import de.christinecoenen.code.zapp.models.channels.ChannelModel
 @Composable
 fun ChannelList(
 	channels: List<ChannelModel>,
-	selectedChannelIndex: Int = 0,
-	onChannelSelected: (index: Int) -> Unit = {},
-	onChannelClick: (index: Int) -> Unit = {},
+	selectedChannel: ChannelModel = channels.first(),
+	onChannelSelected: (channel: ChannelModel) -> Unit = {},
+	onChannelClick: (channel: ChannelModel) -> Unit = {},
 ) {
 	val focusRequester = remember { FocusRequester() }
 
@@ -30,16 +30,16 @@ fun ChannelList(
 			.focusGroup()
 			.focusRestorer(focusRequester)
 	) {
-		itemsIndexed(channels) { index, channel ->
-			val isSelected = index == selectedChannelIndex
+		items(channels) { channel ->
+			val isSelected = channel.id == selectedChannel.id
 
 			ChannelItem(
 				name = channel.name,
 				subtitle = channel.subtitle,
 				logoResId = channel.drawableId,
 				isSelected = isSelected,
-				onClick = { onChannelClick(index) },
-				onFocus = { onChannelSelected(index) },
+				onClick = { onChannelClick(channel) },
+				onFocus = { onChannelSelected(channel) },
 				modifier = Modifier
 					.then(if (isSelected) Modifier.focusRequester(focusRequester) else Modifier)
 			)
