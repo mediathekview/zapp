@@ -1,7 +1,12 @@
 package de.christinecoenen.code.zapp.app.settings.ui
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -10,6 +15,7 @@ import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.ChannelSelectionFragmentBinding
 import de.christinecoenen.code.zapp.models.channels.ISortableChannelList
 import de.christinecoenen.code.zapp.models.channels.json.SortableJsonChannelList
+import de.christinecoenen.code.zapp.utils.system.SystemUiHelper.applyBottomInsetAsPadding
 import de.christinecoenen.code.zapp.utils.view.GridAutofitLayoutManager
 import de.christinecoenen.code.zapp.utils.view.SimpleDragListListener
 
@@ -55,6 +61,8 @@ class ChannelSelectionFragment : Fragment(), MenuProvider {
 				}
 			})
 		}
+
+		binding.draglistChannelSelection.applyBottomInsetAsPadding()
 
 		requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 

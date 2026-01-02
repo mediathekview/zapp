@@ -1,3 +1,6 @@
+# v-next
+* Fixed channel order list being covered by the navigation bar ([#496](https://github.com/mediathekview/zapp/issues/496))
+
 # 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously
 * Fixed a chash upon start when updating from version 9.0.0-beta1
