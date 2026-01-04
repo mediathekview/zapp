@@ -23,7 +23,8 @@ class MediathekRepository(private val database: Database) {
 		searchQuery: String,
 		channels: Set<MediathekChannel>,
 		minDurationSeconds: Int? = null,
-		maxDurationSeconds: Int? = null
+		maxDurationSeconds: Int? = null,
+		limit: Int? = -1,
 	): PagingSource<Int, SortableMediathekShow> {
 		val channelIds = channels
 			.ifEmpty { MediathekChannel.entries }
@@ -31,7 +32,24 @@ class MediathekRepository(private val database: Database) {
 
 		return database
 			.mediathekShowDao()
-			.getPersonalShows("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds)
+			.getPersonalShows("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds, limit)
+	}
+
+	fun getPersonalShowsCount(
+		searchQuery: String,
+		channels: Set<MediathekChannel>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null,
+	): Flow<Int> {
+		val channelIds = channels
+			.ifEmpty { MediathekChannel.entries }
+			.map { it.apiId }
+
+		return database
+			.mediathekShowDao()
+			.getPersonalShowsCount("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
 	}
 
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {

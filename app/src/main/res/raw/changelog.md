@@ -1,5 +1,6 @@
 # v-next
 * Behoben, dass die Sender-Anordnen-Liste von der Navigation überdeckt wird ([#496](https://github.com/mediathekview/zapp/issues/496))
+* Lokale Ergebnisliste in der Mediathek-Suche begrenzt ([#486](https://github.com/mediathekview/zapp/issues/486))
 
 # 9.1.1
 * Absturz beim Start behoben, wenn schon einmal die Sender-Reihenfolge angepasst wurde

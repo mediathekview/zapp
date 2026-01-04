@@ -48,6 +48,7 @@ class SearchViewModel(
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
 		private const val LAST_QUERIES_COUNT = 4
+		private const val LOCAL_RESULTS_PREVIEW_COUNT = 3
 	}
 
 	enum class SeachState {
@@ -63,6 +64,9 @@ class SearchViewModel(
 
 	private val _searchQuery = MutableStateFlow("")
 	val searchQuery = _searchQuery.asStateFlow()
+
+	private val _showAllLocalResults = MutableStateFlow(false)
+	val showAllLocalResults = _showAllLocalResults.asStateFlow()
 
 	private val lastWord =
 		_searchQuery.map { query -> query.split("""\s+""".toRegex()).last() }
@@ -139,8 +143,9 @@ class SearchViewModel(
 		combine(
 			_submittedSearchQuery,
 			_submittedChannels,
-			_submittedDurationQueries
-		) { query, _, _ -> query }
+			_submittedDurationQueries,
+			_showAllLocalResults
+		) { query, _, _, _ -> query }
 			.flatMapLatest { query ->
 				if (query.isEmpty()) {
 					flowOf(PagingData.empty())
@@ -150,7 +155,8 @@ class SearchViewModel(
 							query,
 							_channels.value,
 							_durationQueries.value.minDurationSeconds,
-							_durationQueries.value.maxDurationSeconds
+							_durationQueries.value.maxDurationSeconds,
+							if (_showAllLocalResults.value) -1 else LOCAL_RESULTS_PREVIEW_COUNT,
 						)
 					}.flow
 				}
@@ -161,6 +167,31 @@ class SearchViewModel(
 				}
 			}
 			.cachedIn(viewModelScope)
+
+	val localShowsResultsCount = combine(
+		_submittedSearchQuery,
+		_submittedChannels,
+		_submittedDurationQueries,
+	) { query, _, _ -> query }
+		.flatMapLatest { query ->
+			if (query.isEmpty()) {
+				flowOf(0)
+			} else {
+				mediathekRepository.getPersonalShowsCount(
+					query,
+					_channels.value,
+					_durationQueries.value.minDurationSeconds,
+					_durationQueries.value.maxDurationSeconds,
+				)
+			}
+		}
+
+	val canShowMoreLocalResults = combine(
+		localShowsResultsCount,
+		_showAllLocalResults,
+	) { localShowsResultsCount, showAllLocalResults ->
+		!showAllLocalResults && localShowsResultsCount > LOCAL_RESULTS_PREVIEW_COUNT
+	}
 
 	private val _mediathekResultInfo = MutableStateFlow<QueryInfoResult?>(null)
 	val mediathekResultInfo = _mediathekResultInfo.asLiveData()
@@ -224,12 +255,17 @@ class SearchViewModel(
 		_searchQuery.tryEmit(query ?: "")
 	}
 
+	fun showAllLocalResults() {
+		_showAllLocalResults.value = true
+	}
+
 	fun submit() {
 		exitToResults()
 
 		_submittedSearchQuery.tryEmit(_searchQuery.value)
 		_submittedChannels.tryEmit(_channels.value)
 		_submittedDurationQueries.tryEmit(_durationQueries.value)
+		_showAllLocalResults.tryEmit(false)
 
 		if (settingsRepository.searchHistory) {
 			viewModelScope.launch {
@@ -276,5 +312,6 @@ class SearchViewModel(
 		_submittedSearchQuery.tryEmit("")
 		_submittedChannels.tryEmit(emptySet())
 		_submittedDurationQueries.tryEmit(DurationQuerySet())
+		_showAllLocalResults.tryEmit(false)
 	}
 }

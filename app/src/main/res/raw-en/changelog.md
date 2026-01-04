@@ -1,5 +1,6 @@
 # v-next
 * Fixed channel order list being covered by the navigation bar ([#496](https://github.com/mediathekview/zapp/issues/496))
+* Restricted local result list for the mediathek search ([#486](https://github.com/mediathekview/zapp/issues/486))
 
 # 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously

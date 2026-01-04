@@ -30,14 +30,35 @@ interface MediathekShowDao {
 			"AND ((:minDurationSeconds IS NULL) OR duration > :minDurationSeconds) " +
 			"AND ((:maxDurationSeconds IS NULL) OR duration < :maxDurationSeconds) " +
 			"GROUP BY id " +
-			"ORDER BY sortDate DESC"
+			"ORDER BY sortDate DESC " +
+			"LIMIT :limit"
 	)
 	fun getPersonalShows(
 		searchQuery: String,
 		channels: List<String>,
 		minDurationSeconds: Int? = null,
-		maxDurationSeconds: Int? = null
+		maxDurationSeconds: Int? = null,
+		limit: Int? = -1,
 	): PagingSource<Int, SortableMediathekShow>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query(
+		"SELECT COUNT(DISTINCT id) FROM (" +
+			"SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) UNION " +
+			"SELECT * FROM PersistedMediathekShow WHERE playbackPosition UNION " +
+			"SELECT * FROM PersistedMediathekShow WHERE bookmarked" +
+			") " +
+			"WHERE (topic LIKE :searchQuery OR title LIKE :searchQuery) " +
+			"AND channel IN(:channels) " +
+			"AND ((:minDurationSeconds IS NULL) OR duration > :minDurationSeconds) " +
+			"AND ((:maxDurationSeconds IS NULL) OR duration < :maxDurationSeconds)"
+	)
+	fun getPersonalShowsCount(
+		searchQuery: String,
+		channels: List<String>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null,
+	): Flow<Int>
 
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
