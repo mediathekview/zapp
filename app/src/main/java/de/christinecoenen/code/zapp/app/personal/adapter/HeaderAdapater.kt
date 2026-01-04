@@ -39,7 +39,7 @@ class HeaderAdapater(
 		}
 
 		this.showMoreButton = showMoreButton
-		notifyItemChanged(1)
+		notifyItemChanged(0)
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
