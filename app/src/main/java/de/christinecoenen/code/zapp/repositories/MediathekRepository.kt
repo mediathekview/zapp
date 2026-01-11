@@ -244,6 +244,12 @@ class MediathekRepository(private val database: Database) {
 			.resetPlaybackPosition(apiId)
 	}
 
+	suspend fun resetAllPlaybackPositions() = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.resetAllPlaybackPositions()
+	}
+
 	fun getPlaybackPositionPercent(apiId: String): Flow<Float> {
 		return database
 			.mediathekShowDao()

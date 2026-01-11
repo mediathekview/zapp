@@ -170,11 +170,18 @@
 	<string name="pref_download_to_sd_card_title">Downloads auf SD-Karte</string>
 	<string name="pref_download_to_sd_card_summary">Wenn verfügbar, werden Video-Dateien auf die SD-Karte gespeichert.</string>
 
+	<string name="pref_delete_started_shows_title">Begonnene Sendungen zurücksetzen</string>
+	<string name="pref_delete_started_shows_summary">Löscht den Fortschritt von allen begonnenen oder angesehenen Sendungen.</string>
+
 	<string name="pref_dynamic_colors">Dynamische Farben</string>
 	<string name="pref_dynamic_colors_summary">Wähle Akzentfarben basierend auf dem Geräte-Hintergrund.</string>
 
 	<string name="pref_detail_search_history_title">Suchverlauf</string>
 	<string name="pref_detail_search_history_summary">Speichere die letzten Suchanfragen.</string>
+
+	<string name="pref_dialog_confirm_reset_playback_position_title">Begonnene Sendungen zurücksetzen?</string>
+	<string name="pref_dialog_confirm_reset_playback_position_text">Löscht den Fortschritt von allen begonnenen oder angesehenen Sendungen. Es werden keine Downloads gelöscht.</string>
+	<string name="pref_dialog_confirm_reset_playback_position_success_toast">Alle begonnene Sendungen erfolgreich zurückgesetzt</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Hintergrund-Videoplayer</string>

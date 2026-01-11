@@ -170,11 +170,18 @@
 	<string name="pref_download_to_sd_card_title">Download to sd card</string>
 	<string name="pref_download_to_sd_card_summary">Video files will be saved to sd card if present.</string>
 
+	<string name="pref_delete_started_shows_title">Reset started shows</string>
+	<string name="pref_delete_started_shows_summary">Deletes the progress of all shows you started or finished watching.</string>
+
 	<string name="pref_dynamic_colors">Dynamic colors</string>
 	<string name="pref_dynamic_colors_summary">Choose accent colors based on the wallpaper.</string>
 
 	<string name="pref_detail_search_history_title">Search history</string>
 	<string name="pref_detail_search_history_summary">Remember the most recent search queries.</string>
+
+	<string name="pref_dialog_confirm_reset_playback_position_title">Reset started shows?</string>
+	<string name="pref_dialog_confirm_reset_playback_position_text">Deletes the progress of all shows you started or finished watching. No downloads will be deleted.</string>
+	<string name="pref_dialog_confirm_reset_playback_position_success_toast">Successfully reset all started shows</string>
 
 	<!-- notifications -->
 	<string name="notification_channel_name_background_playback">Background player</string>

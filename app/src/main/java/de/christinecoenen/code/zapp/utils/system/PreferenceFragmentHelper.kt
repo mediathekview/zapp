@@ -1,7 +1,9 @@
 package de.christinecoenen.code.zapp.utils.system
 
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.ListPreference
@@ -11,14 +13,20 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.color.DynamicColors
 import com.jakewharton.processphoenix.ProcessPhoenix
+import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
+import de.christinecoenen.code.zapp.app.settings.ui.ConfirmResetPlaybackPositionsDialog
+import de.christinecoenen.code.zapp.repositories.MediathekRepository
+import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import java.util.Timer
 import kotlin.concurrent.schedule
 
 class PreferenceFragmentHelper(
 	private val preferenceFragment: PreferenceFragmentCompat,
 	private val settingsRepository: SettingsRepository,
+	private val mediathekRepository: MediathekRepository,
 ) : DefaultLifecycleObserver {
 
 	companion object {
@@ -28,6 +36,7 @@ class PreferenceFragmentHelper(
 		private const val PREF_UI_MODE = "pref_ui_mode"
 		private const val PREF_LANGUAGE = "pref_key_language"
 		private const val PREF_CHANNEL_SELECTION = "pref_key_channel_selection"
+		private const val PREF_DELETE_STARTED_SHOWS = "pref_key_delete_started_shows"
 
 	}
 
@@ -36,8 +45,29 @@ class PreferenceFragmentHelper(
 	private var uiModePreference: ListPreference? = null
 	private var languagePreference: ListPreference? = null
 	private var channelSelectionPreference: Preference? = null
+	private var deleteStartedShowsPreference: Preference? = null
 
 	private var channelSelectionClickListener: OnPreferenceClickListener? = null
+
+	private var deleteStartedShowsClickListener: OnPreferenceClickListener? =
+		OnPreferenceClickListener {
+			val dialog = ConfirmResetPlaybackPositionsDialog()
+
+			preferenceFragment.setFragmentResultListener(ConfirmDeleteDownloadDialog.REQUEST_KEY_CONFIRMED) { _, _ ->
+				preferenceFragment.launchOnCreated {
+					mediathekRepository.resetAllPlaybackPositions()
+					Toast.makeText(
+						preferenceFragment.requireContext(),
+						R.string.pref_dialog_confirm_reset_playback_position_success_toast,
+						Toast.LENGTH_SHORT
+					).show()
+				}
+			}
+
+			dialog.show(preferenceFragment.parentFragmentManager, null)
+
+			true
+		}
 
 	private val dynamicColorChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
 		// Delay to wait for pereferences to be persisted (on very fast devices)
@@ -73,6 +103,7 @@ class PreferenceFragmentHelper(
 		uiModePreference = preferenceScreen.findPreference(PREF_UI_MODE)
 		languagePreference = preferenceScreen.findPreference(PREF_LANGUAGE)
 		channelSelectionPreference = preferenceScreen.findPreference(PREF_CHANNEL_SELECTION)
+		deleteStartedShowsPreference = preferenceScreen.findPreference(PREF_DELETE_STARTED_SHOWS)
 
 		languagePreference?.let {
 			val languages =
@@ -102,6 +133,7 @@ class PreferenceFragmentHelper(
 		uiModePreference?.onPreferenceChangeListener = uiModeChangeListener
 		languagePreference?.onPreferenceChangeListener = languageChangeListener
 		channelSelectionPreference?.onPreferenceClickListener = channelSelectionClickListener
+		deleteStartedShowsPreference?.onPreferenceClickListener = deleteStartedShowsClickListener
 	}
 
 	override fun onDestroy(owner: LifecycleOwner) {
@@ -112,5 +144,6 @@ class PreferenceFragmentHelper(
 		uiModePreference?.onPreferenceChangeListener = null
 		languagePreference?.onPreferenceChangeListener = null
 		channelSelectionPreference?.onPreferenceClickListener = null
+		deleteStartedShowsPreference?.onPreferenceClickListener = null
 	}
 }

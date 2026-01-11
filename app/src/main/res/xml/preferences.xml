@@ -107,14 +107,19 @@
 		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_search_history"
-			android:title="@string/pref_detail_search_history_title"
-			android:summary="@string/pref_detail_search_history_summary" />
+			android:summary="@string/pref_detail_search_history_summary"
+			android:title="@string/pref_detail_search_history_title" />
 
 		<SwitchPreferenceCompat
 			android:defaultValue="true"
 			android:key="@string/pref_key_download_to_sd_card"
 			android:summary="@string/pref_download_to_sd_card_summary"
 			android:title="@string/pref_download_to_sd_card_title" />
+
+		<Preference
+			android:key="@string/pref_key_delete_started_shows"
+			android:summary="@string/pref_delete_started_shows_summary"
+			android:title="@string/pref_delete_started_shows_title" />
 
 	</PreferenceCategory>
 

@@ -1,5 +1,6 @@
 package de.christinecoenen.code.zapp.app
 
+import androidx.preference.PreferenceFragmentCompat
 import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.ZappBackendApiServiceFactory
 import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoRepository
@@ -29,6 +30,7 @@ import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.repositories.SearchRepository
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
+import de.christinecoenen.code.zapp.utils.system.PreferenceFragmentHelper
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
 import okhttp3.OkHttpClient
@@ -75,6 +77,13 @@ class KoinModules {
 			} bind IMediathekApiService::class
 			single { ProgramInfoRepository(get()) }
 			single { DownloadFileInfoManager(get(), get()) }
+			factory { (preferenceFragment: PreferenceFragmentCompat) ->
+				PreferenceFragmentHelper(
+					preferenceFragment,
+					get(),
+					get()
+				)
+			}
 
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get(), get(), get()) }

@@ -16,5 +16,6 @@
 	<string name="pref_key_search_history">pref_key_search_history</string>
 	<string name="pref_key_download_to_sd_card">pref_key_download_to_sd_card</string>
 	<string name="pref_key_start_tab">pref_key_start_tab</string>
+	<string name="pref_key_delete_started_shows">pref_key_delete_started_shows</string>
 
 </resources>
