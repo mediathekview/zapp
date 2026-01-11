@@ -132,9 +132,7 @@ interface MediathekShowDao {
 
 		if (existingPersistedShow == null) {
 			// insert new show
-			val newPersistedShow = PersistedMediathekShow(
-				mediathekShow = show
-			)
+			val newPersistedShow = PersistedMediathekShow.newFromMediathekShow(show)
 			insert(newPersistedShow)
 		} else {
 			// update existing show
@@ -165,6 +163,9 @@ interface MediathekShowDao {
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0 WHERE apiId=:apiId")
 	suspend fun resetPlaybackPosition(apiId: String)
+
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=(SELECT videoDuration WHERE apiId=:apiId), lastPlayedBackAt=:playedAt WHERE apiId=:apiId")
+	suspend fun markAsPlayed(apiId: String, playedAt: DateTime)
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0")
 	suspend fun resetAllPlaybackPositions()

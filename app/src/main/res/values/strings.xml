@@ -88,6 +88,7 @@
 	<string name="action_delete_download">Download löschen</string>
 	<string name="action_cancel_download">Download abbrechen</string>
 	<string name="action_mark_unwatched">Als ungesehen markieren</string>
+	<string name="action_mark_watched">Als gesehen markieren</string>
 	<string name="action_view_all">Alle ansehen</string>
 
 	<string name="search_query_hint_zapp">Zapp durchsuchen…</string>

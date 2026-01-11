@@ -103,6 +103,13 @@ class ShowMenuHelper(
 				return true
 			}
 
+			R.id.menu_mark_watched -> {
+				fragment.lifecycle.coroutineScope.launch {
+					viewModel.markWatched(show)
+				}
+				return true
+			}
+
 			else -> false
 		}
 	}

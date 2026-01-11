@@ -32,7 +32,13 @@ class MediathekRepository(private val database: Database) {
 
 		return database
 			.mediathekShowDao()
-			.getPersonalShows("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds, limit)
+			.getPersonalShows(
+				"%$searchQuery%",
+				channelIds,
+				minDurationSeconds,
+				maxDurationSeconds,
+				limit
+			)
 	}
 
 	fun getPersonalShowsCount(
@@ -47,7 +53,12 @@ class MediathekRepository(private val database: Database) {
 
 		return database
 			.mediathekShowDao()
-			.getPersonalShowsCount("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds)
+			.getPersonalShowsCount(
+				"%$searchQuery%",
+				channelIds,
+				minDurationSeconds,
+				maxDurationSeconds
+			)
 			.distinctUntilChanged()
 			.flowOn(Dispatchers.IO)
 	}
@@ -94,19 +105,17 @@ class MediathekRepository(private val database: Database) {
 			.getAllBookarked("%$searchQuery%")
 	}
 
-	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
-		withContext(Dispatchers.IO) {
-			database
-				.mediathekShowDao()
-				.insertOrUpdate(show)
-
-			database
-				.mediathekShowDao()
-				.getFromApiId(show.apiId)
-				.distinctUntilChanged()
-				.filterNotNull()
-				.flowOn(Dispatchers.IO)
-		}
+	fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getFromApiId(show.apiId)
+			.onStart {
+				database.mediathekShowDao().insertOrUpdate(show)
+			}
+			.distinctUntilChanged()
+			.filterNotNull()
+			.flowOn(Dispatchers.IO)
+	}
 
 	suspend fun updateShow(show: PersistedMediathekShow?) = withContext(Dispatchers.IO) {
 		database
@@ -237,6 +246,12 @@ class MediathekRepository(private val database: Database) {
 				.mediathekShowDao()
 				.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
 		}
+
+	suspend fun markAsPlayed(apiId: String) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.markAsPlayed(apiId, DateTime.now())
+	}
 
 	suspend fun resetPlaybackPosition(apiId: String) = withContext(Dispatchers.IO) {
 		database

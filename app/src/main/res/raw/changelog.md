@@ -1,4 +1,5 @@
 # v-next
+* Option hinzugefügt, um Videos als gesehen zu markieren ([#509](https://github.com/mediathekview/zapp/issues/509))
 * Option hinzugefügt, um den Fortschritt aller angefangenen Videos zurückzusetzen ([#507](https://github.com/mediathekview/zapp/issues/507))
 * Behoben, dass die Sender-Anordnen-Liste von der Navigation überdeckt wird ([#496](https://github.com/mediathekview/zapp/issues/496))
 * Lokale Ergebnisliste in der Mediathek-Suche begrenzt ([#486](https://github.com/mediathekview/zapp/issues/486))
