@@ -1,6 +1,7 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -108,6 +109,11 @@ abstract class AbstractPlayerActivity :
 					MultiWindowHelper.enterPictureInPictureMode(this@AbstractPlayerActivity)
 				}
 			})
+
+			setPictureInPictureParams(PictureInPictureParams.Builder()
+				.setAutoEnterEnabled(true)
+				.build()
+			)
 		}
 	}
 
@@ -145,14 +151,6 @@ abstract class AbstractPlayerActivity :
 		}
 
 		requestedOrientation = viewModel.screenOrientation
-	}
-
-	override fun onPause() {
-		super.onPause()
-
-		if (!isInsideMultiWindow(this)) {
-			pauseActivity()
-		}
 	}
 
 	override fun onStop() {

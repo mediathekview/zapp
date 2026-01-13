@@ -3,6 +3,7 @@
 * Option hinzugefügt, um den Fortschritt aller angefangenen Videos zurückzusetzen ([#507](https://github.com/mediathekview/zapp/issues/507))
 * Behoben, dass die Sender-Anordnen-Liste von der Navigation überdeckt wird ([#496](https://github.com/mediathekview/zapp/issues/496))
 * Lokale Ergebnisliste in der Mediathek-Suche begrenzt ([#486](https://github.com/mediathekview/zapp/issues/486))
+* Automatischer Picture-in-Picture-Modus startet auch, wenn Zapp über den Home-Button verlassen wird (ab Android 12) ([#506](https://github.com/mediathekview/zapp/issues/506))
 
 # 9.1.1
 * Absturz beim Start behoben, wenn schon einmal die Sender-Reihenfolge angepasst wurde
