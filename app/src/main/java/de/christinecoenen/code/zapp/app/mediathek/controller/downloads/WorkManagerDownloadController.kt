@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
-import androidx.lifecycle.asFlow
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
@@ -67,8 +66,7 @@ class WorkManagerDownloadController(
 
 		scope.launch(Dispatchers.IO) {
 			workManager
-				.getWorkInfosByTagLiveData(WorkTag)
-				.asFlow()
+				.getWorkInfosByTagFlow(WorkTag)
 				.debounce(250.milliseconds)
 				.collectLatest { workInfos ->
 					workInfos.onEach {
