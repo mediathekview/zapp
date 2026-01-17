@@ -3,14 +3,12 @@ package de.christinecoenen.code.zapp.app.player
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.os.PowerManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -44,9 +42,6 @@ abstract class AbstractPlayerActivity :
 
 	private val windowInsetsControllerCompat by lazy {
 		WindowInsetsControllerCompat(window, binding.fullscreenContent)
-	}
-	private val powerManager by lazy {
-		getSystemService(Context.POWER_SERVICE) as PowerManager
 	}
 
 	protected lateinit var binding: ActivityAbstractPlayerBinding
@@ -255,11 +250,6 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun pauseActivity() {
-		if (!powerManager.isInteractive) {
-			// resume playback in background, when screen turned off
-			binder!!.movePlaybackToBackground()
-		}
-
 		try {
 			unbindService(backgroundPlayerServiceConnection)
 		} catch (ignored: IllegalArgumentException) {

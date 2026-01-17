@@ -4,6 +4,7 @@
 * Fixed channel order list being covered by the navigation bar ([#496](https://github.com/mediathekview/zapp/issues/496))
 * Restricted local result list for the mediathek search ([#486](https://github.com/mediathekview/zapp/issues/486))
 * Automatic picture in picture mode starts when exiting Zapp via the home button (starting with Android 12) ([#506](https://github.com/mediathekview/zapp/issues/506))
+* Stop video playback when turning off the screen ([#490](https://github.com/mediathekview/zapp/issues/490))
 
 # 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously

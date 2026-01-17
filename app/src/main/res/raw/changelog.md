@@ -4,6 +4,7 @@
 * Behoben, dass die Sender-Anordnen-Liste von der Navigation überdeckt wird ([#496](https://github.com/mediathekview/zapp/issues/496))
 * Lokale Ergebnisliste in der Mediathek-Suche begrenzt ([#486](https://github.com/mediathekview/zapp/issues/486))
 * Automatischer Picture-in-Picture-Modus startet auch, wenn Zapp über den Home-Button verlassen wird (ab Android 12) ([#506](https://github.com/mediathekview/zapp/issues/506))
+* Stoppt die Videowiedergabe, wenn der Bildschirm ausgeschaltet wird ([#490](https://github.com/mediathekview/zapp/issues/490))
 
 # 9.1.1
 * Absturz beim Start behoben, wenn schon einmal die Sender-Reihenfolge angepasst wurde
