@@ -5,6 +5,7 @@
 * Lokale Ergebnisliste in der Mediathek-Suche begrenzt ([#486](https://github.com/mediathekview/zapp/issues/486))
 * Automatischer Picture-in-Picture-Modus startet auch, wenn Zapp über den Home-Button verlassen wird (ab Android 12) ([#506](https://github.com/mediathekview/zapp/issues/506))
 * Stoppt die Videowiedergabe, wenn der Bildschirm ausgeschaltet wird ([#490](https://github.com/mediathekview/zapp/issues/490))
+* Behoben, dass Downloads manchmal in Benachrichtigungen, aber nicht in der Benutzeroberfläche auftauchen ([#508](https://github.com/mediathekview/zapp/issues/508))
 
 # 9.1.1
 * Absturz beim Start behoben, wenn schon einmal die Sender-Reihenfolge angepasst wurde

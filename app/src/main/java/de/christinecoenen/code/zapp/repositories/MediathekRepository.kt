@@ -162,12 +162,11 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPersistedShowByDownloadId(downloadId: Int): Flow<PersistedMediathekShow> {
+	fun getPersistedShowByDownloadId(downloadId: Int): Flow<PersistedMediathekShow?> {
 		return database
 			.mediathekShowDao()
 			.getFromDownloadId(downloadId)
 			.distinctUntilChanged()
-			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
