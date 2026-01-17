@@ -113,9 +113,10 @@ abstract class AbstractPlayerActivity :
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 				// enable pip automatically when pressing home button
-				setPictureInPictureParams(PictureInPictureParams.Builder()
-					.setAutoEnterEnabled(true)
-					.build()
+				setPictureInPictureParams(
+					PictureInPictureParams.Builder()
+						.setAutoEnterEnabled(true)
+						.build()
 				)
 			}
 		}
