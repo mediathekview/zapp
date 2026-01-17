@@ -29,7 +29,6 @@ import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
-import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -168,10 +167,6 @@ abstract class AbstractPlayerActivity :
 
 	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 		menuInflater.inflate(R.menu.activity_abstract_player, menu)
-
-		if (!supportsPictureInPictureMode(this)) {
-			menu.removeItem(R.id.menu_pip)
-		}
 	}
 
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

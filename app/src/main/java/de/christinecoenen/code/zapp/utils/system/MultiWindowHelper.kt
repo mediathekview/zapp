@@ -2,8 +2,6 @@ package de.christinecoenen.code.zapp.utils.system
 
 import android.app.Activity
 import android.app.PictureInPictureParams
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 
 object MultiWindowHelper {
@@ -17,18 +15,6 @@ object MultiWindowHelper {
 	@JvmStatic
 	fun isInPictureInPictureMode(activity: Activity): Boolean {
 		return activity.isInPictureInPictureMode
-	}
-
-	/**
-	 * This function can be used with any API level and will return
-	 * false if the picture in picture feature is not supported.
-	 *
-	 * @return true if the current device does support picture in picture mode
-	 */
-	@JvmStatic
-	fun supportsPictureInPictureMode(context: Context): Boolean {
-		val packageManager = context.applicationContext.packageManager
-		return packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
 	}
 
 	@JvmStatic
