@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.onStart
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ShowMenuHelperViewModel(
@@ -108,7 +107,10 @@ class ShowMenuHelperViewModel(
 	}
 
 	suspend fun startDownload(show: MediathekShow, quality: Quality) {
-		val persistedShow = mediathekRepository.getPersistedShowByApiId(show.apiId).first()
+		val persistedShow = mediathekRepository
+			.persistOrUpdateShow(show)
+			.first()
+
 		downloadController.startDownload(persistedShow.id, quality)
 	}
 }

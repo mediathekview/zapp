@@ -153,12 +153,11 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPersistedShowByApiId(apiId: String): Flow<PersistedMediathekShow> {
+	fun getPersistedShowByApiId(apiId: String): Flow<PersistedMediathekShow?> {
 		return database
 			.mediathekShowDao()
 			.getFromApiId(apiId)
 			.distinctUntilChanged()
-			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
