@@ -29,7 +29,6 @@ import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
-import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -142,18 +141,12 @@ abstract class AbstractPlayerActivity :
 	override fun onStart() {
 		super.onStart()
 
-		if (isInsideMultiWindow(this)) {
-			resumeActivity()
-		}
+		resumeActivity()
 	}
 
 	@SuppressLint("SourceLockedOrientationActivity")
 	override fun onResume() {
 		super.onResume()
-
-		if (!isInsideMultiWindow(this)) {
-			resumeActivity()
-		}
 
 		requestedOrientation = viewModel.screenOrientation
 	}

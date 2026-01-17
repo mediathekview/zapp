@@ -9,18 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 object MultiWindowHelper {
 	/**
 	 * This function can be used with any API level and will return
-	 * false if the multi window feature is not supported.
-	 *
-	 * @param activity to get access to multi window api
-	 * @return true if activity is currently displayed in multi window mode
-	 */
-	@JvmStatic
-	fun isInsideMultiWindow(activity: Activity): Boolean {
-		return activity.isInMultiWindowMode || activity.isInPictureInPictureMode
-	}
-
-	/**
-	 * This function can be used with any API level and will return
 	 * true if the activity is currently in pip mode.
 	 *
 	 * @param activity to get access to pip api
