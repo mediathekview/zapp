@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.databinding.BottomSheetSleepTimerBinding
 import org.koin.android.ext.android.inject
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -36,6 +36,7 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 
 		override fun onServiceConnected(componentName: ComponentName, service: IBinder) {
 			val binder = service as BackgroundPlayerService.Binder
+			binder.setForegroundActivityIntent(activity?.intent)
 
 			binder.getPlayer().sleepTimer.let {
 				sleepTimer = it
@@ -81,18 +82,28 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		BackgroundPlayerService.bind(requireContext(), backgroundPlayerServiceConnection)
 		expand()
 	}
 
 	override fun onDestroyView() {
+		_binding = null
+
+		super.onDestroyView()
+	}
+
+	override fun onStart() {
+		super.onStart()
+
+		BackgroundPlayerService.bind(requireContext(), backgroundPlayerServiceConnection)
+	}
+
+	override fun onStop() {
+		super.onStop()
+
 		sleepTimer?.removeListener(this)
 		tickTimer?.cancel()
 
 		requireContext().unbindService(backgroundPlayerServiceConnection)
-		_binding = null
-
-		super.onDestroyView()
 	}
 
 	private fun onStartClick() {
