@@ -16,9 +16,11 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
@@ -112,6 +114,12 @@ abstract class AbstractPlayerActivity :
 						.build()
 				)
 			}
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarWrapper) { view, windowInsets ->
+			val insets = windowInsets.getInsets(WindowInsetsCompat.Type.displayCutout())
+			view.updatePadding(insets.left, insets.top, insets.right, insets.bottom)
+			WindowInsetsCompat.CONSUMED
 		}
 	}
 
@@ -252,7 +260,7 @@ abstract class AbstractPlayerActivity :
 	private fun pauseActivity() {
 		try {
 			unbindService(backgroundPlayerServiceConnection)
-		} catch (ignored: IllegalArgumentException) {
+		} catch (_: IllegalArgumentException) {
 		}
 	}
 
