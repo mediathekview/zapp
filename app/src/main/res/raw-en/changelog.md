@@ -7,6 +7,7 @@
 * Stop video playback when turning off the screen ([#490](https://github.com/mediathekview/zapp/issues/490))
 * Fixed downloads sometimes showing up in notifications but in the user interface ([#508](https://github.com/mediathekview/zapp/issues/508))
 * Fixed video title covered by the camera notch in portrait mode ([#512](https://github.com/mediathekview/zapp/issues/512))
+* Fixed crash when rotating the device while the program info in open ([#511](https://github.com/mediathekview/zapp/issues/511))
 
 # 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously
