@@ -53,8 +53,8 @@ class ChannelPlayerActivity : AbstractPlayerActivity() {
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 		when (menuItem.itemId) {
 			R.id.menu_program_info -> {
-				val modalBottomSheet = ProgramInfoSheetDialogFragment(
-					programInfoViewModel,
+				val modalBottomSheet = ProgramInfoSheetDialogFragment.newInstance(
+					viewModel.channel.value!!.id,
 					ProgramInfoSheetDialogFragment.Size.Small
 				)
 				modalBottomSheet.show(supportFragmentManager, ProgramInfoSheetDialogFragment.TAG)

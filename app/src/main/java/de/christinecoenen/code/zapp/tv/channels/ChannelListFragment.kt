@@ -39,7 +39,6 @@ class ChannelListFragment : Fragment(), ListItemListener {
 
 	override fun onItemLongClick(
 		channel: ChannelModel,
-		programInfoViewModel: ProgramInfoViewModel,
 		view: View
 	) {
 		// no action
