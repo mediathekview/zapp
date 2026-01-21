@@ -1,6 +1,5 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.detail
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +8,11 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.databinding.ProgramInfoSheetDialogFragmentBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
-import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
 
 class ProgramInfoSheetDialogFragment() : BottomSheetDialogFragment() {
@@ -24,7 +24,7 @@ class ProgramInfoSheetDialogFragment() : BottomSheetDialogFragment() {
 	private var _binding: ProgramInfoSheetDialogFragmentBinding? = null
 	private val binding: ProgramInfoSheetDialogFragmentBinding get() = _binding!!
 
-	private var programInfoViewModel: ProgramInfoViewModel? = null
+	private val programInfoViewModel: ProgramInfoViewModel by viewModel()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -36,18 +36,15 @@ class ProgramInfoSheetDialogFragment() : BottomSheetDialogFragment() {
 		val size = requireArguments().getSerializable(ARGUMENT_SIZE) as Size
 		val channelId = requireArguments().getString(ARGUMENT_CHANNEL_ID)!!
 
-		programInfoViewModel =
-			ProgramInfoViewModel(requireContext().applicationContext as Application, get())
-				.apply {
-					viewLifecycleOwner.launchOnCreated {
-						setChannelId(channelId)
-						title.observe(viewLifecycleOwner, ::onTitleChanged)
-						subtitle.observe(viewLifecycleOwner, ::onSubtitleChanged)
-						description.observe(viewLifecycleOwner, ::onDescriptionChanged)
-						time.observe(viewLifecycleOwner, ::onTimeChanged)
-						progressPercent.observe(viewLifecycleOwner, ::onProgressPercentChanged)
-					}
-				}
+
+		viewLifecycleOwner.launchOnCreated {
+			programInfoViewModel.liveShow
+				.observe(viewLifecycleOwner, ::onLiveShowChanged)
+			programInfoViewModel.progressPercent
+				.observe(viewLifecycleOwner, ::onProgressPercentChanged)
+
+			programInfoViewModel.setChannelId(channelId)
+		}
 
 		if (size == Size.Small) {
 			binding.root.viewTreeObserver.addOnGlobalLayoutListener(::setMinimalPeekHeight)
@@ -59,35 +56,34 @@ class ProgramInfoSheetDialogFragment() : BottomSheetDialogFragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-		programInfoViewModel = null
 	}
 
-	private fun onTitleChanged(title: String) {
-		binding.title.text = HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
-	}
+	private fun onLiveShowChanged(liveShow: LiveShow) {
+		// title
+		binding.title.text =
+			HtmlCompat.fromHtml(liveShow.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-	private fun onSubtitleChanged(subtitle: String?) {
+		// subtitle
+		val subtitle = liveShow.subtitle
 		binding.subtitle.isVisible = !subtitle.isNullOrEmpty()
 
 		if (!subtitle.isNullOrEmpty()) {
 			binding.subtitle.text = HtmlCompat.fromHtml(subtitle, HtmlCompat.FROM_HTML_MODE_LEGACY)
 		}
-	}
 
-	private fun onDescriptionChanged(description: String?) {
-		if (description.isNullOrEmpty()) {
-			binding.description.isVisible = false
-			return
+		// description
+		val description = liveShow.description
+		binding.description.isVisible = !description.isNullOrEmpty()
+
+		if (!description.isNullOrEmpty()) {
+			binding.description.text =
+				HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 		}
 
-		val htmldescription = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-		binding.description.text = htmldescription
-		binding.description.isVisible = true
-	}
-
-	private fun onTimeChanged(time: String?) {
-		binding.time.isVisible = !time.isNullOrEmpty()
-		binding.time.text = time
+		// time
+		val formattedTime = liveShow.formattedDuration(requireContext())
+		binding.time.isVisible = formattedTime != null
+		binding.time.text = formattedTime
 	}
 
 	private fun onProgressPercentChanged(progressPercent: Float?) {

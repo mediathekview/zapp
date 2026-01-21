@@ -3,6 +3,7 @@ package de.christinecoenen.code.zapp.app
 import androidx.preference.PreferenceFragmentCompat
 import de.christinecoenen.code.zapp.app.livestream.api.IZappBackendApiService
 import de.christinecoenen.code.zapp.app.livestream.api.ZappBackendApiServiceFactory
+import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import de.christinecoenen.code.zapp.app.livestream.repository.ProgramInfoRepository
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivityViewModel
@@ -34,7 +35,6 @@ import de.christinecoenen.code.zapp.utils.system.PreferenceFragmentHelper
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.MainScope
 import okhttp3.OkHttpClient
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
@@ -88,6 +88,7 @@ class KoinModules {
 			factory { SettingsRepository(androidContext()) }
 			factory { Player(androidContext(), get(), get(), get()) }
 			factory { JsonChannelList(androidContext()) }
+			factory { ProgramInfoViewModel(get(), LiveShow.getEmpty(androidContext())) }
 
 			viewModel { AbstractPlayerActivityViewModel(get()) }
 			viewModel { ChannelPlayerActivityViewModel(get()) }
@@ -95,7 +96,7 @@ class KoinModules {
 			viewModel { BookmarksViewModel(get()) }
 			viewModel { ContinueWatchingViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
-			viewModel { ProgramInfoViewModel(androidApplication(), get()) }
+			viewModel { ProgramInfoViewModel(get(), LiveShow.getEmpty(androidContext())) }
 			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get()) }
 			viewModel { MediathekFilterViewModel() }
 			viewModel { ShowMenuHelperViewModel(get(), get()) }

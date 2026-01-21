@@ -1,11 +1,9 @@
 package de.christinecoenen.code.zapp.app.livestream.ui.list.adapter
 
-import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.models.channels.IChannelList
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -25,9 +23,7 @@ abstract class BaseChannelListAdapter(
 
 	override fun onBindViewHolder(holder: ChannelViewHolder, position: Int) {
 		val channel = channelList[position]
-		val programInfoViewModel =
-			ProgramInfoViewModel(holder.itemView.context.applicationContext as Application, get())
-		holder.setChannel(programInfoViewModel, channel)
+		holder.setChannel(get(), channel)
 	}
 
 	override fun onViewRecycled(holder: ChannelViewHolder) {

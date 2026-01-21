@@ -6,6 +6,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import de.christinecoenen.code.zapp.app.livestream.model.LiveShow
 import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
@@ -60,22 +61,24 @@ class ChannelViewHolder(
 		channel = null
 	}
 
-	private fun onShowTitleChanged(title: String) {
-		bindingAdapter.showTitle.text = HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
-	}
+	private fun onShowChanged(liveShow: LiveShow) {
+		// title
+		bindingAdapter.showTitle.text =
+			HtmlCompat.fromHtml(liveShow.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-	private fun onShowSubtitleChanged(subtitle: String?) {
+		// subtitle
+		val subtitle = liveShow.subtitle
 		bindingAdapter.showSubtitle.isVisible = !subtitle.isNullOrEmpty()
 
 		if (!subtitle.isNullOrEmpty()) {
 			bindingAdapter.showSubtitle.text =
 				HtmlCompat.fromHtml(subtitle, HtmlCompat.FROM_HTML_MODE_LEGACY)
 		}
-	}
 
-	private fun onShowTimeChanged(time: String?) {
-		bindingAdapter.showTime.isVisible = !time.isNullOrEmpty()
-		bindingAdapter.showTime.text = time
+		// time
+		val formattedTime = liveShow.formattedDuration(bindingAdapter.showTime.context)
+		bindingAdapter.showTime.isVisible = formattedTime != null
+		bindingAdapter.showTime.text = formattedTime
 	}
 
 	private fun onShowProgressPercentChanged(progressPercent: Float?) {
@@ -91,9 +94,7 @@ class ChannelViewHolder(
 
 	private fun startLoadingProgramInfo(channel: ChannelModel) {
 		// observe changes in view model
-		currentViewModel?.title?.observe(lifecycleOwner, ::onShowTitleChanged)
-		currentViewModel?.subtitle?.observe(lifecycleOwner, ::onShowSubtitleChanged)
-		currentViewModel?.time?.observe(lifecycleOwner, ::onShowTimeChanged)
+		currentViewModel?.liveShow?.observe(lifecycleOwner, ::onShowChanged)
 		currentViewModel?.progressPercent?.observe(lifecycleOwner, ::onShowProgressPercentChanged)
 
 		// start program info loading
@@ -108,12 +109,8 @@ class ChannelViewHolder(
 		loadingJob = null
 
 		// remove observers from last view model
-		currentViewModel?.title?.removeObservers(lifecycleOwner)
-		currentViewModel?.title?.removeObservers(lifecycleOwner)
-		currentViewModel?.subtitle?.removeObservers(lifecycleOwner)
-		currentViewModel?.time?.removeObservers(lifecycleOwner)
+		currentViewModel?.liveShow?.removeObservers(lifecycleOwner)
 		currentViewModel?.progressPercent?.removeObservers(lifecycleOwner)
-		currentViewModel = null
 	}
 
 	private fun setViewToChannel(channel: ChannelModel) {
