@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
 	id 'com.android.application'
-	id 'kotlin-android'
 	id 'com.google.devtools.ksp'
 	id 'com.mikepenz.aboutlibraries.plugin.android'
 	id 'androidx.navigation.safeargs.kotlin'
@@ -29,7 +29,7 @@ android {
 
 	kotlin {
 		compilerOptions {
-			jvmTarget = JvmTarget.JVM_17
+			languageVersion = KotlinVersion.KOTLIN_2_0
 			freeCompilerArgs.add('-opt-in=kotlin.RequiresOptIn')
 		}
 	}
