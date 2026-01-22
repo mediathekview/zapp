@@ -36,9 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowSizeClass
-import androidx.window.core.layout.WindowWidthSizeClass
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import de.christinecoenen.code.zapp.BuildConfig
@@ -70,9 +68,7 @@ class AboutFragment : Fragment() {
 	fun MainScreen() {
 		AppTheme {
 			val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-			val sideBySide =
-				windowSizeClass.windowHeightSizeClass == WindowHeightSizeClass.COMPACT ||
-					windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
+			val sideBySide = windowSizeClass.isWidthAtLeastBreakpoint(800)
 
 			if (sideBySide) {
 				Row(verticalAlignment = Alignment.CenterVertically) {
