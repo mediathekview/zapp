@@ -8,6 +8,7 @@
 * Fixed downloads sometimes showing up in notifications but in the user interface ([#508](https://github.com/mediathekview/zapp/issues/508))
 * Fixed video title covered by the camera notch in portrait mode ([#512](https://github.com/mediathekview/zapp/issues/512))
 * Fixed crash when rotating the device while the program info in open ([#511](https://github.com/mediathekview/zapp/issues/511))
+* Fixed crash when starting a mediathek show download from the mediathek list over a metered network ([#514](https://github.com/mediathekview/zapp/issues/514))
 
 # 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously

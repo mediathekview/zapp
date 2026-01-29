@@ -13,6 +13,7 @@ import androidx.lifecycle.coroutineScope
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.DownloadExceptionToastExtensions.showDownloadExeptionToast
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import kotlinx.coroutines.Job
@@ -151,7 +152,11 @@ class ShowMenuHelper(
 		fragment.setFragmentResultListener(SelectQualityDialog.REQUEST_KEY_SELECT_QUALITY) { _, bundle ->
 			val quality = SelectQualityDialog.getSelectedQuality(bundle)
 			fragment.launchOnCreated {
-				viewModel.startDownload(show, quality)
+				try {
+					viewModel.startDownload(show, quality)
+				} catch (e: Exception) {
+					fragment.showDownloadExeptionToast(e)
+				}
 			}
 		}
 

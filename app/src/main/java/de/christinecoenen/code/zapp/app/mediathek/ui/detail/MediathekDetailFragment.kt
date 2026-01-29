@@ -11,13 +11,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.IDownloadController
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.NoNetworkException
-import de.christinecoenen.code.zapp.app.mediathek.controller.downloads.exceptions.WrongNetworkConditionException
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.SelectQualityDialog
+import de.christinecoenen.code.zapp.app.mediathek.ui.helper.DownloadExceptionToastExtensions.showDownloadExeptionToast
 import de.christinecoenen.code.zapp.app.mediathek.ui.helper.ShowMenuProvider
 import de.christinecoenen.code.zapp.databinding.MediathekDetailFragmentBinding
 import de.christinecoenen.code.zapp.models.shows.DownloadStatus
@@ -289,46 +287,7 @@ class MediathekDetailFragment : Fragment() {
 			try {
 				downloadController.startDownload(persistedMediathekShow!!.id, downloadQuality)
 			} catch (e: Exception) {
-				onStartDownloadException(e)
-			}
-		}
-	}
-
-	private fun onStartDownloadException(throwable: Throwable) {
-		when (throwable) {
-			is WrongNetworkConditionException -> {
-				Snackbar
-					.make(
-						requireView(),
-						R.string.error_mediathek_download_over_unmetered_network_only,
-						Snackbar.LENGTH_LONG
-					)
-					.setAction(R.string.activity_settings_title) {
-						val directions = MediathekDetailFragmentDirections.toSettingsFragment()
-						findNavController().navigate(directions)
-					}
-					.show()
-			}
-
-			is NoNetworkException -> {
-				Snackbar
-					.make(
-						requireView(),
-						R.string.error_mediathek_download_no_network,
-						Snackbar.LENGTH_LONG
-					)
-					.show()
-			}
-
-			else -> {
-				Snackbar
-					.make(
-						requireView(),
-						R.string.error_mediathek_generic_start_download_error,
-						Snackbar.LENGTH_LONG
-					)
-					.show()
-				Timber.e(throwable)
+				showDownloadExeptionToast(e)
 			}
 		}
 	}
