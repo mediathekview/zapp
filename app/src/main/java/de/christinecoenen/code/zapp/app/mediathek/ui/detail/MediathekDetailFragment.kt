@@ -58,7 +58,7 @@ class MediathekDetailFragment : Fragment() {
 		savedInstanceState: Bundle?
 	): View {
 		_binding = MediathekDetailFragmentBinding.inflate(inflater, container, false)
-		binding.root.isVisible = false
+		binding.wrapper.isVisible = false
 
 		viewLifecycleOwner.launchOnCreated {
 			loadOrPersistShowFromArguments()
@@ -116,7 +116,7 @@ class MediathekDetailFragment : Fragment() {
 		binding.buttons.download.isEnabled = show.hasAnyDownloadQuality()
 		binding.buttons.website.isEnabled = show.hasWebsite
 
-		binding.root.isVisible = true
+		binding.wrapper.isVisible = true
 
 		requireActivity().addMenuProvider(
 			ShowMenuProvider(this, show),

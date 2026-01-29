@@ -9,6 +9,7 @@
 * Behoben, dass der Video-Titel im Hochvormat von Kamera-Notches verdeckt wird ([#512](https://github.com/mediathekview/zapp/issues/512))
 * Absturz behoben, wenn man das Gerät dreht während die Programminformationen geöffnet sind ([#511](https://github.com/mediathekview/zapp/issues/511))
 * Absturz behoben, wenn man von der Mediathekliste aus einen Download über ein kostenpflichtiges Netzwerk startet ([#514](https://github.com/mediathekview/zapp/issues/514))
+* Behoben, dass der Bildschirm leer bleibt, wenn man von den Einstellungen zurück zu einer Sendung navigiert ([#515](https://github.com/mediathekview/zapp/issues/515))
 
 # 9.1.1
 * Absturz beim Start behoben, wenn schon einmal die Sender-Reihenfolge angepasst wurde

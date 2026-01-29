@@ -9,6 +9,7 @@
 * Fixed video title covered by the camera notch in portrait mode ([#512](https://github.com/mediathekview/zapp/issues/512))
 * Fixed crash when rotating the device while the program info in open ([#511](https://github.com/mediathekview/zapp/issues/511))
 * Fixed crash when starting a mediathek show download from the mediathek list over a metered network ([#514](https://github.com/mediathekview/zapp/issues/514))
+* Fixed a blank screen when navigating back to a mediathek show from the settings screen ([#515](https://github.com/mediathekview/zapp/issues/515))
 
 # 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously
