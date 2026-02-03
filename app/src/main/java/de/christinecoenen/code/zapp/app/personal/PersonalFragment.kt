@@ -122,7 +122,7 @@ class PersonalFragment : Fragment(), MenuProvider {
 			}
 		}
 
-		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+		(requireActivity() as? MainActivity)?.addMenuProviderToSearchBar(
 			this,
 			viewLifecycleOwner,
 			Lifecycle.State.RESUMED

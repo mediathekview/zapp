@@ -53,7 +53,7 @@ class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 		channelGridView.layoutManager = GridAutofitLayoutManager(requireContext(), 400)
 		channelGridView.adapter = gridAdapter
 
-		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+		(requireActivity() as? MainActivity)?.addMenuProviderToSearchBar(
 			this,
 			viewLifecycleOwner,
 			Lifecycle.State.RESUMED
