@@ -119,13 +119,13 @@ dependencies {
 	// unit tests
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core-ktx:$androix_test_version"
-	testImplementation 'org.robolectric:robolectric:4.16'
-	testImplementation 'org.mockito.kotlin:mockito-kotlin:6.1.0'
+	testImplementation 'org.robolectric:robolectric:4.16.1'
+	testImplementation 'org.mockito.kotlin:mockito-kotlin:6.2.3'
 	testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.12.2'
+	implementation 'androidx.activity:activity-ktx:1.12.3'
 	implementation 'androidx.appcompat:appcompat:1.7.1'
 	implementation 'com.google.android.material:material:1.13.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0"
@@ -133,7 +133,7 @@ dependencies {
 	implementation 'androidx.annotation:annotation:1.9.1'
 	implementation 'androidx.recyclerview:recyclerview:1.4.0'
 	implementation 'androidx.preference:preference-ktx:1.2.1'
-	implementation "androidx.paging:paging-runtime-ktx:3.3.6"
+	implementation "androidx.paging:paging-runtime-ktx:3.4.0"
 
 	def lifecycle_version = "2.10.0"
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -159,11 +159,11 @@ dependencies {
 	implementation 'io.noties.markwon:core:4.6.2'
 
 	// work manager
-	def work_version = "2.11.0"
+	def work_version = "2.11.1"
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.9.0"
+	def media3_version = "1.9.1"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"

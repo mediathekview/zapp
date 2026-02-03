@@ -2,7 +2,7 @@
 
 buildscript {
 	ext.about_libraries_version = '13.2.1'
-	ext.nav_version = '2.9.6'
+	ext.nav_version = '2.9.7'
 	ext.kotlin_version = '2.2.10'
 
 	repositories {
