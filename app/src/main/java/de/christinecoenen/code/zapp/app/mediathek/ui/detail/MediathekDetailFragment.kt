@@ -282,8 +282,7 @@ class MediathekDetailFragment : Fragment() {
 	private fun download(downloadQuality: Quality) {
 		startDownloadJob?.cancel()
 
-		startDownloadJob = lifecycle.coroutineScope.launch {
-
+		startDownloadJob = launchOnCreated {
 			try {
 				downloadController.startDownload(persistedMediathekShow!!.id, downloadQuality)
 			} catch (e: Exception) {

@@ -1,3 +1,6 @@
+# v-next
+* Fixed possible crash when a show download fails
+
 # 9.2.0
 * Added an option to mark a show as watched ([#509](https://github.com/mediathekview/zapp/issues/509))
 * Added an option to reset the progress of all started shows ([#507](https://github.com/mediathekview/zapp/issues/507))

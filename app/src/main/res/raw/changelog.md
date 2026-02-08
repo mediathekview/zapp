@@ -1,3 +1,6 @@
+# v-next
+* Möglichen Absturz behoben, wenn ein Sendungs-Download fehl schlägt
+
 # 9.2.0
 * Option hinzugefügt, um Videos als gesehen zu markieren ([#509](https://github.com/mediathekview/zapp/issues/509))
 * Option hinzugefügt, um den Fortschritt aller angefangenen Videos zurückzusetzen ([#507](https://github.com/mediathekview/zapp/issues/507))
