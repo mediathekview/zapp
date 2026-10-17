@@ -38,6 +38,12 @@ data class ShowCollection(
 	var sortByEpisodes: Boolean = false,
 
 	/**
+	 * Whether the shows are sorted from the first to the last episode. Only used if
+	 * [sortByEpisodes] is enabled.
+	 */
+	var sortEpisodesAscending: Boolean = true,
+
+	/**
 	 * Total number of shows found for [searchQuery] in the mediatheks.
 	 */
 	var totalCount: Int = 0,

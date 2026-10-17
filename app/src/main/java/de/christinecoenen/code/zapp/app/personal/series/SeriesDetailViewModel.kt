@@ -67,7 +67,8 @@ class SeriesDetailViewModel(
 				searchQuery = collection.searchQuery,
 				excludeTerms = collection.excludeTerms,
 				detectEpisodes = collection.detectEpisodes,
-				sortByEpisodes = collection.sortByEpisodes
+				sortByEpisodes = collection.sortByEpisodes,
+				sortEpisodesAscending = collection.sortEpisodesAscending
 			)
 		}
 		.flatMapLatest { collection ->
@@ -78,7 +79,11 @@ class SeriesDetailViewModel(
 						withContext(Dispatchers.Default) {
 							showCollectionRepository
 								.loadShows(collection)
-								.sortedWith(EpisodeComparator)
+								.sortedWith(
+									EpisodeComparator(
+										descending = !collection.sortEpisodesAscending
+									)
+								)
 						}
 					}
 				}.flow
@@ -119,6 +124,7 @@ class SeriesDetailViewModel(
 		val excludeTerms: String,
 		val detectEpisodes: Boolean,
 		val sortByEpisodes: Boolean,
+		val sortEpisodesAscending: Boolean,
 	)
 
 	init {

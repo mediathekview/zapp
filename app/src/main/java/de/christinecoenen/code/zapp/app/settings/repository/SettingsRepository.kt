@@ -166,8 +166,16 @@ class SettingsRepository(context: Context) {
 			return 1f - (fadePercent.coerceIn(0, MAX_WATCHED_SHOW_FADE) / 100f)
 		}
 
-	/**
-	 * Upper limit of shows that are processed by a single
+	/**	 * Playback progress in percent at which a show is automatically marked as watched.
+	 * 0 disables the automatic marking.
+	 */
+	val autoWatchedPercent: Int
+		get() = preferences.getInt(
+			context.getString(R.string.pref_key_auto_watched_percent),
+			0
+		).coerceIn(0, 100)
+
+	/**	 * Upper limit of shows that are processed by a single
 	 * "mark all as watched/unwatched" action.
 	 */
 	val maxProcessedShows: Int

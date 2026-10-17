@@ -71,6 +71,32 @@
 		android:layout_height="wrap_content"
 		android:text="@string/dialog_series_sort_by_episodes" />
 
+	<com.google.android.material.button.MaterialButtonToggleGroup
+		android:id="@+id/sort_direction"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		app:selectionRequired="true"
+		app:singleSelection="true">
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/sort_ascending"
+			style="@style/Widget.Material3.Button.OutlinedButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/dialog_series_sort_ascending" />
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/sort_descending"
+			style="@style/Widget.Material3.Button.OutlinedButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/dialog_series_sort_descending" />
+
+	</com.google.android.material.button.MaterialButtonToggleGroup>
+
 	<com.google.android.material.textview.MaterialTextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

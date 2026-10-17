@@ -164,6 +164,7 @@ class ShowCollectionRepository(
 		excludeTerms: String,
 		detectEpisodes: Boolean,
 		sortByEpisodes: Boolean,
+		sortEpisodesAscending: Boolean,
 	) = withContext(Dispatchers.IO) {
 		val dao = database.showCollectionDao()
 		val trimmedName = name.trim()
@@ -177,7 +178,8 @@ class ShowCollectionRepository(
 					searchQuery = trimmedQuery,
 					excludeTerms = trimmedExcludeTerms,
 					detectEpisodes = detectEpisodes,
-					sortByEpisodes = sortByEpisodes
+					sortByEpisodes = sortByEpisodes,
+					sortEpisodesAscending = sortEpisodesAscending
 				)
 			)
 		} else {
@@ -192,6 +194,7 @@ class ShowCollectionRepository(
 					excludeTerms = trimmedExcludeTerms,
 					detectEpisodes = detectEpisodes,
 					sortByEpisodes = sortByEpisodes,
+					sortEpisodesAscending = sortEpisodesAscending,
 					totalCount = if (queryChanged) 0 else existing.totalCount,
 					unwatchedCount = if (queryChanged) 0 else existing.unwatchedCount,
 					countUpdatedAt = if (queryChanged) null else existing.countUpdatedAt,

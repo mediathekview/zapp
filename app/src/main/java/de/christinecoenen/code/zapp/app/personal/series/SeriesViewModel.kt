@@ -33,6 +33,7 @@ class SeriesViewModel(
 		excludeTerms: String,
 		detectEpisodes: Boolean,
 		sortByEpisodes: Boolean,
+		sortEpisodesAscending: Boolean,
 	) {
 		viewModelScope.launch {
 			showCollectionRepository.save(
@@ -41,7 +42,8 @@ class SeriesViewModel(
 				searchQuery,
 				excludeTerms,
 				detectEpisodes,
-				sortByEpisodes
+				sortByEpisodes,
+				sortEpisodesAscending
 			)
 		}
 	}

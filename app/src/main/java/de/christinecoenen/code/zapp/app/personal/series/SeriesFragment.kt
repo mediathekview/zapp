@@ -90,7 +90,8 @@ class SeriesFragment : Fragment(), MenuProvider {
 				bundle.getString(EditSeriesDialog.RESULT_QUERY).orEmpty(),
 				bundle.getString(EditSeriesDialog.RESULT_EXCLUDE_TERMS).orEmpty(),
 				bundle.getBoolean(EditSeriesDialog.RESULT_DETECT_EPISODES),
-				bundle.getBoolean(EditSeriesDialog.RESULT_SORT_BY_EPISODES)
+				bundle.getBoolean(EditSeriesDialog.RESULT_SORT_BY_EPISODES),
+				bundle.getBoolean(EditSeriesDialog.RESULT_SORT_EPISODES_ASCENDING, true)
 			)
 		}
 

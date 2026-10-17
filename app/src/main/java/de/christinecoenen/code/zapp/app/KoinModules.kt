@@ -63,7 +63,7 @@ class KoinModules {
 			single { MediathekRepository(get()) }
 			single { SearchRepository(get()) }
 			single { ShowCollectionRepository(get(), get(), get(), get()) }
-			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
+			single { PersistedPlaybackPositionRepository(get(), get()) } bind IPlaybackPositionRepository::class
 			single {
 				WorkManagerDownloadController(
 					androidContext(),

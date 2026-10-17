@@ -112,6 +112,8 @@
 	<string name="dialog_series_exclude_helper">Begriffe mit Komma trennen. Sendungen, die einen dieser Begriffe in Titel oder Thema enthalten, werden nicht angezeigt.</string>
 	<string name="dialog_series_detect_episodes">Folgen erkennen</string>
 	<string name="dialog_series_sort_by_episodes">Nach Folge sortieren</string>
+	<string name="dialog_series_sort_ascending">Älteste zuerst</string>
+	<string name="dialog_series_sort_descending">Neueste zuerst</string>
 	<string name="dialog_series_episodes_helper">Sucht Staffel- und Folgennummern im Titel, z. B. (S20/E07), (3/12) oder (123), und sortiert die Liste danach.</string>
 	<string name="dialog_series_delete_title">Kollektion löschen?</string>
 	<string name="dialog_series_delete_text">Die Kollektion „%1$s“ wird gelöscht.</string>
@@ -221,6 +223,9 @@
 	<string name="pref_watched_show_mode_title">Gesehene Sendungen</string>
 	<string name="pref_watched_show_mode_fade">Verblassen</string>
 	<string name="pref_watched_show_mode_hide">Ausblenden</string>
+
+	<string name="pref_auto_watched_percent_title">Automatisch als gesehen markieren</string>
+	<string name="pref_auto_watched_percent_summary">Markiert eine Sendung als gesehen, sobald dieser Anteil abgespielt wurde. 0 = aus.</string>
 
 	<plurals name="notification_collection_update_text">
 		<item quantity="one">%1$d neue Sendung</item>

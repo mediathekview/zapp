@@ -25,6 +25,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		const val RESULT_EXCLUDE_TERMS = "RESULT_SERIES_EXCLUDE_TERMS"
 		const val RESULT_DETECT_EPISODES = "RESULT_SERIES_DETECT_EPISODES"
 		const val RESULT_SORT_BY_EPISODES = "RESULT_SERIES_SORT_BY_EPISODES"
+		const val RESULT_SORT_EPISODES_ASCENDING = "RESULT_SERIES_SORT_EPISODES_ASCENDING"
 
 		private const val ARG_ID = "ARG_SERIES_ID"
 		private const val ARG_NAME = "ARG_SERIES_NAME"
@@ -32,6 +33,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		private const val ARG_EXCLUDE_TERMS = "ARG_SERIES_EXCLUDE_TERMS"
 		private const val ARG_DETECT_EPISODES = "ARG_SERIES_DETECT_EPISODES"
 		private const val ARG_SORT_BY_EPISODES = "ARG_SERIES_SORT_BY_EPISODES"
+		private const val ARG_SORT_EPISODES_ASCENDING = "ARG_SERIES_SORT_EPISODES_ASCENDING"
 
 		/**
 		 * @param collection Collection to edit or null to create a new one.
@@ -45,7 +47,8 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 					ARG_QUERY to (collection?.searchQuery.orEmpty()),
 					ARG_EXCLUDE_TERMS to (collection?.excludeTerms.orEmpty()),
 					ARG_DETECT_EPISODES to (collection?.detectEpisodes ?: false),
-					ARG_SORT_BY_EPISODES to (collection?.sortByEpisodes ?: false)
+					ARG_SORT_BY_EPISODES to (collection?.sortByEpisodes ?: false),
+					ARG_SORT_EPISODES_ASCENDING to (collection?.sortEpisodesAscending ?: true)
 				)
 			}
 		}
@@ -61,10 +64,18 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		binding.excludeTerms.setText(args.getString(ARG_EXCLUDE_TERMS))
 		binding.detectEpisodes.isChecked = args.getBoolean(ARG_DETECT_EPISODES)
 		binding.sortByEpisodes.isChecked = args.getBoolean(ARG_SORT_BY_EPISODES)
+		binding.sortDirection.check(
+			if (args.getBoolean(ARG_SORT_EPISODES_ASCENDING, true)) R.id.sort_ascending
+			else R.id.sort_descending
+		)
 
 		updateSortByEpisodesEnabled(binding)
 
 		binding.detectEpisodes.setOnCheckedChangeListener { _, _ ->
+			updateSortByEpisodesEnabled(binding)
+		}
+
+		binding.sortByEpisodes.setOnCheckedChangeListener { _, _ ->
 			updateSortByEpisodesEnabled(binding)
 		}
 
@@ -85,6 +96,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 				val excludeTerms = binding.excludeTerms.text?.toString().orEmpty().trim()
 				val detectEpisodes = binding.detectEpisodes.isChecked
 				val sortByEpisodes = detectEpisodes && binding.sortByEpisodes.isChecked
+				val sortEpisodesAscending = binding.sortDirection.checkedButtonId != R.id.sort_descending
 
 				if (name.isEmpty()) {
 					binding.nameLayout.error = getString(R.string.error_series_missing_name)
@@ -106,7 +118,8 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 						RESULT_QUERY to searchQuery,
 						RESULT_EXCLUDE_TERMS to excludeTerms,
 						RESULT_DETECT_EPISODES to detectEpisodes,
-						RESULT_SORT_BY_EPISODES to sortByEpisodes
+						RESULT_SORT_BY_EPISODES to sortByEpisodes,
+						RESULT_SORT_EPISODES_ASCENDING to sortEpisodesAscending
 					)
 				)
 				dismiss()
@@ -120,6 +133,10 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 	 * Sorting by episode only works if episodes are detected.
 	 */
 	private fun updateSortByEpisodesEnabled(binding: DialogEditSeriesBinding) {
+		val sortEnabled = binding.detectEpisodes.isChecked && binding.sortByEpisodes.isChecked
+
 		binding.sortByEpisodes.isEnabled = binding.detectEpisodes.isChecked
+		binding.sortAscending.isEnabled = sortEnabled
+		binding.sortDescending.isEnabled = sortEnabled
 	}
 }

@@ -112,6 +112,8 @@
 	<string name="dialog_series_exclude_helper">Separate terms with commas. Shows containing one of these terms in their title or topic will not be shown.</string>
 	<string name="dialog_series_detect_episodes">Detect episodes</string>
 	<string name="dialog_series_sort_by_episodes">Sort by episode</string>
+	<string name="dialog_series_sort_ascending">Oldest first</string>
+	<string name="dialog_series_sort_descending">Newest first</string>
 	<string name="dialog_series_episodes_helper">Looks for season and episode numbers in the title, e.g. (S20/E07), (3/12) or (123), and sorts the list by them.</string>
 	<string name="dialog_series_delete_title">Delete collection?</string>
 	<string name="dialog_series_delete_text">The collection “%1$s” will be deleted.</string>
@@ -221,6 +223,9 @@
 	<string name="pref_watched_show_mode_title">Watched shows</string>
 	<string name="pref_watched_show_mode_fade">Fade out</string>
 	<string name="pref_watched_show_mode_hide">Hide</string>
+
+	<string name="pref_auto_watched_percent_title">Mark as watched automatically</string>
+	<string name="pref_auto_watched_percent_summary">Marks a show as watched as soon as this percentage has been played. 0 = off.</string>
 
 	<plurals name="notification_collection_update_text">
 		<item quantity="one">%1$d new show</item>

@@ -58,6 +58,16 @@
 			app:seekBarIncrement="10"
 			app:showSeekBarValue="true" />
 
+		<SeekBarPreference
+			android:defaultValue="0"
+			android:key="@string/pref_key_auto_watched_percent"
+			android:max="100"
+			android:min="0"
+			android:summary="@string/pref_auto_watched_percent_summary"
+			android:title="@string/pref_auto_watched_percent_title"
+			app:seekBarIncrement="5"
+			app:showSeekBarValue="true" />
+
 	</PreferenceCategory>
 
 	<PreferenceCategory
