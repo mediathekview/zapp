@@ -28,6 +28,8 @@ Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen de
 	<li>Zuschaltbare Untertitel für einige Mediathek-Sendungen</li>
 	<li>Teilen-Funktion für Live- und Mediathek-Videos</li>
 	<li>Hintergrund-Playback</li>
+</ul>New:<ul>
+	<li>Serien/Kollektionen mit Benachrichtigungen</li>
 </ul>
 
 **Achtung:** Wenn du Zapp außerhalb Deutschlands benutzt, können manche Sender – wie zum Beispiel ZDF – geblockt sein.
