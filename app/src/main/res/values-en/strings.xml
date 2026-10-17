@@ -110,6 +110,9 @@
 	<string name="dialog_series_query_label">Search term</string>
 	<string name="dialog_series_exclude_label">Exclude</string>
 	<string name="dialog_series_exclude_helper">Separate terms with commas. Shows containing one of these terms in their title or topic will not be shown.</string>
+	<string name="dialog_series_detect_episodes">Detect episodes</string>
+	<string name="dialog_series_sort_by_episodes">Sort by episode</string>
+	<string name="dialog_series_episodes_helper">Looks for season and episode numbers in the title, e.g. (S20/E07), (3/12) or (123), and sorts the list by them.</string>
 	<string name="dialog_series_delete_title">Delete collection?</string>
 	<string name="dialog_series_delete_text">The collection “%1$s” will be deleted.</string>
 	<string name="fragment_series_mark_all_watched_success">Marked %1$d shows as watched</string>

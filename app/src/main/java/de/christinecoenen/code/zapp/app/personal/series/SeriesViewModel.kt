@@ -26,9 +26,23 @@ class SeriesViewModel(
 		showCollectionRepository.requestCountRefresh()
 	}
 
-	fun save(id: Int, name: String, searchQuery: String, excludeTerms: String) {
+	fun save(
+		id: Int,
+		name: String,
+		searchQuery: String,
+		excludeTerms: String,
+		detectEpisodes: Boolean,
+		sortByEpisodes: Boolean,
+	) {
 		viewModelScope.launch {
-			showCollectionRepository.save(id, name, searchQuery, excludeTerms)
+			showCollectionRepository.save(
+				id,
+				name,
+				searchQuery,
+				excludeTerms,
+				detectEpisodes,
+				sortByEpisodes
+			)
 		}
 	}
 

@@ -25,6 +25,13 @@ class MediathekItemViewHolder(
 
 	private var playbackPositionJob: Job? = null
 
+	/**
+	 * Height of the item as defined in the layout. Hidden items are collapsed to zero height,
+	 * so they do not leave a gap in the list.
+	 */
+	private val expandedHeight: Int =
+		binding.root.layoutParams?.height ?: RecyclerView.LayoutParams.WRAP_CONTENT
+
 	suspend fun setShow(show: MediathekShow) = withContext(Dispatchers.Main) {
 		recycle()
 
@@ -39,6 +46,8 @@ class MediathekItemViewHolder(
 
 		binding.root.isVisible = true
 		setContentAlpha(1f)
+
+		setHidden(false)
 
 		playbackPositionJob = scope.launch {
 			mediathekRepository
@@ -57,10 +66,27 @@ class MediathekItemViewHolder(
 		val hideWatched = isWatched &&
 			settingsRepository.watchedShowDisplay == SettingsRepository.WatchedShowDisplay.HIDE
 
-		binding.root.isVisible = !hideWatched
+		setHidden(hideWatched)
 		setContentAlpha(
 			if (isWatched && !hideWatched) settingsRepository.watchedShowAlpha else 1f
 		)
+	}
+
+	/**
+	 * Shows or hides this item completely. Hidden items are collapsed to zero height, so that
+	 * they are not displayed at all instead of only being invisible.
+	 */
+	private fun setHidden(hidden: Boolean) {
+		val height = if (hidden) 0 else expandedHeight
+
+		binding.root.isVisible = !hidden
+
+		binding.root.layoutParams?.let { layoutParams ->
+			if (layoutParams.height != height) {
+				layoutParams.height = height
+				binding.root.layoutParams = layoutParams
+			}
+		}
 	}
 
 	/**

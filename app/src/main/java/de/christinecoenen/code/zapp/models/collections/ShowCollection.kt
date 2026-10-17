@@ -28,6 +28,16 @@ data class ShowCollection(
 	var excludeTerms: String = "",
 
 	/**
+	 * Whether season and episode numbers should be read from the show titles.
+	 */
+	var detectEpisodes: Boolean = false,
+
+	/**
+	 * Whether the shows should be sorted by season and episode instead of date.
+	 */
+	var sortByEpisodes: Boolean = false,
+
+	/**
 	 * Total number of shows found for [searchQuery] in the mediatheks.
 	 */
 	var totalCount: Int = 0,

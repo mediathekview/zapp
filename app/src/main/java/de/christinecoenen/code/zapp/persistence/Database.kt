@@ -20,7 +20,7 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 		ShowCollection::class,
 		ShowCollectionEntry::class
 	],
-	version = 10,
+	version = 11,
 	autoMigrations = [],
 	exportSchema = true
 )
@@ -28,6 +28,19 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 abstract class Database : RoomDatabase() {
 
 	companion object {
+
+		/**
+		 * Episode detection and sorting for collections plus optional season/episode numbers
+		 * delivered by the mediathek.
+		 */
+		private val MIGRATION_10_11 = object : Migration(10, 11) {
+			override fun migrate(db: SupportSQLiteDatabase) {
+				db.execSQL("ALTER TABLE ShowCollection ADD COLUMN detectEpisodes INTEGER NOT NULL DEFAULT 0")
+				db.execSQL("ALTER TABLE ShowCollection ADD COLUMN sortByEpisodes INTEGER NOT NULL DEFAULT 0")
+				db.execSQL("ALTER TABLE PersistedMediathekShow ADD COLUMN season INTEGER")
+				db.execSQL("ALTER TABLE PersistedMediathekShow ADD COLUMN episode INTEGER")
+			}
+		}
 
 		/**
 		 * Store which shows belong to a collection, so that the counters can be calculated
@@ -159,7 +172,8 @@ abstract class Database : RoomDatabase() {
 					MIGRATION_6_7,
 					MIGRATION_7_8,
 					MIGRATION_8_9,
-					MIGRATION_9_10
+					MIGRATION_9_10,
+					MIGRATION_10_11
 				)
 				.build()
 		}

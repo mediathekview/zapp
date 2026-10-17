@@ -110,6 +110,9 @@
 	<string name="dialog_series_query_label">Suchbegriff</string>
 	<string name="dialog_series_exclude_label">Ausschließen</string>
 	<string name="dialog_series_exclude_helper">Begriffe mit Komma trennen. Sendungen, die einen dieser Begriffe in Titel oder Thema enthalten, werden nicht angezeigt.</string>
+	<string name="dialog_series_detect_episodes">Folgen erkennen</string>
+	<string name="dialog_series_sort_by_episodes">Nach Folge sortieren</string>
+	<string name="dialog_series_episodes_helper">Sucht Staffel- und Folgennummern im Titel, z. B. (S20/E07), (3/12) oder (123), und sortiert die Liste danach.</string>
 	<string name="dialog_series_delete_title">Kollektion löschen?</string>
 	<string name="dialog_series_delete_text">Die Kollektion „%1$s“ wird gelöscht.</string>
 	<string name="fragment_series_mark_all_watched_success">%1$d Sendungen als gesehen markiert</string>

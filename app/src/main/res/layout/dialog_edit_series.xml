@@ -58,4 +58,24 @@
 
 	</com.google.android.material.textfield.TextInputLayout>
 
+	<com.google.android.material.materialswitch.MaterialSwitch
+		android:id="@+id/detect_episodes"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:text="@string/dialog_series_detect_episodes" />
+
+	<com.google.android.material.materialswitch.MaterialSwitch
+		android:id="@+id/sort_by_episodes"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/dialog_series_sort_by_episodes" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		android:text="@string/dialog_series_episodes_helper"
+		android:textAppearance="?textAppearanceBodySmall" />
+
 </LinearLayout>

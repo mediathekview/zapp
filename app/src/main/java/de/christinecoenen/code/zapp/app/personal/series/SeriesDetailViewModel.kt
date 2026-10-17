@@ -18,8 +18,11 @@ import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
 import de.christinecoenen.code.zapp.models.collections.ShowCollection
 import de.christinecoenen.code.zapp.models.collections.isExcluded
+import de.christinecoenen.code.zapp.models.shows.EpisodeComparator
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.ShowCollectionRepository
+import de.christinecoenen.code.zapp.utils.paging.ListPagingSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -28,6 +31,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import timber.log.Timber
 
@@ -58,18 +62,40 @@ class SeriesDetailViewModel(
 	val showList = showCollectionRepository
 		.getFromId(collectionId)
 		.filterNotNull()
-		.distinctUntilChangedBy { it.searchQuery to it.excludeTerms }
+		.distinctUntilChangedBy { collection ->
+			ShowListSettings(
+				searchQuery = collection.searchQuery,
+				excludeTerms = collection.excludeTerms,
+				detectEpisodes = collection.detectEpisodes,
+				sortByEpisodes = collection.sortByEpisodes
+			)
+		}
 		.flatMapLatest { collection ->
-			Pager(pagingConfig) {
-				MediathekPagingSource(
-					mediathekApi,
-					QueryRequest().apply {
-						size = ITEM_COUNT_PER_PAGE
-						setQueryString(collection.searchQuery)
-					},
-					queryInfoResult
-				)
-			}.flow
+			val pagingDataFlow = if (collection.sortByEpisodes) {
+				// the mediathek cannot sort by episode, so all shows are loaded and sorted here
+				Pager(pagingConfig) {
+					ListPagingSource {
+						withContext(Dispatchers.Default) {
+							showCollectionRepository
+								.loadShows(collection)
+								.sortedWith(EpisodeComparator)
+						}
+					}
+				}.flow
+			} else {
+				Pager(pagingConfig) {
+					MediathekPagingSource(
+						mediathekApi,
+						QueryRequest().apply {
+							size = ITEM_COUNT_PER_PAGE
+							setQueryString(collection.searchQuery)
+						},
+						queryInfoResult
+					)
+				}.flow
+			}
+
+			pagingDataFlow
 				.map<PagingData<MediathekShow>, PagingData<MediathekShow>> { pagingData ->
 					pagingData.filter { show -> !collection.isExcluded(show) }
 				}
@@ -84,6 +110,16 @@ class SeriesDetailViewModel(
 		}
 		.cachedIn(viewModelScope)
 		.asLiveData()
+
+	/**
+	 * Settings that require the list to be loaded again when they change.
+	 */
+	private data class ShowListSettings(
+		val searchQuery: String,
+		val excludeTerms: String,
+		val detectEpisodes: Boolean,
+		val sortByEpisodes: Boolean,
+	)
 
 	init {
 		viewModelScope.launch {

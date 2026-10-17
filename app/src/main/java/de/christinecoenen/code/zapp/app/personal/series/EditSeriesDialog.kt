@@ -23,11 +23,15 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		const val RESULT_NAME = "RESULT_SERIES_NAME"
 		const val RESULT_QUERY = "RESULT_SERIES_QUERY"
 		const val RESULT_EXCLUDE_TERMS = "RESULT_SERIES_EXCLUDE_TERMS"
+		const val RESULT_DETECT_EPISODES = "RESULT_SERIES_DETECT_EPISODES"
+		const val RESULT_SORT_BY_EPISODES = "RESULT_SERIES_SORT_BY_EPISODES"
 
 		private const val ARG_ID = "ARG_SERIES_ID"
 		private const val ARG_NAME = "ARG_SERIES_NAME"
 		private const val ARG_QUERY = "ARG_SERIES_QUERY"
 		private const val ARG_EXCLUDE_TERMS = "ARG_SERIES_EXCLUDE_TERMS"
+		private const val ARG_DETECT_EPISODES = "ARG_SERIES_DETECT_EPISODES"
+		private const val ARG_SORT_BY_EPISODES = "ARG_SERIES_SORT_BY_EPISODES"
 
 		/**
 		 * @param collection Collection to edit or null to create a new one.
@@ -39,7 +43,9 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 					ARG_ID to (collection?.id ?: 0),
 					ARG_NAME to (collection?.name.orEmpty()),
 					ARG_QUERY to (collection?.searchQuery.orEmpty()),
-					ARG_EXCLUDE_TERMS to (collection?.excludeTerms.orEmpty())
+					ARG_EXCLUDE_TERMS to (collection?.excludeTerms.orEmpty()),
+					ARG_DETECT_EPISODES to (collection?.detectEpisodes ?: false),
+					ARG_SORT_BY_EPISODES to (collection?.sortByEpisodes ?: false)
 				)
 			}
 		}
@@ -53,6 +59,14 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		binding.name.setText(args.getString(ARG_NAME))
 		binding.query.setText(args.getString(ARG_QUERY))
 		binding.excludeTerms.setText(args.getString(ARG_EXCLUDE_TERMS))
+		binding.detectEpisodes.isChecked = args.getBoolean(ARG_DETECT_EPISODES)
+		binding.sortByEpisodes.isChecked = args.getBoolean(ARG_SORT_BY_EPISODES)
+
+		updateSortByEpisodesEnabled(binding)
+
+		binding.detectEpisodes.setOnCheckedChangeListener { _, _ ->
+			updateSortByEpisodesEnabled(binding)
+		}
 
 		val dialog = MaterialAlertDialogBuilder(requireActivity())
 			.setTitle(
@@ -69,6 +83,8 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 				val name = binding.name.text?.toString().orEmpty().trim()
 				val searchQuery = binding.query.text?.toString().orEmpty().trim()
 				val excludeTerms = binding.excludeTerms.text?.toString().orEmpty().trim()
+				val detectEpisodes = binding.detectEpisodes.isChecked
+				val sortByEpisodes = detectEpisodes && binding.sortByEpisodes.isChecked
 
 				if (name.isEmpty()) {
 					binding.nameLayout.error = getString(R.string.error_series_missing_name)
@@ -88,7 +104,9 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 						RESULT_ID to collectionId,
 						RESULT_NAME to name,
 						RESULT_QUERY to searchQuery,
-						RESULT_EXCLUDE_TERMS to excludeTerms
+						RESULT_EXCLUDE_TERMS to excludeTerms,
+						RESULT_DETECT_EPISODES to detectEpisodes,
+						RESULT_SORT_BY_EPISODES to sortByEpisodes
 					)
 				)
 				dismiss()
@@ -96,5 +114,12 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		}
 
 		return dialog
+	}
+
+	/**
+	 * Sorting by episode only works if episodes are detected.
+	 */
+	private fun updateSortByEpisodesEnabled(binding: DialogEditSeriesBinding) {
+		binding.sortByEpisodes.isEnabled = binding.detectEpisodes.isChecked
 	}
 }

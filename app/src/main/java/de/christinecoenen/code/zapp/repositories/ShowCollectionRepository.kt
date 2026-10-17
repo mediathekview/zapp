@@ -42,6 +42,12 @@ class ShowCollectionRepository(
 		private const val PAGE_SIZE = 100
 
 		/**
+		 * Number of shows requested per page when a collection is loaded as a whole, so that it
+		 * can be sorted locally.
+		 */
+		private const val LARGE_PAGE_SIZE = 1000
+
+		/**
 		 * Time after which the total number of found shows is fetched again.
 		 */
 		private const val COUNT_MAX_AGE_HOURS = 6
@@ -156,6 +162,8 @@ class ShowCollectionRepository(
 		name: String,
 		searchQuery: String,
 		excludeTerms: String,
+		detectEpisodes: Boolean,
+		sortByEpisodes: Boolean,
 	) = withContext(Dispatchers.IO) {
 		val dao = database.showCollectionDao()
 		val trimmedName = name.trim()
@@ -167,7 +175,9 @@ class ShowCollectionRepository(
 				ShowCollection(
 					name = trimmedName,
 					searchQuery = trimmedQuery,
-					excludeTerms = trimmedExcludeTerms
+					excludeTerms = trimmedExcludeTerms,
+					detectEpisodes = detectEpisodes,
+					sortByEpisodes = sortByEpisodes
 				)
 			)
 		} else {
@@ -180,6 +190,8 @@ class ShowCollectionRepository(
 					name = trimmedName,
 					searchQuery = trimmedQuery,
 					excludeTerms = trimmedExcludeTerms,
+					detectEpisodes = detectEpisodes,
+					sortByEpisodes = sortByEpisodes,
 					totalCount = if (queryChanged) 0 else existing.totalCount,
 					unwatchedCount = if (queryChanged) 0 else existing.unwatchedCount,
 					countUpdatedAt = if (queryChanged) null else existing.countUpdatedAt,
@@ -193,6 +205,49 @@ class ShowCollectionRepository(
 	suspend fun delete(collection: ShowCollection) = withContext(Dispatchers.IO) {
 		database.showCollectionDao().delete(collection)
 	}
+
+	/**
+	 * Loads all shows of the collection. Excluded shows are removed. At most
+	 * [SettingsRepository.maxProcessedShows] shows are loaded.
+	 *
+	 * This is used when the shows have to be sorted locally instead of by the mediathek.
+	 */
+	suspend fun loadShows(collection: ShowCollection): List<MediathekShow> =
+		withContext(Dispatchers.IO) {
+			val maxProcessedShows = settingsRepository.maxProcessedShows
+			val handledApiIds = mutableSetOf<String>()
+			val shows = mutableListOf<MediathekShow>()
+			var offset = 0
+
+			while (offset < maxProcessedShows) {
+				val page = try {
+					searchMediathek(collection.searchQuery, LARGE_PAGE_SIZE, offset)
+				} catch (e: Exception) {
+					Timber.e(e, "Could not load shows of collection ${collection.id}")
+					break
+				}
+
+				if (page.isEmpty()) {
+					break
+				}
+
+				for (show in page) {
+					if (collection.isExcluded(show) || !handledApiIds.add(show.apiId)) {
+						continue
+					}
+
+					shows += show
+				}
+
+				if (page.size < LARGE_PAGE_SIZE) {
+					break
+				}
+
+				offset += page.size
+			}
+
+			shows
+		}
 
 	/**
 	 * Searches the mediatheks for the collection query and marks all found
