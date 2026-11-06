@@ -31,6 +31,7 @@ class SeriesViewModel(
 		name: String,
 		searchQuery: String,
 		excludeTerms: String,
+		channels: String,
 		detectEpisodes: Boolean,
 		sortByEpisodes: Boolean,
 		sortEpisodesAscending: Boolean,
@@ -41,6 +42,7 @@ class SeriesViewModel(
 				name,
 				searchQuery,
 				excludeTerms,
+				channels,
 				detectEpisodes,
 				sortByEpisodes,
 				sortEpisodesAscending

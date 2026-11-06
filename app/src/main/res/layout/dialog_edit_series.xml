@@ -58,6 +58,18 @@
 
 	</com.google.android.material.textfield.TextInputLayout>
 
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/channels"
+		style="@style/Widget.Material3.Button.OutlinedButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="12dp"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:text="@string/dialog_series_channels_all"
+		app:icon="@drawable/ic_sharp_filter_list_24"
+		app:iconGravity="textStart" />
+
 	<com.google.android.material.materialswitch.MaterialSwitch
 		android:id="@+id/detect_episodes"
 		android:layout_width="match_parent"

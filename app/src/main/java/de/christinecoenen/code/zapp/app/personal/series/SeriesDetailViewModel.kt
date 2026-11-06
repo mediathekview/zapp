@@ -18,6 +18,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.result.QueryInfoResult
 import de.christinecoenen.code.zapp.app.mediathek.ui.list.adapter.UiModel
 import de.christinecoenen.code.zapp.models.collections.ShowCollection
 import de.christinecoenen.code.zapp.models.collections.isExcluded
+import de.christinecoenen.code.zapp.models.collections.matchesChannels
 import de.christinecoenen.code.zapp.models.shows.EpisodeComparator
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.repositories.ShowCollectionRepository
@@ -66,6 +67,7 @@ class SeriesDetailViewModel(
 			ShowListSettings(
 				searchQuery = collection.searchQuery,
 				excludeTerms = collection.excludeTerms,
+				channels = collection.channels,
 				detectEpisodes = collection.detectEpisodes,
 				sortByEpisodes = collection.sortByEpisodes,
 				sortEpisodesAscending = collection.sortEpisodesAscending
@@ -102,7 +104,9 @@ class SeriesDetailViewModel(
 
 			pagingDataFlow
 				.map<PagingData<MediathekShow>, PagingData<MediathekShow>> { pagingData ->
-					pagingData.filter { show -> !collection.isExcluded(show) }
+					pagingData.filter { show ->
+						!collection.isExcluded(show) && collection.matchesChannels(show)
+					}
 				}
 		}
 		.map<PagingData<MediathekShow>, PagingData<UiModel>> { pagingData ->
@@ -122,6 +126,7 @@ class SeriesDetailViewModel(
 	private data class ShowListSettings(
 		val searchQuery: String,
 		val excludeTerms: String,
+		val channels: String,
 		val detectEpisodes: Boolean,
 		val sortByEpisodes: Boolean,
 		val sortEpisodesAscending: Boolean,

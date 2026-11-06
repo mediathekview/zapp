@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.databinding.PersonalFragmentSeriesItemBinding
 import de.christinecoenen.code.zapp.models.collections.ShowCollection
+import de.christinecoenen.code.zapp.models.collections.channelLabels
+import de.christinecoenen.code.zapp.models.collections.excludedSearchTerms
+import de.christinecoenen.code.zapp.models.collections.selectedChannels
 
 class ShowCollectionListAdapter(
 	private val listener: Listener,
@@ -51,19 +54,26 @@ class ShowCollectionListAdapter(
 	) : RecyclerView.ViewHolder(binding.root) {
 
 		fun bind(collection: ShowCollection, listener: Listener) {
+			val context = binding.root.context
+
 			binding.name.text = collection.name
-			binding.query.text = if (collection.excludeTerms.isBlank()) {
-				binding.root.context.getString(
-					R.string.fragment_series_item_query,
-					collection.searchQuery
-				)
-			} else {
-				binding.root.context.getString(
-					R.string.fragment_series_item_query_excluded,
-					collection.searchQuery,
+
+			val details = mutableListOf(
+				context.getString(R.string.fragment_series_item_query, collection.searchQuery)
+			)
+			if (collection.excludedSearchTerms.isNotEmpty()) {
+				details += context.getString(
+					R.string.fragment_series_item_excluded,
 					collection.excludeTerms
 				)
 			}
+			if (collection.selectedChannels.isNotEmpty()) {
+				details += context.getString(
+					R.string.fragment_series_item_channels,
+					collection.channelLabels.joinToString(", ")
+				)
+			}
+			binding.query.text = details.joinToString(" · ")
 
 			val hasCount = collection.countUpdatedAt != null
 			binding.count.isVisible = hasCount

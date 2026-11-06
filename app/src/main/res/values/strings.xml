@@ -96,6 +96,8 @@
 	<!-- series -->
 	<string name="fragment_series_no_results">keine Kollektionen angelegt</string>
 	<string name="fragment_series_item_query">Suche: %1$s</string>
+	<string name="fragment_series_item_excluded">ohne: %1$s</string>
+	<string name="fragment_series_item_channels">Sender: %1$s</string>
 	<string name="fragment_series_item_query_excluded">Suche: %1$s · ohne: %2$s</string>
 	<string name="fragment_series_item_count">%1$d</string>
 	<string name="fragment_series_item_count_content_description">%1$d Sendungen ungesehen</string>
@@ -115,6 +117,10 @@
 	<string name="dialog_series_sort_ascending">Älteste zuerst</string>
 	<string name="dialog_series_sort_descending">Neueste zuerst</string>
 	<string name="dialog_series_episodes_helper">Sucht Staffel- und Folgennummern im Titel, z. B. (S20/E07), (3/12) oder (123), und sortiert die Liste danach.</string>
+	<string name="dialog_series_channels_all">Sender: alle</string>
+	<string name="dialog_series_channels_selected">Sender: %1$s</string>
+	<string name="dialog_series_channels_title">Sender auswählen</string>
+	<string name="dialog_series_channels_message">Ohne Auswahl werden alle Sender durchsucht.</string>
 	<string name="dialog_series_delete_title">Kollektion löschen?</string>
 	<string name="dialog_series_delete_text">Die Kollektion „%1$s“ wird gelöscht.</string>
 	<string name="fragment_series_mark_all_watched_success">%1$d Sendungen als gesehen markiert</string>

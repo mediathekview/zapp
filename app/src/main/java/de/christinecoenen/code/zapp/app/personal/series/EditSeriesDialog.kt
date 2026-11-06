@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.databinding.DialogEditSeriesBinding
 import de.christinecoenen.code.zapp.models.collections.ShowCollection
 
@@ -23,6 +24,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		const val RESULT_NAME = "RESULT_SERIES_NAME"
 		const val RESULT_QUERY = "RESULT_SERIES_QUERY"
 		const val RESULT_EXCLUDE_TERMS = "RESULT_SERIES_EXCLUDE_TERMS"
+		const val RESULT_CHANNELS = "RESULT_SERIES_CHANNELS"
 		const val RESULT_DETECT_EPISODES = "RESULT_SERIES_DETECT_EPISODES"
 		const val RESULT_SORT_BY_EPISODES = "RESULT_SERIES_SORT_BY_EPISODES"
 		const val RESULT_SORT_EPISODES_ASCENDING = "RESULT_SERIES_SORT_EPISODES_ASCENDING"
@@ -31,6 +33,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		private const val ARG_NAME = "ARG_SERIES_NAME"
 		private const val ARG_QUERY = "ARG_SERIES_QUERY"
 		private const val ARG_EXCLUDE_TERMS = "ARG_SERIES_EXCLUDE_TERMS"
+		private const val ARG_CHANNELS = "ARG_SERIES_CHANNELS"
 		private const val ARG_DETECT_EPISODES = "ARG_SERIES_DETECT_EPISODES"
 		private const val ARG_SORT_BY_EPISODES = "ARG_SERIES_SORT_BY_EPISODES"
 		private const val ARG_SORT_EPISODES_ASCENDING = "ARG_SERIES_SORT_EPISODES_ASCENDING"
@@ -46,6 +49,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 					ARG_NAME to (collection?.name.orEmpty()),
 					ARG_QUERY to (collection?.searchQuery.orEmpty()),
 					ARG_EXCLUDE_TERMS to (collection?.excludeTerms.orEmpty()),
+					ARG_CHANNELS to (collection?.channels.orEmpty()),
 					ARG_DETECT_EPISODES to (collection?.detectEpisodes ?: false),
 					ARG_SORT_BY_EPISODES to (collection?.sortByEpisodes ?: false),
 					ARG_SORT_EPISODES_ASCENDING to (collection?.sortEpisodesAscending ?: true)
@@ -53,6 +57,11 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 			}
 		}
 	}
+
+	/**
+	 * Channels that are searched - empty means all channels.
+	 */
+	private val selectedChannels = mutableSetOf<MediathekChannel>()
 
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 		val binding = DialogEditSeriesBinding.inflate(layoutInflater)
@@ -62,6 +71,22 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		binding.name.setText(args.getString(ARG_NAME))
 		binding.query.setText(args.getString(ARG_QUERY))
 		binding.excludeTerms.setText(args.getString(ARG_EXCLUDE_TERMS))
+
+		selectedChannels.clear()
+		args.getString(ARG_CHANNELS).orEmpty()
+			.split(',')
+			.map { it.trim() }
+			.filter { it.isNotEmpty() }
+			.forEach { apiId ->
+				MediathekChannel.entries
+					.firstOrNull { it.apiId.equals(apiId, ignoreCase = true) }
+					?.let { selectedChannels.add(it) }
+			}
+		updateChannelsButton(binding)
+
+		binding.channels.setOnClickListener {
+			showChannelSelection(binding)
+		}
 		binding.detectEpisodes.isChecked = args.getBoolean(ARG_DETECT_EPISODES)
 		binding.sortByEpisodes.isChecked = args.getBoolean(ARG_SORT_BY_EPISODES)
 		binding.sortDirection.check(
@@ -94,6 +119,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 				val name = binding.name.text?.toString().orEmpty().trim()
 				val searchQuery = binding.query.text?.toString().orEmpty().trim()
 				val excludeTerms = binding.excludeTerms.text?.toString().orEmpty().trim()
+				val channels = selectedChannels.joinToString(", ") { it.apiId }
 				val detectEpisodes = binding.detectEpisodes.isChecked
 				val sortByEpisodes = detectEpisodes && binding.sortByEpisodes.isChecked
 				val sortEpisodesAscending = binding.sortDirection.checkedButtonId != R.id.sort_descending
@@ -117,6 +143,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 						RESULT_NAME to name,
 						RESULT_QUERY to searchQuery,
 						RESULT_EXCLUDE_TERMS to excludeTerms,
+						RESULT_CHANNELS to channels,
 						RESULT_DETECT_EPISODES to detectEpisodes,
 						RESULT_SORT_BY_EPISODES to sortByEpisodes,
 						RESULT_SORT_EPISODES_ASCENDING to sortEpisodesAscending
@@ -127,6 +154,51 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 		}
 
 		return dialog
+	}
+
+	/**
+	 * Shows a multi selection of all available channels.
+	 */
+	private fun showChannelSelection(binding: DialogEditSeriesBinding) {
+		val channels = MediathekChannel.entries
+		val selection = selectedChannels.toMutableSet()
+		val channelNames = channels.map { it.label }.toTypedArray()
+		val checkedChannels = BooleanArray(channels.size) { channels[it] in selection }
+
+		MaterialAlertDialogBuilder(requireContext())
+			.setTitle(R.string.dialog_series_channels_title)
+			.setMessage(R.string.dialog_series_channels_message)
+			.setMultiChoiceItems(channelNames, checkedChannels) { _, index, isChecked ->
+				if (isChecked) {
+					selection.add(channels[index])
+				} else {
+					selection.remove(channels[index])
+				}
+			}
+			.setNegativeButton(android.R.string.cancel, null)
+			.setNeutralButton(R.string.dialog_series_channels_all) { _, _ ->
+				selectedChannels.clear()
+				updateChannelsButton(binding)
+			}
+			.setPositiveButton(android.R.string.ok) { _, _ ->
+				selectedChannels.clear()
+				selectedChannels.addAll(selection)
+				updateChannelsButton(binding)
+			}
+			.show()
+	}
+
+	private fun updateChannelsButton(binding: DialogEditSeriesBinding) {
+		binding.channels.text = if (selectedChannels.isEmpty()) {
+			getString(R.string.dialog_series_channels_all)
+		} else {
+			getString(
+				R.string.dialog_series_channels_selected,
+				MediathekChannel.entries
+					.filter { it in selectedChannels }
+					.joinToString(", ") { it.label }
+			)
+		}
 	}
 
 	/**

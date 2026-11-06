@@ -2,6 +2,7 @@ package de.christinecoenen.code.zapp.models.collections
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import de.christinecoenen.code.zapp.app.mediathek.api.request.MediathekChannel
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import org.joda.time.DateTime
 
@@ -26,6 +27,12 @@ data class ShowCollection(
 	 * the collection and will not be shown.
 	 */
 	var excludeTerms: String = "",
+
+	/**
+	 * Comma separated api ids of the channels that are searched for this collection.
+	 * Empty means that all channels are searched.
+	 */
+	var channels: String = "",
 
 	/**
 	 * Whether season and episode numbers should be read from the show titles.
@@ -77,6 +84,25 @@ val ShowCollection.excludedSearchTerms: List<String>
 		.filter { it.isNotEmpty() }
 
 /**
+ * The single channel api ids contained in [ShowCollection.channels].
+ */
+val ShowCollection.selectedChannels: List<String>
+	get() = channels
+		.split(',')
+		.map { it.trim() }
+		.filter { it.isNotEmpty() }
+
+/**
+ * The [selectedChannels] as labels that can be shown to the user.
+ */
+val ShowCollection.channelLabels: List<String>
+	get() = selectedChannels.map { apiId ->
+		MediathekChannel.entries
+			.firstOrNull { it.apiId.equals(apiId, ignoreCase = true) }
+			?.label ?: apiId
+	}
+
+/**
  * Whether the given show matches one of the collection's exclusion terms and
  * should therefore not be shown.
  */
@@ -85,4 +111,13 @@ fun ShowCollection.isExcluded(show: MediathekShow): Boolean {
 		show.title.contains(term, ignoreCase = true) ||
 			show.topic.contains(term, ignoreCase = true)
 	}
+}
+
+/**
+ * Whether the show is broadcast by one of the channels that should be searched for this
+ * collection. If no channel is selected, all channels match.
+ */
+fun ShowCollection.matchesChannels(show: MediathekShow): Boolean {
+	return selectedChannels.any { apiId -> apiId.equals(show.channel, ignoreCase = true) } ||
+		selectedChannels.isEmpty()
 }

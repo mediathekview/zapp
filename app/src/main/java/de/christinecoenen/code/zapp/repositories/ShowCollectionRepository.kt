@@ -5,6 +5,7 @@ import de.christinecoenen.code.zapp.app.mediathek.api.request.QueryRequest
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.models.collections.ShowCollection
 import de.christinecoenen.code.zapp.models.collections.isExcluded
+import de.christinecoenen.code.zapp.models.collections.matchesChannels
 import de.christinecoenen.code.zapp.models.shows.MediathekShow
 import de.christinecoenen.code.zapp.persistence.Database
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -162,6 +163,7 @@ class ShowCollectionRepository(
 		name: String,
 		searchQuery: String,
 		excludeTerms: String,
+		channels: String,
 		detectEpisodes: Boolean,
 		sortByEpisodes: Boolean,
 		sortEpisodesAscending: Boolean,
@@ -170,6 +172,7 @@ class ShowCollectionRepository(
 		val trimmedName = name.trim()
 		val trimmedQuery = searchQuery.trim()
 		val trimmedExcludeTerms = excludeTerms.trim()
+		val trimmedChannels = channels.trim()
 
 		if (id == 0) {
 			dao.insert(
@@ -177,6 +180,7 @@ class ShowCollectionRepository(
 					name = trimmedName,
 					searchQuery = trimmedQuery,
 					excludeTerms = trimmedExcludeTerms,
+					channels = trimmedChannels,
 					detectEpisodes = detectEpisodes,
 					sortByEpisodes = sortByEpisodes,
 					sortEpisodesAscending = sortEpisodesAscending
@@ -185,13 +189,15 @@ class ShowCollectionRepository(
 		} else {
 			val existing = dao.getFromIdSync(id) ?: return@withContext
 			val queryChanged = existing.searchQuery != trimmedQuery ||
-				existing.excludeTerms != trimmedExcludeTerms
+				existing.excludeTerms != trimmedExcludeTerms ||
+				existing.channels != trimmedChannels
 
 			dao.update(
 				existing.copy(
 					name = trimmedName,
 					searchQuery = trimmedQuery,
 					excludeTerms = trimmedExcludeTerms,
+					channels = trimmedChannels,
 					detectEpisodes = detectEpisodes,
 					sortByEpisodes = sortByEpisodes,
 					sortEpisodesAscending = sortEpisodesAscending,
@@ -235,7 +241,10 @@ class ShowCollectionRepository(
 				}
 
 				for (show in page) {
-					if (collection.isExcluded(show) || !handledApiIds.add(show.apiId)) {
+					if (collection.isExcluded(show) ||
+						!collection.matchesChannels(show) ||
+						!handledApiIds.add(show.apiId)
+					) {
 						continue
 					}
 
@@ -366,7 +375,7 @@ class ShowCollectionRepository(
 					break
 				}
 
-				if (!collection.isExcluded(show)) {
+				if (!collection.isExcluded(show) && collection.matchesChannels(show)) {
 					newShowCount++
 				}
 			}
@@ -424,7 +433,10 @@ class ShowCollectionRepository(
 			}
 
 			for (show in page) {
-				if (collection.isExcluded(show) || !handledApiIds.add(show.apiId)) {
+				if (collection.isExcluded(show) ||
+					!collection.matchesChannels(show) ||
+					!handledApiIds.add(show.apiId)
+				) {
 					continue
 				}
 

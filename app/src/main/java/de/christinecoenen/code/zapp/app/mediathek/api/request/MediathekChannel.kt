@@ -1,6 +1,6 @@
 package de.christinecoenen.code.zapp.app.mediathek.api.request
 
-enum class MediathekChannel(val apiId: String) {
+enum class MediathekChannel(val apiId: String, val label: String = apiId) {
 
 	Ard("ARD"),
 	ArdAlpha("ARD-alpha"),
@@ -8,7 +8,7 @@ enum class MediathekChannel(val apiId: String) {
 	Swr("SWR"),
 	Ndr("NDR"),
 	Br("BR"),
-	Arte("ARTE.DE"),
+	Arte("ARTE.DE", "ARTE"),
 	Dw("DW"),
 	DreiSat("3Sat"),
 	Sr("SR"),
@@ -20,9 +20,9 @@ enum class MediathekChannel(val apiId: String) {
 	Orf("ORF"),
 	Wdr("WDR"),
 	Phoenix("PHOENIX"),
-	Funk("Funk.net"),
+	Funk("Funk.net", "Funk"),
 	RbTv("rbtv"),
-	ZdfTivi("ZDF-tivi"),
+	ZdfTivi("ZDF-tivi", "ZDFtivi"),
 	One("One"),
 	Tagesschau24("tagesschau24"),
 }

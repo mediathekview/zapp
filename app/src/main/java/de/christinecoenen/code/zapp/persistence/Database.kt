@@ -20,7 +20,7 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 		ShowCollection::class,
 		ShowCollectionEntry::class
 	],
-	version = 12,
+	version = 13,
 	autoMigrations = [],
 	exportSchema = true
 )
@@ -28,6 +28,15 @@ import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
 abstract class Database : RoomDatabase() {
 
 	companion object {
+
+		/**
+		 * Channels that are searched for a collection.
+		 */
+		private val MIGRATION_12_13 = object : Migration(12, 13) {
+			override fun migrate(db: SupportSQLiteDatabase) {
+				db.execSQL("ALTER TABLE ShowCollection ADD COLUMN channels TEXT NOT NULL DEFAULT ''")
+			}
+		}
 
 		/**
 		 * Sort direction of the episode sorting of a collection.
@@ -183,7 +192,8 @@ abstract class Database : RoomDatabase() {
 					MIGRATION_8_9,
 					MIGRATION_9_10,
 					MIGRATION_10_11,
-					MIGRATION_11_12
+					MIGRATION_11_12,
+					MIGRATION_12_13
 				)
 				.build()
 		}
