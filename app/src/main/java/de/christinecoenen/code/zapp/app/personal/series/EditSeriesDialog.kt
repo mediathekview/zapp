@@ -167,7 +167,7 @@ class EditSeriesDialog : AppCompatDialogFragment() {
 
 		MaterialAlertDialogBuilder(requireContext())
 			.setTitle(R.string.dialog_series_channels_title)
-			.setMessage(R.string.dialog_series_channels_message)
+			// no setMessage() here: AppCompat shows the message instead of the list
 			.setMultiChoiceItems(channelNames, checkedChannels) { _, index, isChecked ->
 				if (isChecked) {
 					selection.add(channels[index])

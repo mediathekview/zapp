@@ -70,6 +70,13 @@
 		app:icon="@drawable/ic_sharp_filter_list_24"
 		app:iconGravity="textStart" />
 
+	<com.google.android.material.textview.MaterialTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		android:text="@string/dialog_series_channels_message"
+		android:textAppearance="?textAppearanceBodySmall" />
+
 	<com.google.android.material.materialswitch.MaterialSwitch
 		android:id="@+id/detect_episodes"
 		android:layout_width="match_parent"
