@@ -8,6 +8,7 @@
 	<string name="activity_main_tab_continue_watching">Weiterschauen</string>
 	<string name="activity_main_tab_bookmarks">Lesezeichen</string>
 	<string name="activity_main_tab_personal">Meine Sendungen</string>
+	<string name="activity_main_tab_series">Serien</string>
 
 	<string name="about_summary">Zapp ist Teil von MediathekView und gibt dir einen schnellen Zugang zu vielen deutschen öffentlich-rechtlichen Fernsehsendern. Schaue ARD, ZDF und andere Sender live oder aus der Mediathek.</string>
 	<string name="about_feedback_mail_subject">Zapp Feedback</string>
@@ -48,6 +49,7 @@
 	<string name="fragment_personal_no_results_downloads">keine Downloads gefunden</string>
 	<string name="fragment_personal_no_results_continue_watching">keine begonnenen Sendungen gefunden</string>
 	<string name="fragment_personal_no_results_bookmarks">keine Lesezeichen gefunden</string>
+	<string name="fragment_personal_no_results_series">keine Kollektionen angelegt</string>
 	<string name="fragment_personal_today">Heute</string>
 
 	<!-- error messages -->
@@ -90,6 +92,44 @@
 	<string name="action_mark_unwatched">Als ungesehen markieren</string>
 	<string name="action_mark_watched">Als gesehen markieren</string>
 	<string name="action_view_all">Alle ansehen</string>
+
+	<!-- series -->
+	<string name="fragment_series_no_results">keine Kollektionen angelegt</string>
+	<string name="fragment_series_item_query">Suche: %1$s</string>
+	<string name="fragment_series_item_excluded">ohne: %1$s</string>
+	<string name="fragment_series_item_channels">Sender: %1$s</string>
+	<string name="fragment_series_item_query_excluded">Suche: %1$s · ohne: %2$s</string>
+	<string name="fragment_series_item_count">%1$d</string>
+	<string name="fragment_series_item_count_content_description">%1$d Sendungen ungesehen</string>
+	<string name="action_add_collection">Kollektion anlegen</string>
+	<string name="action_edit_collection">Kollektion bearbeiten</string>
+	<string name="action_delete_collection">Kollektion löschen</string>
+	<string name="action_mark_all_watched">Alle als gesehen markieren</string>
+	<string name="action_mark_all_unwatched">Alle als ungesehen markieren</string>
+	<string name="dialog_series_create_title">Kollektion anlegen</string>
+	<string name="dialog_series_edit_title">Kollektion bearbeiten</string>
+	<string name="dialog_series_name_label">Name</string>
+	<string name="dialog_series_query_label">Suchbegriff</string>
+	<string name="dialog_series_exclude_label">Ausschließen</string>
+	<string name="dialog_series_exclude_helper">Begriffe mit Komma trennen. Sendungen, die einen dieser Begriffe in Titel oder Thema enthalten, werden nicht angezeigt.</string>
+	<string name="dialog_series_detect_episodes">Folgen erkennen</string>
+	<string name="dialog_series_sort_by_episodes">Nach Folge sortieren</string>
+	<string name="dialog_series_sort_ascending">Älteste zuerst</string>
+	<string name="dialog_series_sort_descending">Neueste zuerst</string>
+	<string name="dialog_series_episodes_helper">Sucht Staffel- und Folgennummern im Titel, z. B. (S20/E07), (3/12) oder (123), und sortiert die Liste danach.</string>
+	<string name="dialog_series_channels_all">Sender: alle</string>
+	<string name="dialog_series_channels_selected">Sender: %1$s</string>
+	<string name="dialog_series_channels_title">Sender auswählen</string>
+	<string name="dialog_series_channels_message">Ohne Auswahl werden alle Sender durchsucht.</string>
+	<string name="dialog_series_delete_title">Kollektion löschen?</string>
+	<string name="dialog_series_delete_text">Die Kollektion „%1$s“ wird gelöscht.</string>
+	<string name="fragment_series_mark_all_watched_success">%1$d Sendungen als gesehen markiert</string>
+	<string name="fragment_series_mark_all_watched_none">Keine Sendungen als gesehen markiert</string>
+	<string name="fragment_series_mark_all_unwatched_success">%1$d Sendungen als ungesehen markiert</string>
+	<string name="fragment_series_mark_all_unwatched_none">Keine Sendungen als ungesehen markiert</string>
+	<string name="fragment_series_mark_all_failed">Markieren fehlgeschlagen. Bitte später erneut versuchen.</string>
+	<string name="error_series_missing_name">Bitte einen Namen angeben</string>
+	<string name="error_series_missing_query">Bitte einen Suchbegriff angeben</string>
 
 	<string name="search_query_hint_zapp">Zapp durchsuchen…</string>
 	<string name="search_query_hint_mediathek">Mediathek durchsuchen…</string>
@@ -179,6 +219,41 @@
 
 	<string name="pref_detail_search_history_title">Suchverlauf</string>
 	<string name="pref_detail_search_history_summary">Speichere die letzten Suchanfragen.</string>
+
+	<string name="pref_show_progress_percentage_title">Fortschritt als Prozentzahl</string>
+	<string name="pref_show_progress_percentage_summary">Zeigt den Wiedergabefortschritt in Übersichten als Prozentzahl statt als Fortschrittskreis an.</string>
+
+	<string name="pref_watched_show_fade_title">Verblassen gesehener Sendungen</string>
+	<string name="pref_watched_show_fade_summary">Wie stark als gesehen markierte Sendungen verblasst dargestellt werden.</string>
+
+	<string name="pref_watched_show_mode_title">Gesehene Sendungen</string>
+	<string name="pref_watched_show_mode_fade">Verblassen</string>
+	<string name="pref_watched_show_mode_hide">Ausblenden</string>
+
+	<string name="pref_auto_watched_percent_title">Automatisch als gesehen markieren</string>
+	<string name="pref_auto_watched_percent_summary">Markiert eine Sendung als gesehen, sobald dieser Anteil abgespielt wurde. 0 = aus.</string>
+
+	<plurals name="notification_collection_update_text">
+		<item quantity="one">%1$d neue Sendung</item>
+		<item quantity="other">%1$d neue Sendungen</item>
+	</plurals>
+
+	<string name="notification_channel_name_collection_update">Neue Sendungen in Kollektionen</string>
+	<string name="notification_collection_update_title">Neu in „%1$s“</string>
+
+	<string name="pref_collection_max_shows_title">Maximale Sendungen pro Kollektions-Aktion</string>
+	<string name="pref_collection_max_shows_summary">Obergrenze für „Alle als gesehen/ungesehen markieren“.</string>
+
+	<string name="pref_collection_check_interval_title">Prüfung auf neue Sendungen</string>
+	<string name="pref_collection_check_interval_summary">Benachrichtigt, wenn eine Kollektion neue Sendungen enthält.</string>
+	<string name="pref_collection_check_interval_off">Aus</string>
+	<string name="pref_collection_check_interval_15_minutes">Alle 15 Minuten</string>
+	<string name="pref_collection_check_interval_30_minutes">Alle 30 Minuten</string>
+	<string name="pref_collection_check_interval_hourly">Stündlich</string>
+	<string name="pref_collection_check_interval_3_hours">Alle 3 Stunden</string>
+	<string name="pref_collection_check_interval_6_hours">Alle 6 Stunden</string>
+	<string name="pref_collection_check_interval_12_hours">Alle 12 Stunden</string>
+	<string name="pref_collection_check_interval_daily">Täglich</string>
 
 	<string name="pref_dialog_confirm_reset_playback_position_title">Begonnene Sendungen zurücksetzen?</string>
 	<string name="pref_dialog_confirm_reset_playback_position_text">Löscht den Fortschritt von allen begonnenen oder angesehenen Sendungen. Es werden keine Downloads gelöscht.</string>

@@ -34,6 +34,40 @@
 			android:title="@string/pref_language_title"
 			app:useSimpleSummaryProvider="true" />
 
+		<SwitchPreferenceCompat
+			android:defaultValue="false"
+			android:key="@string/pref_key_show_progress_percentage"
+			android:summary="@string/pref_show_progress_percentage_summary"
+			android:title="@string/pref_show_progress_percentage_title" />
+
+		<ListPreference
+			android:defaultValue="fade"
+			android:entries="@array/pref_watched_show_mode_names"
+			android:entryValues="@array/pref_watched_show_mode_values"
+			android:key="@string/pref_key_watched_show_mode"
+			android:title="@string/pref_watched_show_mode_title"
+			app:useSimpleSummaryProvider="true" />
+
+		<SeekBarPreference
+			android:defaultValue="40"
+			android:key="@string/pref_key_watched_show_fade"
+			android:max="80"
+			android:min="0"
+			android:summary="@string/pref_watched_show_fade_summary"
+			android:title="@string/pref_watched_show_fade_title"
+			app:seekBarIncrement="10"
+			app:showSeekBarValue="true" />
+
+		<SeekBarPreference
+			android:defaultValue="0"
+			android:key="@string/pref_key_auto_watched_percent"
+			android:max="100"
+			android:min="0"
+			android:summary="@string/pref_auto_watched_percent_summary"
+			android:title="@string/pref_auto_watched_percent_title"
+			app:seekBarIncrement="5"
+			app:showSeekBarValue="true" />
+
 	</PreferenceCategory>
 
 	<PreferenceCategory
@@ -120,6 +154,23 @@
 			android:key="@string/pref_key_delete_started_shows"
 			android:summary="@string/pref_delete_started_shows_summary"
 			android:title="@string/pref_delete_started_shows_title" />
+
+		<ListPreference
+			android:defaultValue="5000"
+			android:entries="@array/pref_collection_max_shows_names"
+			android:entryValues="@array/pref_collection_max_shows_values"
+			android:key="@string/pref_key_collection_max_shows"
+			android:title="@string/pref_collection_max_shows_title"
+			app:useSimpleSummaryProvider="true" />
+
+		<ListPreference
+			android:defaultValue="360"
+			android:entries="@array/pref_collection_check_interval_names"
+			android:entryValues="@array/pref_collection_check_interval_values"
+			android:key="@string/pref_key_collection_check_interval"
+			android:summary="@string/pref_collection_check_interval_summary"
+			android:title="@string/pref_collection_check_interval_title"
+			app:useSimpleSummaryProvider="true" />
 
 	</PreferenceCategory>
 

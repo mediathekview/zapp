@@ -23,6 +23,13 @@ data class MediathekShow(
 	val duration: String? = null,
 	val filmlisteTimestamp: Int = 0,
 
+	/**
+	 * Staffel- und Folgennummer, sofern die Mediathek sie liefert. Aktuell ist das nicht der
+	 * Fall, die Nummer wird dann aus dem Titel gelesen (siehe [episodeNumber]).
+	 */
+	val season: Int? = null,
+	val episode: Int? = null,
+
 	@SerializedName("url_website")
 	val websiteUrl: String? = null,
 

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:paddingHorizontal="24dp"
+	android:paddingTop="8dp">
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/name_layout"
+		style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/dialog_series_name_label">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="text"
+			android:maxLines="1" />
+
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/query_layout"
+		style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="12dp"
+		android:hint="@string/dialog_series_query_label">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/query"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="text"
+			android:maxLines="1" />
+
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/exclude_layout"
+		style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="12dp"
+		android:hint="@string/dialog_series_exclude_label"
+		app:helperText="@string/dialog_series_exclude_helper">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/exclude_terms"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="text"
+			android:maxLines="1" />
+
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/channels"
+		style="@style/Widget.Material3.Button.OutlinedButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="12dp"
+		android:ellipsize="end"
+		android:maxLines="1"
+		android:text="@string/dialog_series_channels_all"
+		app:icon="@drawable/ic_sharp_filter_list_24"
+		app:iconGravity="textStart" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		android:text="@string/dialog_series_channels_message"
+		android:textAppearance="?textAppearanceBodySmall" />
+
+	<com.google.android.material.materialswitch.MaterialSwitch
+		android:id="@+id/detect_episodes"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:text="@string/dialog_series_detect_episodes" />
+
+	<com.google.android.material.materialswitch.MaterialSwitch
+		android:id="@+id/sort_by_episodes"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/dialog_series_sort_by_episodes" />
+
+	<com.google.android.material.button.MaterialButtonToggleGroup
+		android:id="@+id/sort_direction"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		app:selectionRequired="true"
+		app:singleSelection="true">
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/sort_ascending"
+			style="@style/Widget.Material3.Button.OutlinedButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/dialog_series_sort_ascending" />
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/sort_descending"
+			style="@style/Widget.Material3.Button.OutlinedButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/dialog_series_sort_descending" />
+
+	</com.google.android.material.button.MaterialButtonToggleGroup>
+
+	<com.google.android.material.textview.MaterialTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
+		android:text="@string/dialog_series_episodes_helper"
+		android:textAppearance="?textAppearanceBodySmall" />
+
+</LinearLayout>

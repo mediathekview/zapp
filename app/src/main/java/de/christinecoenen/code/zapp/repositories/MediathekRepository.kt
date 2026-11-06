@@ -251,6 +251,27 @@ class MediathekRepository(private val database: Database) {
 			.markAsPlayed(apiId, DateTime.now())
 	}
 
+	suspend fun markAsPlayedIfUnwatched(apiId: String): Int = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.markAsPlayedIfUnwatched(apiId, DateTime.now())
+	}
+
+	suspend fun resetPlaybackPositionIfPlayed(apiId: String): Int = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.resetPlaybackPositionIfPlayed(apiId)
+	}
+
+	/**
+	 * Persists the given show without observing it afterwards.
+	 */
+	suspend fun insertOrUpdateShow(show: MediathekShow) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.insertOrUpdate(show)
+	}
+
 	suspend fun resetPlaybackPosition(apiId: String) = withContext(Dispatchers.IO) {
 		database
 			.mediathekShowDao()

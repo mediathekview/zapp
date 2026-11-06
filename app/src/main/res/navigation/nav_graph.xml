@@ -76,6 +76,39 @@
 			app:destination="@id/bookmarksFragment" />
 	</fragment>
 	<fragment
+		android:id="@+id/seriesFragment"
+		android:name="de.christinecoenen.code.zapp.app.personal.series.SeriesFragment"
+		android:label="@string/activity_main_tab_series"
+		tools:layout="@layout/series_fragment">
+		<argument
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
+			app:argType="boolean" />
+		<action
+			android:id="@+id/to_seriesDetailFragment"
+			app:destination="@id/seriesDetailFragment" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/seriesDetailFragment"
+		android:name="de.christinecoenen.code.zapp.app.personal.series.SeriesDetailFragment"
+		android:label="@string/activity_main_tab_series"
+		tools:layout="@layout/series_detail_fragment">
+		<argument
+			android:name="show_bottom_navigation"
+			android:defaultValue="true"
+			app:argType="boolean" />
+		<argument
+			android:name="collection_id"
+			android:defaultValue="-1"
+			app:argType="integer" />
+		<action
+			android:id="@+id/to_mediathekDetailFragment"
+			app:destination="@id/mediathekDetailFragment" />
+	</fragment>
+	<fragment
 		android:id="@+id/downloadsFragment"
 		android:name="de.christinecoenen.code.zapp.app.personal.details.DownloadsFragment"
 		android:label="@string/activity_main_tab_downloads"

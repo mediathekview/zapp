@@ -17,6 +17,7 @@ object NotificationHelper {
 	const val CHANNEL_ID_BACKGROUND_PLAYBACK = "background_playback"
 	const val CHANNEL_ID_DOWNLOAD_PROGRESS = "download_progress"
 	const val CHANNEL_ID_DOWNLOAD_EVENT = "download_event"
+	const val CHANNEL_ID_COLLECTION_UPDATE = "collection_update"
 
 	fun hasNotificationPermissionGranted(context: Context): Boolean {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -48,6 +49,13 @@ object NotificationHelper {
 		createNotificationChannel(
 			context, CHANNEL_ID_DOWNLOAD_EVENT,
 			R.string.notification_channel_name_download_event, false
+		)
+	}
+
+	fun createCollectionUpdateChannel(context: Context) {
+		createNotificationChannel(
+			context, CHANNEL_ID_COLLECTION_UPDATE,
+			R.string.notification_channel_name_collection_update, false
 		)
 	}
 

@@ -2,14 +2,17 @@ package de.christinecoenen.code.zapp.app
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.color.DynamicColors
 import de.christinecoenen.code.zapp.R
+import de.christinecoenen.code.zapp.app.personal.series.CollectionUpdateScheduler
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.tv.error.CrashActivity
 import de.christinecoenen.code.zapp.utils.system.NotificationHelper.createBackgroundPlaybackChannel
+import de.christinecoenen.code.zapp.utils.system.NotificationHelper.createCollectionUpdateChannel
 import org.acra.ACRA
 import org.acra.BuildConfig
 import org.acra.ReportField
@@ -23,6 +26,7 @@ import org.koin.core.Koin
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import timber.log.Timber
+import java.io.File
 
 abstract class ZappApplicationBase : Application() {
 
@@ -47,7 +51,15 @@ abstract class ZappApplicationBase : Application() {
 		super.onCreate()
 
 		setUpLogging()
+
+		if (!isMainProcess()) {
+			// activities like the crash report dialog run in their own process and must not
+			// initialize the app (Koin, WorkManager, ...) - they do not need it
+			return
+		}
+
 		createBackgroundPlaybackChannel(this)
+		createCollectionUpdateChannel(this)
 
 		koin = startKoin {
 			androidLogger(Level.ERROR)
@@ -58,9 +70,35 @@ abstract class ZappApplicationBase : Application() {
 		val settingsRepository = SettingsRepository(this)
 		AppCompatDelegate.setDefaultNightMode(settingsRepository.uiMode)
 
+		// check the collections for new shows in the background
+		CollectionUpdateScheduler.schedule(this, settingsRepository.collectionCheckIntervalMinutes)
+
 		// apply dynamic colors to all activities if enabled by user
 		if (settingsRepository.dynamicColors) {
 			DynamicColors.applyToActivitiesIfAvailable(this)
+		}
+	}
+
+	/**
+	 * Whether the app runs in its main process.
+	 */
+	private fun isMainProcess(): Boolean {
+		return currentProcessName()?.let { it == packageName } ?: true
+	}
+
+	private fun currentProcessName(): String? {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			return Application.getProcessName()
+		}
+
+		return try {
+			File("/proc/self/cmdline")
+				.readText()
+				.substringBefore('\u0000')
+				.ifBlank { null }
+		} catch (e: Exception) {
+			Timber.e(e, "Could not determine the process name")
+			null
 		}
 	}
 

@@ -8,6 +8,7 @@
 	<string name="activity_main_tab_continue_watching">Continue Watching</string>
 	<string name="activity_main_tab_bookmarks">Bookmarks</string>
 	<string name="activity_main_tab_personal">My Shows</string>
+	<string name="activity_main_tab_series">Series</string>
 
 	<string name="about_summary">Zapp is part of MediathekView and gives you easy access to a large number of German public broadcasting live streams. Watch ARD, ZDF and other channels live.</string>
 	<string name="about_feedback_mail_subject">Zapp Feedback</string>
@@ -48,6 +49,7 @@
 	<string name="fragment_personal_no_results_downloads">no downloads found</string>
 	<string name="fragment_personal_no_results_continue_watching">no started shows found</string>
 	<string name="fragment_personal_no_results_bookmarks">no bookmarks found</string>
+	<string name="fragment_personal_no_results_series">no collections created</string>
 	<string name="fragment_personal_today">Today</string>
 
 	<!-- error messages -->
@@ -90,6 +92,44 @@
 	<string name="action_mark_unwatched">Mark as unwatched</string>
 	<string name="action_mark_watched">Mark as watched</string>
 	<string name="action_view_all">View all</string>
+
+	<!-- series -->
+	<string name="fragment_series_no_results">no collections created</string>
+	<string name="fragment_series_item_query">Search: %1$s</string>
+	<string name="fragment_series_item_excluded">without: %1$s</string>
+	<string name="fragment_series_item_channels">Channels: %1$s</string>
+	<string name="fragment_series_item_query_excluded">Search: %1$s · without: %2$s</string>
+	<string name="fragment_series_item_count">%1$d</string>
+	<string name="fragment_series_item_count_content_description">%1$d shows unwatched</string>
+	<string name="action_add_collection">Create collection</string>
+	<string name="action_edit_collection">Edit collection</string>
+	<string name="action_delete_collection">Delete collection</string>
+	<string name="action_mark_all_watched">Mark all as watched</string>
+	<string name="action_mark_all_unwatched">Mark all as unwatched</string>
+	<string name="dialog_series_create_title">Create collection</string>
+	<string name="dialog_series_edit_title">Edit collection</string>
+	<string name="dialog_series_name_label">Name</string>
+	<string name="dialog_series_query_label">Search term</string>
+	<string name="dialog_series_exclude_label">Exclude</string>
+	<string name="dialog_series_exclude_helper">Separate terms with commas. Shows containing one of these terms in their title or topic will not be shown.</string>
+	<string name="dialog_series_detect_episodes">Detect episodes</string>
+	<string name="dialog_series_sort_by_episodes">Sort by episode</string>
+	<string name="dialog_series_sort_ascending">Oldest first</string>
+	<string name="dialog_series_sort_descending">Newest first</string>
+	<string name="dialog_series_episodes_helper">Looks for season and episode numbers in the title, e.g. (S20/E07), (3/12) or (123), and sorts the list by them.</string>
+	<string name="dialog_series_channels_all">Channels: all</string>
+	<string name="dialog_series_channels_selected">Channels: %1$s</string>
+	<string name="dialog_series_channels_title">Select channels</string>
+	<string name="dialog_series_channels_message">If nothing is selected, all channels are searched.</string>
+	<string name="dialog_series_delete_title">Delete collection?</string>
+	<string name="dialog_series_delete_text">The collection “%1$s” will be deleted.</string>
+	<string name="fragment_series_mark_all_watched_success">Marked %1$d shows as watched</string>
+	<string name="fragment_series_mark_all_watched_none">No shows marked as watched</string>
+	<string name="fragment_series_mark_all_unwatched_success">Marked %1$d shows as unwatched</string>
+	<string name="fragment_series_mark_all_unwatched_none">No shows marked as unwatched</string>
+	<string name="fragment_series_mark_all_failed">Marking failed. Please try again later.</string>
+	<string name="error_series_missing_name">Please enter a name</string>
+	<string name="error_series_missing_query">Please enter a search term</string>
 
 	<string name="search_query_hint_zapp">Search in Zapp…</string>
 	<string name="search_query_hint_mediathek">Search media center…</string>
@@ -179,6 +219,41 @@
 
 	<string name="pref_detail_search_history_title">Search history</string>
 	<string name="pref_detail_search_history_summary">Remember the most recent search queries.</string>
+
+	<string name="pref_show_progress_percentage_title">Progress as percentage</string>
+	<string name="pref_show_progress_percentage_summary">Shows the playback progress in overviews as a percentage instead of a progress circle.</string>
+
+	<string name="pref_watched_show_fade_title">Fade watched shows</string>
+	<string name="pref_watched_show_fade_summary">How strongly shows marked as watched are faded out.</string>
+
+	<string name="pref_watched_show_mode_title">Watched shows</string>
+	<string name="pref_watched_show_mode_fade">Fade out</string>
+	<string name="pref_watched_show_mode_hide">Hide</string>
+
+	<string name="pref_auto_watched_percent_title">Mark as watched automatically</string>
+	<string name="pref_auto_watched_percent_summary">Marks a show as watched as soon as this percentage has been played. 0 = off.</string>
+
+	<plurals name="notification_collection_update_text">
+		<item quantity="one">%1$d new show</item>
+		<item quantity="other">%1$d new shows</item>
+	</plurals>
+
+	<string name="notification_channel_name_collection_update">New shows in collections</string>
+	<string name="notification_collection_update_title">New in “%1$s”</string>
+
+	<string name="pref_collection_max_shows_title">Maximum shows per collection action</string>
+	<string name="pref_collection_max_shows_summary">Upper limit for “mark all as watched/unwatched”.</string>
+
+	<string name="pref_collection_check_interval_title">Check for new shows</string>
+	<string name="pref_collection_check_interval_summary">Notifies you when a collection contains new shows.</string>
+	<string name="pref_collection_check_interval_off">Off</string>
+	<string name="pref_collection_check_interval_15_minutes">Every 15 minutes</string>
+	<string name="pref_collection_check_interval_30_minutes">Every 30 minutes</string>
+	<string name="pref_collection_check_interval_hourly">Hourly</string>
+	<string name="pref_collection_check_interval_3_hours">Every 3 hours</string>
+	<string name="pref_collection_check_interval_6_hours">Every 6 hours</string>
+	<string name="pref_collection_check_interval_12_hours">Every 12 hours</string>
+	<string name="pref_collection_check_interval_daily">Daily</string>
 
 	<string name="pref_dialog_confirm_reset_playback_position_title">Reset started shows?</string>
 	<string name="pref_dialog_confirm_reset_playback_position_text">Deletes the progress of all shows you started or finished watching. No downloads will be deleted.</string>

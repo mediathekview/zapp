@@ -17,5 +17,11 @@
 	<string name="pref_key_download_to_sd_card">pref_key_download_to_sd_card</string>
 	<string name="pref_key_start_tab">pref_key_start_tab</string>
 	<string name="pref_key_delete_started_shows">pref_key_delete_started_shows</string>
+	<string name="pref_key_show_progress_percentage">pref_key_show_progress_percentage</string>
+	<string name="pref_key_watched_show_mode">pref_key_watched_show_mode</string>
+	<string name="pref_key_watched_show_fade">pref_key_watched_show_fade</string>
+	<string name="pref_key_auto_watched_percent">pref_key_auto_watched_percent</string>
+	<string name="pref_key_collection_max_shows">pref_key_collection_max_shows</string>
+	<string name="pref_key_collection_check_interval">pref_key_collection_check_interval</string>
 
 </resources>

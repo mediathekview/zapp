@@ -10,11 +10,13 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.color.DynamicColors
 import com.jakewharton.processphoenix.ProcessPhoenix
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.mediathek.ui.dialogs.ConfirmDeleteDownloadDialog
+import de.christinecoenen.code.zapp.app.personal.series.CollectionUpdateScheduler
 import de.christinecoenen.code.zapp.app.settings.helper.ShortcutPreference
 import de.christinecoenen.code.zapp.app.settings.repository.SettingsRepository
 import de.christinecoenen.code.zapp.app.settings.ui.ConfirmResetPlaybackPositionsDialog
@@ -37,6 +39,10 @@ class PreferenceFragmentHelper(
 		private const val PREF_LANGUAGE = "pref_key_language"
 		private const val PREF_CHANNEL_SELECTION = "pref_key_channel_selection"
 		private const val PREF_DELETE_STARTED_SHOWS = "pref_key_delete_started_shows"
+		private const val PREF_WATCHED_SHOW_MODE = "pref_key_watched_show_mode"
+		private const val PREF_WATCHED_SHOW_FADE = "pref_key_watched_show_fade"
+		private const val PREF_COLLECTION_CHECK_INTERVAL = "pref_key_collection_check_interval"
+		private const val WATCHED_SHOW_MODE_HIDE = "hide"
 
 	}
 
@@ -46,6 +52,9 @@ class PreferenceFragmentHelper(
 	private var languagePreference: ListPreference? = null
 	private var channelSelectionPreference: Preference? = null
 	private var deleteStartedShowsPreference: Preference? = null
+	private var watchedShowModePreference: ListPreference? = null
+	private var watchedShowFadePreference: SeekBarPreference? = null
+	private var collectionCheckIntervalPreference: ListPreference? = null
 
 	private var channelSelectionClickListener: OnPreferenceClickListener? = null
 
@@ -91,6 +100,21 @@ class PreferenceFragmentHelper(
 		true
 	}
 
+	private val watchedShowModeChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+		updateWatchedShowFadePreferenceVisibility(newValue as String?)
+		true
+	}
+
+	private val collectionCheckIntervalChangeListener =
+		Preference.OnPreferenceChangeListener { _, newValue ->
+			val intervalMinutes = (newValue as String).toIntOrNull() ?: 0
+			CollectionUpdateScheduler.schedule(
+				preferenceFragment.requireContext(),
+				intervalMinutes
+			)
+			true
+		}
+
 	init {
 		preferenceFragment.lifecycle.addObserver(this)
 	}
@@ -104,6 +128,10 @@ class PreferenceFragmentHelper(
 		languagePreference = preferenceScreen.findPreference(PREF_LANGUAGE)
 		channelSelectionPreference = preferenceScreen.findPreference(PREF_CHANNEL_SELECTION)
 		deleteStartedShowsPreference = preferenceScreen.findPreference(PREF_DELETE_STARTED_SHOWS)
+		watchedShowModePreference = preferenceScreen.findPreference(PREF_WATCHED_SHOW_MODE)
+		watchedShowFadePreference = preferenceScreen.findPreference(PREF_WATCHED_SHOW_FADE)
+		collectionCheckIntervalPreference =
+			preferenceScreen.findPreference(PREF_COLLECTION_CHECK_INTERVAL)
 
 		languagePreference?.let {
 			val languages =
@@ -119,6 +147,8 @@ class PreferenceFragmentHelper(
 		}
 
 		this.channelSelectionClickListener = channelSelectionClickListener
+
+		updateWatchedShowFadePreferenceVisibility(watchedShowModePreference?.value)
 	}
 
 	fun destroy() {
@@ -134,6 +164,9 @@ class PreferenceFragmentHelper(
 		languagePreference?.onPreferenceChangeListener = languageChangeListener
 		channelSelectionPreference?.onPreferenceClickListener = channelSelectionClickListener
 		deleteStartedShowsPreference?.onPreferenceClickListener = deleteStartedShowsClickListener
+		watchedShowModePreference?.onPreferenceChangeListener = watchedShowModeChangeListener
+		collectionCheckIntervalPreference?.onPreferenceChangeListener =
+			collectionCheckIntervalChangeListener
 	}
 
 	override fun onDestroy(owner: LifecycleOwner) {
@@ -145,5 +178,11 @@ class PreferenceFragmentHelper(
 		languagePreference?.onPreferenceChangeListener = null
 		channelSelectionPreference?.onPreferenceClickListener = null
 		deleteStartedShowsPreference?.onPreferenceClickListener = null
+		watchedShowModePreference?.onPreferenceChangeListener = null
+		collectionCheckIntervalPreference?.onPreferenceChangeListener = null
+	}
+
+	private fun updateWatchedShowFadePreferenceVisibility(mode: String?) {
+		watchedShowFadePreference?.isVisible = mode != WATCHED_SHOW_MODE_HIDE
 	}
 }

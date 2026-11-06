@@ -16,4 +16,9 @@
 		android:icon="@drawable/ic_outline_app_shortcut_24"
 		android:title="@string/activity_main_tab_personal" />
 
+	<item
+		android:id="@+id/seriesFragment"
+		android:icon="@drawable/ic_sharp_format_list_bulleted_24"
+		android:title="@string/activity_main_tab_series" />
+
 </menu>

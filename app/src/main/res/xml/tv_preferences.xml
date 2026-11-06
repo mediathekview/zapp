@@ -11,4 +11,32 @@
 		app:entryValues="@array/available_tabs_values_tv"
 		app:useSimpleSummaryProvider="true" />
 
+	<ListPreference
+		android:defaultValue="fade"
+		android:entries="@array/pref_watched_show_mode_names"
+		android:entryValues="@array/pref_watched_show_mode_values"
+		android:key="@string/pref_key_watched_show_mode"
+		android:title="@string/pref_watched_show_mode_title"
+		app:useSimpleSummaryProvider="true" />
+
+	<SeekBarPreference
+		android:defaultValue="40"
+		android:key="@string/pref_key_watched_show_fade"
+		android:max="80"
+		android:min="0"
+		android:summary="@string/pref_watched_show_fade_summary"
+		android:title="@string/pref_watched_show_fade_title"
+		app:seekBarIncrement="10"
+		app:showSeekBarValue="true" />
+
+	<SeekBarPreference
+		android:defaultValue="0"
+		android:key="@string/pref_key_auto_watched_percent"
+		android:max="100"
+		android:min="0"
+		android:summary="@string/pref_auto_watched_percent_summary"
+		android:title="@string/pref_auto_watched_percent_title"
+		app:seekBarIncrement="5"
+		app:showSeekBarValue="true" />
+
 </androidx.preference.PreferenceScreen>
