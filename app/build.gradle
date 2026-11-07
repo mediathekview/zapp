@@ -195,7 +195,7 @@ dependencies {
 	implementation "com.mikepenz:aboutlibraries-compose-m3:$about_libraries_version"
 
 	// koin dependency injection
-	def koin_version = '4.1.1'
+	def koin_version = '4.2.2'
 	implementation "io.insert-koin:koin-android:$koin_version"
 	androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 	testImplementation "io.insert-koin:koin-test:$koin_version"
