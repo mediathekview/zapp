@@ -1,5 +1,6 @@
 # v-next
 * Fixed possible crash when a show download fails
+* Prepared Zapp for Android 17
 
 # 9.2.0
 * Added an option to mark a show as watched ([#509](https://github.com/mediathekview/zapp/issues/509))
