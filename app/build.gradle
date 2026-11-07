@@ -187,7 +187,7 @@ dependencies {
 	implementation 'com.jakewharton:process-phoenix:3.0.0'
 
 	// joda time
-	implementation 'joda-time:joda-time:2.14.0'
+	implementation 'joda-time:joda-time:2.15.1'
 
 	// about libraries view
 	implementation "com.mikepenz:aboutlibraries-core:$about_libraries_version"
