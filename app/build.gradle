@@ -92,10 +92,10 @@ ksp {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	def fragment_version = '1.8.9'
+	def fragment_version = '1.9.1'
 
 	// kotlin
-	implementation 'androidx.core:core-ktx:1.17.0'
+	implementation 'androidx.core:core-ktx:1.19.1'
 
 	// tests
 	def androix_test_version = '1.7.0'
@@ -124,17 +124,17 @@ dependencies {
 
 	// support
 	implementation "androidx.fragment:fragment-ktx:$fragment_version"
-	implementation 'androidx.activity:activity-ktx:1.12.3'
-	implementation 'androidx.appcompat:appcompat:1.7.1'
-	implementation 'com.google.android.material:material:1.13.0'
+	implementation 'androidx.activity:activity-ktx:1.13.0'
+	implementation 'androidx.appcompat:appcompat:1.8.0'
+	implementation 'com.google.android.material:material:1.14.0'
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0"
 	implementation 'androidx.cardview:cardview:1.0.0'
-	implementation 'androidx.annotation:annotation:1.9.1'
+	implementation 'androidx.annotation:annotation:1.11.0'
 	implementation 'androidx.recyclerview:recyclerview:1.4.0'
 	implementation 'androidx.preference:preference-ktx:1.2.1'
-	implementation "androidx.paging:paging-runtime-ktx:3.4.0"
+	implementation "androidx.paging:paging-runtime-ktx:3.5.3"
 
-	def lifecycle_version = "2.10.0"
+	def lifecycle_version = "2.11.0"
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 	implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
@@ -142,7 +142,7 @@ dependencies {
 	implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 	// room database
-	def room_version = "2.8.4"
+	def room_version = "2.8.5"
 	implementation "androidx.room:room-runtime:$room_version"
 	implementation "androidx.room:room-paging:$room_version"
 	ksp "androidx.room:room-compiler:$room_version"
@@ -158,11 +158,11 @@ dependencies {
 	implementation 'io.noties.markwon:core:4.6.2'
 
 	// work manager
-	def work_version = "2.11.1"
+	def work_version = "2.12.0"
 	implementation "androidx.work:work-runtime-ktx:$work_version"
 
 	// exo player
-	def media3_version = "1.9.1"
+	def media3_version = "1.11.1"
 	implementation "androidx.media3:media3-exoplayer:$media3_version"
 	implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
 	implementation "androidx.media3:media3-ui:$media3_version"
