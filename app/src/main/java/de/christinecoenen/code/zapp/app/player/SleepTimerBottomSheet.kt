@@ -107,7 +107,7 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment(), SleepTimer.Listener {
 	}
 
 	private fun onStartClick() {
-		val minutes = binding.timerDelay.text.toString().toLongOrNull()
+		val minutes = binding.timerDelay.text?.toString()?.toLongOrNull()
 
 		if (minutes == null) {
 			sleepTimer?.stop()

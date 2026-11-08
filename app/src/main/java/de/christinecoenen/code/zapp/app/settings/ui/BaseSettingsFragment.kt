@@ -48,7 +48,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
 					.setTitle(preference.title)
 					.setView(binding.root)
 					.setPositiveButton(android.R.string.ok) { _, _ ->
-						val newValue = binding.editText.text.toString()
+						val newValue = binding.editText.text?.toString()
 						if (preference.callChangeListener(newValue)) {
 							preference.text = newValue
 						}
