@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import org.joda.time.DateTime
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class MediathekListFragmentViewModel(
@@ -32,7 +33,7 @@ class MediathekListFragmentViewModel(
 
 	companion object {
 		private const val ITEM_COUNT_PER_PAGE = 30
-		private const val DEBOUNCE_TIME_MILLIS = 300L
+		private val DEBOUNCE_TIME = 300.milliseconds
 	}
 
 	private val pagingConfig = PagingConfig(
@@ -46,7 +47,7 @@ class MediathekListFragmentViewModel(
 		.mapLatest { searchQuery ->
 			createQueryRequest(searchQuery)
 		}
-		.debounce(DEBOUNCE_TIME_MILLIS)
+		.debounce(DEBOUNCE_TIME)
 		.flatMapLatest { queryRequest ->
 			Pager(pagingConfig) {
 				MediathekPagingSource(mediathekApi, queryRequest, _queryInfoResult)

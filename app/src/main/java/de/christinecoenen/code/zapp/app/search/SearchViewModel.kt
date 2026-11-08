@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class SearchViewModel(
@@ -122,7 +123,7 @@ class SearchViewModel(
 	) { channels, durationSet -> channels.size + durationSet.size }
 
 	val localSearchSuggestions = _searchQuery
-		.debounce(100)
+		.debounce(100.milliseconds)
 		.flatMapLatest { query ->
 			if (query.isEmpty()) {
 				flowOf(PagingData.empty())
@@ -133,7 +134,7 @@ class SearchViewModel(
 		.cachedIn(viewModelScope)
 
 	val lastQueries = _searchQuery
-		.debounce(100)
+		.debounce(100.milliseconds)
 		.flatMapLatest { query ->
 			Pager(pagingConfig) { searchRepository.getLastQueries(query, LAST_QUERIES_COUNT) }.flow
 		}

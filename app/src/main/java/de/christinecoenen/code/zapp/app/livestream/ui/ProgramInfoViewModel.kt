@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
+import kotlin.time.Duration.Companion.seconds
 
 class ProgramInfoViewModel(
 	private val programInfoRepository: ProgramInfoRepository,
@@ -25,14 +26,14 @@ class ProgramInfoViewModel(
 	private val updateLiveShowTicker = flow {
 		while (true) {
 			emit(Unit)
-			delay(1000L * UPDATE_PROGRAM_INFO_INTERVAL_SECONDS)
+			delay(UPDATE_PROGRAM_INFO_INTERVAL)
 		}
 	}
 
 	private val updateShowProgressTicker = flow {
 		while (true) {
 			emit(Unit)
-			delay(1000L * UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS)
+			delay(UPDATE_SHOW_PROGRESS_INTERVAL)
 		}
 	}
 
@@ -64,7 +65,7 @@ class ProgramInfoViewModel(
 	}
 
 	companion object {
-		private const val UPDATE_PROGRAM_INFO_INTERVAL_SECONDS = 60
-		private const val UPDATE_SHOW_PROGRESS_INTERVAL_SECONDS = 1
+		private val UPDATE_PROGRAM_INFO_INTERVAL = 60.seconds
+		private val UPDATE_SHOW_PROGRESS_INTERVAL = 1.seconds
 	}
 }
