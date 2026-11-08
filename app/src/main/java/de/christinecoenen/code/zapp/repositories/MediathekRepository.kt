@@ -23,7 +23,8 @@ class MediathekRepository(private val database: Database) {
 		searchQuery: String,
 		channels: Set<MediathekChannel>,
 		minDurationSeconds: Int? = null,
-		maxDurationSeconds: Int? = null
+		maxDurationSeconds: Int? = null,
+		limit: Int? = -1,
 	): PagingSource<Int, SortableMediathekShow> {
 		val channelIds = channels
 			.ifEmpty { MediathekChannel.entries }
@@ -31,7 +32,35 @@ class MediathekRepository(private val database: Database) {
 
 		return database
 			.mediathekShowDao()
-			.getPersonalShows("%$searchQuery%", channelIds, minDurationSeconds, maxDurationSeconds)
+			.getPersonalShows(
+				"%$searchQuery%",
+				channelIds,
+				minDurationSeconds,
+				maxDurationSeconds,
+				limit
+			)
+	}
+
+	fun getPersonalShowsCount(
+		searchQuery: String,
+		channels: Set<MediathekChannel>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null,
+	): Flow<Int> {
+		val channelIds = channels
+			.ifEmpty { MediathekChannel.entries }
+			.map { it.apiId }
+
+		return database
+			.mediathekShowDao()
+			.getPersonalShowsCount(
+				"%$searchQuery%",
+				channelIds,
+				minDurationSeconds,
+				maxDurationSeconds
+			)
+			.distinctUntilChanged()
+			.flowOn(Dispatchers.IO)
 	}
 
 	fun getDownloads(limit: Int): Flow<List<MediathekShow>> {
@@ -76,19 +105,17 @@ class MediathekRepository(private val database: Database) {
 			.getAllBookarked("%$searchQuery%")
 	}
 
-	suspend fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> =
-		withContext(Dispatchers.IO) {
-			database
-				.mediathekShowDao()
-				.insertOrUpdate(show)
-
-			database
-				.mediathekShowDao()
-				.getFromApiId(show.apiId)
-				.distinctUntilChanged()
-				.filterNotNull()
-				.flowOn(Dispatchers.IO)
-		}
+	fun persistOrUpdateShow(show: MediathekShow): Flow<PersistedMediathekShow> {
+		return database
+			.mediathekShowDao()
+			.getFromApiId(show.apiId)
+			.onStart {
+				database.mediathekShowDao().insertOrUpdate(show)
+			}
+			.distinctUntilChanged()
+			.filterNotNull()
+			.flowOn(Dispatchers.IO)
+	}
 
 	suspend fun updateShow(show: PersistedMediathekShow?) = withContext(Dispatchers.IO) {
 		database
@@ -126,21 +153,19 @@ class MediathekRepository(private val database: Database) {
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPersistedShowByApiId(apiId: String): Flow<PersistedMediathekShow> {
+	fun getPersistedShowByApiId(apiId: String): Flow<PersistedMediathekShow?> {
 		return database
 			.mediathekShowDao()
 			.getFromApiId(apiId)
 			.distinctUntilChanged()
-			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
-	fun getPersistedShowByDownloadId(downloadId: Int): Flow<PersistedMediathekShow> {
+	fun getPersistedShowByDownloadId(downloadId: Int): Flow<PersistedMediathekShow?> {
 		return database
 			.mediathekShowDao()
 			.getFromDownloadId(downloadId)
 			.distinctUntilChanged()
-			.filterNotNull()
 			.flowOn(Dispatchers.IO)
 	}
 
@@ -220,10 +245,22 @@ class MediathekRepository(private val database: Database) {
 				.setPlaybackPosition(showId, positionMillis, durationMillis, DateTime.now())
 		}
 
+	suspend fun markAsPlayed(apiId: String) = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.markAsPlayed(apiId, DateTime.now())
+	}
+
 	suspend fun resetPlaybackPosition(apiId: String) = withContext(Dispatchers.IO) {
 		database
 			.mediathekShowDao()
 			.resetPlaybackPosition(apiId)
+	}
+
+	suspend fun resetAllPlaybackPositions() = withContext(Dispatchers.IO) {
+		database
+			.mediathekShowDao()
+			.resetAllPlaybackPositions()
 	}
 
 	fun getPlaybackPositionPercent(apiId: String): Flow<Float> {
@@ -231,7 +268,6 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getPlaybackPositionPercent(apiId)
 			.distinctUntilChanged()
-			.filterNotNull()
 			.onStart { emit(0f) }
 			.flowOn(Dispatchers.IO)
 	}

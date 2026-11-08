@@ -166,9 +166,6 @@
 			app:argType="de.christinecoenen.code.zapp.models.shows.MediathekShow"
 			app:nullable="true" />
 		<action
-			android:id="@+id/to_settingsFragment"
-			app:destination="@id/settingsFragment" />
-		<action
 			android:id="@+id/to_mediathekPlayerActivity"
 			app:destination="@id/mediathekPlayerActivity" />
 		<argument
@@ -183,5 +180,9 @@
 			android:name="persisted_show_id"
 			app:argType="integer" />
 	</activity>
+
+	<action
+		android:id="@+id/global_to_settingsFragment"
+		app:destination="@id/settingsFragment" />
 
 </navigation>

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.core.graphics.toColorInt
 import com.google.gson.Gson
 import de.christinecoenen.code.zapp.models.channels.ChannelModel
-import java.util.*
 
 /**
  * Helper class to convert a json string to a list of

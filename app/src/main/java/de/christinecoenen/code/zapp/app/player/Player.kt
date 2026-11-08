@@ -177,6 +177,7 @@ class Player(
 		exoPlayer.removeAnalyticsListener(playerEventHandler)
 		exoPlayer.release()
 		mediaSession.release()
+		sleepTimer.stop()
 	}
 
 	private suspend fun saveCurrentPlaybackPosition() {

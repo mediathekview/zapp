@@ -2,14 +2,19 @@ package de.christinecoenen.code.zapp.app.livestream.ui.list
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoSheetDialogFragment
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
@@ -47,7 +52,7 @@ class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 		channelGridView.layoutManager = GridAutofitLayoutManager(requireContext(), 400)
 		channelGridView.adapter = gridAdapter
 
-		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+		(requireActivity() as? MainActivity)?.addMenuProviderToSearchBar(
 			this,
 			viewLifecycleOwner,
 			Lifecycle.State.RESUMED
@@ -80,21 +85,19 @@ class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 
 	override fun onItemLongClick(
 		channel: ChannelModel,
-		programInfoViewModel: ProgramInfoViewModel,
 		view: View
 	) {
 		val menu = PopupMenu(context, view, Gravity.TOP or Gravity.END)
 		menu.inflate(R.menu.channel_list_fragment_context)
 		menu.show()
 		menu.setOnMenuItemClickListener { menuItem ->
-			onContextMenuItemClicked(menuItem, channel, programInfoViewModel)
+			onContextMenuItemClicked(menuItem, channel)
 		}
 	}
 
 	private fun onContextMenuItemClicked(
 		menuItem: MenuItem,
 		channel: ChannelModel,
-		programInfoViewModel: ProgramInfoViewModel
 	): Boolean {
 		return when (menuItem.itemId) {
 			R.id.menu_share -> {
@@ -103,9 +106,9 @@ class ChannelListFragment : Fragment(), MenuProvider, ListItemListener {
 			}
 
 			R.id.menu_program_info -> {
-				val modalBottomSheet = ProgramInfoSheetDialogFragment(
-					programInfoViewModel,
-					ProgramInfoSheetDialogFragment.Size.Large
+				val modalBottomSheet = ProgramInfoSheetDialogFragment.newInstance(
+					channel.id,
+					ProgramInfoSheetDialogFragment.Size.Large,
 				)
 				modalBottomSheet.show(parentFragmentManager, ProgramInfoSheetDialogFragment.TAG)
 				true

@@ -48,8 +48,21 @@ data class PersistedMediathekShow(
 	var mediathekShow: MediathekShow
 
 ) {
+	companion object {
+		fun newFromMediathekShow(show: MediathekShow): PersistedMediathekShow {
+			return PersistedMediathekShow(mediathekShow = show).apply {
+				updateMediathekShow(show)
+			}
+		}
+	}
+
 	fun updateMediathekShow(show: MediathekShow) {
 		this.mediathekShow = show
+
+		if (this.videoDuration == 0L) {
+			this.videoDuration = show.duration?.toLong()?.let { it * 1000 } ?: 0
+		}
+
 		this.showUpdatedAt = DateTime.now()
 	}
 }

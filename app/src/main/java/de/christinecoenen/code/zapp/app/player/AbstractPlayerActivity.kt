@@ -1,14 +1,14 @@
 package de.christinecoenen.code.zapp.app.player
 
 import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.os.PowerManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,9 +16,11 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.media3.ui.PlayerView
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.app.player.BackgroundPlayerService.Companion.bind
@@ -27,8 +29,6 @@ import de.christinecoenen.code.zapp.databinding.ActivityAbstractPlayerBinding
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnCreated
 import de.christinecoenen.code.zapp.utils.system.LifecycleOwnerHelper.launchOnResumed
 import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper
-import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.isInsideMultiWindow
-import de.christinecoenen.code.zapp.utils.system.MultiWindowHelper.supportsPictureInPictureMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -44,9 +44,6 @@ abstract class AbstractPlayerActivity :
 
 	private val windowInsetsControllerCompat by lazy {
 		WindowInsetsControllerCompat(window, binding.fullscreenContent)
-	}
-	private val powerManager by lazy {
-		getSystemService(Context.POWER_SERVICE) as PowerManager
 	}
 
 	protected lateinit var binding: ActivityAbstractPlayerBinding
@@ -108,6 +105,21 @@ abstract class AbstractPlayerActivity :
 					MultiWindowHelper.enterPictureInPictureMode(this@AbstractPlayerActivity)
 				}
 			})
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+				// enable pip automatically when pressing home button
+				setPictureInPictureParams(
+					PictureInPictureParams.Builder()
+						.setAutoEnterEnabled(true)
+						.build()
+				)
+			}
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarWrapper) { view, windowInsets ->
+			val insets = windowInsets.getInsets(WindowInsetsCompat.Type.displayCutout())
+			view.updatePadding(insets.left, insets.top, insets.right, insets.bottom)
+			WindowInsetsCompat.CONSUMED
 		}
 	}
 
@@ -131,28 +143,14 @@ abstract class AbstractPlayerActivity :
 	override fun onStart() {
 		super.onStart()
 
-		if (isInsideMultiWindow(this)) {
-			resumeActivity()
-		}
+		resumeActivity()
 	}
 
 	@SuppressLint("SourceLockedOrientationActivity")
 	override fun onResume() {
 		super.onResume()
 
-		if (!isInsideMultiWindow(this)) {
-			resumeActivity()
-		}
-
 		requestedOrientation = viewModel.screenOrientation
-	}
-
-	override fun onPause() {
-		super.onPause()
-
-		if (!isInsideMultiWindow(this)) {
-			pauseActivity()
-		}
 	}
 
 	override fun onStop() {
@@ -172,10 +170,6 @@ abstract class AbstractPlayerActivity :
 
 	override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 		menuInflater.inflate(R.menu.activity_abstract_player, menu)
-
-		if (!supportsPictureInPictureMode(this)) {
-			menu.removeItem(R.id.menu_pip)
-		}
 	}
 
 	override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -264,14 +258,9 @@ abstract class AbstractPlayerActivity :
 	}
 
 	private fun pauseActivity() {
-		if (!powerManager.isInteractive) {
-			// resume playback in background, when screen turned off
-			binder!!.movePlaybackToBackground()
-		}
-
 		try {
 			unbindService(backgroundPlayerServiceConnection)
-		} catch (ignored: IllegalArgumentException) {
+		} catch (_: IllegalArgumentException) {
 		}
 	}
 

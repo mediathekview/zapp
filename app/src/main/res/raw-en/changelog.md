@@ -1,3 +1,20 @@
+## v-next
+* Fixed possible crash when a show download fails
+* Prepared Zapp for Android 17
+
+## 9.2.0
+* Added an option to mark a show as watched ([#509](https://github.com/mediathekview/zapp/issues/509))
+* Added an option to reset the progress of all started shows ([#507](https://github.com/mediathekview/zapp/issues/507))
+* Fixed channel order list being covered by the navigation bar ([#496](https://github.com/mediathekview/zapp/issues/496))
+* Restricted local result list for the mediathek search ([#486](https://github.com/mediathekview/zapp/issues/486))
+* Automatic picture in picture mode starts when exiting Zapp via the home button (starting with Android 12) ([#506](https://github.com/mediathekview/zapp/issues/506))
+* Stop video playback when turning off the screen ([#490](https://github.com/mediathekview/zapp/issues/490))
+* Fixed downloads sometimes showing up in notifications but in the user interface ([#508](https://github.com/mediathekview/zapp/issues/508))
+* Fixed video title covered by the camera notch in portrait mode ([#512](https://github.com/mediathekview/zapp/issues/512))
+* Fixed crash when rotating the device while the program info in open ([#511](https://github.com/mediathekview/zapp/issues/511))
+* Fixed crash when starting a mediathek show download from the mediathek list over a metered network ([#514](https://github.com/mediathekview/zapp/issues/514))
+* Fixed a blank screen when navigating back to a mediathek show from the settings screen ([#515](https://github.com/mediathekview/zapp/issues/515))
+
 ## 9.1.1
 * Fixed a crash upon start when the channel order has been changed previously
 * Fixed a chash upon start when updating from version 9.0.0-beta1

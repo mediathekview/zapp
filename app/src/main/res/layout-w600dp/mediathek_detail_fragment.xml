@@ -4,6 +4,7 @@
 	android:layout_height="match_parent">
 
 	<LinearLayout
+		android:id="@+id/wrapper"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginVertical="@dimen/activity_vertical_margin"

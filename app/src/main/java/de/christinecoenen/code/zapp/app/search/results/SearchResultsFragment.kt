@@ -38,21 +38,21 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 
 	private val localShowsResultHeaderAdapater = HeaderAdapater(
 		R.string.activity_main_tab_personal,
-		R.drawable.ic_outline_app_shortcut_24,
-		null
-	).apply { setIsVisible(false) }
+		R.drawable.ic_outline_app_shortcut_24
+	) { viewModel.showAllLocalResults() }.apply { setIsVisible(false) }
+
 	private val mediathekResultHeaderAdapter = HeaderAdapater(
 		R.string.activity_main_tab_mediathek,
 		R.drawable.ic_outline_video_library_24,
 		null
 	)
 
-	private val channelChipListener = object: SuggestionChipListener<ChannelChipContent> {
+	private val channelChipListener = object : SuggestionChipListener<ChannelChipContent> {
 		override fun onChipClick(content: ChannelChipContent) {
 			viewModel.enterLastSearch()
 		}
 	}
-	private val durationChipListener = object: SuggestionChipListener<DurationChipContent> {
+	private val durationChipListener = object : SuggestionChipListener<DurationChipContent> {
 		override fun onChipClick(content: DurationChipContent) {
 			viewModel.enterLastSearch()
 		}
@@ -95,7 +95,10 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 			}
 		}
 
-		val durationChipsAdapter = ChipsAdapter(ChipType.NonInteractableFilter, durationChipListener)
+		val durationChipsAdapter = ChipsAdapter(
+			ChipType.NonInteractableFilter,
+			durationChipListener
+		)
 		viewLifecycleOwner.launchOnResumed {
 			viewModel.submittedDurationQuerySet.collectLatest { durationQuerySet ->
 				durationChipsAdapter.submitList(durationQuerySet.map {
@@ -143,6 +146,12 @@ class SearchResultsFragment : Fragment(), MediathekShowListItemListener {
 				mediathekResultLoadStatusAdapter.onShowsLoaded(mediathekResultAdapter.itemCount)
 			} else {
 				mediathekResultLoadStatusAdapter.setIsLoading()
+			}
+		}
+
+		viewLifecycleOwner.launchOnResumed {
+			viewModel.canShowMoreLocalResults.collectLatest { canShowMoreLocalResults ->
+				localShowsResultHeaderAdapater.setShowMoreButton(canShowMoreLocalResults)
 			}
 		}
 	}

@@ -5,7 +5,6 @@ import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivity
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.app.player.VideoInfo.Companion.fromShow
 import de.christinecoenen.code.zapp.models.shows.PersistedMediathekShow
-import de.christinecoenen.code.zapp.models.shows.Quality
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.utils.system.IntentHelper.openUrl
 import kotlinx.coroutines.flow.first

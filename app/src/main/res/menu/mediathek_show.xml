@@ -30,6 +30,13 @@
 		app:showAsAction="never" />
 
 	<item
+		android:id="@+id/menu_mark_watched"
+		android:icon="@drawable/ic_outline_play_circle_24"
+		android:title="@string/action_mark_watched"
+		android:visible="false"
+		app:showAsAction="never" />
+
+	<item
 		android:id="@+id/menu_start_download"
 		android:icon="@drawable/ic_baseline_save_alt_24"
 		android:title="@string/action_start_download"

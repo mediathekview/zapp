@@ -68,7 +68,7 @@ class MediathekListFragment : Fragment(),
 		binding.refreshLayout.setOnRefreshListener(this)
 		binding.refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
 
-		(requireActivity() as MainActivity).addMenuProviderToSearchBar(
+		(requireActivity() as? MainActivity)?.addMenuProviderToSearchBar(
 			this,
 			viewLifecycleOwner,
 			Lifecycle.State.RESUMED

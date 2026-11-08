@@ -30,14 +30,35 @@ interface MediathekShowDao {
 			"AND ((:minDurationSeconds IS NULL) OR duration > :minDurationSeconds) " +
 			"AND ((:maxDurationSeconds IS NULL) OR duration < :maxDurationSeconds) " +
 			"GROUP BY id " +
-			"ORDER BY sortDate DESC"
+			"ORDER BY sortDate DESC " +
+			"LIMIT :limit"
 	)
 	fun getPersonalShows(
 		searchQuery: String,
 		channels: List<String>,
 		minDurationSeconds: Int? = null,
-		maxDurationSeconds: Int? = null
+		maxDurationSeconds: Int? = null,
+		limit: Int? = -1,
 	): PagingSource<Int, SortableMediathekShow>
+
+	@RewriteQueriesToDropUnusedColumns
+	@Query(
+		"SELECT COUNT(DISTINCT id) FROM (" +
+			"SELECT * FROM PersistedMediathekShow WHERE (downloadStatus IN (1,2,3,4,6,9)) UNION " +
+			"SELECT * FROM PersistedMediathekShow WHERE playbackPosition UNION " +
+			"SELECT * FROM PersistedMediathekShow WHERE bookmarked" +
+			") " +
+			"WHERE (topic LIKE :searchQuery OR title LIKE :searchQuery) " +
+			"AND channel IN(:channels) " +
+			"AND ((:minDurationSeconds IS NULL) OR duration > :minDurationSeconds) " +
+			"AND ((:maxDurationSeconds IS NULL) OR duration < :maxDurationSeconds)"
+	)
+	fun getPersonalShowsCount(
+		searchQuery: String,
+		channels: List<String>,
+		minDurationSeconds: Int? = null,
+		maxDurationSeconds: Int? = null,
+	): Flow<Int>
 
 	@Query("SELECT * FROM PersistedMediathekShow")
 	fun getAll(): Flow<List<PersistedMediathekShow>>
@@ -111,9 +132,7 @@ interface MediathekShowDao {
 
 		if (existingPersistedShow == null) {
 			// insert new show
-			val newPersistedShow = PersistedMediathekShow(
-				mediathekShow = show
-			)
+			val newPersistedShow = PersistedMediathekShow.newFromMediathekShow(show)
 			insert(newPersistedShow)
 		} else {
 			// update existing show
@@ -144,6 +163,12 @@ interface MediathekShowDao {
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0 WHERE apiId=:apiId")
 	suspend fun resetPlaybackPosition(apiId: String)
+
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=(SELECT videoDuration WHERE apiId=:apiId), lastPlayedBackAt=:playedAt WHERE apiId=:apiId")
+	suspend fun markAsPlayed(apiId: String, playedAt: DateTime)
+
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0")
+	suspend fun resetAllPlaybackPositions()
 
 	@Query("SELECT playbackPosition FROM PersistedMediathekShow WHERE id=:id")
 	suspend fun getPlaybackPosition(id: Int): Long

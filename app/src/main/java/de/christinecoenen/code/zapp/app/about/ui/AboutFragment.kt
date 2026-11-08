@@ -36,11 +36,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowSizeClass
-import androidx.window.core.layout.WindowWidthSizeClass
+import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.m3.style.m3VariantColors
 import de.christinecoenen.code.zapp.BuildConfig
 import de.christinecoenen.code.zapp.R
 import de.christinecoenen.code.zapp.theme.AppTheme
@@ -70,9 +70,7 @@ class AboutFragment : Fragment() {
 	fun MainScreen() {
 		AppTheme {
 			val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-			val sideBySide =
-				windowSizeClass.windowHeightSizeClass == WindowHeightSizeClass.COMPACT ||
-					windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
+			val sideBySide = windowSizeClass.isWidthAtLeastBreakpoint(800)
 
 			if (sideBySide) {
 				Row(verticalAlignment = Alignment.CenterVertically) {
@@ -100,8 +98,13 @@ class AboutFragment : Fragment() {
 			onLibraryClick = { library ->
 				library.website?.let {
 					IntentHelper.openUrl(requireContext(), it)
-				}
+					true
+				} == true
 			},
+			variantColors = LibraryDefaults.m3VariantColors(
+				licenseBadgeContainer = MaterialTheme.colorScheme.surfaceContainer,
+				licenseBadgeContent = MaterialTheme.colorScheme.onSurface,
+			),
 			modifier = Modifier.fillMaxHeight()
 		)
 	}

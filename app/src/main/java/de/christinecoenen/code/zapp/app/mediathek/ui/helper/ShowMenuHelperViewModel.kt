@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.onStart
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ShowMenuHelperViewModel(
@@ -27,6 +26,7 @@ class ShowMenuHelperViewModel(
 		R.id.menu_remove_download to false,
 		R.id.menu_cancel_download to false,
 		R.id.menu_mark_unwatched to false,
+		R.id.menu_mark_watched to true,
 		R.id.menu_add_bookmark to true,
 		R.id.menu_remove_bookmark to false
 	)
@@ -40,7 +40,7 @@ class ShowMenuHelperViewModel(
 
 	fun getMenuItemsVisibility(show: MediathekShow): Flow<Map<Int, Boolean>> {
 		return mediathekRepository
-			.getPersistedShowByApiId(show.apiId)
+			.persistOrUpdateShow(show)
 			.mapLatest {
 				lastMapping = mapOf(
 					R.id.menu_share to true,
@@ -63,16 +63,11 @@ class ShowMenuHelperViewModel(
 							DownloadStatus.PAUSED,
 						)),
 					R.id.menu_mark_unwatched to (it.playbackPosition > 0),
+					R.id.menu_mark_watched to (it.playbackPosition < it.videoDuration),
 					R.id.menu_add_bookmark to !it.isBookmarked,
 					R.id.menu_remove_bookmark to it.isBookmarked
 				)
 				lastMapping
-			}
-			.onStart {
-				// for when the show has not yet been persisted
-				emit(defaultMapping.toMutableMap().apply {
-					this[R.id.menu_start_download] = show.hasAnyDownloadQuality()
-				})
 			}
 			.distinctUntilChanged()
 	}
@@ -99,9 +94,11 @@ class ShowMenuHelperViewModel(
 		mediathekRepository.resetPlaybackPosition(show.apiId)
 	}
 
+	suspend fun markWatched(show: MediathekShow) {
+		mediathekRepository.markAsPlayed(show.apiId)
+	}
+
 	suspend fun bookmark(show: MediathekShow) {
-		// we need to persist this first, because it might not yet be persisted!
-		mediathekRepository.persistOrUpdateShow(show)
 		mediathekRepository.setBookmarked(show.apiId, true)
 	}
 
@@ -110,8 +107,10 @@ class ShowMenuHelperViewModel(
 	}
 
 	suspend fun startDownload(show: MediathekShow, quality: Quality) {
-		// we need to persist this first, because it might not yet be persisted!
-		val persistedShow = mediathekRepository.persistOrUpdateShow(show).first()
+		val persistedShow = mediathekRepository
+			.persistOrUpdateShow(show)
+			.first()
+
 		downloadController.startDownload(persistedShow.id, quality)
 	}
 }
