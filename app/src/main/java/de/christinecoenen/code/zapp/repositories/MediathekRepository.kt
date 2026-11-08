@@ -268,7 +268,6 @@ class MediathekRepository(private val database: Database) {
 			.mediathekShowDao()
 			.getPlaybackPositionPercent(apiId)
 			.distinctUntilChanged()
-			.filterNotNull()
 			.onStart { emit(0f) }
 			.flowOn(Dispatchers.IO)
 	}
