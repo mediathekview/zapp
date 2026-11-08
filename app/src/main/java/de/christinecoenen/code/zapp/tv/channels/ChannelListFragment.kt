@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.ListItemListener
 import de.christinecoenen.code.zapp.app.player.VideoInfo
 import de.christinecoenen.code.zapp.databinding.TvFragmentChannelListBinding

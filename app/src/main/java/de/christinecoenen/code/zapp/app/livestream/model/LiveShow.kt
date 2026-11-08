@@ -5,7 +5,6 @@ import de.christinecoenen.code.zapp.R
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.joda.time.format.DateTimeFormat
-import org.koin.android.ext.koin.androidContext
 
 data class LiveShow(
 	var title: String,

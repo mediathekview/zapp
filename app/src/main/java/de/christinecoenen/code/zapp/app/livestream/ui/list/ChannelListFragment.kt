@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import de.christinecoenen.code.zapp.R
-import de.christinecoenen.code.zapp.app.livestream.ui.ProgramInfoViewModel
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ChannelPlayerActivity
 import de.christinecoenen.code.zapp.app.livestream.ui.detail.ProgramInfoSheetDialogFragment
 import de.christinecoenen.code.zapp.app.livestream.ui.list.adapter.BaseChannelListAdapter
