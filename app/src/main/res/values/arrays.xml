@@ -42,16 +42,66 @@
 		<item>@string/stream_quality_cellular_highest</item>
 	</string-array>
 
+	<string-array name="pref_watched_show_mode_values">
+		<item>fade</item>
+		<item>hide</item>
+	</string-array>
+
+	<string-array name="pref_watched_show_mode_names">
+		<item>@string/pref_watched_show_mode_fade</item>
+		<item>@string/pref_watched_show_mode_hide</item>
+	</string-array>
+
+	<string-array name="pref_collection_max_shows_values">
+		<item>1000</item>
+		<item>2500</item>
+		<item>5000</item>
+		<item>10000</item>
+		<item>25000</item>
+	</string-array>
+
+	<string-array name="pref_collection_max_shows_names">
+		<item>1.000</item>
+		<item>2.500</item>
+		<item>5.000</item>
+		<item>10.000</item>
+		<item>25.000</item>
+	</string-array>
+
+	<string-array name="pref_collection_check_interval_values">
+		<item>0</item>
+		<item>15</item>
+		<item>30</item>
+		<item>60</item>
+		<item>180</item>
+		<item>360</item>
+		<item>720</item>
+		<item>1440</item>
+	</string-array>
+
+	<string-array name="pref_collection_check_interval_names">
+		<item>@string/pref_collection_check_interval_off</item>
+		<item>@string/pref_collection_check_interval_15_minutes</item>
+		<item>@string/pref_collection_check_interval_30_minutes</item>
+		<item>@string/pref_collection_check_interval_hourly</item>
+		<item>@string/pref_collection_check_interval_3_hours</item>
+		<item>@string/pref_collection_check_interval_6_hours</item>
+		<item>@string/pref_collection_check_interval_12_hours</item>
+		<item>@string/pref_collection_check_interval_daily</item>
+	</string-array>
+
 	<string-array name="available_tabs_names">
 		<item>@string/activity_main_tab_live</item>
 		<item>@string/activity_main_tab_mediathek</item>
 		<item>@string/activity_main_tab_personal</item>
+		<item>@string/activity_main_tab_series</item>
 	</string-array>
 
 	<string-array name="available_tabs_values">
 		<item>live</item>
 		<item>mediathek</item>
 		<item>personal</item>
+		<item>series</item>
 	</string-array>
 
 	<string-array name="available_tabs_names_tv">

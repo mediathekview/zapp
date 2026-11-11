@@ -19,6 +19,8 @@ import de.christinecoenen.code.zapp.app.personal.PersonalViewModel
 import de.christinecoenen.code.zapp.app.personal.details.BookmarksViewModel
 import de.christinecoenen.code.zapp.app.personal.details.ContinueWatchingViewModel
 import de.christinecoenen.code.zapp.app.personal.details.DownloadsViewModel
+import de.christinecoenen.code.zapp.app.personal.series.SeriesDetailViewModel
+import de.christinecoenen.code.zapp.app.personal.series.SeriesViewModel
 import de.christinecoenen.code.zapp.app.player.AbstractPlayerActivityViewModel
 import de.christinecoenen.code.zapp.app.player.IPlaybackPositionRepository
 import de.christinecoenen.code.zapp.app.player.PersistedPlaybackPositionRepository
@@ -30,6 +32,7 @@ import de.christinecoenen.code.zapp.persistence.Database
 import de.christinecoenen.code.zapp.repositories.ChannelRepository
 import de.christinecoenen.code.zapp.repositories.MediathekRepository
 import de.christinecoenen.code.zapp.repositories.SearchRepository
+import de.christinecoenen.code.zapp.repositories.ShowCollectionRepository
 import de.christinecoenen.code.zapp.utils.api.UserAgentInterceptor
 import de.christinecoenen.code.zapp.utils.system.PreferenceFragmentHelper
 import io.noties.markwon.Markwon
@@ -59,7 +62,8 @@ class KoinModules {
 			single { Database.getInstance(androidContext()) }
 			single { MediathekRepository(get()) }
 			single { SearchRepository(get()) }
-			single { PersistedPlaybackPositionRepository(get()) } bind IPlaybackPositionRepository::class
+			single { ShowCollectionRepository(get(), get(), get(), get()) }
+			single { PersistedPlaybackPositionRepository(get(), get()) } bind IPlaybackPositionRepository::class
 			single {
 				WorkManagerDownloadController(
 					androidContext(),
@@ -96,6 +100,8 @@ class KoinModules {
 			viewModel { BookmarksViewModel(get()) }
 			viewModel { ContinueWatchingViewModel(get()) }
 			viewModel { DownloadsViewModel(get()) }
+			viewModel { SeriesViewModel(get()) }
+			viewModel { parameters -> SeriesDetailViewModel(get(), get(), parameters.get()) }
 			viewModel { ProgramInfoViewModel(get(), LiveShow.getEmpty(androidContext())) }
 			viewModel { parameters -> MediathekListFragmentViewModel(get(), parameters.get()) }
 			viewModel { MediathekFilterViewModel() }

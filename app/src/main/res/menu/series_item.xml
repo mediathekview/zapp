@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<item
+		android:id="@+id/menu_edit_collection"
+		android:title="@string/action_edit_collection"
+		app:showAsAction="never" />
+
+	<item
+		android:id="@+id/menu_mark_all_watched"
+		android:title="@string/action_mark_all_watched"
+		app:showAsAction="never" />
+
+	<item
+		android:id="@+id/menu_mark_all_unwatched"
+		android:title="@string/action_mark_all_unwatched"
+		app:showAsAction="never" />
+
+	<item
+		android:id="@+id/menu_delete_collection"
+		android:title="@string/action_delete_collection"
+		app:showAsAction="never" />
+
+</menu>

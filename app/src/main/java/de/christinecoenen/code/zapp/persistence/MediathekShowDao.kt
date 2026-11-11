@@ -164,8 +164,20 @@ interface MediathekShowDao {
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0 WHERE apiId=:apiId")
 	suspend fun resetPlaybackPosition(apiId: String)
 
+	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0 WHERE apiId=:apiId AND playbackPosition > 0")
+	suspend fun resetPlaybackPositionIfPlayed(apiId: String): Int
+
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=(SELECT videoDuration WHERE apiId=:apiId), lastPlayedBackAt=:playedAt WHERE apiId=:apiId")
 	suspend fun markAsPlayed(apiId: String, playedAt: DateTime)
+
+	@Query(
+		"UPDATE PersistedMediathekShow SET " +
+			"playbackPosition = CASE WHEN videoDuration > 0 THEN videoDuration ELSE 1 END, " +
+			"videoDuration = CASE WHEN videoDuration > 0 THEN videoDuration ELSE 1 END, " +
+			"lastPlayedBackAt=:playedAt " +
+			"WHERE apiId=:apiId AND (videoDuration <= 0 OR playbackPosition < videoDuration)"
+	)
+	suspend fun markAsPlayedIfUnwatched(apiId: String, playedAt: DateTime): Int
 
 	@Query("UPDATE PersistedMediathekShow SET playbackPosition=0")
 	suspend fun resetAllPlaybackPositions()

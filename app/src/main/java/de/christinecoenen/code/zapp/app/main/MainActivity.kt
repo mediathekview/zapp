@@ -137,6 +137,7 @@ class MainActivity : AppCompatActivity(), MenuProvider {
 				R.id.channelListFragment,
 				R.id.mediathekListFragment,
 				R.id.personalFragment,
+				R.id.seriesFragment,
 			),
 			fallbackOnNavigateUpListener = ::onSupportNavigateUp
 		)
